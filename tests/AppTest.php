@@ -17,7 +17,7 @@ use DRPSermonManager\App;
  */
 class AppTest extends BaseTest
 {
-    public function tester()
+    public function testGetInstance()
     {
         $obj = App::getInstance();
         $this->assertNotNull($obj);

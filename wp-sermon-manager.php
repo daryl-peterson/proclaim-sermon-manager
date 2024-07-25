@@ -13,7 +13,7 @@ namespace DRPSermonManager;
  * Author URI:
  * License:             GPL-2.0+
  * License URI:         http://www.gnu.org/licenses/gpl-2.0.txt
- * Text Domain:         drp_smvimeo
+ * Text Domain:         drp_sermon_manager
  * Domain Path:         /languages
  * Requires PHP:        8.1
  * Requires at least:   6.4
@@ -39,12 +39,14 @@ if (file_exists(dirname(__FILE__).'/vendor/autoload.php')) {
 
 const NAME = 'Sermon Manager';
 const FILE = __FILE__;
-const KEY_PREFIX = 'drp_smvimeo';
-const DOMAIN = 'drp_smvimeo';
+const KEY_PREFIX = 'drp_sermon_manager';
+const DOMAIN = 'drp_sermon_manager';
 const NS = __NAMESPACE__;
 const LOG_FILE = 'wp4me-sm.log';
 const PLUGIN_MIN_PHP = '8.1.0';
 const PLUGIN_MIN_WP = '6.4.0';
+
+Logger::debug(KEY_PREFIX);
 
 try {
     App::getInstance()->init();
