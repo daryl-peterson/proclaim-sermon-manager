@@ -1,0 +1,26 @@
+{
+    "name": "dpeterson/wp-sermon-manager",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "DRPSermonManager\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "daryl-peterson",
+            "email": "daryl.peterson@gmail.com"
+        }
+    ],
+    "require": {
+        "php-di/php-di": "^7.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^11.2",
+        "phpcompatibility/php-compatibility": "^9.3"
+    },
+    "scripts": {
+        "post-install-cmd": "\"vendor/bin/phpcs\" --config-set installed_paths vendor/phpcompatibility/php-compatibility",
+        "post-update-cmd": "\"vendor/bin/phpcs\" --config-set installed_paths vendor/phpcompatibility/php-compatibility"
+    }
+}
