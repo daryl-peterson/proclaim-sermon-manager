@@ -2,11 +2,11 @@
 
 namespace DRPSermonManager;
 
-use DRPSermonManager\Core\Exceptions\VimeoException;
+use DRPSermonManager\Core\Exceptions\PluginException;
 use DRPSermonManager\Core\Interfaces\NoticeInterface;
 
 /**
- * Run checks to see if requirements are met. If not throw VimeoException.
+ * Run checks to see if requirements are met. If not throw PluginException.
  *
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
@@ -38,7 +38,7 @@ class RequirementChecks
             return;
         }
         $this->notice->setError('- Requirement Not Met', $message);
-        throw new VimeoException($message);
+        throw new PluginException($message);
     }
 
     public function checkWPVer(string $version = ''): void
@@ -53,7 +53,7 @@ class RequirementChecks
             return;
         }
         $this->notice->setError('- Requirement Not Met', $message);
-        throw new VimeoException($message);
+        throw new PluginException($message);
     }
 
     public function checkPlugin(string $plugin = ''): void
@@ -64,7 +64,7 @@ class RequirementChecks
         $message = 'This Plugin requires (Sermon Manager for WordPress)';
         if (!Helper::isPluginActive($plugin)) {
             $this->notice->setError('- Requirement Not Met', $message);
-            throw new VimeoException($message);
+            throw new PluginException($message);
         }
     }
 }

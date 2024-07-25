@@ -8,9 +8,6 @@ use DRPSermonManager\Core\Interfaces\NoticeInterface;
 use DRPSermonManager\Core\Interfaces\OptionsInterface;
 use DRPSermonManager\Core\Interfaces\PluginInterface;
 use DRPSermonManager\Core\Interfaces\RequirementsInterface;
-use DRPSermonManager\Core\Interfaces\SermonPostsInterface;
-use DRPSermonManager\Core\Interfaces\SermonVideoInterface;
-use DRPSermonManager\Core\Interfaces\VideoInterface;
 use DRPSermonManager\Core\Traits\SingletonTrait;
 
 /**
@@ -59,16 +56,6 @@ class App
         return self::getObject(AdminPage::class);
     }
 
-    public static function getAlbumInt(): Album
-    {
-        return self::getObject(Album::class);
-    }
-
-    public static function getChannelInt(): Channel
-    {
-        return self::getObject(Channel::class);
-    }
-
     public static function getLogFormatterInt(): LogFormatterInterface
     {
         return self::getObject(LogFormatterInterface::class);
@@ -101,28 +88,5 @@ class App
     public static function getRequirementsInt(): RequirementsInterface
     {
         return self::getObject(RequirementsInterface::class);
-    }
-
-    /**
-     * Get sermon post interface.
-     */
-    public static function getSermonPostInt(): SermonPostsInterface
-    {
-        return self::getObject(SermonPostsInterface::class);
-    }
-
-    public static function getSermonVideoInt(): SermonVideoInterface
-    {
-        return self::getObject(SermonVideoInterface::class);
-    }
-
-    public static function getUserInt(): User
-    {
-        return self::getObject(User::class);
-    }
-
-    public static function getVideoInt(): Video
-    {
-        return self::getObject(VideoInterface::class);
     }
 }

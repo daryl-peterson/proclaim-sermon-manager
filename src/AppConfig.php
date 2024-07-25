@@ -7,9 +7,6 @@ use DRPSermonManager\Core\Interfaces\NoticeInterface;
 use DRPSermonManager\Core\Interfaces\OptionsInterface;
 use DRPSermonManager\Core\Interfaces\PluginInterface;
 use DRPSermonManager\Core\Interfaces\RequirementsInterface;
-use DRPSermonManager\Core\Interfaces\SermonPostsInterface;
-use DRPSermonManager\Core\Interfaces\SermonVideoInterface;
-use DRPSermonManager\Core\Interfaces\VideoInterface;
 
 /**
  * App configuration.
@@ -47,32 +44,8 @@ class AppConfig
                 return new Requirements($notice);
             },
 
-            SermonPostsInterface::class => function (SermonVideoInterface $video) {
-                return new SermonPost($video);
-            },
-
-            SermonVideoInterface::class => function (VideoInterface $video, OptionsInterface $options) {
-                return new SermonVideo($video, $options);
-            },
-
-            VideoInterface::class => function () {
-                return new Video(...self::$vimeo);
-            },
-
             AdminPage::class => function () {
                 return new AdminPage();
-            },
-
-            Album::class => function () {
-                return new Album(...self::$vimeo);
-            },
-
-            Channel::class => function () {
-                return new Channel(...self::$vimeo);
-            },
-
-            User::class => function () {
-                return new User(...self::$vimeo);
             },
         ];
     }
