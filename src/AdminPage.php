@@ -45,6 +45,7 @@ class AdminPage
         }
 
         try {
+            return;
             $hook = Helper::getKeyName('ADMIN_PAGE_INIT');
 
             if (did_action($hook) && !defined('PHPUNIT_TESTING')) {
