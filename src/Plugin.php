@@ -42,6 +42,10 @@ class Plugin implements PluginInterface
 
             App::getRequirementsInt()->init();
             App::getAdminPage()->init();
+
+            $obj = TextDomain::init();
+            $obj->blah();
+
             Logger::debug('PLUGIN HOOKS INITIALIZED');
             do_action($hook);
 

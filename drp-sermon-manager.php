@@ -38,9 +38,9 @@ if (file_exists(dirname(__FILE__).'/vendor/autoload.php')) {
 const NAME = 'Sermon Manager';
 const FILE = __FILE__;
 const KEY_PREFIX = 'drp_sermon_manager';
-const DOMAIN = 'drp_sermon_manager';
+const DOMAIN = 'drp_sermon';
 const NS = __NAMESPACE__;
-const LOG_FILE = 'sermon-manager.log';
+const LOG_FILE = 'drp-sermon-manager.log';
 const PLUGIN_MIN_PHP = '8.1.0';
 const PLUGIN_MIN_WP = '6.4.0';
 
