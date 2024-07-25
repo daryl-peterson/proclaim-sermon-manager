@@ -2,6 +2,7 @@
 
 namespace DRPSermonManager;
 
+use DRPSermonManager\Core\Exceptions\PluginException;
 use DRPSermonManager\Core\Interfaces\NoticeInterface;
 use DRPSermonManager\Core\Interfaces\RequirementsInterface;
 
@@ -15,10 +16,14 @@ use DRPSermonManager\Core\Interfaces\RequirementsInterface;
 class Requirements implements RequirementsInterface
 {
     private NoticeInterface $notice;
+    private RequirementChecks $require;
+    private bool $fail;
 
     public function __construct(NoticeInterface $notice)
     {
         $this->notice = $notice;
+        $this->require = new RequirementChecks();
+        $this->fail = false;
     }
 
     public function init(): void
@@ -47,6 +52,11 @@ class Requirements implements RequirementsInterface
         return $this->notice;
     }
 
+    public function setFail(bool $fail): void
+    {
+        $this->fail = $fail;
+    }
+
     public function isCompatible(): void
     {
         $transient = Helper::getKeyName('compatible');
@@ -54,6 +64,9 @@ class Requirements implements RequirementsInterface
             Logger::debug('CHECKING REQUIREMENTS');
             $obj = new RequirementChecks();
             $obj->run();
+            if ($this->fail) {
+                throw new PluginException('Force fail');
+            }
             Logger::debug('REQUIREMENTS MET');
 
             set_transient($transient, true, 500);
@@ -73,8 +86,8 @@ class Requirements implements RequirementsInterface
     private function deactivate(): void
     {
         if (is_admin() && current_user_can('activate_plugins')) {
-            deactivate_plugins(FILE);
             // @codeCoverageIgnoreStart
+            deactivate_plugins(FILE);
             if (isset($_GET['activate'])) {
                 unset($_GET['activate']);
             }

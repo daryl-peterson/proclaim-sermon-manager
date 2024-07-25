@@ -24,7 +24,6 @@ class RequirementChecks
     public function run()
     {
         $this->checkPHPVer();
-        $this->checkPlugin();
         $this->checkWPVer();
     }
 
@@ -54,17 +53,5 @@ class RequirementChecks
         }
         $this->notice->setError('- Requirement Not Met', $message);
         throw new PluginException($message);
-    }
-
-    public function checkPlugin(string $plugin = ''): void
-    {
-        if (empty($plugin)) {
-            $plugin = PLUGIN_SM;
-        }
-        $message = 'This Plugin requires (Sermon Manager for WordPress)';
-        if (!Helper::isPluginActive($plugin)) {
-            $this->notice->setError('- Requirement Not Met', $message);
-            throw new PluginException($message);
-        }
     }
 }

@@ -2,7 +2,10 @@
 
 namespace DRPSermonManager\Tests;
 
+use DI\Container;
+use DRPSermonManager\AdminPage;
 use DRPSermonManager\App;
+use DRPSermonManager\Plugin;
 
 /**
  * Class description.
@@ -17,9 +20,34 @@ use DRPSermonManager\App;
  */
 class AppTest extends BaseTest
 {
+    public App $obj;
+
+    public function setup(): void
+    {
+        $this->obj = App::getInstance();
+        $this->obj->init();
+    }
+
     public function testGetInstance()
     {
-        $obj = App::getInstance();
-        $this->assertNotNull($obj);
+        $this->assertNotNull($this->obj);
+    }
+
+    public function testGetContainer()
+    {
+        $container = $this->obj->getContainer();
+        $this->assertInstanceOf(Container::class, $container);
+    }
+
+    public function testGetPluginInt()
+    {
+        $plugin = $this->obj->getPluginInt();
+        $this->assertInstanceOf(Plugin::class, $plugin);
+    }
+
+    public function testGetAdminPage()
+    {
+        $result = $this->obj->getAdminPage();
+        $this->assertInstanceOf(AdminPage::class, $result);
     }
 }

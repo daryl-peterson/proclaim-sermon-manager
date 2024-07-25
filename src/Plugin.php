@@ -41,25 +41,24 @@ class Plugin implements PluginInterface
             add_action('admin_notices', [$this, 'showNotice']);
 
             App::getRequirementsInt()->init();
-            App::getSermonPostInt()->init();
             App::getAdminPage()->init();
             Logger::debug('PLUGIN HOOKS INITIALIZED');
             do_action($hook);
 
             // @codeCoverageIgnoreStart
         } catch (\Throwable $th) {
-            Logger::error($th->getMessage());
+            Logger::error(['MESSAGE' => $th->getMessage(), 'TRACE' => $th->getTrace()]);
             // @codeCoverageIgnoreEnd
         }
     }
 
-    public function activate()
+    public function activate(): void
     {
         Logger::debug('Activated');
         // @todo Add activation cleanup
     }
 
-    public function deactivate()
+    public function deactivate(): void
     {
         Logger::debug('DEACTIVATING');
         // @todo Add deactivation cleanup

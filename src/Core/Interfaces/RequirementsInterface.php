@@ -26,4 +26,9 @@ interface RequirementsInterface
      * Get notice interface.
      */
     public function notice(): NoticeInterface;
+
+    /**
+     * Get force fail.
+     */
+    public function setFail(bool $fail): void;
 }

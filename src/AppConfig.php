@@ -17,12 +17,8 @@ use DRPSermonManager\Core\Interfaces\RequirementsInterface;
  */
 class AppConfig
 {
-    public static array $vimeo;
-
     public static function get(): array
     {
-        self::$vimeo = self::getVimeoSettings();
-
         return [
             LogFormatterInterface::class => function () {
                 return new LogFormatter();
@@ -48,30 +44,5 @@ class AppConfig
                 return new AdminPage();
             },
         ];
-    }
-
-    public static function getVimeoSettings(bool $force = false)
-    {
-        if (!$force) {
-            if (isset(self::$vimeo)) {
-                return self::$vimeo;
-            }
-        }
-
-        $options = Options::getInstance();
-        $settings = $options->get('settings');
-
-        if (!isset($settings)) {
-            // @codeCoverageIgnoreStart
-            $settings = [
-                'client_id' => 'Client ID',
-                'client_secret' => 'Client Secret',
-                'access_token' => 'Access Token',
-                'match' => '',
-            ];
-            // @codeCoverageIgnoreEnd
-        }
-
-        return $settings;
     }
 }

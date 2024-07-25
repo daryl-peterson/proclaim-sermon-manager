@@ -26,12 +26,18 @@ class App
 
     public function init(): App
     {
-        if (!isset($this->container) || defined('PHPUNIT_TESTING')) {
-            $config = AppConfig::get();
-            $this->container = new Container($config);
-        }
+        try {
+            if (!isset($this->container) || defined('PHPUNIT_TESTING')) {
+                $config = AppConfig::get();
+                $this->container = new Container($config);
+            }
 
-        return $this;
+            return $this;
+            // @codeCoverageIgnoreStart
+        } catch (\Throwable $th) {
+            error_log(print_r($th, true));
+            // @codeCoverageIgnoreEnd
+        }
     }
 
     public static function getContainer(): Container

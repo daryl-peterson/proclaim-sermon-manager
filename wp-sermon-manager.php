@@ -19,12 +19,10 @@ namespace DRPSermonManager;
  * Requires at least:   6.4
  *
  * ----------------------------------------------------------------------------
- * Sermon Manager Vimeo is free software: you can redistribute it and/or modify
+ * Sermon Manager is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 2 of the License, or
  * any later version.
- *
- *
  */
 
 defined('ABSPATH') or exit;
@@ -42,7 +40,7 @@ const FILE = __FILE__;
 const KEY_PREFIX = 'drp_sermon_manager';
 const DOMAIN = 'drp_sermon_manager';
 const NS = __NAMESPACE__;
-const LOG_FILE = 'wp4me-sm.log';
+const LOG_FILE = 'sermon-manager.log';
 const PLUGIN_MIN_PHP = '8.1.0';
 const PLUGIN_MIN_WP = '6.4.0';
 

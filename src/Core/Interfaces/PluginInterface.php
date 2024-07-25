@@ -18,9 +18,9 @@ interface PluginInterface
      */
     public function init(): void;
 
-    public function activate();
+    public function activate(): void;
 
-    public function deactivate();
+    public function deactivate(): void;
 
     public function showNotice(): void;
 
