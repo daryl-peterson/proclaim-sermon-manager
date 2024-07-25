@@ -3,9 +3,7 @@
 namespace DRPSermonManager\Core\Interfaces;
 
 /**
- * Interface description.
- *
- * @category
+ * Text Domain translation interface.
  *
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
@@ -16,4 +14,18 @@ namespace DRPSermonManager\Core\Interfaces;
 interface TextDomainInterface extends Initible
 {
     public function blah();
+
+    /**
+     * Switch to site language.
+     *
+     * @since 1.0
+     */
+    public function switchToSiteLocale(): void;
+
+    /**
+     * Restore language to original.
+     *
+     * @since 1.0
+     */
+    public function restoreLocale(): void;
 }

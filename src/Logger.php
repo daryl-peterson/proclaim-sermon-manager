@@ -51,6 +51,9 @@ class Logger implements LoggerInterface
             $data = $obj->formatter->format($record);
 
             $file = LogFile::get($level);
+            if ($level === 'error') {
+                error_log($data);
+            }
 
             return file_put_contents($file, $data, FILE_APPEND);
             // @codeCoverageIgnoreStart

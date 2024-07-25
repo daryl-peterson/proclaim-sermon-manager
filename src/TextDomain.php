@@ -42,6 +42,42 @@ class TextDomain implements TextDomainInterface
         load_plugin_textdomain(DOMAIN, false, basename(dirname(FILE)).'/languages/');
     }
 
+    public function switchToSiteLocale(): void
+    {
+        try {
+            if (!function_exists('switch_to_locale')) {
+                return;
+            }
+            switch_to_locale(get_locale());
+
+            // Filter on plugin_locale so load_plugin_textdomain loads the correct locale.
+            add_filter('plugin_locale', 'get_locale');
+
+            // Init Sermon Manager locale.
+            $this->loadDomain();
+        } catch (\Throwable $th) {
+            Logger::error(['MESSAGE' => $th->getMessage(), 'TRACE' => $th->getTrace()]);
+        }
+    }
+
+    public function restoreLocale(): void
+    {
+        try {
+            if (!function_exists('restore_previous_locale')) {
+                return;
+            }
+            restore_previous_locale();
+
+            // Remove filter.
+            remove_filter('plugin_locale', 'get_locale');
+
+            // Init Sermon Manager locale.
+            $this->loadDomain();
+        } catch (\Throwable $th) {
+            Logger::error(['MESSAGE' => $th->getMessage(), 'TRACE' => $th->getTrace()]);
+        }
+    }
+
     public function blah()
     {
         Logger::debug('TESTING BLAH');

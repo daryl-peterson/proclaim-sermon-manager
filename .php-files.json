@@ -1,0 +1,6 @@
+{
+    "namespaces": {
+        "DRPSermonManager\\": "src/",
+        "DRPSermonManager\\Tests\\": "tests/"
+    }
+}

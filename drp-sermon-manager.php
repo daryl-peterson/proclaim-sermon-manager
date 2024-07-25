@@ -5,9 +5,9 @@ namespace DRPSermonManager;
 /*
  * ----------------------------------------------------------------------------
  * @wordpress-plugin
- * Plugin Name:         WP4Me Sermon Manager
+ * Plugin Name:         DRP Sermon Manager
  * Plugin URI:
- * Description:         WP4Me Sermon Manager
+ * Description:         DRP Sermon Manager for wordpess
  * Version:             1.0.0
  * Author:              Daryl Peterson
  * Author URI:
