@@ -5,7 +5,7 @@ namespace DRPSermonManager\Tests;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Class description.
+ * Base test case.
  *
  * @category
  *
@@ -17,9 +17,6 @@ use PHPUnit\Framework\TestCase;
  */
 class BaseTest extends TestCase
 {
-    protected bool $isReady;
-    protected $user;
-
     public function __construct(string $name)
     {
         parent::__construct($name);
