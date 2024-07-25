@@ -3,6 +3,7 @@
 namespace DRPSermonManager\Tests;
 
 use DRPSermonManager\Core\Interfaces\TextDomainInterface;
+use DRPSermonManager\Helper;
 use DRPSermonManager\TextDomain;
 
 /**
@@ -23,6 +24,13 @@ class TextDomainTest extends BaseTest
     public function setup(): void
     {
         $this->obj = TextDomain::init();
+    }
+
+    public function testLoadDomain()
+    {
+        $hook = Helper::getKeyName(TextDomain::INIT_KEY);
+        do_action($hook);
+        $this->assertIsString($hook);
     }
 
     public function testBlah()

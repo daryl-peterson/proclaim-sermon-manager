@@ -17,11 +17,13 @@ use DRPSermonManager\Core\Interfaces\TextDomainInterface;
  */
 class TextDomain implements TextDomainInterface
 {
+    public const INIT_KEY = 'TEXT_DOMAIN_INIT';
+
     public static function init(): TextDomainInterface
     {
         $obj = new self();
 
-        $hook = Helper::getKeyName('TEXT_DOMAIN_INIT');
+        $hook = Helper::getKeyName(self::INIT_KEY);
 
         if (did_action($hook) && !defined('PHPUNIT_TESTING')) {
             // @codeCoverageIgnoreStart
@@ -35,9 +37,9 @@ class TextDomain implements TextDomainInterface
         return $obj;
     }
 
-    public function loadDomain()
+    public function loadDomain(): void
     {
-        load_plugin_textdomain('drp_sermon', false, basename(dirname(FILE)).'/languages/');
+        load_plugin_textdomain(DOMAIN, false, basename(dirname(FILE)).'/languages/');
     }
 
     public function blah()
