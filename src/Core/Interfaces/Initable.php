@@ -1,6 +1,6 @@
 <?php
 
-namespace DRPSermonManager\Core\Interfaces;
+namespace DRPSermonManager\Interfaces;
 
 /**
  * Has interface to initialize and get self.

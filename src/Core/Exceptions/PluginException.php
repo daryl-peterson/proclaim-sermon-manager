@@ -1,6 +1,6 @@
 <?php
 
-namespace DRPSermonManager\Core\Exceptions;
+namespace DRPSermonManager\Exceptions;
 
 /**
  * Plugin exception.

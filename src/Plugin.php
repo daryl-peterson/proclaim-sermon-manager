@@ -2,8 +2,8 @@
 
 namespace DRPSermonManager;
 
-use DRPSermonManager\Core\Interfaces\NoticeInterface;
-use DRPSermonManager\Core\Interfaces\PluginInterface;
+use DRPSermonManager\Interfaces\NoticeInterface;
+use DRPSermonManager\Interfaces\PluginInterface;
 
 /**
  * Class description.
@@ -42,8 +42,7 @@ class Plugin implements PluginInterface
 
             App::getRequirementsInt()->init();
             App::getAdminPage()->init();
-
-            TextDomain::init();
+            App::getTextDomainInt();
 
             Logger::debug('PLUGIN HOOKS INITIALIZED');
             do_action($hook);

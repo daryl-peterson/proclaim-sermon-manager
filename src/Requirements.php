@@ -2,9 +2,9 @@
 
 namespace DRPSermonManager;
 
-use DRPSermonManager\Core\Exceptions\PluginException;
-use DRPSermonManager\Core\Interfaces\NoticeInterface;
-use DRPSermonManager\Core\Interfaces\RequirementsInterface;
+use DRPSermonManager\Exceptions\PluginException;
+use DRPSermonManager\Interfaces\NoticeInterface;
+use DRPSermonManager\Interfaces\RequirementsInterface;
 
 /**
  * Register requirement checks to be run.

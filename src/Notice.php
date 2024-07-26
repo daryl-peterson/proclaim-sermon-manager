@@ -2,9 +2,9 @@
 
 namespace DRPSermonManager;
 
-use DRPSermonManager\Core\Interfaces\NoticeInterface;
-use DRPSermonManager\Core\Interfaces\OptionsInterface;
-use DRPSermonManager\Core\Traits\SingletonTrait;
+use DRPSermonManager\Interfaces\NoticeInterface;
+use DRPSermonManager\Interfaces\OptionsInterface;
+use DRPSermonManager\Traits\SingletonTrait;
 
 /**
  * Admin notices.

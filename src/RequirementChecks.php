@@ -2,8 +2,8 @@
 
 namespace DRPSermonManager;
 
-use DRPSermonManager\Core\Exceptions\PluginException;
-use DRPSermonManager\Core\Interfaces\NoticeInterface;
+use DRPSermonManager\Exceptions\PluginException;
+use DRPSermonManager\Interfaces\NoticeInterface;
 
 /**
  * Run checks to see if requirements are met. If not throw PluginException.

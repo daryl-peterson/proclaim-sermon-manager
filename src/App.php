@@ -3,12 +3,13 @@
 namespace DRPSermonManager;
 
 use DI\Container;
-use DRPSermonManager\Core\Interfaces\NoticeInterface;
-use DRPSermonManager\Core\Interfaces\OptionsInterface;
-use DRPSermonManager\Core\Interfaces\PluginInterface;
-use DRPSermonManager\Core\Interfaces\RequirementsInterface;
-use DRPSermonManager\Core\Traits\SingletonTrait;
 use DRPSermonManager\Interfaces\LogFormatterInterface;
+use DRPSermonManager\Interfaces\NoticeInterface;
+use DRPSermonManager\Interfaces\OptionsInterface;
+use DRPSermonManager\Interfaces\PluginInterface;
+use DRPSermonManager\Interfaces\RequirementsInterface;
+use DRPSermonManager\Interfaces\TextDomainInterface;
+use DRPSermonManager\Traits\SingletonTrait;
 
 /**
  * App service container.
@@ -94,5 +95,10 @@ class App
     public static function getRequirementsInt(): RequirementsInterface
     {
         return self::getObject(RequirementsInterface::class);
+    }
+
+    public static function getTextDomainInt(): TextDomainInterface
+    {
+        return self::getObject(TextDomainInterface::class);
     }
 }

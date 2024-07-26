@@ -5,7 +5,7 @@
  * and open the template in the editor.
  */
 
-namespace DRPSermonManager\Core\Interfaces;
+namespace DRPSermonManager\Interfaces;
 
 /**
  * @author daryl

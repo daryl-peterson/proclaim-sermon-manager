@@ -2,7 +2,7 @@
 
 namespace DRPSermonManager;
 
-use DRPSermonManager\Core\Interfaces\TextDomainInterface;
+use DRPSermonManager\Interfaces\TextDomainInterface;
 
 /**
  * Class description.

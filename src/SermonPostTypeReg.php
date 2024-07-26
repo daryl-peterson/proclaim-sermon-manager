@@ -2,7 +2,7 @@
 
 namespace DRPSermonManager;
 
-use DRPSermonManager\Core\Interfaces\Initable;
+use DRPSermonManager\Interfaces\Initable;
 
 /**
  * Class description.

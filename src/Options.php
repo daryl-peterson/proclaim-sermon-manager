@@ -2,8 +2,8 @@
 
 namespace DRPSermonManager;
 
-use DRPSermonManager\Core\Interfaces\OptionsInterface;
-use DRPSermonManager\Core\Traits\SingletonTrait;
+use DRPSermonManager\Interfaces\OptionsInterface;
+use DRPSermonManager\Traits\SingletonTrait;
 
 /**
  * Manage options (wp_options) settings.

@@ -3,7 +3,7 @@
 namespace DRPSermonManager\Tests;
 
 use DRPSermonManager\App;
-use DRPSermonManager\Core\Exceptions\PluginException;
+use DRPSermonManager\Exceptions\PluginException;
 use DRPSermonManager\Notice;
 use DRPSermonManager\RequirementChecks;
 use DRPSermonManager\Requirements;

@@ -1,6 +1,6 @@
 <?php
 
-namespace DRPSermonManager\Core\Interfaces;
+namespace DRPSermonManager\Interfaces;
 
 /**
  * Class description.

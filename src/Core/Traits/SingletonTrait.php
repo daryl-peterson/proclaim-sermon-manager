@@ -1,6 +1,6 @@
 <?php
 
-namespace DRPSermonManager\Core\Traits;
+namespace DRPSermonManager\Traits;
 
 /**
  * Singleton trait.

@@ -2,8 +2,8 @@
 
 namespace DRPSermonManager\Tests;
 
-use DRPSermonManager\Core\Interfaces\TextDomainInterface;
 use DRPSermonManager\Helper;
+use DRPSermonManager\Interfaces\TextDomainInterface;
 use DRPSermonManager\TextDomain;
 
 /**
@@ -31,11 +31,5 @@ class TextDomainTest extends BaseTest
         $hook = Helper::getKeyName(TextDomain::INIT_KEY);
         do_action($hook);
         $this->assertIsString($hook);
-    }
-
-    public function testBlah()
-    {
-        $result = $this->obj->blah();
-        $this->assertNull($result);
     }
 }

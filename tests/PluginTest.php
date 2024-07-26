@@ -3,7 +3,7 @@
 namespace DRPSermonManager\Tests;
 
 use DRPSermonManager\App;
-use DRPSermonManager\Core\Interfaces\PluginInterface;
+use DRPSermonManager\Interfaces\PluginInterface;
 
 /**
  * Plugin test.

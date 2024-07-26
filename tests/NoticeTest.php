@@ -4,7 +4,7 @@ namespace DRPSermonManager\Tests;
 
 use DI\Container;
 use DRPSermonManager\App;
-use DRPSermonManager\Core\Interfaces\NoticeInterface;
+use DRPSermonManager\Interfaces\NoticeInterface;
 use DRPSermonManager\Logger;
 
 class NoticeTest extends BaseTest

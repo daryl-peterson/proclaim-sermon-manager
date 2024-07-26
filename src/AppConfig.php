@@ -2,11 +2,12 @@
 
 namespace DRPSermonManager;
 
-use DRPSermonManager\Core\Interfaces\NoticeInterface;
-use DRPSermonManager\Core\Interfaces\OptionsInterface;
-use DRPSermonManager\Core\Interfaces\PluginInterface;
-use DRPSermonManager\Core\Interfaces\RequirementsInterface;
 use DRPSermonManager\Interfaces\LogFormatterInterface;
+use DRPSermonManager\Interfaces\NoticeInterface;
+use DRPSermonManager\Interfaces\OptionsInterface;
+use DRPSermonManager\Interfaces\PluginInterface;
+use DRPSermonManager\Interfaces\RequirementsInterface;
+use DRPSermonManager\Interfaces\TextDomainInterface;
 
 /**
  * App configuration.
@@ -38,6 +39,10 @@ class AppConfig
 
             RequirementsInterface::class => function (NoticeInterface $notice) {
                 return new Requirements($notice);
+            },
+
+            TextDomainInterface::class => function () {
+                return TextDomain::init();
             },
 
             AdminPage::class => function () {
