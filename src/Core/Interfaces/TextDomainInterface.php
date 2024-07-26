@@ -11,10 +11,8 @@ namespace DRPSermonManager\Core\Interfaces;
  *
  * @since       1.0.0
  */
-interface TextDomainInterface extends Initible
+interface TextDomainInterface extends Initable
 {
-    public function blah();
-
     /**
      * Switch to site language.
      *

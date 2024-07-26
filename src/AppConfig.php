@@ -2,11 +2,11 @@
 
 namespace DRPSermonManager;
 
-use DRPSermonManager\Core\Interfaces\LogFormatterInterface;
 use DRPSermonManager\Core\Interfaces\NoticeInterface;
 use DRPSermonManager\Core\Interfaces\OptionsInterface;
 use DRPSermonManager\Core\Interfaces\PluginInterface;
 use DRPSermonManager\Core\Interfaces\RequirementsInterface;
+use DRPSermonManager\Interfaces\LogFormatterInterface;
 
 /**
  * App configuration.

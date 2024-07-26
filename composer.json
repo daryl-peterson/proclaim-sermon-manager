@@ -4,6 +4,10 @@
     "autoload": {
         "psr-4": {
             "DRPSermonManager\\": "src/",
+            "DRPSermonManager\\Abstracts\\": "src/Core/Abstracts",
+            "DRPSermonManager\\Exceptions\\": "src/Core/Exceptions",
+            "DRPSermonManager\\Interfaces\\": "src/Core/Interfaces",
+            "DRPSermonManager\\Traits\\": "src/Core/Traits",
             "DRPSermonManager\\Tests\\": "tests/"
         }
     },

@@ -30,6 +30,7 @@ class TextDomain implements TextDomainInterface
             return $obj;
             // @codeCoverageIgnoreEnd
         }
+
         add_action('init', [$obj, 'loadDomain']);
         Logger::debug('PLUGIN HOOKS INITIALIZED');
         do_action($hook);
@@ -76,10 +77,5 @@ class TextDomain implements TextDomainInterface
         } catch (\Throwable $th) {
             Logger::error(['MESSAGE' => $th->getMessage(), 'TRACE' => $th->getTrace()]);
         }
-    }
-
-    public function blah()
-    {
-        Logger::debug('TESTING BLAH');
     }
 }

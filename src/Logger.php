@@ -2,9 +2,9 @@
 
 namespace DRPSermonManager;
 
-use DRPSermonManager\Core\Interfaces\LogFormatterInterface;
 use DRPSermonManager\Core\Interfaces\LoggerInterface;
 use DRPSermonManager\Core\Traits\SingletonTrait;
+use DRPSermonManager\Interfaces\LogFormatterInterface;
 
 /**
  * Logger class.

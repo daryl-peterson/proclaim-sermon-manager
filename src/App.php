@@ -3,12 +3,12 @@
 namespace DRPSermonManager;
 
 use DI\Container;
-use DRPSermonManager\Core\Interfaces\LogFormatterInterface;
 use DRPSermonManager\Core\Interfaces\NoticeInterface;
 use DRPSermonManager\Core\Interfaces\OptionsInterface;
 use DRPSermonManager\Core\Interfaces\PluginInterface;
 use DRPSermonManager\Core\Interfaces\RequirementsInterface;
 use DRPSermonManager\Core\Traits\SingletonTrait;
+use DRPSermonManager\Interfaces\LogFormatterInterface;
 
 /**
  * App service container.

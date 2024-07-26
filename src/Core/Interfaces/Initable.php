@@ -11,7 +11,7 @@ namespace DRPSermonManager\Core\Interfaces;
  *
  * @since       1.0.0
  */
-interface Initible
+interface Initable
 {
     public static function init(): self;
 }
