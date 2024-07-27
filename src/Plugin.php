@@ -2,8 +2,8 @@
 
 namespace DRPSermonManager;
 
-use DRPSermonManager\Interfaces\NoticeInterface;
-use DRPSermonManager\Interfaces\PluginInterface;
+use DRPSermonManager\Interfaces\NoticeInt;
+use DRPSermonManager\Interfaces\PluginInt;
 
 /**
  * Class description.
@@ -16,9 +16,9 @@ use DRPSermonManager\Interfaces\PluginInterface;
  *
  * @since       1.0.0
  */
-class Plugin implements PluginInterface
+class Plugin implements PluginInt
 {
-    private NoticeInterface $notice;
+    private NoticeInt $notice;
 
     public function __construct()
     {
@@ -40,9 +40,11 @@ class Plugin implements PluginInterface
             add_action('shutdown', [$this, 'shutdown']);
             add_action('admin_notices', [$this, 'showNotice']);
 
-            App::getRequirementsInt()->init();
-            App::getAdminPage()->init();
-            App::getTextDomainInt();
+            // Load other classes
+            App::getRequirementsInt()->register();
+            App::getTextDomainInt()->register();
+            App::getPostTypeRegInt()->register();
+            AdminMenu::init()->register();
 
             Logger::debug('PLUGIN HOOKS INITIALIZED');
             do_action($hook);

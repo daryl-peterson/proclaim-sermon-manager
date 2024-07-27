@@ -2,12 +2,8 @@
 
 namespace DRPSermonManager;
 
-use DRPSermonManager\Interfaces\LogFormatterInterface;
-use DRPSermonManager\Interfaces\NoticeInterface;
-use DRPSermonManager\Interfaces\OptionsInterface;
-use DRPSermonManager\Interfaces\PluginInterface;
-use DRPSermonManager\Interfaces\RequirementsInterface;
-use DRPSermonManager\Interfaces\TextDomainInterface;
+use DRPSermonManager\Interfaces\LogFormatterInt;
+use DRPSermonManager\Interfaces\PluginInt;
 
 /**
  * App configuration.
@@ -21,28 +17,12 @@ class AppConfig
     public static function get(): array
     {
         return [
-            LogFormatterInterface::class => function () {
+            LogFormatterInt::class => function () {
                 return new LogFormatter();
             },
 
-            NoticeInterface::class => function () {
-                return Notice::getInstance();
-            },
-
-            OptionsInterface::class => function () {
-                return Options::getInstance();
-            },
-
-            PluginInterface::class => function () {
+            PluginInt::class => function () {
                 return new Plugin();
-            },
-
-            RequirementsInterface::class => function (NoticeInterface $notice) {
-                return new Requirements($notice);
-            },
-
-            TextDomainInterface::class => function () {
-                return TextDomain::init();
             },
 
             AdminPage::class => function () {

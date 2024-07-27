@@ -112,4 +112,22 @@ class Helper
 
         return $mdate;
     }
+
+    public static function getConfig(string $file, mixed $default = null)
+    {
+        try {
+            $path = dirname(__FILE__, 2).DIRECTORY_SEPARATOR.'config'.DIRECTORY_SEPARATOR.$file;
+            $info = pathinfo($path);
+
+            if (!isset($info['extension']) || strtolower($info['extension'] !== 'php')) {
+                $path .= '.php';
+            }
+
+            return include $path;
+        } catch (\Throwable $th) {
+            Logger::error(['MESSAGE' => $th->getMessage(), 'TRACE' => $th->getTrace()]);
+
+            return $default;
+        }
+    }
 }

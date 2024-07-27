@@ -3,9 +3,7 @@
 namespace DRPSermonManager\Interfaces;
 
 /**
- * Class description.
- *
- * @category
+ * Plugin requirements.
  *
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
@@ -13,22 +11,24 @@ namespace DRPSermonManager\Interfaces;
  *
  * @since       1.0.0
  */
-interface RequirementsInterface
+interface RequirementsInt extends Initable, Registrable
 {
+    /**
+     * Check if plugin is compatible.
+     */
     public function isCompatible(): void;
 
     /**
-     * Initailze class hooks.
-     */
-    public function init(): void;
-
-    /**
      * Get notice interface.
+     *
+     * @since 1.0.0
      */
-    public function notice(): NoticeInterface;
+    public function notice(): NoticeInt;
 
     /**
      * Get force fail.
+     *
+     * @since 1.0.0
      */
     public function setFail(bool $fail): void;
 }

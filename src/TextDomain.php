@@ -2,10 +2,10 @@
 
 namespace DRPSermonManager;
 
-use DRPSermonManager\Interfaces\TextDomainInterface;
+use DRPSermonManager\Interfaces\TextDomainInt;
 
 /**
- * Class description.
+ * Language locales.
  *
  * @category
  *
@@ -15,27 +15,30 @@ use DRPSermonManager\Interfaces\TextDomainInterface;
  *
  * @since       1.0.0
  */
-class TextDomain implements TextDomainInterface
+class TextDomain implements TextDomainInt
 {
     public const INIT_KEY = 'TEXT_DOMAIN_INIT';
 
-    public static function init(): TextDomainInterface
+    public static function init(): TextDomainInt
     {
         $obj = new self();
 
+        return $obj;
+    }
+
+    public function register(): void
+    {
         $hook = Helper::getKeyName(self::INIT_KEY);
 
         if (did_action($hook) && !defined('PHPUNIT_TESTING')) {
             // @codeCoverageIgnoreStart
-            return $obj;
+            return;
             // @codeCoverageIgnoreEnd
         }
 
-        add_action('init', [$obj, 'loadDomain']);
+        add_action('init', [$this, 'loadDomain']);
         Logger::debug('PLUGIN HOOKS INITIALIZED');
         do_action($hook);
-
-        return $obj;
     }
 
     public function loadDomain(): void
@@ -47,7 +50,9 @@ class TextDomain implements TextDomainInterface
     {
         try {
             if (!function_exists('switch_to_locale')) {
+                // @codeCoverageIgnoreStart
                 return;
+                // @codeCoverageIgnoreEnd
             }
             switch_to_locale(get_locale());
 
@@ -56,8 +61,11 @@ class TextDomain implements TextDomainInterface
 
             // Init Sermon Manager locale.
             $this->loadDomain();
+
+            // @codeCoverageIgnoreStart
         } catch (\Throwable $th) {
             Logger::error(['MESSAGE' => $th->getMessage(), 'TRACE' => $th->getTrace()]);
+            // @codeCoverageIgnoreEnd
         }
     }
 
@@ -65,7 +73,9 @@ class TextDomain implements TextDomainInterface
     {
         try {
             if (!function_exists('restore_previous_locale')) {
+                // @codeCoverageIgnoreStart
                 return;
+                // @codeCoverageIgnoreEnd
             }
             restore_previous_locale();
 
@@ -74,8 +84,11 @@ class TextDomain implements TextDomainInterface
 
             // Init Sermon Manager locale.
             $this->loadDomain();
+
+            // @codeCoverageIgnoreStart
         } catch (\Throwable $th) {
             Logger::error(['MESSAGE' => $th->getMessage(), 'TRACE' => $th->getTrace()]);
+            // @codeCoverageIgnoreEnd
         }
     }
 }

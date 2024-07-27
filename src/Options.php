@@ -2,7 +2,7 @@
 
 namespace DRPSermonManager;
 
-use DRPSermonManager\Interfaces\OptionsInterface;
+use DRPSermonManager\Interfaces\OptionsInt;
 use DRPSermonManager\Traits\SingletonTrait;
 
 /**
@@ -18,9 +18,14 @@ use DRPSermonManager\Traits\SingletonTrait;
  * @see https://developer.wordpress.org/reference/functions/add_option/
  * @see https://developer.wordpress.org/reference/functions/update_option/
  */
-class Options implements OptionsInterface
+class Options implements OptionsInt
 {
     use SingletonTrait;
+
+    public static function init(): OptionsInt
+    {
+        return Options::getInstance();
+    }
 
     public function get(string $name, mixed $default = null): mixed
     {

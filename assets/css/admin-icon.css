@@ -1,0 +1,11 @@
+@charset "UTF-8";
+
+.icon-drp-sermon-manager {
+    font-family: "drpsermonmanager", serif;
+    content: "\e900";
+}
+
+@font-face {
+    font-family: drpsermonmanager;
+    src: url(../fonts/drpsermonmanager.ttf);
+}

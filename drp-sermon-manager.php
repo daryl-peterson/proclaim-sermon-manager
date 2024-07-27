@@ -41,6 +41,7 @@ const KEY_PREFIX = 'drp_sermon_manager';
 const DOMAIN = 'drp_sermon_manager';
 const NS = __NAMESPACE__;
 const LOG_FILE = 'drp-sermon-manager.log';
+
 const PLUGIN_MIN_PHP = '8.1.0';
 const PLUGIN_MIN_WP = '6.4.0';
 

@@ -8,6 +8,7 @@
     beStrictAboutTestsThatDoNotTestAnything="true"
     cacheDirectory=".misc/.phpunit.cache"
     displayDetailsOnTestsThatTriggerWarnings="true"
+    displayDetailsOnTestsThatTriggerDeprecations="true"
     beStrictAboutCoverageMetadata="false"
     stopOnFailure="true">
     <testsuites>

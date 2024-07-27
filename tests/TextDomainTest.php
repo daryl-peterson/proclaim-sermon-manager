@@ -2,8 +2,9 @@
 
 namespace DRPSermonManager\Tests;
 
+use DRPSermonManager\App;
 use DRPSermonManager\Helper;
-use DRPSermonManager\Interfaces\TextDomainInterface;
+use DRPSermonManager\Interfaces\TextDomainInt;
 use DRPSermonManager\TextDomain;
 
 /**
@@ -19,11 +20,11 @@ use DRPSermonManager\TextDomain;
  */
 class TextDomainTest extends BaseTest
 {
-    public TextDomainInterface $obj;
+    public TextDomainInt $obj;
 
     public function setup(): void
     {
-        $this->obj = TextDomain::init();
+        $this->obj = App::getTextDomainInt();
     }
 
     public function testLoadDomain()
@@ -31,5 +32,11 @@ class TextDomainTest extends BaseTest
         $hook = Helper::getKeyName(TextDomain::INIT_KEY);
         do_action($hook);
         $this->assertIsString($hook);
+
+        $result = $this->obj->switchToSiteLocale();
+        $this->assertNull($result);
+
+        $result = $this->obj->restoreLocale();
+        $this->assertNull($result);
     }
 }

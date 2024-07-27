@@ -2,6 +2,9 @@
 
 namespace DRPSermonManager;
 
+use DRPSermonManager\Interfaces\PermaLinkStructureInt;
+use DRPSermonManager\Traits\SingletonTrait;
+
 /**
  * Class description.
  *
@@ -13,45 +16,85 @@ namespace DRPSermonManager;
  *
  * @since       1.0.0
  */
-class PermaLinkStructure
+class PermaLinkStructure implements PermaLinkStructureInt
 {
-    public static function get(): array
+    use SingletonTrait;
+
+    private array $permalinks;
+
+    public static function init(): PermaLinkStructureInt
     {
-        $opts = App::getOptionsInt();
-        if (did_action('admin_init')) {
-            TextDomain::init()->switchToSiteLocale();
+        $obj = PermaLinkStructure::getInstance();
+        $obj->config();
+
+        return $obj;
+    }
+
+    public function config()
+    {
+        $actionKey = Helper::getKeyName('PERMALINK_CONFIG');
+        if (did_action($actionKey) && !defined('PHPUNIT_TESTING')) {
+            // @codeCoverageIgnoreStart
+            return;
+            // @codeCoverageIgnoreEnd
         }
 
-        $permalinks = wp_parse_args((array) get_option('sm_permalinks', []), [
-            'wpfc_preacher' => trim(sanitize_title($opts->get('preacher_label'))),
-            'wpfc_sermon_series' => '',
-            'wpfc_sermon_topics' => '',
-            'wpfc_bible_book' => '',
-            'wpfc_service_type' => trim(sanitize_title(\SermonManager::getOption('service_type_label'))),
-            'wpfc_sermon' => trim(\SermonManager::getOption('archive_slug')),
-            'use_verbose_page_rules' => false,
-        ]);
+        $opts = App::getOptionsInt();
+        if (did_action('admin_init')) {
+            // @codeCoverageIgnoreStart
+            TextDomain::init()->switchToSiteLocale();
+            // @codeCoverageIgnoreEnd
+        }
+
+        $perm = wp_parse_args((array) get_option('sm_permalinks', []),
+            [
+                Constant::TAX_PREACHER => trim(sanitize_title($opts->get(Constant::TAX_PREACHER, ''))),
+                Constant::TAX_SERIES => '',
+                Constant::TAX_TOPICS => '',
+                Constant::TAX_BIBLE_BOOK => '',
+                Constant::TAX_SERVICE_TYPE => trim(sanitize_title($opts->get('service_type_label', ''))),
+                Constant::POST_TYPE_SERMON => trim($opts->get('archive_slug', '')),
+                'use_verbose_page_rules' => false,
+            ]);
 
         // Ensure rewrite slugs are set.
-        $permalinks[SermonPostTypeReg::POST_TYPE] = untrailingslashit(empty($permalinks['wpfc_preacher']) ? _x('preacher', 'slug', DOMAIN) : $permalinks['wpfc_preacher']);
-        $permalinks['wpfc_sermon_series'] = untrailingslashit(empty($permalinks['wpfc_sermon_series']) ? _x('series', 'slug', DOMAIN) : $permalinks['wpfc_sermon_series']);
-        $permalinks['wpfc_sermon_topics'] = untrailingslashit(empty($permalinks['wpfc_sermon_topics']) ? _x('topics', 'slug', DOMAIN) : $permalinks['wpfc_sermon_topics']);
-        $permalinks['wpfc_bible_book'] = untrailingslashit(empty($permalinks['wpfc_bible_book']) ? _x('book', 'slug', DOMAIN) : $permalinks['wpfc_bible_book']);
-        $permalinks['wpfc_service_type'] = untrailingslashit(empty($permalinks['wpfc_service_type']) ? _x('service-type', 'slug', DOMAIN) : $permalinks['wpfc_service_type']);
-        $permalinks[SermonPostTypeReg::POST_TYPE] = untrailingslashit(empty($permalinks[SermonPostTypeReg::POST_TYPE]) ? _x('sermons', 'slug', DOMAIN) : $permalinks[SermonPostTypeReg::POST_TYPE]);
+        $perm[Constant::TAX_PREACHER] = empty($perm[Constant::TAX_PREACHER]) ?
+            _x('preacher', 'slug', DOMAIN) : $perm[Constant::TAX_PREACHER];
 
-        if (\SermonManager::getOption('common_base_slug')) {
-            foreach ($permalinks as $name => &$permalink) {
-                if (SermonPostTypeReg::POST_TYPE === $name) {
+        $perm[Constant::TAX_SERIES] = empty($perm[Constant::TAX_SERIES]) ?
+            _x('series', 'slug', DOMAIN) : $perm[Constant::TAX_SERIES];
+
+        $perm[Constant::TAX_TOPICS] = empty($perm[Constant::TAX_TOPICS]) ?
+            _x('topics', 'slug', DOMAIN) : $perm[Constant::TAX_TOPICS];
+
+        $perm[Constant::TAX_BIBLE_BOOK] = empty($perm[Constant::TAX_BIBLE_BOOK]) ?
+            _x('book', 'slug', DOMAIN) : $perm[Constant::TAX_BIBLE_BOOK];
+
+        $perm[Constant::TAX_SERVICE_TYPE] = empty($perm[Constant::TAX_SERVICE_TYPE]) ?
+            _x('service-type', 'slug', DOMAIN) : $perm[Constant::TAX_SERVICE_TYPE];
+
+        $perm[Constant::POST_TYPE_SERMON] = empty($perm[Constant::POST_TYPE_SERMON]) ?
+            _x('sermons', 'slug', DOMAIN) : $perm[Constant::POST_TYPE_SERMON];
+
+        foreach ($perm as $key => $value) {
+            $perm[$key] = untrailingslashit($value);
+        }
+
+        // @todo fix
+        if ($opts->get('common_base_slug')) {
+            foreach ($perm as $name => &$permalink) {
+                if (Constant::POST_TYPE_SERMON === $name) {
                     continue;
                 }
 
-                $permalink = $permalinks[SermonPostTypeReg::POST_TYPE].'/'.$permalink;
+                $permalink = $perm[Constant::POST_TYPE_SERMON].'/'.$permalink;
             }
         }
 
         if (did_action('admin_init')) {
+            // @codeCoverageIgnoreStart
             TextDomain::init()->restoreLocale();
+            // @codeCoverageIgnoreEnd
         }
 
         $hook = Helper::getKeyName('permalink_structure');
@@ -59,11 +102,15 @@ class PermaLinkStructure
         /*
          * Allows to easily modify the slugs of sermons and taxonomies.
          *
-         * @param array $permalinks Existing permalinks structure.
-         *
+         * @param array $perm Existing permalinks structure.
          * @since 1.0.0
          */
+        $this->permalinks = apply_filters($hook, $perm);
+        do_action($actionKey);
+    }
 
-        return apply_filters($hook, $permalinks);
+    public function get(): array
+    {
+        return $this->permalinks;
     }
 }

@@ -2,12 +2,10 @@
 
 namespace DRPSermonManager\Interfaces;
 
-use DRPSermonManager\LogRecord;
+use DRPSermonManager\Exceptions\PluginException;
 
 /**
- * Interface description.
- *
- * @category
+ * Runable interface. Run checks / service ect.
  *
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
@@ -15,10 +13,14 @@ use DRPSermonManager\LogRecord;
  *
  * @since       1.0.0
  */
-interface LogFormatterInterface
+interface Runable
 {
     /**
-     * Format log record.
+     * Run checks / services.
+     *
+     * @since 1.0.0
+     *
+     * @throws PluginException
      */
-    public function format(LogRecord $record): string;
+    public function run(): void;
 }

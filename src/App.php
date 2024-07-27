@@ -3,12 +3,16 @@
 namespace DRPSermonManager;
 
 use DI\Container;
-use DRPSermonManager\Interfaces\LogFormatterInterface;
-use DRPSermonManager\Interfaces\NoticeInterface;
-use DRPSermonManager\Interfaces\OptionsInterface;
-use DRPSermonManager\Interfaces\PluginInterface;
-use DRPSermonManager\Interfaces\RequirementsInterface;
-use DRPSermonManager\Interfaces\TextDomainInterface;
+use DRPSermonManager\Interfaces\LogFormatterInt;
+use DRPSermonManager\Interfaces\NoticeInt;
+use DRPSermonManager\Interfaces\OptionsInt;
+use DRPSermonManager\Interfaces\PermaLinkStructureInt;
+use DRPSermonManager\Interfaces\PluginInt;
+use DRPSermonManager\Interfaces\PostTypeRegInt;
+use DRPSermonManager\Interfaces\RequirementCheckInt;
+use DRPSermonManager\Interfaces\RequirementsInt;
+use DRPSermonManager\Interfaces\RolesInt;
+use DRPSermonManager\Interfaces\TextDomainInt;
 use DRPSermonManager\Traits\SingletonTrait;
 
 /**
@@ -63,42 +67,62 @@ class App
         return self::getObject(AdminPage::class);
     }
 
-    public static function getLogFormatterInt(): LogFormatterInterface
+    public static function getLogFormatterInt(): LogFormatterInt
     {
-        return self::getObject(LogFormatterInterface::class);
+        return self::getObject(LogFormatterInt::class);
     }
 
     /**
      * Get notice interface.
      */
-    public static function getNoticeInt(): NoticeInterface
+    public static function getNoticeInt(): NoticeInt
     {
-        return self::getObject(NoticeInterface::class);
+        return Notice::init();
     }
 
-    public static function getOptionsInt(): OptionsInterface
+    public static function getOptionsInt(): OptionsInt
     {
-        return self::getObject(OptionsInterface::class);
+        return Options::init();
+    }
+
+    public static function getPermalinkStructureInt(): PermaLinkStructureInt
+    {
+        return PermaLinkStructure::init();
     }
 
     /**
      * Get Plugin interface.
      */
-    public static function getPluginInt(): PluginInterface
+    public static function getPluginInt(): PluginInt
     {
-        return self::getObject(PluginInterface::class);
+        return self::getObject(PluginInt::class);
+    }
+
+    public static function getPostTypeRegInt(): PostTypeRegInt
+    {
+        return PostTypeReg::init();
     }
 
     /**
      * Get requirements interface.
      */
-    public static function getRequirementsInt(): RequirementsInterface
+    public static function getRequirementsInt(): RequirementsInt
     {
-        return self::getObject(RequirementsInterface::class);
+        return Requirements::init();
     }
 
-    public static function getTextDomainInt(): TextDomainInterface
+    public static function getRequirementCheckInt(): RequirementCheckInt
     {
-        return self::getObject(TextDomainInterface::class);
+        return RequirementCheck::init();
+    }
+
+    public static function getRolesInt(): RolesInt
+    {
+        return Roles::init();
+    }
+
+    public static function getTextDomainInt(): TextDomainInt
+    {
+        return TextDomain::init();
     }
 }

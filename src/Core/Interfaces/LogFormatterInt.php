@@ -2,10 +2,12 @@
 
 namespace DRPSermonManager\Interfaces;
 
+use DRPSermonManager\LogRecord;
+
 /**
- * Initable interface.
- * - Has public static init method.
- * - Returns self.
+ * Log formatter interface.
+ *
+ * @category
  *
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
@@ -13,12 +15,12 @@ namespace DRPSermonManager\Interfaces;
  *
  * @since       1.0.0
  */
-interface Initable
+interface LogFormatterInt
 {
     /**
-     * Initialize object.
+     * Format log record.
      *
      * @since 1.0.0
      */
-    public static function init(): self;
+    public function format(LogRecord $record): string;
 }

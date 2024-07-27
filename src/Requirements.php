@@ -3,8 +3,8 @@
 namespace DRPSermonManager;
 
 use DRPSermonManager\Exceptions\PluginException;
-use DRPSermonManager\Interfaces\NoticeInterface;
-use DRPSermonManager\Interfaces\RequirementsInterface;
+use DRPSermonManager\Interfaces\NoticeInt;
+use DRPSermonManager\Interfaces\RequirementsInt;
 
 /**
  * Register requirement checks to be run.
@@ -13,20 +13,25 @@ use DRPSermonManager\Interfaces\RequirementsInterface;
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
  */
-class Requirements implements RequirementsInterface
+class Requirements implements RequirementsInt
 {
-    private NoticeInterface $notice;
-    private RequirementChecks $require;
+    private NoticeInt $notice;
+    private RequirementCheck $require;
     private bool $fail;
 
-    public function __construct(NoticeInterface $notice)
+    protected function __construct()
     {
-        $this->notice = $notice;
-        $this->require = new RequirementChecks();
+        $this->notice = App::getNoticeInt();
+        $this->require = App::getRequirementCheckInt();
         $this->fail = false;
     }
 
-    public function init(): void
+    public static function init(): RequirementsInt
+    {
+        return new self();
+    }
+
+    public function register(): void
     {
         try {
             $hook = Helper::getKeyName('REQUIREMENTS_INIT');
@@ -47,7 +52,7 @@ class Requirements implements RequirementsInterface
         }
     }
 
-    public function notice(): NoticeInterface
+    public function notice(): NoticeInt
     {
         return $this->notice;
     }
@@ -62,8 +67,8 @@ class Requirements implements RequirementsInterface
         $transient = Helper::getKeyName('compatible');
         try {
             Logger::debug('CHECKING REQUIREMENTS');
-            $obj = new RequirementChecks();
-            $obj->run();
+
+            App::getRequirementCheckInt()->run();
             if ($this->fail) {
                 throw new PluginException('Force fail');
             }
@@ -76,8 +81,8 @@ class Requirements implements RequirementsInterface
             $this->deactivate();
 
             return;
+            // @codeCoverageIgnoreEnd
         }
-        // @codeCoverageIgnoreEnd
     }
 
     /**

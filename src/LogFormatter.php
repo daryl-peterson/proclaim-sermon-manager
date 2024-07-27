@@ -2,7 +2,7 @@
 
 namespace DRPSermonManager;
 
-use DRPSermonManager\Interfaces\LogFormatterInterface;
+use DRPSermonManager\Interfaces\LogFormatterInt;
 
 /**
  * Format log record.
@@ -11,7 +11,7 @@ use DRPSermonManager\Interfaces\LogFormatterInterface;
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
  */
-class LogFormatter implements LogFormatterInterface
+class LogFormatter implements LogFormatterInt
 {
     public function format(LogRecord $record): string
     {

@@ -10,7 +10,7 @@ namespace DRPSermonManager\Interfaces;
 /**
  * @author daryl
  */
-interface NoticeInterface
+interface NoticeInt extends Initable
 {
     /**
      * Display notice if it exist.

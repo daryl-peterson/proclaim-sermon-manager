@@ -3,7 +3,8 @@
 namespace DRPSermonManager;
 
 use DRPSermonManager\Exceptions\PluginException;
-use DRPSermonManager\Interfaces\NoticeInterface;
+use DRPSermonManager\Interfaces\NoticeInt;
+use DRPSermonManager\Interfaces\RequirementCheckInt;
 
 /**
  * Run checks to see if requirements are met. If not throw PluginException.
@@ -12,16 +13,21 @@ use DRPSermonManager\Interfaces\NoticeInterface;
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
  */
-class RequirementChecks
+class RequirementCheck implements RequirementCheckInt
 {
-    private NoticeInterface $notice;
+    private NoticeInt $notice;
 
-    public function __construct()
+    protected function __construct()
     {
         $this->notice = App::getNoticeInt();
     }
 
-    public function run()
+    public static function init(): RequirementCheckInt
+    {
+        return new self();
+    }
+
+    public function run(): void
     {
         $this->checkPHPVer();
         $this->checkWPVer();

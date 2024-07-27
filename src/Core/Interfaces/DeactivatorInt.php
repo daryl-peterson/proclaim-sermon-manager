@@ -3,9 +3,7 @@
 namespace DRPSermonManager\Interfaces;
 
 /**
- * Initable interface.
- * - Has public static init method.
- * - Returns self.
+ * Deactivator interface.
  *
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
@@ -13,12 +11,6 @@ namespace DRPSermonManager\Interfaces;
  *
  * @since       1.0.0
  */
-interface Initable
+interface DeactivatorInt extends Initable, Runable
 {
-    /**
-     * Initialize object.
-     *
-     * @since 1.0.0
-     */
-    public static function init(): self;
 }

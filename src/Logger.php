@@ -2,12 +2,12 @@
 
 namespace DRPSermonManager;
 
-use DRPSermonManager\Interfaces\LogFormatterInterface;
-use DRPSermonManager\Interfaces\LoggerInterface;
+use DRPSermonManager\Interfaces\LogFormatterInt;
+use DRPSermonManager\Interfaces\LoggerInt;
 use DRPSermonManager\Traits\SingletonTrait;
 
 /**
- * Logger class.
+ * Logger facade class.
  *
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
@@ -15,11 +15,11 @@ use DRPSermonManager\Traits\SingletonTrait;
  *
  * @since       1.0.0
  */
-class Logger implements LoggerInterface
+class Logger implements LoggerInt
 {
     use SingletonTrait;
 
-    private LogFormatterInterface $formatter;
+    private LogFormatterInt $formatter;
 
     protected function __construct()
     {
@@ -47,9 +47,10 @@ class Logger implements LoggerInterface
     {
         try {
             $record = new LogRecord(__FILE__, $context, $level, debug_backtrace(0, 8));
-            $obj = Logger::getInstance();
-            $data = $obj->formatter->format($record);
+            $formatter = App::getLogFormatterInt();
+            $data = $formatter->format($record);
 
+            // Add to ensure error log is written
             $file = LogFile::get($level);
             if ($level === 'error') {
                 error_log($data);

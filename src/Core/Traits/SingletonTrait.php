@@ -9,7 +9,7 @@ trait SingletonTrait
 {
     protected static $instance;
 
-    final public static function getInstance()
+    final public static function getInstance(): static
     {
         if (null === static::$instance) {
             // @codeCoverageIgnoreStart

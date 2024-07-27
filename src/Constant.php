@@ -13,9 +13,15 @@ namespace DRPSermonManager;
  *
  * @since       1.0.0
  */
-class Constants
+class Constant
 {
     public const POST_TYPE_SERMON = 'drp_sermon';
+
+    public const TAX_BIBLE_BOOK = 'drp_bible_book';
+    public const TAX_PREACHER = 'drp_preacher';
+    public const TAX_SERVICE_TYPE = 'drp_service_type';
+    public const TAX_SERIES = 'drp_sermon_series';
+    public const TAX_TOPICS = 'drp_sermon_topics';
 
     /***************************************************************
      * CAPABILITIES
@@ -23,6 +29,7 @@ class Constants
 
     // Read sermons
     public const CAP_READ_SERMON = 'read_drp_sermon';
+    public const CAP_READ_PRIVATE_SERMONS = 'read_private_drp_sermons';
 
     // Edit sermons
     public const CAP_EDIT_SERMON = 'edit_drp_sermon';

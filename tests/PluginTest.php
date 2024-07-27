@@ -3,7 +3,7 @@
 namespace DRPSermonManager\Tests;
 
 use DRPSermonManager\App;
-use DRPSermonManager\Interfaces\PluginInterface;
+use DRPSermonManager\Interfaces\PluginInt;
 
 /**
  * Plugin test.
@@ -14,7 +14,7 @@ use DRPSermonManager\Interfaces\PluginInterface;
  */
 class PluginTest extends BaseTest
 {
-    public PluginInterface $obj;
+    public PluginInt $obj;
 
     public function setup(): void
     {

@@ -2,8 +2,8 @@
 
 namespace DRPSermonManager;
 
-use DRPSermonManager\Interfaces\NoticeInterface;
-use DRPSermonManager\Interfaces\OptionsInterface;
+use DRPSermonManager\Interfaces\NoticeInt;
+use DRPSermonManager\Interfaces\OptionsInt;
 use DRPSermonManager\Traits\SingletonTrait;
 
 /**
@@ -11,11 +11,11 @@ use DRPSermonManager\Traits\SingletonTrait;
  *
  * @author Daryl Peterson
  */
-class Notice implements NoticeInterface
+class Notice implements NoticeInt
 {
     use SingletonTrait;
 
-    private OptionsInterface $options;
+    private OptionsInt $options;
     private string $optName = 'notice';
 
     protected function __construct()
@@ -23,6 +23,11 @@ class Notice implements NoticeInterface
         // @codeCoverageIgnoreStart
         $this->options = App::getOptionsInt();
         // @codeCoverageIgnoreEnd
+    }
+
+    public static function init(): NoticeInt
+    {
+        return Notice::getInstance();
     }
 
     /**

@@ -3,9 +3,9 @@
 namespace DRPSermonManager\Interfaces;
 
 /**
- * Initable interface.
- * - Has public static init method.
- * - Returns self.
+ * Post type registration interface.
+ *
+ * @category
  *
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
@@ -13,12 +13,6 @@ namespace DRPSermonManager\Interfaces;
  *
  * @since       1.0.0
  */
-interface Initable
+interface PostTypeRegInt extends Initable, Addable, Registrable, Removable
 {
-    /**
-     * Initialize object.
-     *
-     * @since 1.0.0
-     */
-    public static function init(): self;
 }

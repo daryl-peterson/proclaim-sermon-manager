@@ -3,9 +3,9 @@
 namespace DRPSermonManager\Interfaces;
 
 /**
- * Initable interface.
- * - Has public static init method.
- * - Returns self.
+ * Interface description.
+ *
+ * @category
  *
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
@@ -13,12 +13,19 @@ namespace DRPSermonManager\Interfaces;
  *
  * @since       1.0.0
  */
-interface Initable
+interface RolesInt extends Initable
 {
     /**
-     * Initialize object.
+     * Add custom capabilities to roles.
      *
      * @since 1.0.0
      */
-    public static function init(): self;
+    public function add(): void;
+
+    /**
+     * Remove custom capabilities from roles.
+     *
+     * @since 1.0.0
+     */
+    public function remove(): void;
 }

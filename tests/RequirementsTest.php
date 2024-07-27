@@ -4,11 +4,7 @@ namespace DRPSermonManager\Tests;
 
 use DRPSermonManager\App;
 use DRPSermonManager\Exceptions\PluginException;
-use DRPSermonManager\Notice;
-use DRPSermonManager\RequirementChecks;
-use DRPSermonManager\Requirements;
-
-use const DRPSermonManager\FILE;
+use DRPSermonManager\RequirementCheck;
 
 /**
  * Class description.
@@ -23,11 +19,11 @@ use const DRPSermonManager\FILE;
  */
 class RequirementsTest extends BaseTest
 {
-    private RequirementChecks $obj;
+    private RequirementCheck $obj;
 
     public function setup(): void
     {
-        $this->obj = new RequirementChecks();
+        $this->obj = App::getRequirementCheckInt();
     }
 
     public function teardown(): void
@@ -43,13 +39,7 @@ class RequirementsTest extends BaseTest
         $obj = App::getRequirementsInt();
         $result = $obj->isCompatible();
         $this->assertNull($result);
-
         $obj->isCompatible();
-
-        activate_plugin(FILE);
-
-        $obj = new Requirements(Notice::getInstance());
-        $this->assertInstanceOf(Requirements::class, $obj);
     }
 
     public function testPHPVer()

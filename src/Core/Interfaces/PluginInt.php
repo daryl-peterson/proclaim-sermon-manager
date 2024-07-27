@@ -11,7 +11,7 @@ namespace DRPSermonManager\Interfaces;
  *
  * @since       1.0.0
  */
-interface PluginInterface
+interface PluginInt
 {
     /**
      * Initialize hooks.

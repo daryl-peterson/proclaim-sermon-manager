@@ -3,9 +3,9 @@
 namespace DRPSermonManager\Interfaces;
 
 /**
- * Initable interface.
- * - Has public static init method.
- * - Returns self.
+ * Interface description.
+ *
+ * @category
  *
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
@@ -13,12 +13,10 @@ namespace DRPSermonManager\Interfaces;
  *
  * @since       1.0.0
  */
-interface Initable
+interface PermaLinkStructureInt extends Initable
 {
     /**
-     * Initialize object.
-     *
-     * @since 1.0.0
+     * Return permalink array.
      */
-    public static function init(): self;
+    public function get(): array;
 }

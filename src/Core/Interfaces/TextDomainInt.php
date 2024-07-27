@@ -11,7 +11,7 @@ namespace DRPSermonManager\Interfaces;
  *
  * @since       1.0.0
  */
-interface TextDomainInterface extends Initable
+interface TextDomainInt extends Initable, Registrable
 {
     /**
      * Switch to site language.

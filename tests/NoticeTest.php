@@ -4,7 +4,7 @@ namespace DRPSermonManager\Tests;
 
 use DI\Container;
 use DRPSermonManager\App;
-use DRPSermonManager\Interfaces\NoticeInterface;
+use DRPSermonManager\Interfaces\NoticeInt;
 use DRPSermonManager\Logger;
 
 class NoticeTest extends BaseTest
@@ -17,7 +17,7 @@ class NoticeTest extends BaseTest
         $result = App::getContainer();
         $this->assertInstanceOf(Container::class, $result);
 
-        $obj = App::getNoticeInt(NoticeInterface::class);
+        $obj = App::getNoticeInt(NoticeInt::class);
         $obj->setSuccess($title, $message);
         $obj->setWarning($title, $message);
         $obj->setInfo($title, $message);
