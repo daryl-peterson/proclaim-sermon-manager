@@ -5,9 +5,7 @@ namespace DRPSermonManager\Interfaces;
 use DRPSermonManager\Exceptions\PluginException;
 
 /**
- * Sermon post type register.
- *
- * @category
+ * Taxonomy registration interface.
  *
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
@@ -15,19 +13,37 @@ use DRPSermonManager\Exceptions\PluginException;
  *
  * @since       1.0.0
  */
-interface SermonPostTypeRegInt extends Initable
+interface TaxonomyRegInt extends Initable
 {
     /**
-     * Add post type.
+     * Add taxonomy.
+     *
+     * @since 1.0.0
      *
      * @throws PluginException
      */
     public function add(): void;
 
     /**
-     * Remove post type.
+     * Remove taxonomy.
+     *
+     * @since 1.0.0
      *
      * @throws PluginException
      */
     public function remove(): void;
+
+    /**
+     * Check if taxonomy exist.
+     *
+     * @since 1.0.0
+     */
+    public function exist(): bool;
+
+    /**
+     * Get WP_Error message.
+     *
+     * @since 1.0.0
+     */
+    public function getWpErrorMessage(\WP_Error $error): string;
 }

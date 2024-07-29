@@ -43,7 +43,7 @@ class Plugin implements PluginInt
             // Load other classes
             App::getRequirementsInt()->register();
             App::getTextDomainInt()->register();
-            App::getPostTypeRegInt()->register();
+            App::getPostTypeSetupInt()->register();
             AdminMenu::init()->register();
 
             Logger::debug('PLUGIN HOOKS INITIALIZED');

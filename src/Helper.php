@@ -2,6 +2,8 @@
 
 namespace DRPSermonManager;
 
+use DRPSermonManager\Exceptions\PluginException;
+
 /**
  * Helper class.
  *
@@ -113,7 +115,12 @@ class Helper
         return $mdate;
     }
 
-    public static function getConfig(string $file, mixed $default = null)
+    /**
+     * Get config from file.
+     *
+     * @throws PluginException
+     */
+    public static function getConfig(string $file): mixed
     {
         try {
             $path = dirname(__FILE__, 2).DIRECTORY_SEPARATOR.'config'.DIRECTORY_SEPARATOR.$file;
@@ -123,11 +130,16 @@ class Helper
                 $path .= '.php';
             }
 
-            return include $path;
+            if (file_exists($path)) {
+                return include $path;
+            }
+            // @codeCoverageIgnoreStart
         } catch (\Throwable $th) {
             Logger::error(['MESSAGE' => $th->getMessage(), 'TRACE' => $th->getTrace()]);
-
-            return $default;
+            throw $th;
+            // @codeCoverageIgnoreEnd
         }
+
+        throw new PluginException('Unable able to locate config file :'.$file);
     }
 }

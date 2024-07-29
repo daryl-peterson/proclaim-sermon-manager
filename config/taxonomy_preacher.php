@@ -1,0 +1,50 @@
+<?php
+
+namespace DRPSermonManager;
+
+$permalinks = App::getPermalinkStructureInt()->get();
+$opts = App::getOptionsInt();
+$tax = Constant::TAX_PREACHER;
+$label = $opts->get('preacher_label', false) ?
+        strtolower($opts->get('preacher_label')) : __('Preacher', DOMAIN);
+
+$capabilities = [
+    'manage_terms' => Constant::CAP_MANAGE_CATAGORIES,
+    'edit_terms' => Constant::CAP_MANAGE_CATAGORIES,
+    'delete_terms' => Constant::CAP_MANAGE_CATAGORIES,
+    'assign_terms' => Constant::CAP_MANAGE_CATAGORIES,
+];
+
+return [
+    'hierarchical' => false,
+    'label' => ucwords($label),
+    'labels' => [
+        'name' => ucwords($label.'s'),
+        'singular_name' => ucwords($label),
+        'menu_name' => ucwords($label.'s'),
+        /* translators: %s preacher */
+        'search_items' => wp_sprintf(__('Search %s', DOMAIN), $label),
+        /* translators: %s preacher */
+        'all_items' => wp_sprintf(__('All %s', DOMAIN), $label),
+        'parent_item' => null,
+        'parent_item_colon' => null,
+        /* translators: %s preacher */
+        'edit_item' => wp_sprintf(__('Edit %s', DOMAIN), $label),
+        /* translators: %s preacher */
+        'update_item' => wp_sprintf(__('Update %s', DOMAIN), $label),
+        /* translators: %s preacher */
+        'add_new_item' => wp_sprintf(__('Add new %s', DOMAIN), $label),
+        /* translators: %s preacher */
+        'new_item_name' => wp_sprintf(__('New %s name', DOMAIN), $label),
+        /* translators: %s preacher */
+        'not_found' => wp_sprintf(__('No %s found', DOMAIN), $label),
+    ],
+    'show_ui' => true,
+    'query_var' => true,
+    'show_in_rest' => true,
+    'rewrite' => [
+        'slug' => $permalinks[$tax],
+        'with_front' => false,
+    ],
+    'capabilities' => $capabilities,
+];

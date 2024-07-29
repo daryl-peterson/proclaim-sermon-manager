@@ -18,8 +18,6 @@ class FatalError
     public static function set(\Throwable $th)
     {
         Logger::error(['MESSAGE' => $th->getMessage(), 'TRACE' => $th->getTrace()]);
-        $obj = App::getNoticeInt();
-        $obj->setError('Fatal Error', 'A fatal error occurred. Check logs for error');
         Deactivator::init()->run();
     }
 }

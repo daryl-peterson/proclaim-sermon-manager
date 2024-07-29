@@ -29,6 +29,8 @@ class AdminMenu implements AdminMenuInt
 
     public function fixIcon()
     {
-        wp_enqueue_style('drp-admin-icon', Helper::getUrl().'assets/css/admin-icon.css', []);
+        $file = Helper::getUrl().'assets/css/admin-icon.css';
+        Logger::debug(['CSS FILE' => $file]);
+        wp_enqueue_style('drp-admin-icon', $file, []);
     }
 }

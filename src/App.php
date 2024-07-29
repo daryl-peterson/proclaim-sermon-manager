@@ -8,7 +8,7 @@ use DRPSermonManager\Interfaces\NoticeInt;
 use DRPSermonManager\Interfaces\OptionsInt;
 use DRPSermonManager\Interfaces\PermaLinkStructureInt;
 use DRPSermonManager\Interfaces\PluginInt;
-use DRPSermonManager\Interfaces\PostTypeRegInt;
+use DRPSermonManager\Interfaces\PostTypeSetupInt;
 use DRPSermonManager\Interfaces\RequirementCheckInt;
 use DRPSermonManager\Interfaces\RequirementsInt;
 use DRPSermonManager\Interfaces\RolesInt;
@@ -98,9 +98,9 @@ class App
         return self::getObject(PluginInt::class);
     }
 
-    public static function getPostTypeRegInt(): PostTypeRegInt
+    public static function getPostTypeSetupInt(): PostTypeSetupInt
     {
-        return PostTypeReg::init();
+        return PostTypeSetup::init();
     }
 
     /**

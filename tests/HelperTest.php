@@ -2,6 +2,7 @@
 
 namespace DRPSermonManager\Tests;
 
+use DRPSermonManager\Exceptions\PluginException;
 use DRPSermonManager\Helper;
 
 use const DRPSermonManager\KEY_PREFIX;
@@ -47,5 +48,11 @@ class HelperTest extends BaseTest
 
         $result = Helper::GmtToLocal(gmdate(DATE_ISO8601));
         $this->assertNotNull($result);
+    }
+
+    public function testGetConfig()
+    {
+        $this->expectException(PluginException::class);
+        Helper::getConfig('blah-blah');
     }
 }

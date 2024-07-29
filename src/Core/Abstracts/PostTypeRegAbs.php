@@ -1,14 +1,14 @@
 <?php
 
-namespace DRPSermonManager;
+namespace DRPSermonManager\Abstracts;
 
 use DRPSermonManager\Exceptions\PluginException;
-use DRPSermonManager\Interfaces\SermonPostTypeRegInt;
+use DRPSermonManager\Helper;
+use DRPSermonManager\Interfaces\PostTypeRegInt;
+use DRPSermonManager\Logger;
 
 /**
- * Sermon post type registration.
- *
- * @category
+ * Post type registration abstract.
  *
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
@@ -16,24 +16,17 @@ use DRPSermonManager\Interfaces\SermonPostTypeRegInt;
  *
  * @since       1.0.0
  */
-class SermonPostTypeReg implements SermonPostTypeRegInt
+abstract class PostTypeRegAbs implements PostTypeRegInt
 {
     /**
      * Post type.
      */
-    private string $pt;
+    protected string $pt;
 
-    protected function __construct()
-    {
-        $this->pt = Constant::POST_TYPE_SERMON;
-    }
-
-    public static function init(): SermonPostTypeRegInt
-    {
-        $obj = new self();
-
-        return $obj;
-    }
+    /**
+     * Congifurage file to read.
+     */
+    protected string $configFile;
 
     public function add(): void
     {
@@ -47,25 +40,25 @@ class SermonPostTypeReg implements SermonPostTypeRegInt
         }
 
         try {
-            $def = Helper::getConfig('sermon_post_type.php');
+            $def = Helper::getConfig($this->configFile);
             $result = register_post_type($this->pt, $def);
             // @codeCoverageIgnoreStart
         } catch (\Throwable $th) {
-            FatalError::set($th);
+            Logger::error(['MESSAGE' => $th->getMessage(), 'TRACE' => $th->getTrace()]);
             // @codeCoverageIgnoreEnd
         }
 
-        if (is_wp_error($result) || !($result instanceof \WP_Post_Type)) {
+        if (!$this->exist() || is_wp_error($result)) {
             // @codeCoverageIgnoreStart
             $message = 'Failed to add post type '.$this->pt;
+            if (is_wp_error($result)) {
+                $message = $this->getWpErrorMessage($result);
+            }
             throw new PluginException($message);
             // @codeCoverageIgnoreEnd
         }
     }
 
-    /**
-     * Remove post type.
-     */
     public function remove(): void
     {
         $exist = $this->exist();
@@ -81,20 +74,27 @@ class SermonPostTypeReg implements SermonPostTypeRegInt
             $result = unregister_post_type($this->pt);
             // @codeCoverageIgnoreStart
         } catch (\Throwable $th) {
-            FatalError::set($th);
             // @codeCoverageIgnoreEnd
         }
 
-        if (is_wp_error($result) || !$result) {
+        if ($this->exist() || is_wp_error($result)) {
             // @codeCoverageIgnoreStart
             $message = 'Failed to remove post type '.$this->pt;
+            if (is_wp_error($result)) {
+                $message = $this->getWpErrorMessage($result);
+            }
             throw new PluginException($message);
             // @codeCoverageIgnoreEnd
         }
     }
 
-    private function exist()
+    public function exist(): bool
     {
         return post_type_exists($this->pt);
+    }
+
+    public function getWpErrorMessage(\WP_Error $error): string
+    {
+        return $error->get_error_message();
     }
 }

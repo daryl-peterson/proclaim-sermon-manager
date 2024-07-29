@@ -41,7 +41,7 @@ return [
     'publicly_queryable' => true,
     'exclude_from_search' => false,
     'show_in_menu' => true,
-    'menu_icon' => 'icon-drp-sermon-manager',
+    'menu_icon' => 'icon-drpsermon',
     'hierarchical' => false,
     'rewrite' => [
         'slug' => $permalinks[Constant::POST_TYPE_SERMON],

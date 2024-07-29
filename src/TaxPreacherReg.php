@@ -2,10 +2,10 @@
 
 namespace DRPSermonManager;
 
+use DRPSermonManager\Abstracts\TaxonomyRegAbs;
+
 /**
- * Class description.
- *
- * @category
+ * Preacher taxonomy.
  *
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
@@ -13,18 +13,12 @@ namespace DRPSermonManager;
  *
  * @since       1.0.0
  */
-class SermonTaxReg
+class TaxPreacherReg extends TaxonomyRegAbs
 {
     public function __construct()
     {
-        // Code Here
-    }
-
-    public function add()
-    {
-    }
-
-    public function remove()
-    {
+        $this->taxonomy = Constant::TAX_PREACHER;
+        $this->postType = Constant::POST_TYPE_SERMON;
+        $this->configFile = 'taxonomy_preacher.php';
     }
 }
