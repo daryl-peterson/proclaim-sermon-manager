@@ -3,7 +3,7 @@
 namespace DRPSermonManager\Tests;
 
 use DRPSermonManager\App;
-use DRPSermonManager\Logger;
+use DRPSermonManager\Logging\Logger;
 
 class LoggerTest extends BaseTest
 {

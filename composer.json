@@ -7,6 +7,7 @@
             "DRPSermonManager\\Abstracts\\": "src/Core/Abstracts",
             "DRPSermonManager\\Exceptions\\": "src/Core/Exceptions",
             "DRPSermonManager\\Interfaces\\": "src/Core/Interfaces",
+            "DRPSermonManager\\Logging\\": "src/Core/Logging",
             "DRPSermonManager\\Traits\\": "src/Core/Traits",
             "DRPSermonManager\\Tests\\": "tests/"
         }

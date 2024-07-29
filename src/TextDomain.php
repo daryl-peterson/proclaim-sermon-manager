@@ -3,6 +3,7 @@
 namespace DRPSermonManager;
 
 use DRPSermonManager\Interfaces\TextDomainInt;
+use DRPSermonManager\Logging\Logger;
 
 /**
  * Language locales.

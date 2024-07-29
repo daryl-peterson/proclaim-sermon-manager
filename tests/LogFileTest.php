@@ -2,7 +2,7 @@
 
 namespace DRPSermonManager\Tests;
 
-use DRPSermonManager\LogFile;
+use DRPSermonManager\Logging\LogFile;
 
 /**
  * Log file test.

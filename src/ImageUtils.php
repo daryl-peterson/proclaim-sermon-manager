@@ -2,6 +2,9 @@
 
 namespace DRPSermonManager;
 
+use DRPSermonManager\Interfaces\Initable;
+use DRPSermonManager\Interfaces\Registrable;
+
 /**
  * Class description.
  *
@@ -13,6 +16,37 @@ namespace DRPSermonManager;
  *
  * @since       1.0.0
  */
-class ImageUtils
+class ImageUtils implements Initable, Registrable
 {
+    public string $hook;
+
+    protected function __construct()
+    {
+        $this->hook = Helper::getKeyName('IMAGEUTILS_REGISTER');
+    }
+
+    public static function init(): ImageUtils
+    {
+        return new self();
+    }
+
+    public function register(): void
+    {
+        if (!did_action($this->hook) || defined('PHPUNIT_TESTING')) {
+            add_action('after_setup_theme', [$this, 'addImageSizes']);
+            do_action($this->hook);
+        }
+    }
+
+    /**
+     * Add image sizes.
+     */
+    public function addImageSizes(): void
+    {
+        if (function_exists('add_image_size')) {
+            add_image_size('sermon_small', 75, 75, true);
+            add_image_size('sermon_medium', 300, 200, true);
+            add_image_size('sermon_wide', 940, 350, true);
+        }
+    }
 }

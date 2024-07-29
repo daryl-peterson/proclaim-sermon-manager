@@ -2,7 +2,7 @@
 
 namespace DRPSermonManager\Interfaces;
 
-use DRPSermonManager\LogRecord;
+use DRPSermonManager\Logging\LogRecord;
 
 /**
  * Log formatter interface.

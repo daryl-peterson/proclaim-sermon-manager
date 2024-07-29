@@ -5,7 +5,7 @@ namespace DRPSermonManager\Abstracts;
 use DRPSermonManager\Exceptions\PluginException;
 use DRPSermonManager\Helper;
 use DRPSermonManager\Interfaces\PostTypeRegInt;
-use DRPSermonManager\Logger;
+use DRPSermonManager\Logging\Logger;
 
 /**
  * Post type registration abstract.

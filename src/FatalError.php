@@ -2,6 +2,8 @@
 
 namespace DRPSermonManager;
 
+use DRPSermonManager\Logging\Logger;
+
 /**
  * Class description.
  *

@@ -1,6 +1,8 @@
 <?php
 
-namespace DRPSermonManager;
+namespace DRPSermonManager\Logging;
+
+use const DRPSermonManager\LOG_FILE;
 
 /**
  * Fix Log size.

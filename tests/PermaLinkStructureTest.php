@@ -4,7 +4,7 @@ namespace DRPSermonManager\Tests;
 
 use DRPSermonManager\App;
 use DRPSermonManager\Interfaces\PermaLinkStructureInt;
-use DRPSermonManager\Logger;
+use DRPSermonManager\Logging\Logger;
 
 /**
  * Class description.

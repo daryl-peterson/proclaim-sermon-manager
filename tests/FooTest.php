@@ -2,8 +2,6 @@
 
 namespace DRPSermonManager\Tests;
 
-use DRPSermonManager\Logger;
-
 /**
  * Class description.
  *
@@ -21,9 +19,5 @@ class FooTest extends BaseTest
     {
         $obj = true;
         $this->assertTrue($obj);
-
-        $tax = \sm_get_taxonomies();
-        $this->assertNotNull($tax);
-        Logger::error(['TAX' => $tax]);
     }
 }

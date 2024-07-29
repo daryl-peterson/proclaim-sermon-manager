@@ -2,7 +2,7 @@
 
 namespace DRPSermonManager;
 
-use DI\Container;
+use DRPSermonManager\Interfaces\Initable;
 use DRPSermonManager\Interfaces\LogFormatterInt;
 use DRPSermonManager\Interfaces\NoticeInt;
 use DRPSermonManager\Interfaces\OptionsInt;
@@ -13,10 +13,11 @@ use DRPSermonManager\Interfaces\RequirementCheckInt;
 use DRPSermonManager\Interfaces\RequirementsInt;
 use DRPSermonManager\Interfaces\RolesInt;
 use DRPSermonManager\Interfaces\TextDomainInt;
+use DRPSermonManager\Logging\LogFormatter;
 use DRPSermonManager\Traits\SingletonTrait;
 
 /**
- * App service container.
+ * App service locator / facade.
  *
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
@@ -24,39 +25,13 @@ use DRPSermonManager\Traits\SingletonTrait;
  *
  * @since       1.0.0
  */
-class App
+class App implements Initable
 {
     use SingletonTrait;
-    public Container $container;
 
-    public function init(): App
+    public static function init(): App
     {
-        try {
-            if (!isset($this->container) || defined('PHPUNIT_TESTING')) {
-                $config = AppConfig::get();
-                $this->container = new Container($config);
-            }
-
-            return $this;
-            // @codeCoverageIgnoreStart
-        } catch (\Throwable $th) {
-            error_log(print_r($th, true));
-            // @codeCoverageIgnoreEnd
-        }
-    }
-
-    public static function getContainer(): Container
-    {
-        $obj = App::getInstance()->init();
-
-        return $obj->container;
-    }
-
-    public static function getObject(string $object): mixed
-    {
-        $obj = App::getInstance()->init();
-
-        return $obj->container->get($object);
+        return App::getInstance();
     }
 
     /**
@@ -64,12 +39,12 @@ class App
      */
     public static function getAdminPage(): AdminPage
     {
-        return self::getObject(AdminPage::class);
+        return new AdminPage();
     }
 
     public static function getLogFormatterInt(): LogFormatterInt
     {
-        return self::getObject(LogFormatterInt::class);
+        return new LogFormatter();
     }
 
     /**
@@ -95,7 +70,7 @@ class App
      */
     public static function getPluginInt(): PluginInt
     {
-        return self::getObject(PluginInt::class);
+        return new Plugin();
     }
 
     public static function getPostTypeSetupInt(): PostTypeSetupInt

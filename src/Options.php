@@ -3,6 +3,7 @@
 namespace DRPSermonManager;
 
 use DRPSermonManager\Interfaces\OptionsInt;
+use DRPSermonManager\Logging\Logger;
 use DRPSermonManager\Traits\SingletonTrait;
 
 /**

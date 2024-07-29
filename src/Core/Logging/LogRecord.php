@@ -1,6 +1,8 @@
 <?php
 
-namespace DRPSermonManager;
+namespace DRPSermonManager\Logging;
+
+use DRPSermonManager\Helper;
 
 /**
  * Get log record object.

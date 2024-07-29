@@ -1,7 +1,8 @@
 <?php
 
-namespace DRPSermonManager;
+namespace DRPSermonManager\Logging;
 
+use DRPSermonManager\App;
 use DRPSermonManager\Interfaces\LogFormatterInt;
 use DRPSermonManager\Interfaces\LoggerInt;
 use DRPSermonManager\Traits\SingletonTrait;
@@ -52,6 +53,7 @@ class Logger implements LoggerInt
 
             // Add to ensure error log is written
             $file = LogFile::get($level);
+
             if ($level === 'error') {
                 error_log($data);
             }
@@ -59,6 +61,8 @@ class Logger implements LoggerInt
             return file_put_contents($file, $data, FILE_APPEND);
             // @codeCoverageIgnoreStart
         } catch (\Throwable $th) {
+            error_log(print_r(['MESSAGE' => $th->getMessage(), 'TRACE' => $th->getTrace()], true));
+
             return false;
             // @codeCoverageIgnoreEnd
         }

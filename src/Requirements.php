@@ -5,6 +5,7 @@ namespace DRPSermonManager;
 use DRPSermonManager\Exceptions\PluginException;
 use DRPSermonManager\Interfaces\NoticeInt;
 use DRPSermonManager\Interfaces\RequirementsInt;
+use DRPSermonManager\Logging\Logger;
 
 /**
  * Register requirement checks to be run.

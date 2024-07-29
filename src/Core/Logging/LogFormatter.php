@@ -1,6 +1,6 @@
 <?php
 
-namespace DRPSermonManager;
+namespace DRPSermonManager\Logging;
 
 use DRPSermonManager\Interfaces\LogFormatterInt;
 

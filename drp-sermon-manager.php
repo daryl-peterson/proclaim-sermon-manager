@@ -46,7 +46,7 @@ const PLUGIN_MIN_PHP = '8.1.0';
 const PLUGIN_MIN_WP = '6.4.0';
 
 try {
-    App::getInstance()->init();
+    App::init();
     App::getPluginInt()->init();
 } catch (\Throwable $th) {
     $trace = $th->getTraceAsString();

@@ -3,6 +3,7 @@
 namespace DRPSermonManager;
 
 use DRPSermonManager\Exceptions\PluginException;
+use DRPSermonManager\Logging\Logger;
 
 /**
  * Helper class.

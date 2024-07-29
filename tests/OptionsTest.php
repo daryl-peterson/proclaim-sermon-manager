@@ -25,6 +25,7 @@ class OptionsTest extends BaseTest
     public function testMethods()
     {
         $key = Helper::getKeyName('delete_me_now');
+        $this->obj->delete($key);
         $result = $this->obj->set($key, true);
         $this->assertTrue($result);
 

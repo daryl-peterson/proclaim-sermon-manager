@@ -3,6 +3,7 @@
 namespace DRPSermonManager;
 
 use DRPSermonManager\Interfaces\AdminMenuInt;
+use DRPSermonManager\Logging\Logger;
 
 /**
  * Class description.

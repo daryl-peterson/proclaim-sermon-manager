@@ -2,7 +2,6 @@
 
 namespace DRPSermonManager\Tests;
 
-use DI\Container;
 use DRPSermonManager\AdminPage;
 use DRPSermonManager\App;
 use DRPSermonManager\Plugin;
@@ -24,19 +23,12 @@ class AppTest extends BaseTest
 
     public function setup(): void
     {
-        $this->obj = App::getInstance();
-        $this->obj->init();
+        $this->obj = App::init();
     }
 
     public function testGetInstance()
     {
         $this->assertNotNull($this->obj);
-    }
-
-    public function testGetContainer()
-    {
-        $container = $this->obj->getContainer();
-        $this->assertInstanceOf(Container::class, $container);
     }
 
     public function testGetPluginInt()
