@@ -45,6 +45,7 @@ class Plugin implements PluginInt
             App::getTextDomainInt()->register();
             App::getPostTypeSetupInt()->register();
             AdminMenu::init()->register();
+            PostTypeSermon::init()->register();
 
             Logger::debug('PLUGIN HOOKS INITIALIZED');
             do_action($hook);

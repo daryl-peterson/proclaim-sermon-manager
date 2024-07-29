@@ -1,0 +1,1 @@
+./vendor/bin/phpcs -p . --standard=PHPCompatibility --ignore=**/vendor/*,**/reports/* --colors

@@ -2,7 +2,7 @@
 
 namespace DRPSermonManager;
 
-use DRPSermonManager\Exceptions\PluginException;
+use DRPSermonManager\Abstracts\PostTypeSetupAbs;
 use DRPSermonManager\Interfaces\PostTypeRegInt;
 use DRPSermonManager\Interfaces\PostTypeSetupInt;
 use DRPSermonManager\Interfaces\TaxonomyRegInt;
@@ -18,11 +18,8 @@ use DRPSermonManager\Interfaces\TaxonomyRegInt;
  *
  * @since       1.0.0
  */
-class PostTypeSetup implements PostTypeSetupInt
+class PostTypeSetup extends PostTypeSetupAbs implements PostTypeSetupInt
 {
-    private array $taxonomies;
-    private array $postypes;
-
     protected function __construct()
     {
         $pt = Constant::POST_TYPE_SERMON;
@@ -32,11 +29,6 @@ class PostTypeSetup implements PostTypeSetupInt
         $this->taxonomies[$pt][] = TaxTopicsReg::init();
         $this->taxonomies[$pt][] = TaxBibleBookReg::init();
         $this->taxonomies[$pt][] = TaxServiceTypeReg::init();
-    }
-
-    public static function init(): PostTypeSetupInt
-    {
-        return new self();
     }
 
     public function register(): void
@@ -118,28 +110,5 @@ class PostTypeSetup implements PostTypeSetupInt
     public function flush(): void
     {
         flush_rewrite_rules();
-    }
-
-    public function getPostTypeList(): array
-    {
-        return array_keys($this->postypes);
-    }
-
-    public function getPostType(string $post_type): PostTypeRegInt
-    {
-        if (!isset($this->postypes[$post_type])) {
-            throw new PluginException("Invalid post type : $post_type");
-        }
-
-        return $this->postypes[$post_type];
-    }
-
-    public function getPostTypeTaxonomies(string $post_type): ?array
-    {
-        if (!isset($this->taxonomies[$post_type])) {
-            return null;
-        }
-
-        return $this->taxonomies[$post_type];
     }
 }
