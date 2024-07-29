@@ -1,8 +1,9 @@
 <?php
 
-namespace DRPSermonManager;
+namespace DRPSermonManager\Taxonomy;
 
 use DRPSermonManager\Abstracts\TaxonomyRegAbs;
+use DRPSermonManager\Constant;
 use DRPSermonManager\Interfaces\TaxonomyRegInt;
 
 /**
@@ -14,7 +15,7 @@ use DRPSermonManager\Interfaces\TaxonomyRegInt;
  *
  * @since       1.0.0
  */
-class TaxSeriesReg extends TaxonomyRegAbs implements TaxonomyRegInt
+class SeriesReg extends TaxonomyRegAbs implements TaxonomyRegInt
 {
     protected function __construct()
     {

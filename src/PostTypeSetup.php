@@ -6,6 +6,12 @@ use DRPSermonManager\Abstracts\PostTypeSetupAbs;
 use DRPSermonManager\Interfaces\PostTypeRegInt;
 use DRPSermonManager\Interfaces\PostTypeSetupInt;
 use DRPSermonManager\Interfaces\TaxonomyRegInt;
+use DRPSermonManager\PostType\SermonReg;
+use DRPSermonManager\Taxonomy\BibleBookReg;
+use DRPSermonManager\Taxonomy\PreacherReg;
+use DRPSermonManager\Taxonomy\SeriesReg;
+use DRPSermonManager\Taxonomy\ServiceTypeReg;
+use DRPSermonManager\Taxonomy\TopicsReg;
 
 /**
  * Register post types and taxonomies.
@@ -23,12 +29,12 @@ class PostTypeSetup extends PostTypeSetupAbs implements PostTypeSetupInt
     protected function __construct()
     {
         $pt = Constant::POST_TYPE_SERMON;
-        $this->postypes[$pt] = PostTypeSermonReg::init();
-        $this->taxonomies[$pt][] = TaxPreacherReg::init();
-        $this->taxonomies[$pt][] = TaxSeriesReg::init();
-        $this->taxonomies[$pt][] = TaxTopicsReg::init();
-        $this->taxonomies[$pt][] = TaxBibleBookReg::init();
-        $this->taxonomies[$pt][] = TaxServiceTypeReg::init();
+        $this->postypes[$pt] = SermonReg::init();
+        $this->taxonomies[$pt][] = PreacherReg::init();
+        $this->taxonomies[$pt][] = SeriesReg::init();
+        $this->taxonomies[$pt][] = TopicsReg::init();
+        $this->taxonomies[$pt][] = BibleBookReg::init();
+        $this->taxonomies[$pt][] = ServiceTypeReg::init();
     }
 
     public function register(): void

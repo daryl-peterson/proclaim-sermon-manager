@@ -1,8 +1,9 @@
 <?php
 
-namespace DRPSermonManager;
+namespace DRPSermonManager\PostType;
 
 use DRPSermonManager\Abstracts\PostTypeRegAbs;
+use DRPSermonManager\Constant;
 use DRPSermonManager\Interfaces\PostTypeRegInt;
 
 /**
@@ -14,7 +15,7 @@ use DRPSermonManager\Interfaces\PostTypeRegInt;
  *
  * @since       1.0.0
  */
-class PostTypeSermonReg extends PostTypeRegAbs implements PostTypeRegInt
+class SermonReg extends PostTypeRegAbs implements PostTypeRegInt
 {
     protected function __construct()
     {

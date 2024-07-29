@@ -3,7 +3,7 @@
 namespace DRPSermonManager\Tests;
 
 use DRPSermonManager\Interfaces\TaxonomyRegInt;
-use DRPSermonManager\TaxPreacherReg;
+use DRPSermonManager\Taxonomy\PreacherReg;
 
 /**
  * Class description.
@@ -20,7 +20,7 @@ class TaxonomyRegTest extends BaseTest
 {
     public function testGetWpErrorMessage()
     {
-        $preacher = TaxPreacherReg::init();
+        $preacher = PreacherReg::init();
         $this->assertInstanceOf(TaxonomyRegInt::class, $preacher);
 
         $error = new \WP_Error('This is a test WP Error');

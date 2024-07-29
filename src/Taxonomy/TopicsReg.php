@@ -1,8 +1,9 @@
 <?php
 
-namespace DRPSermonManager;
+namespace DRPSermonManager\Taxonomy;
 
 use DRPSermonManager\Abstracts\TaxonomyRegAbs;
+use DRPSermonManager\Constant;
 
 /**
  * Taxonomy topics registration.
@@ -13,7 +14,7 @@ use DRPSermonManager\Abstracts\TaxonomyRegAbs;
  *
  * @since       1.0.0
  */
-class TaxTopicsReg extends TaxonomyRegAbs
+class TopicsReg extends TaxonomyRegAbs
 {
     protected function __construct()
     {
