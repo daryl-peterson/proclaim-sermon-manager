@@ -16,7 +16,7 @@ use DRPSermonManager\Traits\SingletonTrait;
  *
  * @since       1.0.0
  */
-class PermaLinkStructure implements PermaLinkStructureInt
+class PermaLinks implements PermaLinkStructureInt
 {
     use SingletonTrait;
 
@@ -24,7 +24,7 @@ class PermaLinkStructure implements PermaLinkStructureInt
 
     public static function init(): PermaLinkStructureInt
     {
-        $obj = PermaLinkStructure::getInstance();
+        $obj = PermaLinks::getInstance();
         $obj->config();
 
         return $obj;
@@ -46,7 +46,7 @@ class PermaLinkStructure implements PermaLinkStructureInt
             // @codeCoverageIgnoreEnd
         }
 
-        $perm = wp_parse_args((array) get_option('sm_permalinks', []),
+        $perm = wp_parse_args((array) $opts->get('permalinks', []),
             [
                 Constant::TAX_PREACHER => trim(sanitize_title($opts->get(Constant::TAX_PREACHER, ''))),
                 Constant::TAX_SERIES => '',

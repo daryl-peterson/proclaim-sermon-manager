@@ -2,6 +2,7 @@
 
 namespace DRPSermonManager;
 
+use DRPSermonManager\Admin\AdminSermon;
 use DRPSermonManager\Interfaces\NoticeInt;
 use DRPSermonManager\Interfaces\PluginInt;
 use DRPSermonManager\Logging\Logger;
@@ -46,7 +47,7 @@ class Plugin implements PluginInt
             App::getTextDomainInt()->register();
             App::getPostTypeSetupInt()->register();
             AdminMenu::init()->register();
-            PostTypeSermon::init()->register();
+            AdminSermon::init()->register();
             ImageUtils::init()->register();
 
             Logger::debug('PLUGIN HOOKS INITIALIZED');

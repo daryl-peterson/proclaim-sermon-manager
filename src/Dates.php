@@ -44,7 +44,7 @@ class Dates
         $post = get_post($post);
 
         // If we are working on right post type.
-        if (!$post || 'wpfc_sermon' !== $post->post_type) {
+        if (!$post || 'drp_sermon' !== $post->post_type) {
             return false;
         }
 

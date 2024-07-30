@@ -25,13 +25,13 @@ class AdminMenu implements AdminMenuInt
 
     public function register(): void
     {
-        add_action('admin_enqueue_scripts', [$this, 'fixIcon']);
+        add_action('admin_enqueue_scripts', [$this, 'loadCSS']);
     }
 
-    public function fixIcon()
+    public function loadCSS()
     {
-        $file = Helper::getUrl().'assets/css/admin-icon.css';
+        $file = Helper::getUrl().'assets/css/admin.css';
         Logger::debug(['CSS FILE' => $file]);
-        wp_enqueue_style('drp-admin-icon', $file, []);
+        wp_enqueue_style('drp-admin', $file, []);
     }
 }

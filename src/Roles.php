@@ -40,7 +40,7 @@ class Roles implements RolesInt
             $role->add_cap(Constant::CAP_EDIT_SERMON);
             $role->add_cap(Constant::CAP_EDIT_SERMONS);
             $role->add_cap(Constant::CAP_EDIT_PRIVATE_SERMONS);
-            $role->add_cap(Constant::CAP_DELETE_PUBLISHED_SERMONS);
+            $role->add_cap(Constant::CAP_EDIT_PUBLISHED_SERMONS);
 
             // Delete sermons.
             $role->add_cap(Constant::CAP_DELETE_SERMON);

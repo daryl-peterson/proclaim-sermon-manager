@@ -15,44 +15,96 @@ namespace DRPSermonManager;
  */
 class Constant
 {
-    public const POST_TYPE_SERMON = 'drp_sermon';
+    public const POST_TYPE_SERMON = 'drpsermon';
 
-    public const TAX_BIBLE_BOOK = 'drp_bible_book';
-    public const TAX_PREACHER = 'drp_preacher';
-    public const TAX_SERVICE_TYPE = 'drp_service_type';
-    public const TAX_SERIES = 'drp_sermon_series';
-    public const TAX_TOPICS = 'drp_sermon_topics';
+    /***************************************************************
+     * TAXONOMY
+     **************************************************************/
+    public const TAX_BIBLE_BOOK = 'drpsermon_bible_book';
+    public const TAX_PREACHER = 'drpsermon_preacher';
+    public const TAX_SERVICE_TYPE = 'drpsermon_service_type';
+    public const TAX_SERIES = 'drpsermon_series';
+    public const TAX_TOPICS = 'drpsermon_topics';
+
+    /***************************************************************
+     * META
+     **************************************************************/
+    public const META_AUDIO = 'drpsermon_audio';
+    public const META_AUDIO_ID = 'drpsermon_audio_id';
+    public const META_BIBLE_PASSAGE = 'drpsermon_bible_passage';
+    public const META_BULLETIN_ID = 'drpsermon_bulletin_id';
+    public const META_DATE = 'drpsermon_date';
+    public const META_DATE_AUTO = 'drpsermon_date_auto';
+    public const META_NOTES_ID = 'drpsermon_notes_id';
+    public const META_SERMON_DURATION = 'drpsermon_duration';
+    public const META_SERMON_SIZE = 'drpsermon_size';
+    public const META_SERVICE_TYPE = 'drpsermon_service_type';
+    public const META_VIDEO = 'drpsermon_video';
+    public const META_VIDEO_LINK = 'drpsermon_video_link';
+
+    public const META_LIST = [
+        self::META_AUDIO,
+        self::META_AUDIO_ID,
+        self::META_BIBLE_PASSAGE,
+        self::META_BULLETIN_ID,
+        self::META_DATE,
+        self::META_DATE_AUTO,
+        self::META_NOTES_ID,
+        self::META_SERMON_DURATION,
+        self::META_SERMON_SIZE,
+        self::META_SERVICE_TYPE,
+        self::META_VIDEO,
+        self::META_VIDEO_LINK,
+    ];
 
     /***************************************************************
      * CAPABILITIES
      **************************************************************/
 
     // Read sermons
-    public const CAP_READ_SERMON = 'read_drp_sermon';
-    public const CAP_READ_PRIVATE_SERMONS = 'read_private_drp_sermons';
+    public const CAP_READ_SERMON = 'read_drpsermon';
+    public const CAP_READ_PRIVATE_SERMONS = 'read_private_drpsermons';
 
     // Edit sermons
-    public const CAP_EDIT_SERMON = 'edit_drp_sermon';
-    public const CAP_EDIT_SERMONS = 'edit_drp_sermons';
-    public const CAP_EDIT_PRIVATE_SERMONS = 'edit_private_drp_sermons';
-    public const CAP_EDIT_PUBLISHED_SERMONS = 'edit_published_drp_sermons';
-    public const CAP_EDIT_OTHERS_SERMONS = 'edit_others_drp_sermons';
+    public const CAP_EDIT_SERMON = 'edit_drpsermon';
+    public const CAP_EDIT_SERMONS = 'edit_drpsermons';
+    public const CAP_EDIT_PRIVATE_SERMONS = 'edit_private_drpsermons';
+    public const CAP_EDIT_PUBLISHED_SERMONS = 'edit_published_drpsermons';
+    public const CAP_EDIT_OTHERS_SERMONS = 'edit_others_drpsermons';
 
     // Delete sermons
-    public const CAP_DELETE_SERMON = 'delete_drp_sermon';
-    public const CAP_DELETE_SERMONS = 'delete_drp_sermons';
-    public const CAP_DELETE_PUBLISHED_SERMONS = 'delete_published_drp_sermons';
-    public const CAP_DELETE_PRIVATE_SERMONS = 'delete_private_drp_sermons';
-    public const CAP_DELETE_OTHERS_SERMONS = 'delete_others_drp_sermons';
+    public const CAP_DELETE_SERMON = 'delete_drpsermon';
+    public const CAP_DELETE_SERMONS = 'delete_drpsermons';
+    public const CAP_DELETE_PUBLISHED_SERMONS = 'delete_published_drpsermons';
+    public const CAP_DELETE_PRIVATE_SERMONS = 'delete_private_drpsermons';
+    public const CAP_DELETE_OTHERS_SERMONS = 'delete_others_drpsermons';
 
     // Publish
-    public const CAP_PUBLISH_SERMONS = 'publish_drp_sermons';
+    public const CAP_PUBLISH_SERMONS = 'publish_drpsermons';
 
     // Manage categories & tags
-    public const CAP_MANAGE_CATAGORIES = 'manage_drp_sermon_categories';
+    public const CAP_MANAGE_CATAGORIES = 'manage_drpsermon_categories';
 
     // Administrator
-    public const CAP_MANAGE_SETTINGS = 'manage_drp_sermon_settings';
+    public const CAP_MANAGE_SETTINGS = 'manage_drpsermon_settings';
+
+    // List
+    public const CAP_LIST = [
+        self::CAP_READ_SERMON,
+        self::CAP_READ_PRIVATE_SERMONS,
+        self::CAP_EDIT_SERMON,
+        self::CAP_EDIT_SERMONS,
+        self::CAP_EDIT_PRIVATE_SERMONS,
+        self::CAP_EDIT_PUBLISHED_SERMONS,
+        self::CAP_EDIT_OTHERS_SERMONS,
+        self::CAP_DELETE_SERMON,
+        self::CAP_DELETE_SERMONS,
+        self::CAP_DELETE_PUBLISHED_SERMONS,
+        self::CAP_DELETE_PRIVATE_SERMONS,
+        self::CAP_PUBLISH_SERMONS,
+        self::CAP_MANAGE_CATAGORIES,
+        self::CAP_MANAGE_SETTINGS,
+    ];
 
     /***************************************************************
      * BIBLE BOOKS
@@ -129,5 +181,5 @@ class Constant
     /***************************************************************
      * ACTIONS
      **************************************************************/
-    public const ACTION_FLUSH_REWRITE_RULES = 'drp_sermon_flush_rewrite_rules';
+    public const ACTION_FLUSH_REWRITE_RULES = 'drpsermon_flush_rewrite_rules';
 }

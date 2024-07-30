@@ -62,7 +62,7 @@ class App implements Initable
 
     public static function getPermalinkStructureInt(): PermaLinkStructureInt
     {
-        return PermaLinkStructure::init();
+        return PermaLinks::init();
     }
 
     /**

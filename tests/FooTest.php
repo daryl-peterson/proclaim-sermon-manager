@@ -2,6 +2,8 @@
 
 namespace DRPSermonManager\Tests;
 
+use DRPSermonManager\Logging\Logger;
+
 /**
  * Class description.
  *
@@ -19,5 +21,10 @@ class FooTest extends BaseTest
     {
         $obj = true;
         $this->assertTrue($obj);
+
+        $meta = get_post_meta(6490, 'sermon_date', true);
+        $this->assertNotNull($meta);
+
+        Logger::error(['META' => $meta]);
     }
 }

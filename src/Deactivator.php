@@ -3,6 +3,7 @@
 namespace DRPSermonManager;
 
 use DRPSermonManager\Interfaces\DeactivatorInt;
+use DRPSermonManager\Logging\Logger;
 
 /**
  * Deactivate plugin.
@@ -24,6 +25,14 @@ class Deactivator implements DeactivatorInt
 
     public function run(): void
     {
+        // @codeCoverageIgnoreStart
+        if (!function_exists('\is_plugin_active')) {
+            $file = ABSPATH.'wp-admin/includes/plugin.php';
+            Logger::debug("Including file: $file");
+            require_once $file;
+        }
+        // @codeCoverageIgnoreEnd
+
         if ((is_admin() && current_user_can('activate_plugins')) || defined('PHPUNIT_TESTING')) {
             deactivate_plugins(plugin_basename(FILE));
             if (isset($_GET['activate'])) {

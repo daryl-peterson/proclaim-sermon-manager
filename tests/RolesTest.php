@@ -5,6 +5,7 @@ namespace DRPSermonManager\Tests;
 use DRPSermonManager\App;
 use DRPSermonManager\Constant;
 use DRPSermonManager\Interfaces\RolesInt;
+use DRPSermonManager\Logging\Logger;
 
 /**
  * Test role capabilities.
@@ -42,7 +43,12 @@ class RolesTest extends BaseTest
         $role = get_role('administrator');
         $this->assertInstanceOf(\WP_Role::class, $role);
 
-        $has = $role->has_cap(Constant::CAP_MANAGE_SETTINGS);
-        $this->assertTrue($has);
+        $list = Constant::CAP_LIST;
+
+        foreach ($list as $cap) {
+            $has = $role->has_cap($cap);
+            Logger::debug(['CAP' => $cap, 'HAS' => $has]);
+            $this->assertTrue($has);
+        }
     }
 }

@@ -20,10 +20,12 @@ class AdminPage
     private string $slug;
     private string $optionGroup;
     private string $section;
+    private string $postType;
     public array $fields;
 
     public function __construct()
     {
+        $this->postType = Constant::POST_TYPE_SERMON;
         $this->page = Helper::getKeyName('admin');
         $this->section = Helper::getKeyName('section');
         $this->settingsName = Helper::getKeyName('settings');
@@ -74,8 +76,8 @@ class AdminPage
     public function addMenuPage(): string|bool
     {
         return add_submenu_page(
-            'edit.php?post_type=wpfc_sermon',
-            __('Sermon Manager Settings', 'sermon-manager-for-wordpress'),
+            'edit.php?post_type='.$this->postType,
+            __('Sermon Manager Settings', DOMAIN),
             'Vimeo',
             'manage_options',
             $this->slug,
