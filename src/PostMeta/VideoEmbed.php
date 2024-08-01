@@ -1,14 +1,16 @@
 <?php
 
-namespace DRPSermonManager\Taxonomy;
+namespace DRPSermonManager\PostMeta;
 
-use DRPSermonManager\Abstracts\TaxonomyRegAbs;
+use DRPSermonManager\Abstracts\PostMetaAbs;
 use DRPSermonManager\Constant;
+
+use const DRPSermonManager\DOMAIN;
 
 defined('ABSPATH') or exit;
 
 /**
- * Taxonomy topics registration.
+ * Sermon video embed meta.
  *
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
@@ -16,12 +18,11 @@ defined('ABSPATH') or exit;
  *
  * @since       1.0.0
  */
-class TopicsReg extends TaxonomyRegAbs
+class VideoEmbed extends PostMetaAbs
 {
     protected function __construct()
     {
-        $this->taxonomy = Constant::TAX_TOPICS;
-        $this->postType = Constant::POST_TYPE_SERMON;
-        $this->configFile = 'taxonomy_topics.php';
+        $this->name = Constant::META_VIDEO;
+        $this->label = __('Video Embed Code', DOMAIN);
     }
 }

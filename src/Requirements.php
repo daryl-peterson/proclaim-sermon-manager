@@ -22,8 +22,8 @@ class Requirements implements RequirementsInt
 
     protected function __construct()
     {
-        $this->notice = App::getNoticeInt();
-        $this->require = App::getRequirementCheckInt();
+        $this->notice = Notice::init();
+        $this->require = RequirementCheck::init();
         $this->fail = false;
     }
 
@@ -69,7 +69,7 @@ class Requirements implements RequirementsInt
         try {
             Logger::debug('CHECKING REQUIREMENTS');
 
-            App::getRequirementCheckInt()->run();
+            $this->require->run();
             if ($this->fail) {
                 throw new PluginException('Force fail');
             }
@@ -79,24 +79,9 @@ class Requirements implements RequirementsInt
             // @codeCoverageIgnoreStart
         } catch (\Throwable $th) {
             delete_transient($transient);
-            $this->deactivate();
+            Deactivator::init()->run();
 
             return;
-            // @codeCoverageIgnoreEnd
-        }
-    }
-
-    /**
-     * Deactivate plugin.
-     */
-    private function deactivate(): void
-    {
-        if (is_admin() && current_user_can('activate_plugins')) {
-            // @codeCoverageIgnoreStart
-            deactivate_plugins(FILE);
-            if (isset($_GET['activate'])) {
-                unset($_GET['activate']);
-            }
             // @codeCoverageIgnoreEnd
         }
     }

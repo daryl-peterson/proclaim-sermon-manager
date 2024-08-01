@@ -2,6 +2,7 @@
 
 namespace DRPSermonManager\Tests;
 
+use DRPSermonManager\Constant;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -23,5 +24,59 @@ class BaseTest extends TestCase
         if (!defined('PHPUNIT_TESTING')) {
             define('PHPUNIT_TESTING', true);
         }
+    }
+
+    public function getAdminUser(): \WP_User
+    {
+        $args = [
+            'role' => 'administrator',
+            'orderby' => 'user_nicename',
+            'order' => 'ASC',
+        ];
+        $users = get_users($args);
+
+        return $users[0];
+    }
+
+    public function getTestSermon(): ?\WP_Post
+    {
+        $args = [
+            'numberposts' => 5,
+            'post_type' => Constant::POST_TYPE_SERMON,
+            'order' => 'DESC',
+            'orderby' => 'date',
+          ];
+        $posts = get_posts($args);
+
+        foreach ($posts as $post) {
+            if ($post->post_status !== 'publish') {
+                continue;
+            }
+
+            break;
+        }
+
+        return $post;
+    }
+
+    public function getTestPost(): \WP_Post
+    {
+        $args = [
+            'numberposts' => 5,
+            'post_type' => 'post',
+            'order' => 'DESC',
+            'orderby' => 'date',
+          ];
+        $posts = get_posts($args);
+
+        foreach ($posts as $post) {
+            if ($post->post_status !== 'publish') {
+                continue;
+            }
+
+            break;
+        }
+
+        return $post;
     }
 }

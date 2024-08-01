@@ -6,6 +6,7 @@ use DRPSermonManager\Abstracts\PostTypeSetupAbs;
 use DRPSermonManager\Interfaces\PostTypeRegInt;
 use DRPSermonManager\Interfaces\PostTypeSetupInt;
 use DRPSermonManager\Interfaces\TaxonomyRegInt;
+use DRPSermonManager\Logging\Logger;
 use DRPSermonManager\PostType\SermonReg;
 use DRPSermonManager\Taxonomy\BibleBookReg;
 use DRPSermonManager\Taxonomy\PreacherReg;
@@ -70,6 +71,8 @@ class PostTypeSetup extends PostTypeSetupAbs implements PostTypeSetupInt
                 }
             }
 
+            do_action('drpsermon_after_post_setup');
+
             // @codeCoverageIgnoreStart
         } catch (\Throwable $th) {
             FatalError::set($th);
@@ -100,6 +103,7 @@ class PostTypeSetup extends PostTypeSetupAbs implements PostTypeSetupInt
                  * @var TaxonomyRegInt $taxonomy
                  */
                 foreach ($taxonomies as $taxonomy) {
+                    Logger::debug(['TAXONOMY' => $taxonomy]);
                     $taxonomy->remove();
                 }
 

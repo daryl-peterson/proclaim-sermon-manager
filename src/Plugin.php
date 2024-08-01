@@ -3,9 +3,12 @@
 namespace DRPSermonManager;
 
 use DRPSermonManager\Admin\AdminSermon;
+use DRPSermonManager\Admin\QueueScripts;
 use DRPSermonManager\Interfaces\NoticeInt;
 use DRPSermonManager\Interfaces\PluginInt;
 use DRPSermonManager\Logging\Logger;
+use DRPSermonManager\PostMeta\SermonDate;
+use DRPSermonManager\Taxonomy\BibleBookLoad;
 
 /**
  * Class description.
@@ -46,9 +49,11 @@ class Plugin implements PluginInt
             App::getRequirementsInt()->register();
             App::getTextDomainInt()->register();
             App::getPostTypeSetupInt()->register();
-            AdminMenu::init()->register();
+            QueueScripts::init()->register();
             AdminSermon::init()->register();
             ImageUtils::init()->register();
+            BibleBookLoad::init()->register();
+            SermonDate::init()->register();
 
             Logger::debug('PLUGIN HOOKS INITIALIZED');
             do_action($hook);

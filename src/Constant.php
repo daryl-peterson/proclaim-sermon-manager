@@ -35,7 +35,7 @@ class Constant
     public const META_BULLETIN_ID = 'drpsermon_bulletin_id';
     public const META_DATE = 'drpsermon_date';
     public const META_DATE_AUTO = 'drpsermon_date_auto';
-    public const META_NOTES_ID = 'drpsermon_notes_id';
+    public const META_NOTES = 'drpsermon_notes';
     public const META_SERMON_DURATION = 'drpsermon_duration';
     public const META_SERMON_SIZE = 'drpsermon_size';
     public const META_SERVICE_TYPE = 'drpsermon_service_type';
@@ -49,7 +49,7 @@ class Constant
         self::META_BULLETIN_ID,
         self::META_DATE,
         self::META_DATE_AUTO,
-        self::META_NOTES_ID,
+        self::META_NOTES,
         self::META_SERMON_DURATION,
         self::META_SERMON_SIZE,
         self::META_SERVICE_TYPE,

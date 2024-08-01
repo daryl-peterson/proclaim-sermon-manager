@@ -5,6 +5,8 @@ namespace DRPSermonManager\Taxonomy;
 use DRPSermonManager\Abstracts\TaxonomyRegAbs;
 use DRPSermonManager\Constant;
 
+defined('ABSPATH') or exit;
+
 /**
  * Preacher taxonomy.
  *

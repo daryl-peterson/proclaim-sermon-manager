@@ -6,6 +6,8 @@ use DRPSermonManager\Abstracts\PostTypeRegAbs;
 use DRPSermonManager\Constant;
 use DRPSermonManager\Interfaces\PostTypeRegInt;
 
+defined('ABSPATH') or exit;
+
 /**
  * Sermon post type registration.
  *

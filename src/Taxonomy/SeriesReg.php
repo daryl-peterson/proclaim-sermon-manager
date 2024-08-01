@@ -6,6 +6,8 @@ use DRPSermonManager\Abstracts\TaxonomyRegAbs;
 use DRPSermonManager\Constant;
 use DRPSermonManager\Interfaces\TaxonomyRegInt;
 
+defined('ABSPATH') or exit;
+
 /**
  * Taxonomy sermon series registration.
  *
