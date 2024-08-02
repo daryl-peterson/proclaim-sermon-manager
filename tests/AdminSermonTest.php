@@ -3,7 +3,7 @@
 namespace DRPSermonManager\Tests;
 
 use DRPSermonManager\Admin\AdminSermon;
-use DRPSermonManager\Constant;
+use DRPSermonManager\Constants\PT;
 
 /**
  * Class description.
@@ -30,29 +30,11 @@ class AdminSermonTest extends BaseTest
         $result = $this->obj->disableGutenberg(true, 'blah');
         $this->assertTrue($result);
 
-        $result = $this->obj->disableGutenberg(true, Constant::POST_TYPE_SERMON);
+        $result = $this->obj->disableGutenberg(true, PT::SERMON);
         $this->assertFalse($result);
 
         $result = $this->obj->setMetaBoxes();
         $this->assertNull($result);
-    }
-
-    public function testAddMetaBox()
-    {
-        $sermon = $this->getTestSermon();
-        $this->assertNotNull($sermon);
-
-        ob_start();
-        $result = $this->obj->addSermonDetails($sermon);
-        $html = ob_get_clean();
-        $this->assertNull($result);
-        $this->assertIsString($html);
-
-        ob_start();
-        $result = $this->obj->addSermonFiles($sermon);
-        $html = ob_get_clean();
-        $this->assertNull($result);
-        $this->assertIsString($html);
     }
 
     public function testSavePost()

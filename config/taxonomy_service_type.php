@@ -2,14 +2,17 @@
 
 namespace DRPSermonManager;
 
+use DRPSermonManager\Constants\CAP;
+use DRPSermonManager\Constants\TAX;
+
 $permalinks = App::getPermalinkStructureInt()->get();
 $opts = App::getOptionsInt();
-$tax = Constant::TAX_SERVICE_TYPE;
+$tax = TAX::SERVICE_TYPE;
 $capabilities = [
-    'manage_terms' => Constant::CAP_MANAGE_CATAGORIES,
-    'edit_terms' => Constant::CAP_MANAGE_CATAGORIES,
-    'delete_terms' => Constant::CAP_MANAGE_CATAGORIES,
-    'assign_terms' => Constant::CAP_MANAGE_CATAGORIES,
+    'manage_terms' => CAP::MANAGE_CATAGORIES,
+    'edit_terms' => CAP::MANAGE_CATAGORIES,
+    'delete_terms' => CAP::MANAGE_CATAGORIES,
+    'assign_terms' => CAP::MANAGE_CATAGORIES,
 ];
 $label = __('Service Type', DOMAIN);
 $optLabel = strtolower($opts->get('service_type_label', ''));

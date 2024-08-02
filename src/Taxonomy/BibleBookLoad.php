@@ -3,7 +3,8 @@
 namespace DRPSermonManager\Taxonomy;
 
 use DRPSermonManager\App;
-use DRPSermonManager\Constant;
+use DRPSermonManager\Constants\BIBLE;
+use DRPSermonManager\Constants\TAX;
 use DRPSermonManager\Interfaces\Initable;
 use DRPSermonManager\Interfaces\Registrable;
 use DRPSermonManager\Logging\Logger;
@@ -11,9 +12,7 @@ use DRPSermonManager\Logging\Logger;
 defined('ABSPATH') or exit;
 
 /**
- * Class description.
- *
- * @category
+ * Load Bible books.
  *
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
@@ -50,8 +49,8 @@ class BibleBookLoad implements Initable, Registrable
 
     private function load()
     {
-        $books = Constant::BIBLE_BOOKS;
-        $tax = Constant::TAX_BIBLE_BOOK;
+        $books = BIBLE::BOOKS;
+        $tax = TAX::BIBLE_BOOK;
 
         try {
             foreach ($books as $book) {

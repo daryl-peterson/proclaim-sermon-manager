@@ -3,7 +3,8 @@
 namespace DRPSermonManager\Taxonomy;
 
 use DRPSermonManager\Abstracts\TaxonomyRegAbs;
-use DRPSermonManager\Constant;
+use DRPSermonManager\Constants\PT;
+use DRPSermonManager\Constants\TAX;
 use DRPSermonManager\Interfaces\TaxonomyRegInt;
 
 defined('ABSPATH') or exit;
@@ -21,8 +22,8 @@ class SeriesReg extends TaxonomyRegAbs implements TaxonomyRegInt
 {
     protected function __construct()
     {
-        $this->taxonomy = Constant::TAX_SERIES;
-        $this->postType = Constant::POST_TYPE_SERMON;
+        $this->taxonomy = TAX::SERIES;
+        $this->postType = PT::SERMON;
         $this->configFile = 'taxonomy_series.php';
     }
 }

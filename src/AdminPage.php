@@ -2,6 +2,7 @@
 
 namespace DRPSermonManager;
 
+use DRPSermonManager\Constants\PT;
 use DRPSermonManager\Logging\Logger;
 
 /**
@@ -25,7 +26,7 @@ class AdminPage
 
     public function __construct()
     {
-        $this->postType = Constant::POST_TYPE_SERMON;
+        $this->postType = PT::SERMON;
         $this->page = Helper::getKeyName('admin');
         $this->section = Helper::getKeyName('section');
         $this->settingsName = Helper::getKeyName('settings');

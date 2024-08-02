@@ -35,6 +35,9 @@ if (file_exists(dirname(__FILE__).'/vendor/autoload.php')) {
     require_once dirname(__FILE__).'/vendor/autoload.php';
 }
 
+// Include CMB2
+require_once dirname(__FILE__).'/vendor/cmb2/cmb2/init.php';
+
 const NAME = 'Sermon Manager';
 const FILE = __FILE__;
 const KEY_PREFIX = 'drpsermon';

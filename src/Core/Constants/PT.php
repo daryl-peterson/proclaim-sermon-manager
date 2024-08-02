@@ -1,11 +1,9 @@
 <?php
 
-namespace DRPSermonManager\PostType;
+namespace DRPSermonManager\Constants;
 
 /**
- * Class description.
- *
- * @category
+ * Post type constants.
  *
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
@@ -13,10 +11,7 @@ namespace DRPSermonManager\PostType;
  *
  * @since       1.0.0
  */
-class FileUpload
+class PT
 {
-    public function __construct()
-    {
-        // Code Here
-    }
+    public const SERMON = 'drpsermon';
 }

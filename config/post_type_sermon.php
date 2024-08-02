@@ -3,6 +3,8 @@
 namespace DRPSermonManager;
 
 $permalinks = App::getPermalinkStructureInt()->get();
+use DRPSermonManager\Constants\CAP;
+use DRPSermonManager\Constants\PT;
 
 return [
     'labels' => [
@@ -32,10 +34,10 @@ return [
     ],
     'public' => true,
     'show_ui' => true,
-    'capability_type' => Constant::POST_TYPE_SERMON,
+    'capability_type' => PT::SERMON,
     'capabilities' => [
-        Constant::CAP_MANAGE_CATAGORIES => Constant::CAP_MANAGE_CATAGORIES,
-        Constant::CAP_MANAGE_SETTINGS => Constant::CAP_MANAGE_SETTINGS,
+        CAP::MANAGE_CATAGORIES => CAP::MANAGE_CATAGORIES,
+        CAP::MANAGE_SETTINGS => CAP::MANAGE_SETTINGS,
     ],
     'map_meta_cap' => true,
     'publicly_queryable' => true,
@@ -44,7 +46,7 @@ return [
     'menu_icon' => 'icon-drpsermon',
     'hierarchical' => false,
     'rewrite' => [
-        'slug' => $permalinks[Constant::POST_TYPE_SERMON],
+        'slug' => $permalinks[PT::SERMON],
         'with_front' => false,
     ],
     'query_var' => true,
@@ -63,6 +65,6 @@ return [
         'excerpt',
         'revisions',
         'author',
-        'editor',
+        // 'editor',
     ],
 ];

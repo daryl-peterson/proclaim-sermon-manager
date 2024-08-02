@@ -2,7 +2,7 @@
 
 namespace DRPSermonManager\Tests;
 
-use DRPSermonManager\Constant;
+use DRPSermonManager\Constants\PT;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -42,7 +42,7 @@ class BaseTest extends TestCase
     {
         $args = [
             'numberposts' => 5,
-            'post_type' => Constant::POST_TYPE_SERMON,
+            'post_type' => PT::SERMON,
             'order' => 'DESC',
             'orderby' => 'date',
           ];

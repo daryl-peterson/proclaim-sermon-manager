@@ -24,21 +24,27 @@ class Activator implements Initable, Runable
 
     public function run(): void
     {
-        // @codeCoverageIgnoreStart
-        if (!function_exists('\is_plugin_active')) {
-            $file = ABSPATH.'wp-admin/includes/plugin.php';
-            Logger::debug("Including file: $file");
-            require_once $file;
-        }
-        // @codeCoverageIgnoreEnd
-
-        if ((is_admin() && current_user_can('activate_plugins')) || defined('PHPUNIT_TESTING')) {
-            activate_plugin(plugin_basename(FILE));
-            if (isset($_GET['activate'])) {
-                // @codeCoverageIgnoreStart
-                unset($_GET['activate']);
-                // @codeCoverageIgnoreEnd
+        try {
+            // @codeCoverageIgnoreStart
+            if (!function_exists('\is_plugin_active')) {
+                $file = ABSPATH.'wp-admin/includes/plugin.php';
+                Logger::debug("Including file: $file");
+                require_once $file;
             }
+            // @codeCoverageIgnoreEnd
+
+            if ((is_admin() && current_user_can('activate_plugins')) || defined('PHPUNIT_TESTING')) {
+                activate_plugin(plugin_basename(FILE));
+                if (isset($_GET['activate'])) {
+                    // @codeCoverageIgnoreStart
+                    unset($_GET['activate']);
+                    // @codeCoverageIgnoreEnd
+                }
+            }
+            // @codeCoverageIgnoreStart
+        } catch (\Throwable $th) {
+            Logger::error(['MESSAGE' => $th->getMessage(), 'TRACE' => $th->getTrace()]);
+            // @codeCoverageIgnoreEnd
         }
     }
 }

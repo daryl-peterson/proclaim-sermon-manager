@@ -7,7 +7,6 @@ use DRPSermonManager\Admin\QueueScripts;
 use DRPSermonManager\Interfaces\NoticeInt;
 use DRPSermonManager\Interfaces\PluginInt;
 use DRPSermonManager\Logging\Logger;
-use DRPSermonManager\PostMeta\SermonDate;
 use DRPSermonManager\Taxonomy\BibleBookLoad;
 
 /**
@@ -53,7 +52,6 @@ class Plugin implements PluginInt
             AdminSermon::init()->register();
             ImageUtils::init()->register();
             BibleBookLoad::init()->register();
-            SermonDate::init()->register();
 
             Logger::debug('PLUGIN HOOKS INITIALIZED');
             do_action($hook);

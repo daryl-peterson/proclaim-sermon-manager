@@ -2,17 +2,20 @@
 
 namespace DRPSermonManager;
 
+use DRPSermonManager\Constants\CAP;
+use DRPSermonManager\Constants\TAX;
+
 $permalinks = App::getPermalinkStructureInt()->get();
 $opts = App::getOptionsInt();
-$tax = Constant::TAX_PREACHER;
+$tax = TAX::PREACHER;
 $label = $opts->get('preacher_label', false) ?
         strtolower($opts->get('preacher_label')) : __('Preacher', DOMAIN);
 
 $capabilities = [
-    'manage_terms' => Constant::CAP_MANAGE_CATAGORIES,
-    'edit_terms' => Constant::CAP_MANAGE_CATAGORIES,
-    'delete_terms' => Constant::CAP_MANAGE_CATAGORIES,
-    'assign_terms' => Constant::CAP_MANAGE_CATAGORIES,
+    'manage_terms' => CAP::MANAGE_CATAGORIES,
+    'edit_terms' => CAP::MANAGE_CATAGORIES,
+    'delete_terms' => CAP::MANAGE_CATAGORIES,
+    'assign_terms' => CAP::MANAGE_CATAGORIES,
 ];
 
 return [

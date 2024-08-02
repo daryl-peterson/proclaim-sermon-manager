@@ -2,6 +2,8 @@
 
 namespace DRPSermonManager;
 
+use DRPSermonManager\Constants\PT;
+
 /**
  * Taxonomy utilities.
  *
@@ -23,7 +25,7 @@ class TaxUtils
     public static function getTaxonomies(string $post_type = ''): array
     {
         if (empty($post_type)) {
-            $post_type = Constant::POST_TYPE_SERMON;
+            $post_type = PT::SERMON;
         }
 
         return get_object_taxonomies($post_type);

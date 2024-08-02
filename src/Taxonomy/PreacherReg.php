@@ -3,7 +3,8 @@
 namespace DRPSermonManager\Taxonomy;
 
 use DRPSermonManager\Abstracts\TaxonomyRegAbs;
-use DRPSermonManager\Constant;
+use DRPSermonManager\Constants\PT;
+use DRPSermonManager\Constants\TAX;
 
 defined('ABSPATH') or exit;
 
@@ -20,8 +21,8 @@ class PreacherReg extends TaxonomyRegAbs
 {
     public function __construct()
     {
-        $this->taxonomy = Constant::TAX_PREACHER;
-        $this->postType = Constant::POST_TYPE_SERMON;
+        $this->taxonomy = TAX::PREACHER;
+        $this->postType = PT::SERMON;
         $this->configFile = 'taxonomy_preacher.php';
     }
 }

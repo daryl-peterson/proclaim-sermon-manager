@@ -3,7 +3,7 @@
 namespace DRPSermonManager\PostType;
 
 use DRPSermonManager\Abstracts\PostTypeRegAbs;
-use DRPSermonManager\Constant;
+use DRPSermonManager\Constants\PT;
 use DRPSermonManager\Interfaces\PostTypeRegInt;
 
 defined('ABSPATH') or exit;
@@ -21,7 +21,7 @@ class SermonReg extends PostTypeRegAbs implements PostTypeRegInt
 {
     protected function __construct()
     {
-        $this->pt = Constant::POST_TYPE_SERMON;
+        $this->pt = PT::SERMON;
         $this->configFile = 'post_type_sermon.php';
     }
 

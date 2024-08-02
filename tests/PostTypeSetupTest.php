@@ -3,7 +3,7 @@
 namespace DRPSermonManager\Tests;
 
 use DRPSermonManager\App;
-use DRPSermonManager\Constant;
+use DRPSermonManager\Constants\PT;
 use DRPSermonManager\Exceptions\PluginException;
 use DRPSermonManager\Interfaces\PostTypeRegInt;
 use DRPSermonManager\Interfaces\PostTypeSetupInt;
@@ -65,7 +65,7 @@ class PostTypeSetupTest extends BaseTest
     {
         global $wp_post_types;
 
-        $pt = Constant::POST_TYPE_SERMON;
+        $pt = PT::SERMON;
 
         $this->obj->remove();
         $this->obj->add();

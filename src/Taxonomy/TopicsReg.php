@@ -3,7 +3,8 @@
 namespace DRPSermonManager\Taxonomy;
 
 use DRPSermonManager\Abstracts\TaxonomyRegAbs;
-use DRPSermonManager\Constant;
+use DRPSermonManager\Constants\PT;
+use DRPSermonManager\Constants\TAX;
 
 defined('ABSPATH') or exit;
 
@@ -20,8 +21,8 @@ class TopicsReg extends TaxonomyRegAbs
 {
     protected function __construct()
     {
-        $this->taxonomy = Constant::TAX_TOPICS;
-        $this->postType = Constant::POST_TYPE_SERMON;
+        $this->taxonomy = TAX::TOPICS;
+        $this->postType = PT::SERMON;
         $this->configFile = 'taxonomy_topics.php';
     }
 }

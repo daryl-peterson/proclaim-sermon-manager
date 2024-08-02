@@ -2,6 +2,8 @@
 
 namespace DRPSermonManager;
 
+use DRPSermonManager\Constants\PT;
+use DRPSermonManager\Constants\TAX;
 use DRPSermonManager\Interfaces\PermaLinkStructureInt;
 use DRPSermonManager\Traits\SingletonTrait;
 
@@ -30,8 +32,18 @@ class PermaLinks implements PermaLinkStructureInt
         return $obj;
     }
 
-    public function config()
+    public function get(): array
     {
+        return $this->permalinks;
+    }
+
+    private function config(): void
+    {
+        if (isset($this->permalinks) && !defined('PHPUNIT_TESTING')) {
+            // @codeCoverageIgnoreStart
+            return;
+            // @codeCoverageIgnoreEnd
+        }
         $actionKey = Helper::getKeyName('PERMALINK_CONFIG');
         if (did_action($actionKey) && !defined('PHPUNIT_TESTING')) {
             // @codeCoverageIgnoreStart
@@ -48,33 +60,33 @@ class PermaLinks implements PermaLinkStructureInt
 
         $perm = wp_parse_args((array) $opts->get('permalinks', []),
             [
-                Constant::TAX_PREACHER => trim(sanitize_title($opts->get(Constant::TAX_PREACHER, ''))),
-                Constant::TAX_SERIES => '',
-                Constant::TAX_TOPICS => '',
-                Constant::TAX_BIBLE_BOOK => '',
-                Constant::TAX_SERVICE_TYPE => trim(sanitize_title($opts->get('service_type_label', ''))),
-                Constant::POST_TYPE_SERMON => trim($opts->get('archive_slug', '')),
+                TAX::PREACHER => trim(sanitize_title($opts->get(TAX::PREACHER, ''))),
+                TAX::SERIES => '',
+                TAX::TOPICS => '',
+                TAX::BIBLE_BOOK => '',
+                TAX::SERVICE_TYPE => trim(sanitize_title($opts->get('service_type_label', ''))),
+                PT::SERMON => trim($opts->get('archive_slug', '')),
                 'use_verbose_page_rules' => false,
             ]);
 
         // Ensure rewrite slugs are set.
-        $perm[Constant::TAX_PREACHER] = empty($perm[Constant::TAX_PREACHER]) ?
-            _x('preacher', 'slug', DOMAIN) : $perm[Constant::TAX_PREACHER];
+        $perm[TAX::PREACHER] = empty($perm[TAX::PREACHER]) ?
+            _x('preacher', 'slug', DOMAIN) : $perm[TAX::PREACHER];
 
-        $perm[Constant::TAX_SERIES] = empty($perm[Constant::TAX_SERIES]) ?
-            _x('series', 'slug', DOMAIN) : $perm[Constant::TAX_SERIES];
+        $perm[TAX::SERIES] = empty($perm[TAX::SERIES]) ?
+            _x('series', 'slug', DOMAIN) : $perm[TAX::SERIES];
 
-        $perm[Constant::TAX_TOPICS] = empty($perm[Constant::TAX_TOPICS]) ?
-            _x('topics', 'slug', DOMAIN) : $perm[Constant::TAX_TOPICS];
+        $perm[TAX::TOPICS] = empty($perm[TAX::TOPICS]) ?
+            _x('topics', 'slug', DOMAIN) : $perm[TAX::TOPICS];
 
-        $perm[Constant::TAX_BIBLE_BOOK] = empty($perm[Constant::TAX_BIBLE_BOOK]) ?
-            _x('book', 'slug', DOMAIN) : $perm[Constant::TAX_BIBLE_BOOK];
+        $perm[TAX::BIBLE_BOOK] = empty($perm[TAX::BIBLE_BOOK]) ?
+            _x('book', 'slug', DOMAIN) : $perm[TAX::BIBLE_BOOK];
 
-        $perm[Constant::TAX_SERVICE_TYPE] = empty($perm[Constant::TAX_SERVICE_TYPE]) ?
-            _x('service-type', 'slug', DOMAIN) : $perm[Constant::TAX_SERVICE_TYPE];
+        $perm[TAX::SERVICE_TYPE] = empty($perm[TAX::SERVICE_TYPE]) ?
+            _x('service-type', 'slug', DOMAIN) : $perm[TAX::SERVICE_TYPE];
 
-        $perm[Constant::POST_TYPE_SERMON] = empty($perm[Constant::POST_TYPE_SERMON]) ?
-            _x('sermons', 'slug', DOMAIN) : $perm[Constant::POST_TYPE_SERMON];
+        $perm[PT::SERMON] = empty($perm[PT::SERMON]) ?
+            _x('sermons', 'slug', DOMAIN) : $perm[PT::SERMON];
 
         foreach ($perm as $key => $value) {
             $perm[$key] = untrailingslashit($value);
@@ -83,11 +95,11 @@ class PermaLinks implements PermaLinkStructureInt
         // @todo fix
         if ($opts->get('common_base_slug')) {
             foreach ($perm as $name => &$permalink) {
-                if (Constant::POST_TYPE_SERMON === $name) {
+                if (PT::SERMON === $name) {
                     continue;
                 }
 
-                $permalink = $perm[Constant::POST_TYPE_SERMON].'/'.$permalink;
+                $permalink = $perm[PT::SERMON].'/'.$permalink;
             }
         }
 
@@ -107,10 +119,5 @@ class PermaLinks implements PermaLinkStructureInt
          */
         $this->permalinks = apply_filters($hook, $perm);
         do_action($actionKey);
-    }
-
-    public function get(): array
-    {
-        return $this->permalinks;
     }
 }

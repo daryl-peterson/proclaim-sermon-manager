@@ -3,6 +3,8 @@
 namespace DRPSermonManager;
 
 use DRPSermonManager\Abstracts\PostTypeSetupAbs;
+use DRPSermonManager\Constants\ACTIONS;
+use DRPSermonManager\Constants\PT;
 use DRPSermonManager\Interfaces\PostTypeRegInt;
 use DRPSermonManager\Interfaces\PostTypeSetupInt;
 use DRPSermonManager\Interfaces\TaxonomyRegInt;
@@ -29,7 +31,7 @@ class PostTypeSetup extends PostTypeSetupAbs implements PostTypeSetupInt
 {
     protected function __construct()
     {
-        $pt = Constant::POST_TYPE_SERMON;
+        $pt = PT::SERMON;
         $this->postypes[$pt] = SermonReg::init();
         $this->taxonomies[$pt][] = PreacherReg::init();
         $this->taxonomies[$pt][] = SeriesReg::init();
@@ -41,7 +43,7 @@ class PostTypeSetup extends PostTypeSetupAbs implements PostTypeSetupInt
     public function register(): void
     {
         add_action('init', [$this, 'add']);
-        add_action(Constant::ACTION_FLUSH_REWRITE_RULES, [$this, 'flush']);
+        add_action(ACTIONS::FLUSH_REWRITE_RULES, [$this, 'flush']);
     }
 
     public function add(): void

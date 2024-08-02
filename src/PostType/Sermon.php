@@ -2,7 +2,7 @@
 
 namespace DRPSermonManager\PostType;
 
-use DRPSermonManager\Constant;
+use DRPSermonManager\Constants\PT;
 
 defined('ABSPATH') or exit;
 
@@ -30,7 +30,7 @@ class Sermon
             }
         }
 
-        if (Constant::POST_TYPE_SERMON !== $post->post_type) {
+        if (PT::SERMON !== $post->post_type) {
             return false;
         }
 

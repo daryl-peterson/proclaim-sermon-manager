@@ -3,23 +3,15 @@
 namespace DRPSermonManager\Admin;
 
 use DRPSermonManager\App;
-use DRPSermonManager\Constant;
+use DRPSermonManager\Constants\PT;
+use DRPSermonManager\Constants\TAX;
 use DRPSermonManager\Interfaces\Initable;
 use DRPSermonManager\Interfaces\Registrable;
 use DRPSermonManager\Logging\Logger;
-use DRPSermonManager\MetaInput;
-use DRPSermonManager\PostMeta\BiblePassage;
-use DRPSermonManager\PostMeta\SermonAudio;
-use DRPSermonManager\PostMeta\SermonDate;
-use DRPSermonManager\PostMeta\SermonDuration;
-use DRPSermonManager\PostMeta\SermonNotes;
-use DRPSermonManager\PostMeta\ServiceType;
-use DRPSermonManager\PostMeta\VideoEmbed;
-use DRPSermonManager\PostMeta\VideoLink;
 use DRPSermonManager\PostType\Sermon;
+use DRPSermonManager\SermonDetail;
+use DRPSermonManager\SermonFiles;
 use DRPSermonManager\TaxUtils;
-
-use const DRPSermonManager\DOMAIN;
 
 defined('ABSPATH') or exit;
 
@@ -40,7 +32,7 @@ class AdminSermon implements Initable, Registrable
 
     protected function __construct()
     {
-        $this->postType = Constant::POST_TYPE_SERMON;
+        $this->postType = PT::SERMON;
     }
 
     public static function init(): AdminSermon
@@ -52,7 +44,8 @@ class AdminSermon implements Initable, Registrable
     {
         add_action('pre_get_posts', [$this, 'fixOrdering'], 90);
         add_filter('use_block_editor_for_post_type', [$this, 'disableGutenberg'], 10, 2);
-        add_action('admin_menu', [$this, 'setMetaBoxes']);
+        // add_action('admin_menu', [$this, 'setMetaBoxes']);
+        add_action('cmb2_admin_init', [$this, 'setMetaBoxes']);
 
         add_action('save_post_drpsermon', [$this, 'savePost'], 40, 3);
         // 'save_post_wpfc_sermon'
@@ -66,14 +59,7 @@ class AdminSermon implements Initable, Registrable
                 return $post_id;
             }
 
-            SermonDate::init()->set($post_id);
-            BiblePassage::init()->set($post_id);
-            SermonAudio::init()->set($post_id);
-            SermonDuration::init()->set($post_id);
-            SermonNotes::init()->set($post_id);
-            ServiceType::init()->set($post_id);
-            VideoEmbed::init()->set($post_id);
-            VideoLink::init()->set($post_id);
+            // PostMeta::save($post);
 
             return $post_id;
             // @codeCoverageIgnoreStart
@@ -94,7 +80,7 @@ class AdminSermon implements Initable, Registrable
 
     public function disableGutenberg(bool $current_status, string $post_type): bool
     {
-        if ($post_type === Constant::POST_TYPE_SERMON) {
+        if ($post_type === PT::SERMON) {
             return false;
         }
 
@@ -104,46 +90,8 @@ class AdminSermon implements Initable, Registrable
     public function setMetaBoxes(): void
     {
         $this->removeMetaBoxes();
-
-        add_meta_box(
-            'sermon_details',               // Metabox ID
-            __('Sermon Details', DOMAIN),   // Title
-            [$this, 'addSermonDetails'],    // Callback function
-            $this->postType,                // Add meta box to custom post type (or post types in array)
-            'normal',                       // Position (normal, side, advanced)
-            'core'                          // Priority (default, low, high, core)
-        );
-
-        add_meta_box(
-            'sermon_files',                 // Metabox ID
-            __('Sermon Files', DOMAIN),     // Title
-            [$this, 'addSermonFiles'],    // Callback function
-            $this->postType,                // Add meta box to custom post type (or post types in array)
-            'normal',                       // Position (normal, side, advanced)
-            'core'                          // Priority (default, low, high, core)
-        );
-    }
-
-    public function addSermonDetails(\WP_Post $post): void
-    {
-        wp_nonce_field('sermon-edit', 'sermon-edit-'.$post->ID);
-        $html = '';
-        $html .= MetaInput::getText(SermonDate::init(), $post->ID);
-        $html .= MetaInput::getSelect(ServiceType::init(), $post->ID);
-        $html .= MetaInput::getText(SermonDuration::init(), $post->ID);
-        $html .= MetaInput::getText(BiblePassage::init(), $post->ID);
-
-        echo $html;
-    }
-
-    public function addSermonFiles(\WP_Post $post): void
-    {
-        $html = MetaInput::getText(SermonAudio::init(), $post->ID);
-        $html .= MetaInput::getTextArea(VideoEmbed::init(), $post->ID);
-        $html .= MetaInput::getText(VideoLink::init(), $post->ID);
-        $html .= MetaInput::getFileInput(SermonNotes::init(), $post->ID);
-
-        echo $html;
+        SermonDetail::init()->show();
+        SermonFiles::init()->show();
     }
 
     public function fixOrdering(\WP_Query $query): void
@@ -195,6 +143,7 @@ class AdminSermon implements Initable, Registrable
         // @codeCoverageIgnoreEnd
 
         remove_meta_box('postcustom', $this->postType, 'normal');
-        remove_meta_box('tagsdiv-'.Constant::TAX_SERVICE_TYPE, $this->postType, 'normal');
+        remove_meta_box('slugdiv-', $this->postType, 'normal');
+        remove_meta_box('tagsdiv-'.TAX::SERVICE_TYPE, $this->postType, 'normal');
     }
 }

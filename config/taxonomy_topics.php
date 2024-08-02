@@ -2,13 +2,16 @@
 
 namespace DRPSermonManager;
 
+use DRPSermonManager\Constants\CAP;
+use DRPSermonManager\Constants\TAX;
+
 $permalinks = App::getPermalinkStructureInt()->get();
-$tax = Constant::TAX_TOPICS;
+$tax = TAX::TOPICS;
 $capabilities = [
-    'manage_terms' => Constant::CAP_MANAGE_CATAGORIES,
-    'edit_terms' => Constant::CAP_MANAGE_CATAGORIES,
-    'delete_terms' => Constant::CAP_MANAGE_CATAGORIES,
-    'assign_terms' => Constant::CAP_MANAGE_CATAGORIES,
+    'manage_terms' => CAP::MANAGE_CATAGORIES,
+    'edit_terms' => CAP::MANAGE_CATAGORIES,
+    'delete_terms' => CAP::MANAGE_CATAGORIES,
+    'assign_terms' => CAP::MANAGE_CATAGORIES,
 ];
 
 return [
