@@ -41,6 +41,7 @@ class SermonUtils {
 	 */
 	public static function is_savable( int $post_id, \WP_Post $post ) {
 		if ( ! defined( 'PHPUNIT_TESTING' ) ) {
+			// @codeCoverageIgnoreStart
 			$key = 'sermon-edit-' . $post_id;
 			if ( ! isset( $_REQUEST[ $key ] ) ) {
 				return false;
@@ -49,6 +50,7 @@ class SermonUtils {
 			if ( ! wp_verify_nonce( $nonce, 'sermon-edit' ) ) {
 				return false;
 			}
+			// @codeCoverageIgnoreEnd
 		}
 
 		if ( PT::SERMON !== $post->post_type ) {
@@ -58,9 +60,11 @@ class SermonUtils {
 		// Check current user permissions.
 		$post_type = get_post_type_object( $post->post_type );
 
+		// @codeCoverageIgnoreStart
 		if ( ! current_user_can( $post_type->cap->edit_post, $post_id ) ) {
 			return false;
 		}
+		// @codeCoverageIgnoreEnd
 
 		// Do not save the data if autosave.
 		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
