@@ -24,7 +24,18 @@ class Notice implements NoticeInt {
 
 	use SingletonTrait;
 
+	/**
+	 * Options interface.
+	 *
+	 * @var OptionsInt
+	 */
 	private OptionsInt $options;
+
+	/**
+	 * Option name.
+	 *
+	 * @var string
+	 */
 	private string $option_name = 'notice';
 
 	/**
@@ -60,18 +71,18 @@ class Notice implements NoticeInt {
 			return;
 		}
 
-		$title        = isset( $option['title'] ) ? $option['title'] : '';
+		$title        = esc_html( isset( $option['title'] ) ? $option['title'] : '' );
 		$message      = isset( $option['message'] ) ? $option['message'] : false;
 		$notice_level = ! empty( $option['notice-level'] ) ? $option['notice-level'] : 'notice-error';
 		if ( $message ) {
 			$html = <<<HTML
-            <div class='notice $notice_level is-dismissible'>
-            <h2>$title</h2>
-            <p>$message</p>
-            </div>
+				<div class="notice $notice_level is-dismissible">
+				<h2>$title</h2>
+				<p>$message</p>
+				</div>
+			HTML;
 
-HTML;
-			echo $html;
+			echo esc_js( $html );
 			$this->options->delete( $this->option_name );
 		}
 	}

@@ -32,6 +32,7 @@ class SermonDetail {
 	public function show(): void {
 		$options = Options::init();
 
+		// @codeCoverageIgnoreStart
 		switch ( $options->get( 'date_format', '' ) ) {
 			case '0':
 				$date_format_label = 'mm/dd/YYYY';
@@ -54,6 +55,7 @@ class SermonDetail {
 				$date_format       = 'm/d/Y';
 				break;
 		}
+		// @codeCoverageIgnoreEnd
 
 		$post_type = PT::SERMON;
 

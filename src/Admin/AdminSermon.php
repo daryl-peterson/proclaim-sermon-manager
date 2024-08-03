@@ -91,7 +91,7 @@ class AdminSermon implements Initable, Registrable {
 				return $post_id;
 			}
 
-			// PostMeta::save($post);
+			// @todo Call a save function.
 
 			return $post_id;
 			// @codeCoverageIgnoreStart
@@ -112,7 +112,7 @@ class AdminSermon implements Initable, Registrable {
 	 * Fix date.
 	 *
 	 * @param mixed $value Still trying to figure this out.
-	 * @return void
+	 * @return mixed Not sure yet.
 	 *
 	 * @todo Fix this.
 	 */
@@ -195,6 +195,11 @@ class AdminSermon implements Initable, Registrable {
 		$query->set( 'posts_per_page', $opts->get( 'sermon_count', get_option( 'posts_per_page' ) ) );
 	}
 
+	/**
+	 * Remove meta boxes.
+	 *
+	 * @return void
+	 */
 	private function remove_meta_boxes() {
 		// @codeCoverageIgnoreStart
 		if ( ! function_exists( '\remove_meta_box' ) ) {
@@ -206,6 +211,7 @@ class AdminSermon implements Initable, Registrable {
 
 		remove_meta_box( 'postcustom', $this->post_type, 'normal' );
 		remove_meta_box( 'slugdiv-', $this->post_type, 'normal' );
-		remove_meta_box( 'tagsdiv-' . TAX::SERVICE_TYPE, $this->post_type, 'normal' );
+		remove_meta_box( 'tagsdiv-' . TAX::SERVICE_TYPE, $this->post_type, 'high' );
+		remove_meta_box( 'tagsdiv-drpsermon_service_type', $this->post_type, 'nomal' );
 	}
 }

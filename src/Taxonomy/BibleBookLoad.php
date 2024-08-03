@@ -9,6 +9,7 @@
  *
  * @since       1.0.0
  */
+
 namespace DRPSermonManager\Taxonomy;
 
 use DRPSermonManager\App;

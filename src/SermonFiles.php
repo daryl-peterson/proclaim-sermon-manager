@@ -110,14 +110,8 @@ class SermonFiles {
 				),
 				'query_args' => array(
 					'type' => 'application/pdf', // Make library only display PDFs.
-					// Or only allow gif, jpg, or png images
-					// 'type' => array(
-					// 'image/gif',
-					// 'image/jpeg',
-					// 'image/png',
-					// ),
 				),
-				// 'sanitization_cb' => array( $this, 'sanitize_pdf' ),
+				// 'sanitization_cb' => array( $this, 'sanitize_pdf' ) Not using yet.
 			)
 		);
 		$cmb->add_field(

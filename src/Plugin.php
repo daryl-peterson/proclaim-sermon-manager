@@ -27,6 +27,11 @@ use DRPSermonManager\Taxonomy\BibleBookLoad;
  */
 class Plugin implements PluginInt {
 
+	/**
+	 * Notice interface.
+	 *
+	 * @var NoticeInt
+	 */
 	private NoticeInt $notice;
 
 
@@ -58,7 +63,7 @@ class Plugin implements PluginInt {
 			add_action( 'shutdown', array( $this, 'shutdown' ) );
 			add_action( 'admin_notices', array( $this, 'show_notice' ) );
 
-			// Load other classes
+			// Load other classes.
 			Requirements::init()->register();
 			App::getTextDomainInt()->register();
 			App::getPostTypeSetupInt()->register();

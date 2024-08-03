@@ -3,6 +3,7 @@
  * Sermon utils.
  *
  * @package     Sermon Manager
+ *
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
@@ -22,6 +23,7 @@ defined( 'ABSPATH' ) || exit;
  * Sermon utils.
  *
  * @package     Sermon Manager
+ *
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
@@ -53,14 +55,14 @@ class SermonUtils {
 			return false;
 		}
 
-		// check current user permissions
+		// Check current user permissions.
 		$post_type = get_post_type_object( $post->post_type );
 
 		if ( ! current_user_can( $post_type->cap->edit_post, $post_id ) ) {
 			return false;
 		}
 
-		// Do not save the data if autosave
+		// Do not save the data if autosave.
 		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
 			return false;
 		}

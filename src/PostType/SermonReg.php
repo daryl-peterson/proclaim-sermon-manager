@@ -36,11 +36,15 @@ class SermonReg implements PostTypeRegInt {
 
 	/**
 	 * Post type.
+	 *
+	 * @var string
 	 */
 	protected string $pt;
 
 	/**
 	 * Congifurage file to read.
+	 *
+	 * @var string
 	 */
 	protected string $config_file;
 

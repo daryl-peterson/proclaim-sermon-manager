@@ -21,10 +21,22 @@ use DRPSermonManager\Logging\Logger;
  */
 class Activator implements Initable, Runable {
 
+	/**
+	 * Get initialize object.
+	 *
+	 * @return Activator
+	 *
+	 * @since 1.0.0
+	 */
 	public static function init(): Activator {
 		return new self();
 	}
 
+	/**
+	 * Run activation.
+	 *
+	 * @since 1.0.0
+	 */
 	public function run(): void {
 		try {
 			// @codeCoverageIgnoreStart

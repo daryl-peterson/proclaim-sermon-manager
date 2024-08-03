@@ -1,11 +1,7 @@
 <?php
-
-namespace DRPSermonManager;
-
-use DRPSermonManager\Logging\Logger;
-
-/*
+/**
  * ----------------------------------------------------------------------------
+ *
  * @wordpress-plugin
  * Plugin Name:         DRP Sermon Manager
  * Plugin URI:
@@ -19,13 +15,16 @@ use DRPSermonManager\Logging\Logger;
  * Domain Path:         /languages
  * Requires PHP:        8.1
  * Requires at least:   6.4
- *
  * ----------------------------------------------------------------------------
  * Sermon Manager is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 2 of the License, or
  * any later version.
  */
+
+namespace DRPSermonManager;
+
+use DRPSermonManager\Logging\Logger;
 
 defined( 'ABSPATH' ) || exit;
 
