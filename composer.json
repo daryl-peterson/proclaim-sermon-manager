@@ -1,37 +1,38 @@
 {
-    "name": "dpeterson/wp-sermon-manager",
-    "type": "project",
-    "autoload": {
-        "psr-4": {
-            "DRPSermonManager\\": "src/",
-            "DRPSermonManager\\Abstracts\\": "src/Core/Abstracts",
-            "DRPSermonManager\\Constants\\": "src/Core/Constants",
-            "DRPSermonManager\\Exceptions\\": "src/Core/Exceptions",
-            "DRPSermonManager\\Interfaces\\": "src/Core/Interfaces",
-            "DRPSermonManager\\Logging\\": "src/Core/Logging",
-            "DRPSermonManager\\Traits\\": "src/Core/Traits",
-            "DRPSermonManager\\Tests\\": "tests/"
-        }
-    },
-    "authors": [
-        {
-            "name": "daryl-peterson",
-            "email": "daryl.peterson@gmail.com"
-        }
-    ],
-    "require": {
-        "php-di/php-di": "^7.0",
-        "cmb2/cmb2": "^2.11"
-    },
-    "require-dev": {
-        "phpunit/phpunit": "^11.2",
-        "dealerdirect/phpcodesniffer-composer-installer": "^0.7",
-        "phpcompatibility/phpcompatibility-wp": "*",
-        "wp-coding-standards/wpcs": "^3.0"
-    },
-    "config": {
-        "allow-plugins": {
-            "dealerdirect/phpcodesniffer-composer-installer": true
-        }
-    }
+	"name": "dpeterson/wp-sermon-manager",
+	"type": "project",
+	"autoload": {
+		"psr-4": {
+			"DRPSermonManager\\": "src/",
+			"DRPSermonManager\\Abstracts\\": "src/Core/Abstracts",
+			"DRPSermonManager\\Constants\\": "src/Core/Constants",
+			"DRPSermonManager\\Exceptions\\": "src/Core/Exceptions",
+			"DRPSermonManager\\Interfaces\\": "src/Core/Interfaces",
+			"DRPSermonManager\\Logging\\": "src/Core/Logging",
+			"DRPSermonManager\\Traits\\": "src/Core/Traits",
+			"DRPSermonManager\\Tests\\": "tests/"
+		}
+	},
+	"authors": [
+		{
+			"name": "daryl-peterson",
+			"email": "daryl.peterson@gmail.com"
+		}
+	],
+	"apcu-autoloader": true,
+	"require": {
+		"php-di/php-di": "^7.0.7",
+		"cmb2/cmb2": "^2.11"
+	},
+	"require-dev": {
+		"phpunit/phpunit": "^11.3",
+		"dealerdirect/phpcodesniffer-composer-installer": "^0.7.2",
+		"phpcompatibility/phpcompatibility-wp": ">=2.1.5",
+		"wp-coding-standards/wpcs": "^3.1"
+	},
+	"config": {
+		"allow-plugins": {
+			"dealerdirect/phpcodesniffer-composer-installer": true
+		}
+	}
 }

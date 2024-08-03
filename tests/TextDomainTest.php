@@ -31,7 +31,7 @@ class TextDomainTest extends BaseTest {
 		do_action( $hook );
 		$this->assertIsString( $hook );
 
-		$result = $this->obj->switch_to_tite_locale();
+		$result = $this->obj->switch_to_site_locale();
 		$this->assertNull( $result );
 
 		$result = $this->obj->restore_locale();

@@ -18,7 +18,7 @@ use DRPSermonManager\Constants\TAX;
 use DRPSermonManager\Interfaces\Initable;
 use DRPSermonManager\Interfaces\Registrable;
 use DRPSermonManager\Logging\Logger;
-use DRPSermonManager\SermonUtils;
+use DRPSermonManager\PostTypeUtils;
 use DRPSermonManager\SermonDetail;
 use DRPSermonManager\SermonFiles;
 use DRPSermonManager\TaxUtils;
@@ -71,10 +71,15 @@ class AdminSermon implements Initable, Registrable {
 	 * @since 1.0.0
 	 */
 	public function register(): void {
+		if ( ! is_admin() ) {
+			return;
+		}
+
 		add_action( 'pre_get_posts', array( $this, 'fix_ordering' ), 90 );
 		add_filter( 'use_block_editor_for_post_type', array( $this, 'disable_gutenberg' ), 10, 2 );
 		add_action( 'cmb2_admin_init', array( $this, 'show_meta_boxes' ) );
 		add_action( 'save_post_drpsermon', array( $this, 'save_post' ), 40, 3 );
+		add_action( 'admin_menu', array( $this, 'remove_meta_boxes' ) );
 	}
 
 	/**
@@ -87,7 +92,7 @@ class AdminSermon implements Initable, Registrable {
 	 */
 	public function save_post( int $post_id, \WP_Post $post, bool $update ): int {
 		try {
-			if ( ! SermonUtils::is_savable( $post_id, $post ) ) {
+			if ( ! PostTypeUtils::is_savable( $post_id, $post ) ) {
 				return $post_id;
 			}
 
@@ -143,7 +148,6 @@ class AdminSermon implements Initable, Registrable {
 	 * @return void
 	 */
 	public function show_meta_boxes(): void {
-		$this->remove_meta_boxes();
 		SermonDetail::init()->show();
 		SermonFiles::init()->show();
 	}
@@ -171,7 +175,7 @@ class AdminSermon implements Initable, Registrable {
 
 		$opts    = App::getOptionsInt();
 		$orderby = $opts->get( 'archive_orderby', '' );
-		$order   = $opts->get( 'archive_order', '' );
+		$order   = $opts->get( 'archive_order', 'desc' );
 
 		switch ( $orderby ) {
 			case 'date_preached':
@@ -200,7 +204,8 @@ class AdminSermon implements Initable, Registrable {
 	 *
 	 * @return void
 	 */
-	private function remove_meta_boxes() {
+	public function remove_meta_boxes() {
+
 		// @codeCoverageIgnoreStart
 		if ( ! function_exists( '\remove_meta_box' ) ) {
 			$file = ABSPATH . 'wp-admin/includes/template.php';
@@ -210,8 +215,6 @@ class AdminSermon implements Initable, Registrable {
 		// @codeCoverageIgnoreEnd
 
 		remove_meta_box( 'postcustom', $this->post_type, 'normal' );
-		remove_meta_box( 'slugdiv-', $this->post_type, 'normal' );
 		remove_meta_box( 'tagsdiv-' . TAX::SERVICE_TYPE, $this->post_type, 'high' );
-		remove_meta_box( 'tagsdiv-drpsermon_service_type', $this->post_type, 'nomal' );
 	}
 }

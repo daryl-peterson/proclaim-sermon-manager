@@ -29,7 +29,7 @@ interface TextDomainInt extends Initable, Registrable {
 	 *
 	 * @since 1.0
 	 */
-	public function switch_to_tite_locale(): void;
+	public function switch_to_site_locale(): void;
 
 	/**
 	 * Restore language to original.

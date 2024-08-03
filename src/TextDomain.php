@@ -76,7 +76,7 @@ class TextDomain implements TextDomainInt {
 	 *
 	 * @since 1.0
 	 */
-	public function switch_to_tite_locale(): void {
+	public function switch_to_site_locale(): void {
 		try {
 			if ( ! function_exists( 'switch_to_locale' ) ) {
 				// @codeCoverageIgnoreStart
