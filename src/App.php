@@ -6,11 +6,10 @@ use DRPSermonManager\Interfaces\Initable;
 use DRPSermonManager\Interfaces\LogFormatterInt;
 use DRPSermonManager\Interfaces\NoticeInt;
 use DRPSermonManager\Interfaces\OptionsInt;
-use DRPSermonManager\Interfaces\PermaLinkStructureInt;
+use DRPSermonManager\Interfaces\PermaLinkInt;
 use DRPSermonManager\Interfaces\PluginInt;
 use DRPSermonManager\Interfaces\PostTypeSetupInt;
 use DRPSermonManager\Interfaces\RequirementCheckInt;
-use DRPSermonManager\Interfaces\RequirementsInt;
 use DRPSermonManager\Interfaces\RolesInt;
 use DRPSermonManager\Interfaces\TextDomainInt;
 use DRPSermonManager\Logging\LogFormatter;
@@ -25,79 +24,59 @@ use DRPSermonManager\Traits\SingletonTrait;
  *
  * @since       1.0.0
  */
-class App implements Initable
-{
-    use SingletonTrait;
+class App implements Initable {
 
-    public static function init(): App
-    {
-        return App::getInstance();
-    }
+	use SingletonTrait;
 
-    /**
-     * Get admin page.
-     */
-    public static function getAdminPage(): AdminPage
-    {
-        return new AdminPage();
-    }
+	public static function init(): App {
+		return self::get_instance();
+	}
 
-    public static function getLogFormatterInt(): LogFormatterInt
-    {
-        return new LogFormatter();
-    }
+	/**
+	 * Get admin page.
+	 */
+	public static function getAdminPage(): AdminPage {
+		return new AdminPage();
+	}
 
-    /**
-     * Get notice interface.
-     */
-    public static function getNoticeInt(): NoticeInt
-    {
-        return Notice::init();
-    }
+	/**
+	 * Get notice interface.
+	 */
+	public static function getNoticeInt(): NoticeInt {
+		return Notice::init();
+	}
 
-    public static function getOptionsInt(): OptionsInt
-    {
-        return Options::init();
-    }
+	public static function getOptionsInt(): OptionsInt {
+		return Options::init();
+	}
 
-    public static function getPermalinkStructureInt(): PermaLinkStructureInt
-    {
-        return PermaLinks::init();
-    }
+	public static function getPermalinkInt(): PermaLinkInt {
+		return PermaLinks::init();
+	}
 
-    /**
-     * Get Plugin interface.
-     */
-    public static function getPluginInt(): PluginInt
-    {
-        return new Plugin();
-    }
+	/**
+	 * Get Plugin interface.
+	 */
+	public static function getPluginInt(): PluginInt {
+		return new Plugin();
+	}
 
-    public static function getPostTypeSetupInt(): PostTypeSetupInt
-    {
-        return PostTypeSetup::init();
-    }
+	public static function getPostTypeSetupInt(): PostTypeSetupInt {
+		return PostTypeSetup::init();
+	}
 
-    /**
-     * Get requirements interface.
-     */
-    public static function getRequirementsInt(): RequirementsInt
-    {
-        return Requirements::init();
-    }
+	/**
+	 * Get requirements interface.
+	 */
+	public static function getRequirementCheckInt(): RequirementCheckInt {
+		return RequirementCheck::init();
+	}
 
-    public static function getRequirementCheckInt(): RequirementCheckInt
-    {
-        return RequirementCheck::init();
-    }
+	public static function getRolesInt(): RolesInt {
+		return Roles::init();
+	}
 
-    public static function getRolesInt(): RolesInt
-    {
-        return Roles::init();
-    }
-
-    public static function getTextDomainInt(): TextDomainInt
-    {
-        return TextDomain::init();
-    }
+	public static function getTextDomainInt(): TextDomainInt {
+		return TextDomain::init();
+	}
 }

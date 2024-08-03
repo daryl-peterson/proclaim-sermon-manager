@@ -11,21 +11,19 @@ use DRPSermonManager\Logging\LogFile;
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
  */
-class LogFileTest extends BaseTest
-{
-    public LogFile $obj;
+class LogFileTest extends BaseTest {
 
-    public function setup(): void
-    {
-        $this->obj = new LogFile();
-    }
+	public LogFile $obj;
 
-    public function testTruncate()
-    {
-        $file = '/tmp/truncate.log';
+	public function setup(): void {
+		$this->obj = new LogFile();
+	}
 
-        @unlink($file);
-        $result = $this->obj->checkFileSize($file);
-        $this->assertNull($result);
-    }
+	public function testTruncate() {
+		$file = '/tmp/truncate.log';
+
+		@unlink( $file );
+		$result = $this->obj->check_file_size( $file );
+		$this->assertNull( $result );
+	}
 }

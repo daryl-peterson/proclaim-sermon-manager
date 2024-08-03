@@ -1,4 +1,15 @@
 <?php
+/**
+ * Post type setup test.
+ *
+ * @package     Sermon Manager
+ *
+ * @author      Daryl Peterson <@gmail.com>
+ * @copyright   Copyright (c) 2024, Daryl Peterson
+ * @license     https://www.gnu.org/licenses/gpl-3.0.txt
+ *
+ * @since       1.0.0
+ */
 
 namespace DRPSermonManager\Tests;
 
@@ -9,92 +20,78 @@ use DRPSermonManager\Interfaces\PostTypeRegInt;
 use DRPSermonManager\Interfaces\PostTypeSetupInt;
 
 /**
- * Class description.
- *
- * @category
- *
- * @author      Daryl Peterson <@gmail.com>
- * @copyright   Copyright (c) 2024, Daryl Peterson
- * @license     https://www.gnu.org/licenses/gpl-3.0.txt
- *
- * @since       1.0.0
+ * Post type setup test.
  */
-class PostTypeSetupTest extends BaseTest
-{
-    public PostTypeSetupInt $obj;
+class PostTypeSetupTest extends BaseTest {
 
-    public function setup(): void
-    {
-        $this->obj = App::getPostTypeSetupInt();
-    }
+	public PostTypeSetupInt $obj;
 
-    public function testGetPostTypes()
-    {
-        $types = $this->obj->getPostTypeList();
-        $this->assertIsArray($types);
-    }
+	public function setup(): void {
+		$this->obj = App::getPostTypeSetupInt();
+	}
 
-    public function testGetPosttype()
-    {
-        $this->expectException(PluginException::class);
-        $this->obj->getPostType('BlahBlah');
-    }
+	public function testGetPostTypes() {
+		$types = $this->obj->get_post_type_list();
+		$this->assertIsArray( $types );
+	}
 
-    public function testGetPostTypeTaxonomies()
-    {
-        $types = $this->obj->getPostTypeList();
-        $this->assertIsArray($types);
+	public function testGetPosttype() {
+		$this->expectException( PluginException::class );
+		$this->obj->get_post_type( 'BlahBlah' );
+	}
 
-        if (isset($types[0])) {
-            $type = $types[0];
+	public function testGetPostTypeTaxonomies() {
+		$types = $this->obj->get_post_type_list();
+		$this->assertIsArray( $types );
 
-            $objPostType = $this->obj->getPostType($type);
-            $this->assertInstanceOf(PostTypeRegInt::class, $objPostType);
+		if ( isset( $types[0] ) ) {
+			$type = $types[0];
 
-            $taxonomies = $this->obj->getPostTypeTaxonomies($type);
-            if (isset($taxonomies)) {
-                $this->assertIsArray($taxonomies);
-            }
-        }
+			$objPostType = $this->obj->get_post_type( $type );
+			$this->assertInstanceOf( PostTypeRegInt::class, $objPostType );
 
-        $result = $this->obj->getPostTypeTaxonomies('blah-blah');
-        $this->assertNull($result);
-    }
+			$taxonomies = $this->obj->get_post_type_taxonomies( $type );
+			if ( isset( $taxonomies ) ) {
+				$this->assertIsArray( $taxonomies );
+			}
+		}
 
-    public function testAddRemove()
-    {
-        global $wp_post_types;
+		$result = $this->obj->get_post_type_taxonomies( 'blah-blah' );
+		$this->assertNull( $result );
+	}
 
-        $pt = PT::SERMON;
+	public function testAddRemove() {
+		global $wp_post_types;
 
-        $this->obj->remove();
-        $this->obj->add();
-        $this->obj->remove();
+		$pt = PT::SERMON;
 
-        $result = $this->obj->add();
-        $this->assertNull($result);
+		$this->obj->remove();
+		$this->obj->add();
+		$this->obj->remove();
 
-        $exist = post_type_exists($pt);
-        $this->assertTrue($exist);
+		$result = $this->obj->add();
+		$this->assertNull( $result );
 
-        $result = $this->obj->flush();
-        $this->assertNull($result);
-    }
+		$exist = post_type_exists( $pt );
+		$this->assertTrue( $exist );
 
-    public function testGetWpErrorMessage()
-    {
-        $types = $this->obj->getPostTypeList();
-        $this->assertIsArray($types);
+		$result = $this->obj->flush();
+		$this->assertNull( $result );
+	}
 
-        if (isset($types[0])) {
-            $type = $types[0];
+	public function testGetWpErrorMessage() {
+		$types = $this->obj->get_post_type_list();
+		$this->assertIsArray( $types );
 
-            $objPostType = $this->obj->getPostType($type);
-            $this->assertInstanceOf(PostTypeRegInt::class, $objPostType);
+		if ( isset( $types[0] ) ) {
+			$type = $types[0];
 
-            $error = new \WP_Error('This is a test WP Error');
-            $result = $objPostType->getWpErrorMessage($error);
-            $this->assertIsString($result);
-        }
-    }
+			$objPostType = $this->obj->get_post_type( $type );
+			$this->assertInstanceOf( PostTypeRegInt::class, $objPostType );
+
+			$error  = new \WP_Error( 'This is a test WP Error' );
+			$result = $objPostType->get_wp_error_message( $error );
+			$this->assertIsString( $result );
+		}
+	}
 }

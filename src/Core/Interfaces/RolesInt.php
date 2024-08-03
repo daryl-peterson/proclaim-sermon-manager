@@ -13,19 +13,19 @@ namespace DRPSermonManager\Interfaces;
  *
  * @since       1.0.0
  */
-interface RolesInt extends Initable
-{
-    /**
-     * Add custom capabilities to roles.
-     *
-     * @since 1.0.0
-     */
-    public function add(): void;
+interface RolesInt extends Initable {
 
-    /**
-     * Remove custom capabilities from roles.
-     *
-     * @since 1.0.0
-     */
-    public function remove(): void;
+	/**
+	 * Add custom capabilities to roles.
+	 *
+	 * @since 1.0.0
+	 */
+	public function add(): void;
+
+	/**
+	 * Remove custom capabilities from roles.
+	 *
+	 * @since 1.0.0
+	 */
+	public function remove(): void;
 }

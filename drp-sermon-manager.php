@@ -2,6 +2,8 @@
 
 namespace DRPSermonManager;
 
+use DRPSermonManager\Logging\Logger;
+
 /*
  * ----------------------------------------------------------------------------
  * @wordpress-plugin
@@ -13,7 +15,7 @@ namespace DRPSermonManager;
  * Author URI:
  * License:             GPL-2.0+
  * License URI:         http://www.gnu.org/licenses/gpl-2.0.txt
- * Text Domain:         drpsermon_manager
+ * Text Domain:         drpsermon
  * Domain Path:         /languages
  * Requires PHP:        8.1
  * Requires at least:   6.4
@@ -25,34 +27,40 @@ namespace DRPSermonManager;
  * any later version.
  */
 
-defined('ABSPATH') or exit;
+defined( 'ABSPATH' ) || exit;
 
-if (!defined('WPINC')) {
-    exit;
+if ( ! defined( 'WPINC' ) ) {
+	exit;
 }
 
-if (file_exists(dirname(__FILE__).'/vendor/autoload.php')) {
-    require_once dirname(__FILE__).'/vendor/autoload.php';
+if ( file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
+	require_once __DIR__ . '/vendor/autoload.php';
 }
 
-// Include CMB2
-require_once dirname(__FILE__).'/vendor/cmb2/cmb2/init.php';
+/**
+ * Include CMB2.
+ */
+require_once __DIR__ . '/vendor/cmb2/cmb2/init.php';
 
-const NAME = 'Sermon Manager';
-const FILE = __FILE__;
+const NAME       = 'Sermon Manager';
+const FILE       = __FILE__;
 const KEY_PREFIX = 'drpsermon';
-const DOMAIN = 'drpsermon';
-const NS = __NAMESPACE__;
-const LOG_FILE = 'drp-sermon-manager.log';
+const DOMAIN     = 'drpsermon';
+const NS         = __NAMESPACE__;
+const LOG_FILE   = 'drp-sermon-manager.log';
 
 const PLUGIN_MIN_PHP = '8.1.0';
-const PLUGIN_MIN_WP = '6.4.0';
+const PLUGIN_MIN_WP  = '6.4.0';
 
 try {
-    App::init();
-    App::getPluginInt()->init();
-} catch (\Throwable $th) {
-    $trace = $th->getTraceAsString();
-    error_log($th->getMessage());
-    error_log($trace);
+	App::init();
+	App::getPluginInt()->init();
+} catch ( \Throwable $th ) {
+	$trace = $th->getTraceAsString();
+	Logger::debug(
+		array(
+			'MESSAGE' => $th->getMessage(),
+			'TRACE'   => $th->getTrace(),
+		)
+	);
 }

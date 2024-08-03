@@ -1,70 +1,102 @@
 <?php
-
-namespace DRPSermonManager\Logging;
-
-use DRPSermonManager\App;
-use DRPSermonManager\Interfaces\LogFormatterInt;
-use DRPSermonManager\Interfaces\LoggerInt;
-use DRPSermonManager\Traits\SingletonTrait;
-
 /**
- * Logger facade class.
+ * Logging
  *
+ * @package     Sermon Manager
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
  *
  * @since       1.0.0
  */
-class Logger implements LoggerInt
-{
-    use SingletonTrait;
 
-    private LogFormatterInt $formatter;
+namespace DRPSermonManager\Logging;
 
-    protected function __construct()
-    {
-        // @codeCoverageIgnoreStart
-        $this->formatter = App::getLogFormatterInt();
-        // @codeCoverageIgnoreEnd
-    }
+use DRPSermonManager\Interfaces\LoggerInt;
+use DRPSermonManager\Traits\SingletonTrait;
 
-    public static function debug(mixed $context): bool
-    {
-        return self::log($context, 'debug');
-    }
+/**
+ * Logging
+ *
+ * @package     Sermon Manager
+ * @author      Daryl Peterson <@gmail.com>
+ * @copyright   Copyright (c) 2024, Daryl Peterson
+ * @license     https://www.gnu.org/licenses/gpl-3.0.txt
+ *
+ * @since       1.0.0
+ */
+class Logger implements LoggerInt {
 
-    public static function error(mixed $context): bool
-    {
-        return self::log($context, 'error');
-    }
+	use SingletonTrait;
 
-    public static function info(mixed $context): bool
-    {
-        return self::log($context, 'info');
-    }
+	/**
+	 * Write debug log.
+	 *
+	 * @param mixed $context Context for logging.
+	 * @return boolean
+	 * @since 1.0.0
+	 */
+	public static function debug( mixed $context ): bool {
+		return self::log( $context, 'debug' );
+	}
 
-    private static function log(mixed $context, string $level): bool
-    {
-        try {
-            $record = new LogRecord(__FILE__, $context, $level, debug_backtrace(0, 8));
-            $formatter = App::getLogFormatterInt();
-            $data = $formatter->format($record);
+	/**
+	 * Write error log.
+	 *
+	 * @param mixed $context Context for logging.
+	 * @return boolean
+	 * @since 1.0.0
+	 */
+	public static function error( mixed $context ): bool {
+		return self::log( $context, 'error' );
+	}
 
-            // Add to ensure error log is written
-            $file = LogFile::get($level);
+	/**
+	 * Write info log.
+	 *
+	 * @param mixed $context Context for logging.
+	 * @return boolean
+	 * @since 1.0.0
+	 */
+	public static function info( mixed $context ): bool {
+		return self::log( $context, 'info' );
+	}
 
-            if ($level === 'error') {
-                error_log($data);
-            }
+	/**
+	 * Write log to file.
+	 *
+	 * @param mixed  $context Context for logging.
+	 * @param string $level Logging level.
+	 * @return boolean
+	 */
+	private static function log( mixed $context, string $level ): bool {
+		try {
+			$record    = new LogRecord( $context, $level, debug_backtrace( 0, 8 ) );
+			$formatter = new LogFormatter();
+			$data      = $formatter->format( $record );
 
-            return file_put_contents($file, $data, FILE_APPEND);
-            // @codeCoverageIgnoreStart
-        } catch (\Throwable $th) {
-            error_log(print_r(['MESSAGE' => $th->getMessage(), 'TRACE' => $th->getTrace()], true));
+			// Add to ensure error log is written
+			$file = LogFile::get( $level );
 
-            return false;
-            // @codeCoverageIgnoreEnd
-        }
-    }
+			if ( 'error' === $level ) {
+				error_log( $data );
+			}
+
+			return file_put_contents( $file, $data, FILE_APPEND );
+			// @codeCoverageIgnoreStart
+		} catch ( \Throwable $th ) {
+			error_log(
+				print_r(
+					array(
+						'MESSAGE' => $th->getMessage(),
+						'TRACE'   => $th->getTrace(),
+					),
+					true
+				)
+			);
+
+			return false;
+			// @codeCoverageIgnoreEnd
+		}
+	}
 }

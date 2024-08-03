@@ -17,29 +17,25 @@ use DRPSermonManager\Plugin;
  *
  * @since       1.0.0
  */
-class AppTest extends BaseTest
-{
-    public App $obj;
+class AppTest extends BaseTest {
 
-    public function setup(): void
-    {
-        $this->obj = App::init();
-    }
+	public App $obj;
 
-    public function testGetInstance()
-    {
-        $this->assertNotNull($this->obj);
-    }
+	public function setup(): void {
+		$this->obj = App::init();
+	}
 
-    public function testGetPluginInt()
-    {
-        $plugin = $this->obj->getPluginInt();
-        $this->assertInstanceOf(Plugin::class, $plugin);
-    }
+	public function testGetInstance() {
+		$this->assertNotNull( $this->obj );
+	}
 
-    public function testGetAdminPage()
-    {
-        $result = $this->obj->getAdminPage();
-        $this->assertInstanceOf(AdminPage::class, $result);
-    }
+	public function testGetPluginInt() {
+		$plugin = $this->obj->getPluginInt();
+		$this->assertInstanceOf( Plugin::class, $plugin );
+	}
+
+	public function testGetAdminPage() {
+		$result = $this->obj->getAdminPage();
+		$this->assertInstanceOf( AdminPage::class, $result );
+	}
 }

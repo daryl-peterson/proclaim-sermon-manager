@@ -16,51 +16,46 @@ use DRPSermonManager\Logging\Logger;
  *
  * @since       1.0.0
  */
-class QueueScripts implements Initable, Registrable
-{
-    public static function init(): QueueScripts
-    {
-        return new self();
-    }
+class QueueScripts implements Initable, Registrable {
 
-    public function register(): void
-    {
-        add_action('admin_init', [$this, 'initScriptStyles']);
-        add_action('admin_enqueue_scripts', [$this, 'load']);
-        add_action('admin_footer', [$this, 'footer']);
-    }
+	public static function init(): QueueScripts {
+		return new self();
+	}
 
-    public function initScriptStyles()
-    {
-        // @codeCoverageIgnoreStart
-        $file = Helper::getUrl().'assets/css/admin.css';
-        Logger::debug(['CSS FILE' => $file]);
-        wp_register_style('drpsermon-admin-style', $file);
+	public function register(): void {
+		add_action( 'admin_init', array( $this, 'initScriptStyles' ) );
+		add_action( 'admin_enqueue_scripts', array( $this, 'load' ) );
+		add_action( 'admin_footer', array( $this, 'footer' ) );
+	}
 
-        // $file = 'https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.css';
-        // wp_register_style('drpsermon-jquery-ui-style', $file);
+	public function initScriptStyles() {
+		// @codeCoverageIgnoreStart
+		$file = Helper::get_url() . 'assets/css/admin.css';
+		Logger::debug( array( 'CSS FILE' => $file ) );
+		wp_register_style( 'drpsermon-admin-style', $file );
 
-        $file = Helper::getUrl().'assets/js/admin.js';
-        wp_register_script('drpsermon-admin-script', $file);
-        // @codeCoverageIgnoreEnd
-    }
+		// $file = 'https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.css';
+		// wp_register_style('drpsermon-jquery-ui-style', $file);
 
-    public function load(): void
-    {
-        if (is_admin()) {
-            // @codeCoverageIgnoreStart
-            wp_enqueue_style('drpsermon-admin-style');
-            wp_enqueue_media();
-            // @codeCoverageIgnoreEnd
-        }
-    }
+		$file = Helper::get_url() . 'assets/js/admin.js';
+		wp_register_script( 'drpsermon-admin-script', $file );
+		// @codeCoverageIgnoreEnd
+	}
 
-    public function footer()
-    {
-        if (!is_admin()) {
-            return;
-        }
-        // wp_enqueue_script('jquery-ui-datepicker');
-        wp_enqueue_script('drpsermon-admin-script');
-    }
+	public function load(): void {
+		if ( is_admin() ) {
+			// @codeCoverageIgnoreStart
+			wp_enqueue_style( 'drpsermon-admin-style' );
+			wp_enqueue_media();
+			// @codeCoverageIgnoreEnd
+		}
+	}
+
+	public function footer() {
+		if ( ! is_admin() ) {
+			return;
+		}
+		// wp_enqueue_script('jquery-ui-datepicker');
+		wp_enqueue_script( 'drpsermon-admin-script' );
+	}
 }

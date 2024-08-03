@@ -1,34 +1,38 @@
 <?php
-
-namespace DRPSermonManager\Interfaces;
-
 /**
- * Plugin requirements.
+ * Requirments interface.
  *
+ * @package     Sermon Manager
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
  *
- * @since       1.0.0
+ * @since 1.0.0
  */
-interface RequirementsInt extends Initable, Registrable
-{
-    /**
-     * Check if plugin is compatible.
-     */
-    public function isCompatible(): void;
 
-    /**
-     * Get notice interface.
-     *
-     * @since 1.0.0
-     */
-    public function notice(): NoticeInt;
+namespace DRPSermonManager\Interfaces;
 
-    /**
-     * Get force fail.
-     *
-     * @since 1.0.0
-     */
-    public function setFail(bool $fail): void;
+/**
+ * Requirments interface.
+ *
+ * @package     Sermon Manager
+ * @author      Daryl Peterson <@gmail.com>
+ * @copyright   Copyright (c) 2024, Daryl Peterson
+ * @license     https://www.gnu.org/licenses/gpl-3.0.txt
+ *
+ * @since 1.0.0
+ */
+interface RequirementsInt {
+
+	/**
+	 * Check if plugin is compatible.
+	 */
+	public function is_compatible(): void;
+
+	/**
+	 * Get notice interface.
+	 *
+	 * @since 1.0.0
+	 */
+	public function notice(): NoticeInt;
 }

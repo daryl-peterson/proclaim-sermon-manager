@@ -16,37 +16,33 @@ use DRPSermonManager\Interfaces\Registrable;
  *
  * @since       1.0.0
  */
-class ImageUtils implements Initable, Registrable
-{
-    public string $hook;
+class ImageUtils implements Initable, Registrable {
 
-    protected function __construct()
-    {
-        $this->hook = Helper::getKeyName('IMAGEUTILS_REGISTER');
-    }
+	public string $hook;
 
-    public static function init(): ImageUtils
-    {
-        return new self();
-    }
+	protected function __construct() {
+		$this->hook = Helper::get_key_name( 'IMAGEUTILS_REGISTER' );
+	}
 
-    public function register(): void
-    {
-        if (!did_action($this->hook) || defined('PHPUNIT_TESTING')) {
-            add_action('after_setup_theme', [$this, 'addImageSizes']);
-            do_action($this->hook);
-        }
-    }
+	public static function init(): ImageUtils {
+		return new self();
+	}
 
-    /**
-     * Add image sizes.
-     */
-    public function addImageSizes(): void
-    {
-        if (function_exists('add_image_size')) {
-            add_image_size('sermon_small', 75, 75, true);
-            add_image_size('sermon_medium', 300, 200, true);
-            add_image_size('sermon_wide', 940, 350, true);
-        }
-    }
+	public function register(): void {
+		if ( ! did_action( $this->hook ) || defined( 'PHPUNIT_TESTING' ) ) {
+			add_action( 'after_setup_theme', array( $this, 'addImageSizes' ) );
+			do_action( $this->hook );
+		}
+	}
+
+	/**
+	 * Add image sizes.
+	 */
+	public function addImageSizes(): void {
+		if ( function_exists( 'add_image_size' ) ) {
+			add_image_size( 'sermon_small', 75, 75, true );
+			add_image_size( 'sermon_medium', 300, 200, true );
+			add_image_size( 'sermon_wide', 940, 350, true );
+		}
+	}
 }

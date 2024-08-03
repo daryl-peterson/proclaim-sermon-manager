@@ -1,4 +1,15 @@
 <?php
+/**
+ * Plugin main class.
+ *
+ * @package     Sermon Manager
+ *
+ * @author      Daryl Peterson <@gmail.com>
+ * @copyright   Copyright (c) 2024, Daryl Peterson
+ * @license     https://www.gnu.org/licenses/gpl-3.0.txt
+ *
+ * @since       1.0.0
+ */
 
 namespace DRPSermonManager;
 
@@ -10,78 +21,102 @@ use DRPSermonManager\Logging\Logger;
 use DRPSermonManager\Taxonomy\BibleBookLoad;
 
 /**
- * Class description.
- *
- * @category
- *
- * @author      Daryl Peterson <@gmail.com>
- * @copyright   Copyright (c) 2024, Daryl Peterson
- * @license     https://www.gnu.org/licenses/gpl-3.0.txt
+ * Plugin main class.
  *
  * @since       1.0.0
  */
-class Plugin implements PluginInt
-{
-    private NoticeInt $notice;
+class Plugin implements PluginInt {
 
-    public function __construct()
-    {
-        $this->notice = App::getNoticeInt();
-    }
+	private NoticeInt $notice;
 
-    public function init(): void
-    {
-        try {
-            $hook = Helper::getKeyName('PLUGIN_INIT');
 
-            if (did_action($hook) && !defined('PHPUNIT_TESTING')) {
-                // @codeCoverageIgnoreStart
-                return;
-                // @codeCoverageIgnoreEnd
-            }
-            register_activation_hook(FILE, [$this, 'activate']);
-            register_deactivation_hook(FILE, [$this, 'deactivate']);
-            add_action('shutdown', [$this, 'shutdown']);
-            add_action('admin_notices', [$this, 'showNotice']);
+	/**
+	 * Set object properties.
+	 *
+	 * @since 1.0.0
+	 */
+	public function __construct() {
+		$this->notice = App::getNoticeInt();
+	}
 
-            // Load other classes
-            App::getRequirementsInt()->register();
-            App::getTextDomainInt()->register();
-            App::getPostTypeSetupInt()->register();
-            QueueScripts::init()->register();
-            AdminSermon::init()->register();
-            ImageUtils::init()->register();
-            BibleBookLoad::init()->register();
+	/**
+	 * Initialize plugin hooks.
+	 *
+	 * @return void
+	 */
+	public function init(): void {
+		try {
+			$hook = Helper::get_key_name( 'PLUGIN_INIT' );
 
-            Logger::debug('PLUGIN HOOKS INITIALIZED');
-            do_action($hook);
+			if ( did_action( $hook ) && ! defined( 'PHPUNIT_TESTING' ) ) {
+				// @codeCoverageIgnoreStart
+				return;
+				// @codeCoverageIgnoreEnd
+			}
+			register_activation_hook( FILE, array( $this, 'activate' ) );
+			register_deactivation_hook( FILE, array( $this, 'deactivate' ) );
+			add_action( 'shutdown', array( $this, 'shutdown' ) );
+			add_action( 'admin_notices', array( $this, 'show_notice' ) );
 
-            // @codeCoverageIgnoreStart
-        } catch (\Throwable $th) {
-            Logger::error(['MESSAGE' => $th->getMessage(), 'TRACE' => $th->getTrace()]);
-            // @codeCoverageIgnoreEnd
-        }
-    }
+			// Load other classes
+			Requirements::init()->register();
+			App::getTextDomainInt()->register();
+			App::getPostTypeSetupInt()->register();
+			QueueScripts::init()->register();
+			AdminSermon::init()->register();
+			ImageUtils::init()->register();
+			BibleBookLoad::init()->register();
 
-    public function activate(): void
-    {
-        Logger::debug('Activated');
-        // @todo Add activation cleanup
-    }
+			Logger::debug( 'PLUGIN HOOKS INITIALIZED' );
+			do_action( $hook );
 
-    public function deactivate(): void
-    {
-        Logger::debug('DEACTIVATING');
-        // @todo Add deactivation cleanup
-    }
+			// @codeCoverageIgnoreStart
+		} catch ( \Throwable $th ) {
+			Logger::error(
+				array(
+					'MESSAGE' => $th->getMessage(),
+					'TRACE'   => $th->getTrace(),
+				)
+			);
+			// @codeCoverageIgnoreEnd
+		}
+	}
 
-    public function showNotice(): void
-    {
-        $this->notice->showNotice();
-    }
+	/**
+	 * Activativation.
+	 *
+	 * @return void
+	 */
+	public function activate(): void {
+		Logger::debug( 'Activated' );
+		// @todo Add activation cleanup
+	}
 
-    public function shutdown(): void
-    {
-        Logger::debug("SHUTDOWN\n".str_repeat('-', 80)."\n\n\n");
-    }
+	/**
+	 * Deactivation.
+	 *
+	 * @return void
+	 */
+	public function deactivate(): void {
+		Logger::debug( 'DEACTIVATING' );
+		// @todo Add deactivation cleanup
+	}
+
+	/**
+	 * Dispaly admin notice
+	 *
+	 * @return void
+	 */
+	public function show_notice(): void {
+		$this->notice->show_notice();
+	}
+
+	/**
+	 * Shut down cleanup.
+	 *
+	 * @return void
+	 */
+	public function shutdown(): void {
+		Logger::debug( "SHUTDOWN\n" . str_repeat( '-', 80 ) . "\n\n\n" );
+	}
 }

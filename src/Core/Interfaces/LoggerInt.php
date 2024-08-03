@@ -13,26 +13,32 @@ namespace DRPSermonManager\Interfaces;
  *
  * @since       1.0.0
  */
-interface LoggerInt
-{
-    /**
-     * Log debug message.
-     *
-     * @since 1.0.0
-     */
-    public static function debug(mixed $context): bool;
+interface LoggerInt {
 
-    /**
-     * Log error message.
-     *
-     * @since 1.0.0
-     */
-    public static function error(mixed $context): bool;
+	/**
+	 * Write debug log.
+	 *
+	 * @param mixed $context Context for logging.
+	 * @return boolean
+	 * @since 1.0.0
+	 */
+	public static function debug( mixed $context ): bool;
 
-    /**
-     * Log info message.
-     *
-     * @since 1.0.0
-     */
-    public static function info(mixed $context): bool;
+	/**
+	 * Write error log.
+	 *
+	 * @param mixed $context Context for logging.
+	 * @return boolean
+	 * @since 1.0.0
+	 */
+	public static function error( mixed $context ): bool;
+
+	/**
+	 * Write info log.
+	 *
+	 * @param mixed $context Context for logging.
+	 * @return boolean
+	 * @since 1.0.0
+	 */
+	public static function info( mixed $context ): bool;
 }

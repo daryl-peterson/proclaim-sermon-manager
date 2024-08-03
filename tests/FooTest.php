@@ -15,16 +15,15 @@ use DRPSermonManager\Logging\Logger;
  *
  * @since       1.0.0
  */
-class FooTest extends BaseTest
-{
-    public function tester()
-    {
-        $obj = true;
-        $this->assertTrue($obj);
+class FooTest extends BaseTest {
 
-        $meta = get_post_meta(6490, 'sermon_date', true);
-        $this->assertNotNull($meta);
+	public function tester() {
+		$obj = true;
+		$this->assertTrue( $obj );
 
-        Logger::error(['META' => $meta]);
-    }
+		$meta = get_post_meta( 6490, 'sermon_date', true );
+		$this->assertNotNull( $meta );
+
+		Logger::error( array( 'META' => $meta ) );
+	}
 }

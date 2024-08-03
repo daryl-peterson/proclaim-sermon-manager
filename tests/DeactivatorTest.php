@@ -19,24 +19,22 @@ use const DRPSermonManager\FILE;
  *
  * @since       1.0.0
  */
-class DeactivatorTest extends BaseTest
-{
-    public function testMisc()
-    {
-        try {
-            $this->forceException();
-        } catch (\Throwable $th) {
-            FatalError::set($th);
-        }
+class DeactivatorTest extends BaseTest {
 
-        $result = Helper::isPluginActive(plugin_basename(FILE));
-        $this->assertFalse($result);
+	public function testMisc() {
+		try {
+			$this->forceException();
+		} catch ( \Throwable $th ) {
+			FatalError::set( $th );
+		}
 
-        activate_plugin(plugin_basename(FILE));
-    }
+		$result = Helper::is_plugin_active( plugin_basename( FILE ) );
+		$this->assertFalse( $result );
 
-    private function forceException()
-    {
-        throw new PluginException('Test Force Exception');
-    }
+		activate_plugin( plugin_basename( FILE ) );
+	}
+
+	private function forceException() {
+		throw new PluginException( 'Test Force Exception' );
+	}
 }

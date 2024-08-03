@@ -6,27 +6,26 @@ use DRPSermonManager\App;
 use DRPSermonManager\Interfaces\NoticeInt;
 use DRPSermonManager\Logging\Logger;
 
-class NoticeTest extends BaseTest
-{
-    public function tester()
-    {
-        $title = 'This is the tile';
-        $message = 'This is the message';
+class NoticeTest extends BaseTest {
 
-        $obj = App::getNoticeInt(NoticeInt::class);
-        $obj->setSuccess($title, $message);
-        $obj->setWarning($title, $message);
-        $obj->setInfo($title, $message);
-        $obj->setError($title, $message);
+	public function tester() {
+		$title   = 'This is the tile';
+		$message = 'This is the message';
 
-        ob_start();
-        $obj->showNotice();
-        $result = ob_get_clean();
-        Logger::debug($result);
-        $this->assertIsString($result);
+		$obj = App::getNoticeInt( NoticeInt::class );
+		$obj->set_success( $title, $message );
+		$obj->set_warning( $title, $message );
+		$obj->set_info( $title, $message );
+		$obj->set_error( $title, $message );
 
-        $obj->delete();
+		ob_start();
+		$obj->show_notice();
+		$result = ob_get_clean();
+		Logger::debug( $result );
+		$this->assertIsString( $result );
 
-        $obj->showNotice();
-    }
+		$obj->delete();
+
+		$obj->show_notice();
+	}
 }

@@ -5,6 +5,7 @@ namespace DRPSermonManager\Tests;
 use DRPSermonManager\App;
 use DRPSermonManager\Exceptions\PluginException;
 use DRPSermonManager\RequirementCheck;
+use DRPSermonManager\Requirements;
 
 /**
  * Class description.
@@ -17,49 +18,35 @@ use DRPSermonManager\RequirementCheck;
  *
  * @since       1.0.0
  */
-class RequirementsTest extends BaseTest
-{
-    private RequirementCheck $obj;
+class RequirementsTest extends BaseTest {
 
-    public function setup(): void
-    {
-        $this->obj = App::getRequirementCheckInt();
-    }
+	private RequirementCheck $obj;
 
-    public function teardown(): void
-    {
-        $obj = App::getRequirementsInt();
-        $obj->notice()->delete();
-    }
+	public function setup(): void {
+		$this->obj = App::getRequirementCheckInt();
+	}
 
-    public function tester()
-    {
-        wp_set_current_user(1);
+	public function teardown(): void {
+		$obj = Requirements::init();
+		$obj->notice()->delete();
+	}
 
-        $obj = App::getRequirementsInt();
-        $result = $obj->isCompatible();
-        $this->assertNull($result);
-        $obj->isCompatible();
-    }
+	public function tester() {
+		wp_set_current_user( 1 );
 
-    public function testPHPVer()
-    {
-        $this->expectException(PluginException::class);
-        $this->obj->checkPHPVer('9.0');
-    }
+		$obj    = Requirements::init();
+		$result = $obj->is_compatible();
+		$this->assertNull( $result );
+		$obj->is_compatible();
+	}
 
-    public function testWPVer()
-    {
-        $this->expectException(PluginException::class);
-        $this->obj->checkWPVer('7.0');
-    }
+	public function testPHPVer() {
+		$this->expectException( PluginException::class );
+		$this->obj->check_php_ver( '9.0' );
+	}
 
-    public function testForceFail()
-    {
-        wp_set_current_user(1);
-        $obj = App::getRequirementsInt();
-        $obj->setFail(true);
-        $result = $obj->isCompatible();
-        $this->assertNull($result);
-    }
+	public function testWPVer() {
+		$this->expectException( PluginException::class );
+		$this->obj->check_wp_ver( '7.0' );
+	}
 }

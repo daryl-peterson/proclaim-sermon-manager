@@ -1,4 +1,14 @@
 <?php
+/**
+ * Post type registration abstract.
+ *
+ * @package     Sermon Manager
+ * @author      Daryl Peterson <@gmail.com>
+ * @copyright   Copyright (c) 2024, Daryl Peterson
+ * @license     https://www.gnu.org/licenses/gpl-3.0.txt
+ *
+ * @since       1.0.0
+ */
 
 namespace DRPSermonManager\Abstracts;
 
@@ -10,91 +20,122 @@ use DRPSermonManager\Logging\Logger;
 /**
  * Post type registration abstract.
  *
+ * @package     Sermon Manager
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
  *
  * @since       1.0.0
  */
-abstract class PostTypeRegAbs implements PostTypeRegInt
-{
-    /**
-     * Post type.
-     */
-    protected string $pt;
+abstract class PostTypeRegAbs implements PostTypeRegInt {
 
-    /**
-     * Congifurage file to read.
-     */
-    protected string $configFile;
+	/**
+	 * Post type.
+	 */
+	protected string $pt;
 
-    public function add(): void
-    {
-        $exist = $this->exist();
-        if (!defined('PHPUNIT_TESTING')) {
-            // @codeCoverageIgnoreStart
-            if (!is_blog_installed() || $exist) {
-                return;
-            }
-            // @codeCoverageIgnoreEnd
-        }
+	/**
+	 * Congifurage file to read.
+	 */
+	protected string $config_file;
 
-        try {
-            $def = Helper::getConfig($this->configFile);
-            $result = register_post_type($this->pt, $def);
-            // @codeCoverageIgnoreStart
-        } catch (\Throwable $th) {
-            Logger::error(['MESSAGE' => $th->getMessage(), 'TRACE' => $th->getTrace()]);
-            // @codeCoverageIgnoreEnd
-        }
+	/**
+	 * Add post type.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @throws PluginException Throws exception on failure.
+	 */
+	public function add(): void {
+		$exist = $this->exist();
+		if ( ! defined( 'PHPUNIT_TESTING' ) ) {
+			// @codeCoverageIgnoreStart
+			if ( ! is_blog_installed() || $exist ) {
+				return;
+			}
+			// @codeCoverageIgnoreEnd
+		}
 
-        if (!$this->exist() || is_wp_error($result)) {
-            // @codeCoverageIgnoreStart
-            $message = 'Failed to add post type '.$this->pt;
-            if (is_wp_error($result)) {
-                $message = $this->getWpErrorMessage($result);
-            }
-            throw new PluginException($message);
-            // @codeCoverageIgnoreEnd
-        }
-    }
+		try {
+			$def = Helper::get_config( $this->config_file );
+			Logger::debug( $def );
+			$result = register_post_type( $this->pt, $def );
+			// @codeCoverageIgnoreStart
+		} catch ( \Throwable $th ) {
+			Logger::error(
+				array(
+					'MESSAGE' => $th->getMessage(),
+					'TRACE'   => $th->getTrace(),
+				)
+			);
+			// @codeCoverageIgnoreEnd
+		}
 
-    public function remove(): void
-    {
-        $exist = $this->exist();
-        if (!defined('PHPUNIT_TESTING')) {
-            // @codeCoverageIgnoreStart
-            if (!is_blog_installed() || (!$exist)) {
-                return;
-            }
-            // @codeCoverageIgnoreEnd
-        }
+		if ( ! $this->exist() || is_wp_error( $result ) ) {
+			// @codeCoverageIgnoreStart
+			$message = 'Failed to add post type ' . $this->pt;
+			if ( is_wp_error( $result ) ) {
+				$message = $this->get_wp_error_message( $result );
+			}
+			throw new PluginException( $message );
+			// @codeCoverageIgnoreEnd
+		}
+	}
 
-        try {
-            $result = unregister_post_type($this->pt);
-            // @codeCoverageIgnoreStart
-        } catch (\Throwable $th) {
-            // @codeCoverageIgnoreEnd
-        }
+	/**
+	 * Remove post type.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @throws PluginException Throws excepton on failure.
+	 */
+	public function remove(): void {
+		$exist = $this->exist();
+		if ( ! defined( 'PHPUNIT_TESTING' ) ) {
+			// @codeCoverageIgnoreStart
+			if ( ! is_blog_installed() || ( ! $exist ) ) {
+				return;
+			}
+			// @codeCoverageIgnoreEnd
+		}
 
-        if ($this->exist() || is_wp_error($result)) {
-            // @codeCoverageIgnoreStart
-            $message = 'Failed to remove post type '.$this->pt;
-            if (is_wp_error($result)) {
-                $message = $this->getWpErrorMessage($result);
-            }
-            throw new PluginException($message);
-            // @codeCoverageIgnoreEnd
-        }
-    }
+		try {
+			$result = unregister_post_type( $this->pt );
+			// @codeCoverageIgnoreStart
+		} catch ( \Throwable $th ) {
+			// @codeCoverageIgnoreEnd
+		}
 
-    public function exist(): bool
-    {
-        return post_type_exists($this->pt);
-    }
+		if ( $this->exist() || is_wp_error( $result ) ) {
+			// @codeCoverageIgnoreStart
+			$message = 'Failed to remove post type ' . $this->pt;
+			if ( is_wp_error( $result ) ) {
+				$message = $this->get_wp_error_message( $result );
+			}
+			throw new PluginException( $message );
+			// @codeCoverageIgnoreEnd
+		}
+	}
 
-    public function getWpErrorMessage(\WP_Error $error): string
-    {
-        return $error->get_error_message();
-    }
+	/**
+	 * Check if post type exist.
+	 *
+	 * @return bool True if post type exist, fail if not.
+	 * @since 1.0.0
+	 */
+	public function exist(): bool {
+		return post_type_exists( $this->pt );
+	}
+
+	/**
+	 * Get WP_Error message.
+	 *
+	 * @param \WP_Error $error WP Error.
+	 * @since 1.0.0
+	 *
+	 * @return string
+	 */
+	public function get_wp_error_message( \WP_Error $error ): string {
+		return $error->get_error_message();
+	}
 }

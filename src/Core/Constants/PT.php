@@ -11,7 +11,7 @@ namespace DRPSermonManager\Constants;
  *
  * @since       1.0.0
  */
-class PT
-{
-    public const SERMON = 'drpsermon';
+class PT {
+
+	public const SERMON = 'drpsermon';
 }

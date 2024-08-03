@@ -1,4 +1,15 @@
 <?php
+/**
+ * Language locales.
+ *
+ * @package     Sermon Manager
+ *
+ * @author      Daryl Peterson <@gmail.com>
+ * @copyright   Copyright (c) 2024, Daryl Peterson
+ * @license     https://www.gnu.org/licenses/gpl-3.0.txt
+ *
+ * @since       1.0.0
+ */
 
 namespace DRPSermonManager;
 
@@ -8,7 +19,7 @@ use DRPSermonManager\Logging\Logger;
 /**
  * Language locales.
  *
- * @category
+ * @package     Sermon Manager
  *
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
@@ -16,80 +27,111 @@ use DRPSermonManager\Logging\Logger;
  *
  * @since       1.0.0
  */
-class TextDomain implements TextDomainInt
-{
-    public const INIT_KEY = 'TEXT_DOMAIN_INIT';
+class TextDomain implements TextDomainInt {
 
-    public static function init(): TextDomainInt
-    {
-        $obj = new self();
+	public const INIT_KEY = 'TEXT_DOMAIN_INIT';
 
-        return $obj;
-    }
+	/**
+	 * Initialize object.
+	 *
+	 * @since 1.0.0
+	 */
+	public static function init(): TextDomainInt {
+		$obj = new self();
 
-    public function register(): void
-    {
-        $hook = Helper::getKeyName(self::INIT_KEY);
+		return $obj;
+	}
 
-        if (did_action($hook) && !defined('PHPUNIT_TESTING')) {
-            // @codeCoverageIgnoreStart
-            return;
-            // @codeCoverageIgnoreEnd
-        }
+	/**
+	 * Register callbacks
+	 *
+	 * @return void
+	 * @since 1.0.0
+	 */
+	public function register(): void {
+		$hook = Helper::get_key_name( self::INIT_KEY );
 
-        add_action('init', [$this, 'loadDomain']);
-        Logger::debug('PLUGIN HOOKS INITIALIZED');
-        do_action($hook);
-    }
+		if ( did_action( $hook ) && ! defined( 'PHPUNIT_TESTING' ) ) {
+			// @codeCoverageIgnoreStart
+			return;
+			// @codeCoverageIgnoreEnd
+		}
 
-    public function loadDomain(): void
-    {
-        load_plugin_textdomain(DOMAIN, false, basename(dirname(FILE)).'/languages/');
-    }
+		add_action( 'init', array( $this, 'load_domain' ) );
+		Logger::debug( 'PLUGIN HOOKS INITIALIZED' );
+		do_action( $hook );
+	}
 
-    public function switchToSiteLocale(): void
-    {
-        try {
-            if (!function_exists('switch_to_locale')) {
-                // @codeCoverageIgnoreStart
-                return;
-                // @codeCoverageIgnoreEnd
-            }
-            switch_to_locale(get_locale());
+	/**
+	 * Load domain locales
+	 *
+	 * @since 1.0.0
+	 */
+	public function load_domain(): void {
+		load_plugin_textdomain( DOMAIN, false, basename( dirname( FILE ) ) . '/languages/' );
+	}
 
-            // Filter on plugin_locale so load_plugin_textdomain loads the correct locale.
-            add_filter('plugin_locale', 'get_locale');
+	/**
+	 * Switch to site language.
+	 *
+	 * @since 1.0
+	 */
+	public function switch_to_tite_locale(): void {
+		try {
+			if ( ! function_exists( 'switch_to_locale' ) ) {
+				// @codeCoverageIgnoreStart
+				return;
+				// @codeCoverageIgnoreEnd
+			}
+			switch_to_locale( get_locale() );
 
-            // Init Sermon Manager locale.
-            $this->loadDomain();
+			// Filter on plugin_locale so load_plugin_textdomain loads the correct locale.
+			add_filter( 'plugin_locale', 'get_locale' );
 
-            // @codeCoverageIgnoreStart
-        } catch (\Throwable $th) {
-            Logger::error(['MESSAGE' => $th->getMessage(), 'TRACE' => $th->getTrace()]);
-            // @codeCoverageIgnoreEnd
-        }
-    }
+			// Init Sermon Manager locale.
+			$this->load_domain();
 
-    public function restoreLocale(): void
-    {
-        try {
-            if (!function_exists('restore_previous_locale')) {
-                // @codeCoverageIgnoreStart
-                return;
-                // @codeCoverageIgnoreEnd
-            }
-            restore_previous_locale();
+			// @codeCoverageIgnoreStart
+		} catch ( \Throwable $th ) {
+			Logger::error(
+				array(
+					'MESSAGE' => $th->getMessage(),
+					'TRACE'   => $th->getTrace(),
+				)
+			);
+			// @codeCoverageIgnoreEnd
+		}
+	}
 
-            // Remove filter.
-            remove_filter('plugin_locale', 'get_locale');
+	/**
+	 * Restore language to original.
+	 *
+	 * @since 1.0
+	 */
+	public function restore_locale(): void {
+		try {
+			if ( ! function_exists( 'restore_previous_locale' ) ) {
+				// @codeCoverageIgnoreStart
+				return;
+				// @codeCoverageIgnoreEnd
+			}
+			restore_previous_locale();
 
-            // Init Sermon Manager locale.
-            $this->loadDomain();
+			// Remove filter.
+			remove_filter( 'plugin_locale', 'get_locale' );
 
-            // @codeCoverageIgnoreStart
-        } catch (\Throwable $th) {
-            Logger::error(['MESSAGE' => $th->getMessage(), 'TRACE' => $th->getTrace()]);
-            // @codeCoverageIgnoreEnd
-        }
-    }
+			// Init Sermon Manager locale.
+			$this->load_domain();
+
+			// @codeCoverageIgnoreStart
+		} catch ( \Throwable $th ) {
+			Logger::error(
+				array(
+					'MESSAGE' => $th->getMessage(),
+					'TRACE'   => $th->getTrace(),
+				)
+			);
+			// @codeCoverageIgnoreEnd
+		}
+	}
 }

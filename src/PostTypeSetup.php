@@ -1,4 +1,16 @@
 <?php
+/**
+ * Register post types and taxonomies.
+ * - Stub - calls other object methods.
+ * - Used so other object don't have to register callbacks.
+ *
+ * @package     Sermon Manager
+ * @author      Daryl Peterson <@gmail.com>
+ * @copyright   Copyright (c) 2024, Daryl Peterson
+ * @license     https://www.gnu.org/licenses/gpl-3.0.txt
+ *
+ * @since       1.0.0
+ */
 
 namespace DRPSermonManager;
 
@@ -21,106 +33,135 @@ use DRPSermonManager\Taxonomy\TopicsReg;
  * - Stub - calls other object methods.
  * - Used so other object don't have to register callbacks.
  *
- * @author      Daryl Peterson <@gmail.com>
- * @copyright   Copyright (c) 2024, Daryl Peterson
- * @license     https://www.gnu.org/licenses/gpl-3.0.txt
- *
  * @since       1.0.0
  */
-class PostTypeSetup extends PostTypeSetupAbs implements PostTypeSetupInt
-{
-    protected function __construct()
-    {
-        $pt = PT::SERMON;
-        $this->postypes[$pt] = SermonReg::init();
-        $this->taxonomies[$pt][] = PreacherReg::init();
-        $this->taxonomies[$pt][] = SeriesReg::init();
-        $this->taxonomies[$pt][] = TopicsReg::init();
-        $this->taxonomies[$pt][] = BibleBookReg::init();
-        $this->taxonomies[$pt][] = ServiceTypeReg::init();
-    }
+class PostTypeSetup extends PostTypeSetupAbs implements PostTypeSetupInt {
 
-    public function register(): void
-    {
-        add_action('init', [$this, 'add']);
-        add_action(ACTIONS::FLUSH_REWRITE_RULES, [$this, 'flush']);
-    }
+	/**
+	 * Initialize object.
+	 *
+	 * @since 1.0.0
+	 */
+	protected function __construct() {
+		$pt                        = PT::SERMON;
+		$this->post_types[ $pt ]   = SermonReg::init();
+		$this->taxonomies[ $pt ][] = PreacherReg::init();
+		$this->taxonomies[ $pt ][] = SeriesReg::init();
+		$this->taxonomies[ $pt ][] = TopicsReg::init();
+		$this->taxonomies[ $pt ][] = BibleBookReg::init();
+		$this->taxonomies[ $pt ][] = ServiceTypeReg::init();
+	}
 
-    public function add(): void
-    {
-        try {
-            $list = $this->getPostTypeList();
+	/**
+	 * Register callbacks.
+	 *
+	 * @return void
+	 *
+	 * @since 1.0.0
+	 */
+	public function register(): void {
+		add_action( 'init', array( $this, 'add' ) );
+		add_action( ACTIONS::FLUSH_REWRITE_RULES, array( $this, 'flush' ) );
+	}
 
-            foreach ($list as $postType) {
-                /**
-                 * @var PostTypeRegInt $objPostType
-                 */
-                $objPostType = $this->getPostType($postType);
-                $objPostType->add();
-                $taxonomies = $this->getPostTypeTaxonomies($postType);
+	/**
+	 * Add post types and taxonomy.
+	 *
+	 * @since 1.0.0
+	 */
+	public function add(): void {
+		try {
+			$list = $this->get_post_type_list();
+			Logger::debug( array( 'GET POST TYPE LIST' => $list ) );
 
-                if (!isset($taxonomies)) {
-                    // @codeCoverageIgnoreStart
-                    continue;
-                    // @codeCoverageIgnoreEnd
-                }
+			foreach ( $list as $post_type ) {
+				/**
+				 * Post type registation.
+				 *
+				 * @var PostTypeRegInt $obj
+				 */
+				$obj = $this->get_post_type( $post_type );
+				Logger::debug( array( 'OBJ' => $obj ) );
+				$obj->add();
+				$taxonomies = $this->get_post_type_taxonomies( $post_type );
 
-                /**
-                 * @var TaxonomyRegInt $taxonomy
-                 */
-                foreach ($taxonomies as $taxonomy) {
-                    $taxonomy->add();
-                }
-            }
+				if ( ! isset( $taxonomies ) ) {
+					// @codeCoverageIgnoreStart
+					continue;
+					// @codeCoverageIgnoreEnd
+				}
 
-            do_action('drpsermon_after_post_setup');
+				/**
+				 * Taxonomy registration interface.
+				 *
+				 * @var TaxonomyRegInt $taxonomy
+				 */
+				foreach ( $taxonomies as $taxonomy ) {
+					$taxonomy->add();
+				}
+			}
 
-            // @codeCoverageIgnoreStart
-        } catch (\Throwable $th) {
-            FatalError::set($th);
-            // @codeCoverageIgnoreEnd
-        }
-    }
+			do_action( 'drpsermon_after_post_setup' );
 
-    public function remove(): void
-    {
-        try {
-            $list = $this->getPostTypeList();
+			// @codeCoverageIgnoreStart
+		} catch ( \Throwable $th ) {
+			FatalError::set( $th );
+			// @codeCoverageIgnoreEnd
+		}
+	}
 
-            foreach ($list as $postType) {
-                /**
-                 * @var PostTypeRegInt $objPostType
-                 */
-                $objPostType = $this->getPostType($postType);
-                $taxonomies = $this->getPostTypeTaxonomies($postType);
+	/**
+	 * Remove post types and taxonomy.
+	 *
+	 * @since 1.0.0
+	 */
+	public function remove(): void {
+		try {
+			$list = $this->get_post_type_list();
+			Logger::debug( array( 'GET POST TYPE LIST' => $list ) );
 
-                if (!isset($taxonomies)) {
-                    // @codeCoverageIgnoreStart
-                    $objPostType->remove();
-                    continue;
-                    // @codeCoverageIgnoreEnd
-                }
+			foreach ( $list as $post_type ) {
+				/**
+				 * Post type registration interface.
+				 *
+				 * @var PostTypeRegInt $obj
+				 */
+				$obj        = $this->get_post_type( $post_type );
+				$taxonomies = $this->get_post_type_taxonomies( $post_type );
 
-                /**
-                 * @var TaxonomyRegInt $taxonomy
-                 */
-                foreach ($taxonomies as $taxonomy) {
-                    Logger::debug(['TAXONOMY' => $taxonomy]);
-                    $taxonomy->remove();
-                }
+				if ( ! isset( $taxonomies ) ) {
+					// @codeCoverageIgnoreStart
+					$obj->remove();
+					continue;
+					// @codeCoverageIgnoreEnd
+				}
 
-                $objPostType->remove();
-            }
+				/**
+				 * Taxonomy registration interface.
+				 *
+				 * @var TaxonomyRegInt $taxonomy
+				 */
+				foreach ( $taxonomies as $taxonomy ) {
+					Logger::debug( array( 'TAXONOMY' => $taxonomy ) );
+					$taxonomy->remove();
+				}
 
-            // @codeCoverageIgnoreStart
-        } catch (\Throwable $th) {
-            FatalError::set($th);
-            // @codeCoverageIgnoreEnd
-        }
-    }
+				$obj->remove();
+			}
 
-    public function flush(): void
-    {
-        flush_rewrite_rules();
-    }
+			// @codeCoverageIgnoreStart
+		} catch ( \Throwable $th ) {
+			FatalError::set( $th );
+			// @codeCoverageIgnoreEnd
+		}
+	}
+
+	/**
+	 * Flush rewrite rule
+	 *
+	 * @return void
+	 */
+	public function flush(): void {
+		flush_rewrite_rules();
+	}
 }

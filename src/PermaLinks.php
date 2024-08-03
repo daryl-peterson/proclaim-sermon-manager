@@ -4,8 +4,9 @@ namespace DRPSermonManager;
 
 use DRPSermonManager\Constants\PT;
 use DRPSermonManager\Constants\TAX;
-use DRPSermonManager\Interfaces\PermaLinkStructureInt;
+use DRPSermonManager\Interfaces\PermaLinkInt;
 use DRPSermonManager\Traits\SingletonTrait;
+
 
 /**
  * Class description.
@@ -18,106 +19,128 @@ use DRPSermonManager\Traits\SingletonTrait;
  *
  * @since       1.0.0
  */
-class PermaLinks implements PermaLinkStructureInt
-{
-    use SingletonTrait;
+class PermaLinks implements PermaLinkInt {
 
-    private array $permalinks;
+	use SingletonTrait;
 
-    public static function init(): PermaLinkStructureInt
-    {
-        $obj = PermaLinks::getInstance();
-        $obj->config();
+	/**
+	 * Permalinks array.
+	 *
+	 * @var array
+	 */
+	private array $permalinks;
 
-        return $obj;
-    }
+	/**
+	 * Initialize object.
+	 *
+	 * @return PermaLinkInt
+	 * @since 1.0.0
+	 */
+	public static function init(): PermaLinkInt {
+		$obj = self::get_instance();
+		$obj->config();
 
-    public function get(): array
-    {
-        return $this->permalinks;
-    }
+		return $obj;
+	}
 
-    private function config(): void
-    {
-        if (isset($this->permalinks) && !defined('PHPUNIT_TESTING')) {
-            // @codeCoverageIgnoreStart
-            return;
-            // @codeCoverageIgnoreEnd
-        }
-        $actionKey = Helper::getKeyName('PERMALINK_CONFIG');
-        if (did_action($actionKey) && !defined('PHPUNIT_TESTING')) {
-            // @codeCoverageIgnoreStart
-            return;
-            // @codeCoverageIgnoreEnd
-        }
+	/**
+	 * Get permalinks array.
+	 *
+	 * @return array
+	 * @since 1.0.0
+	 */
+	public function get(): array {
+		return $this->permalinks;
+	}
 
-        $opts = App::getOptionsInt();
-        if (did_action('admin_init')) {
-            // @codeCoverageIgnoreStart
-            TextDomain::init()->switchToSiteLocale();
-            // @codeCoverageIgnoreEnd
-        }
+	/**
+	 * Set configuration
+	 *
+	 * @return void
+	 * @since 1.0.0
+	 */
+	private function config(): void {
+		if ( isset( $this->permalinks ) && ! defined( 'PHPUNIT_TESTING' ) ) {
+			// @codeCoverageIgnoreStart
+			return;
+			// @codeCoverageIgnoreEnd
+		}
+		$action_key = Helper::get_key_name( 'PERMALINK_CONFIG' );
+		if ( did_action( $action_key ) && ! defined( 'PHPUNIT_TESTING' ) ) {
+			// @codeCoverageIgnoreStart
+			return;
+			// @codeCoverageIgnoreEnd
+		}
 
-        $perm = wp_parse_args((array) $opts->get('permalinks', []),
-            [
-                TAX::PREACHER => trim(sanitize_title($opts->get(TAX::PREACHER, ''))),
-                TAX::SERIES => '',
-                TAX::TOPICS => '',
-                TAX::BIBLE_BOOK => '',
-                TAX::SERVICE_TYPE => trim(sanitize_title($opts->get('service_type_label', ''))),
-                PT::SERMON => trim($opts->get('archive_slug', '')),
-                'use_verbose_page_rules' => false,
-            ]);
+		$opts = App::getOptionsInt();
+		if ( did_action( 'admin_init' ) ) {
+			// @codeCoverageIgnoreStart
+			TextDomain::init()->switch_to_tite_locale();
+			// @codeCoverageIgnoreEnd
+		}
 
-        // Ensure rewrite slugs are set.
-        $perm[TAX::PREACHER] = empty($perm[TAX::PREACHER]) ?
-            _x('preacher', 'slug', DOMAIN) : $perm[TAX::PREACHER];
+		$perm = wp_parse_args(
+			(array) $opts->get( 'permalinks', array() ),
+			array(
+				TAX::PREACHER            => trim( sanitize_title( $opts->get( TAX::PREACHER, '' ) ) ),
+				TAX::SERIES              => '',
+				TAX::TOPICS              => '',
+				TAX::BIBLE_BOOK          => '',
+				TAX::SERVICE_TYPE        => trim( sanitize_title( $opts->get( 'service_type_label', '' ) ) ),
+				PT::SERMON               => trim( $opts->get( 'archive_slug', '' ) ),
+				'use_verbose_page_rules' => false,
+			)
+		);
 
-        $perm[TAX::SERIES] = empty($perm[TAX::SERIES]) ?
-            _x('series', 'slug', DOMAIN) : $perm[TAX::SERIES];
+		// Ensure rewrite slugs are set.
+		$perm[ TAX::PREACHER ] = empty( $perm[ TAX::PREACHER ] ) ?
+			_x( 'preacher', 'slug', 'drpsermon' ) : $perm[ TAX::PREACHER ];
 
-        $perm[TAX::TOPICS] = empty($perm[TAX::TOPICS]) ?
-            _x('topics', 'slug', DOMAIN) : $perm[TAX::TOPICS];
+		$perm[ TAX::SERIES ] = empty( $perm[ TAX::SERIES ] ) ?
+			_x( 'series', 'slug', 'drpsermon' ) : $perm[ TAX::SERIES ];
 
-        $perm[TAX::BIBLE_BOOK] = empty($perm[TAX::BIBLE_BOOK]) ?
-            _x('book', 'slug', DOMAIN) : $perm[TAX::BIBLE_BOOK];
+		$perm[ TAX::TOPICS ] = empty( $perm[ TAX::TOPICS ] ) ?
+			_x( 'topics', 'slug', 'drpsermon' ) : $perm[ TAX::TOPICS ];
 
-        $perm[TAX::SERVICE_TYPE] = empty($perm[TAX::SERVICE_TYPE]) ?
-            _x('service-type', 'slug', DOMAIN) : $perm[TAX::SERVICE_TYPE];
+		$perm[ TAX::BIBLE_BOOK ] = empty( $perm[ TAX::BIBLE_BOOK ] ) ?
+			_x( 'book', 'slug', 'drpsermon' ) : $perm[ TAX::BIBLE_BOOK ];
 
-        $perm[PT::SERMON] = empty($perm[PT::SERMON]) ?
-            _x('sermons', 'slug', DOMAIN) : $perm[PT::SERMON];
+		$perm[ TAX::SERVICE_TYPE ] = empty( $perm[ TAX::SERVICE_TYPE ] ) ?
+			_x( 'service-type', 'slug', 'drpsermon' ) : $perm[ TAX::SERVICE_TYPE ];
 
-        foreach ($perm as $key => $value) {
-            $perm[$key] = untrailingslashit($value);
-        }
+		$perm[ PT::SERMON ] = empty( $perm[ PT::SERMON ] ) ?
+			_x( 'sermons', 'slug', 'drpsermon' ) : $perm[ PT::SERMON ];
 
-        // @todo fix
-        if ($opts->get('common_base_slug')) {
-            foreach ($perm as $name => &$permalink) {
-                if (PT::SERMON === $name) {
-                    continue;
-                }
+		foreach ( $perm as $key => $value ) {
+			$perm[ $key ] = untrailingslashit( $value );
+		}
 
-                $permalink = $perm[PT::SERMON].'/'.$permalink;
-            }
-        }
+		// @todo fix
+		if ( $opts->get( 'common_base_slug' ) ) {
+			foreach ( $perm as $name => &$permalink ) {
+				if ( PT::SERMON === $name ) {
+					continue;
+				}
 
-        if (did_action('admin_init')) {
-            // @codeCoverageIgnoreStart
-            TextDomain::init()->restoreLocale();
-            // @codeCoverageIgnoreEnd
-        }
+				$permalink = $perm[ PT::SERMON ] . '/' . $permalink;
+			}
+		}
 
-        $hook = Helper::getKeyName('permalink_structure');
+		if ( did_action( 'admin_init' ) ) {
+			// @codeCoverageIgnoreStart
+			TextDomain::init()->restore_locale();
+			// @codeCoverageIgnoreEnd
+		}
 
-        /*
-         * Allows to easily modify the slugs of sermons and taxonomies.
-         *
-         * @param array $perm Existing permalinks structure.
-         * @since 1.0.0
-         */
-        $this->permalinks = apply_filters($hook, $perm);
-        do_action($actionKey);
-    }
+		$hook = Helper::get_key_name( 'permalink_structure' );
+
+		/*
+		 * Allows to easily modify the slugs of sermons and taxonomies.
+		 *
+		 * @param array $perm Existing permalinks structure.
+		 * @since 1.0.0
+		 */
+		$this->permalinks = apply_filters( $hook, $perm );
+		do_action( $action_key );
+	}
 }

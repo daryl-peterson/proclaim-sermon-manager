@@ -1,4 +1,14 @@
 <?php
+/**
+ * Taxonomy registration interface.
+ *
+ * @package     Sermon Manager
+ * @author      Daryl Peterson <@gmail.com>
+ * @copyright   Copyright (c) 2024, Daryl Peterson
+ * @license     https://www.gnu.org/licenses/gpl-3.0.txt
+ *
+ * @since       1.0.0
+ */
 
 namespace DRPSermonManager\Interfaces;
 
@@ -7,43 +17,47 @@ use DRPSermonManager\Exceptions\PluginException;
 /**
  * Taxonomy registration interface.
  *
+ * @package     Sermon Manager
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
  *
  * @since       1.0.0
  */
-interface TaxonomyRegInt extends Initable
-{
-    /**
-     * Add taxonomy.
-     *
-     * @since 1.0.0
-     *
-     * @throws PluginException
-     */
-    public function add(): void;
+interface TaxonomyRegInt extends Initable {
 
-    /**
-     * Remove taxonomy.
-     *
-     * @since 1.0.0
-     *
-     * @throws PluginException
-     */
-    public function remove(): void;
+	/**
+	 * Add taxonomy.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @throws PluginException
+	 */
+	public function add(): void;
 
-    /**
-     * Check if taxonomy exist.
-     *
-     * @since 1.0.0
-     */
-    public function exist(): bool;
+	/**
+	 * Remove taxonomy.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @throws PluginException
+	 */
+	public function remove(): void;
 
-    /**
-     * Get WP_Error message.
-     *
-     * @since 1.0.0
-     */
-    public function getWpErrorMessage(\WP_Error $error): string;
+	/**
+	 * Check if taxonomy exist.
+	 *
+	 * @since 1.0.0
+	 */
+	public function exist(): bool;
+
+	/**
+	 * Get WP_Error message.
+	 *
+	 * @param \WP_Error $error WP Error.
+	 * @return string Error message
+	 *
+	 * @since 1.0.0
+	 */
+	public function get_wp_error_message( \WP_Error $error ): string;
 }

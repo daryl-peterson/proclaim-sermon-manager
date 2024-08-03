@@ -11,6 +11,6 @@ namespace DRPSermonManager\Interfaces;
  *
  * @since       1.0.0
  */
-interface RequirementCheckInt extends Initable, Runable
-{
+interface RequirementCheckInt extends Initable, Runable {
+
 }

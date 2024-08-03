@@ -1,102 +1,186 @@
 <?php
+/**
+ * Log record format
+ *
+ * @package     Sermon Manager
+ * @author      Daryl Peterson <@gmail.com>
+ * @copyright   Copyright (c) 2024, Daryl Peterson
+ * @license     https://www.gnu.org/licenses/gpl-3.0.txt
+ *
+ * @since       1.0.0
+ */
 
 namespace DRPSermonManager\Logging;
 
 use DRPSermonManager\Helper;
-
 /**
- * Get log record object.
+ * Log record format
  *
+ * @package     Sermon Manager
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
+ *
+ * @since       1.0.0
  */
-class LogRecord
-{
-    public string $date;
-    public string $level;
-    public string $class;
-    public string $function;
-    public string $line;
-    public string $file;
-    public string $context;
+class LogRecord {
 
-    public function __construct(string $file, mixed $context, string $level, array $trace)
-    {
-        $datetime = new \DateTime('now', wp_timezone());
-        $dt = $datetime->format('m-d-Y H:i:s.u e');
-        $this->date = $dt;
-        $this->level = strtoupper($level);
-        $this->class = $this->function = $this->line = $this->file = '';
-        $this->context = $this->fixContext($context);
+	/**
+	 * Date for log
+	 *
+	 * @var string
+	 */
+	public string $date;
 
-        $start = $this->getStartPos($trace);
+	/**
+	 * Log leve.
+	 *
+	 * @var string
+	 */
+	public string $level;
 
-        if (isset($start)) {
-            $this->getTraceInfo($trace, $start);
-        }
+	/**
+	 * Class from trace.
+	 *
+	 * @var string
+	 */
+	public string $class;
 
-        $dir = Helper::getPluginDir();
-        $this->file = str_replace($dir, '', $this->file);
-    }
+	/**
+	 * Function from trace.
+	 *
+	 * @var string
+	 */
+	public string $function;
 
-    private function getStartPos(array $trace): ?int
-    {
-        try {
-            $base = 0;
+	/**
+	 * Line from trace.
+	 *
+	 * @var string
+	 */
+	public string $line;
 
-            foreach ($trace as $key => $value) {
-                // $file = $value['file'];
+	/**
+	 * File from trace.
+	 *
+	 * @var string
+	 */
+	public string $file;
 
-                if (isset($value['function']) && ($value['function'] === 'log')) {
-                    $base = $key + 1;
-                    break;
-                }
-            }
+	/**
+	 * Log context
+	 *
+	 * @var string
+	 */
+	public string $context;
 
-            return $base;
-            // @codeCoverageIgnoreStart
-        } catch (\Throwable $th) {
-            return null;
-            // @codeCoverageIgnoreEnd
-        }
-    }
+	/**
+	 * Initialize object
+	 *
+	 * @param mixed  $context Log context.
+	 * @param string $level Log level.
+	 * @param array  $trace Log trace.
+	 */
+	public function __construct( mixed $context, string $level, array $trace ) {
+		$datetime       = new \DateTime( 'now', wp_timezone() );
+		$dt             = $datetime->format( 'm-d-Y H:i:s.u e' );
+		$this->date     = $dt;
+		$this->level    = strtoupper( $level );
+		$this->class    = '';
+		$this->function = '';
+		$this->line     = '';
+		$this->file     = '';
+		$this->context  = $this->fix_context( $context );
 
-    private function getTraceInfo(array $trace, $base): void
-    {
-        $next = $base + 1;
+		$start = $this->get_start_pos( $trace );
 
-        $info = [
-            'class' => $next,
-            'function' => $next,
-            'line' => $base,
-            'file' => $base,
-        ];
+		if ( isset( $start ) ) {
+			$this->get_trace_info( $trace, $start );
+		}
 
-        foreach ($info as $name => $pos) {
-            if (isset($trace[$pos][$name])) {
-                $this->$name = $trace[$pos][$name];
-            }
-        }
+		$dir        = Helper::get_plugin_dir();
+		$this->file = str_replace( $dir, '', $this->file );
+	}
 
-        $this->file .= "\n";
-    }
+	/**
+	 * Locate correct class, function, line from trace
+	 *
+	 * @param array $trace Trace array.
+	 * @return integer|null Starting postion if found, null if not.
+	 *
+	 * @since 1.0.0
+	 */
+	private function get_start_pos( array $trace ): ?int {
+		try {
+			$base = 0;
 
-    private function fixContext(mixed $context): string
-    {
-        $result = '';
-        if (is_wp_error($context)) {
-            /* @var \WP_Error */
+			foreach ( $trace as $key => $value ) {
+				if ( isset( $value['function'] ) && ( 'log' === $value['function'] ) ) {
+					$base = $key + 1;
+					break;
+				}
+			}
 
-            $result .= 'WP ERROR : '.$context->get_error_message()."\n";
-        } elseif (is_array($context) || is_object($context)) {
-            $result = print_r($context, true);
-        } elseif (is_string($context)) {
-            $result .= $context;
-        }
+			return $base;
+			// @codeCoverageIgnoreStart
+		} catch ( \Throwable $th ) {
+			return null;
+			// @codeCoverageIgnoreEnd
+		}
+	}
 
-        $result .= "\n";
+	/**
+	 * Get Class, Function, Line from backtrace.
+	 *
+	 * @param array $trace Debug backtrace.
+	 * @param int   $base Starting position / base.
+	 * @return void
+	 *
+	 * @since 1.0.0
+	 */
+	private function get_trace_info( array $trace, int $base ): void {
+		$next = $base + 1;
 
-        return $result;
-    }
+		$info = array(
+			'class'    => $next,
+			'function' => $next,
+			'line'     => $base,
+			'file'     => $base,
+		);
+
+		foreach ( $info as $name => $pos ) {
+			if ( isset( $trace[ $pos ][ $name ] ) ) {
+				$this->$name = $trace[ $pos ][ $name ];
+			}
+		}
+
+		$this->file .= "\n";
+	}
+
+	/**
+	 * Convert Object, Array ect to string format.
+	 *
+	 * @param mixed $context Log context.
+	 * @return string Converted context.
+	 */
+	private function fix_context( mixed $context ): string {
+		$result = '';
+		if ( is_wp_error( $context ) ) {
+
+			/**
+			 * Type hint.
+			 *
+			 * @var \WP_Error $context
+			 */
+			$result .= 'WP ERROR : ' . $context->get_error_message() . "\n";
+		} elseif ( is_array( $context ) || is_object( $context ) ) {
+			$result = print_r( $context, true );
+		} elseif ( is_string( $context ) ) {
+			$result .= $context;
+		}
+
+		$result .= "\n";
+
+		return $result;
+	}
 }

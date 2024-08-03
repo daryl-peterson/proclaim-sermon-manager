@@ -13,6 +13,6 @@ namespace DRPSermonManager\Interfaces;
  *
  * @since       1.0.0
  */
-interface AdminMenuInt extends Initable, Registrable
-{
+interface AdminMenuInt extends Initable, Registrable {
+
 }

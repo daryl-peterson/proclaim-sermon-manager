@@ -16,15 +16,14 @@ use DRPSermonManager\Taxonomy\PreacherReg;
  *
  * @since       1.0.0
  */
-class TaxonomyRegTest extends BaseTest
-{
-    public function testGetWpErrorMessage()
-    {
-        $preacher = PreacherReg::init();
-        $this->assertInstanceOf(TaxonomyRegInt::class, $preacher);
+class TaxonomyRegTest extends BaseTest {
 
-        $error = new \WP_Error('This is a test WP Error');
-        $result = $preacher->getWpErrorMessage($error);
-        $this->assertIsString($result);
-    }
+	public function testGetWpErrorMessage() {
+		$preacher = PreacherReg::init();
+		$this->assertInstanceOf( TaxonomyRegInt::class, $preacher );
+
+		$error  = new \WP_Error( 'This is a test WP Error' );
+		$result = $preacher->get_wp_error_message( $error );
+		$this->assertIsString( $result );
+	}
 }

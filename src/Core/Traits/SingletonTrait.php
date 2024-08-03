@@ -5,28 +5,24 @@ namespace DRPSermonManager\Traits;
 /**
  * Singleton trait.
  */
-trait SingletonTrait
-{
-    protected static $instance;
+trait SingletonTrait {
 
-    final public static function getInstance(): static
-    {
-        if (null === static::$instance) {
-            // @codeCoverageIgnoreStart
-            static::$instance = new static();
-            // @codeCoverageIgnoreEnd
-        }
+	protected static $instance;
 
-        return static::$instance;
-    }
+	/**
+	 * Get object instance
+	 *
+	 * @return static
+	 */
+	final public static function get_instance(): static {
+		if ( null === static::$instance ) {
+			// @codeCoverageIgnoreStart
+			static::$instance = new static();
+			// @codeCoverageIgnoreEnd
+		}
 
-    // @codeCoverageIgnoreStart
-    protected function __clone()
-    {
-    }
+		return static::$instance;
+	}
 
-    public function __wakeup()
-    {
-    }
-    // @codeCoverageIgnoreEnd
+	// @codeCoverageIgnoreStart
 }

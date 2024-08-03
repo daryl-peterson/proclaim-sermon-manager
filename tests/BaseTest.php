@@ -16,67 +16,63 @@ use PHPUnit\Framework\TestCase;
  *
  * @since       1.0.0
  */
-class BaseTest extends TestCase
-{
-    public function __construct(string $name)
-    {
-        parent::__construct($name);
-        if (!defined('PHPUNIT_TESTING')) {
-            define('PHPUNIT_TESTING', true);
-        }
-    }
+class BaseTest extends TestCase {
 
-    public function getAdminUser(): \WP_User
-    {
-        $args = [
-            'role' => 'administrator',
-            'orderby' => 'user_nicename',
-            'order' => 'ASC',
-        ];
-        $users = get_users($args);
+	public function __construct( string $name ) {
+		parent::__construct( $name );
+		if ( ! defined( 'PHPUNIT_TESTING' ) ) {
+			define( 'PHPUNIT_TESTING', true );
+		}
+	}
 
-        return $users[0];
-    }
+	public function getAdminUser(): \WP_User {
+		$args  = array(
+			'role'    => 'administrator',
+			'orderby' => 'user_nicename',
+			'order'   => 'ASC',
+		);
+		$users = get_users( $args );
 
-    public function getTestSermon(): ?\WP_Post
-    {
-        $args = [
-            'numberposts' => 5,
-            'post_type' => PT::SERMON,
-            'order' => 'DESC',
-            'orderby' => 'date',
-          ];
-        $posts = get_posts($args);
+		return $users[0];
+	}
 
-        foreach ($posts as $post) {
-            if ($post->post_status !== 'publish') {
-                continue;
-            }
+	public function getTestSermon(): ?\WP_Post {
+		$args  = array(
+			'numberposts' => 5,
+			'post_type'   => PT::SERMON,
+			'order'       => 'DESC',
+			'orderby'     => 'date',
+		);
+		$posts = get_posts( $args );
 
-            break;
-        }
+		foreach ( $posts as $post ) {
+			if ( 'publish' !== $post->post_status ) {
+				continue;
+			}
 
-        return $post;
-    }
+			break;
+		}
 
-    public function getTestPost(): \WP_Post
-    {
-        $args = [
-            'numberposts' => 5,
-            'post_type' => 'post',
-            'order' => 'DESC',
-            'orderby' => 'date',
-          ];
-        $posts = get_posts($args);
+		return $post;
+	}
 
-        foreach ($posts as $post) {
-            if ($post->post_status !== 'publish') {
-                continue;
-            }
+	public function getTestPost(): \WP_Post {
+		$args  = array(
+			'numberposts' => 5,
+			'post_type'   => 'post',
+			'order'       => 'DESC',
+			'orderby'     => 'date',
+		);
+		$posts = get_posts( $args );
 
-            break;
-        }
+		foreach ( $posts as $post ) {
+			if ( 'publish' !== $post->post_status ) {
+				continue;
+			}
 
-        return $post;
-    }
+			break;
+		}
+
+		return $post;
+	}
 }

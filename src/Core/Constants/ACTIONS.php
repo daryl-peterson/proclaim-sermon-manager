@@ -11,7 +11,7 @@ namespace DRPSermonManager\Constants;
  *
  * @since       1.0.0
  */
-class ACTIONS
-{
-    public const FLUSH_REWRITE_RULES = 'drpsermon_flush_rewrite_rules';
+class ACTIONS {
+
+	public const FLUSH_REWRITE_RULES = 'drpsermon_flush_rewrite_rules';
 }

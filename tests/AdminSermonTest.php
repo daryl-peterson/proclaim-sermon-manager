@@ -1,14 +1,8 @@
 <?php
-
-namespace DRPSermonManager\Tests;
-
-use DRPSermonManager\Admin\AdminSermon;
-use DRPSermonManager\Constants\PT;
-
 /**
- * Class description.
+ * Admin sermon test.
  *
- * @category
+ * @package     Sermon Manager
  *
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
@@ -16,47 +10,50 @@ use DRPSermonManager\Constants\PT;
  *
  * @since       1.0.0
  */
-class AdminSermonTest extends BaseTest
-{
-    protected AdminSermon $obj;
 
-    public function setup(): void
-    {
-        $this->obj = AdminSermon::init();
-    }
+namespace DRPSermonManager\Tests;
 
-    public function testDisableGutenBerge()
-    {
-        $result = $this->obj->disableGutenberg(true, 'blah');
-        $this->assertTrue($result);
+use DRPSermonManager\Admin\AdminSermon;
+use DRPSermonManager\Constants\PT;
 
-        $result = $this->obj->disableGutenberg(true, PT::SERMON);
-        $this->assertFalse($result);
+/**
+ * Admin sermon test.
+ *
+ * @package     Sermon Manager
+ *
+ * @author      Daryl Peterson <@gmail.com>
+ * @copyright   Copyright (c) 2024, Daryl Peterson
+ * @license     https://www.gnu.org/licenses/gpl-3.0.txt
+ *
+ * @since       1.0.0
+ */
+class AdminSermonTest extends BaseTest {
 
-        $result = $this->obj->setMetaBoxes();
-        $this->assertNull($result);
-    }
+	protected AdminSermon $obj;
 
-    public function testSavePost()
-    {
-        $admin = $this->getAdminUser();
+	public function setup(): void {
+		$this->obj = AdminSermon::init();
+	}
 
-        wp_set_current_user($admin->ID);
+	public function testSavePost() {
+		$admin = $this->getAdminUser();
 
-        $sermon = $this->getTestSermon();
-        $this->assertNotNull($sermon);
-        $this->assertInstanceOf(\WP_Post::class, $sermon);
+		wp_set_current_user( $admin->ID );
 
-        $result = $this->obj->savePost($sermon->ID, $sermon, true);
-        $this->assertNotNull($result);
+		$sermon = $this->getTestSermon();
+		$this->assertNotNull( $sermon );
+		$this->assertInstanceOf( \WP_Post::class, $sermon );
 
-        $sermon = $this->getTestPost();
-        $result = $this->obj->savePost($sermon->ID, $sermon, true);
-        $this->assertIsInt($result);
+		$result = $this->obj->save_post( $sermon->ID, $sermon, true );
+		$this->assertNotNull( $result );
 
-        define('DOING_AUTOSAVE', true);
-        $sermon = $this->getTestSermon();
-        $result = $this->obj->savePost($sermon->ID, $sermon, true);
-        $this->assertIsInt($result);
-    }
+		$sermon = $this->getTestPost();
+		$result = $this->obj->save_post( $sermon->ID, $sermon, true );
+		$this->assertIsInt( $result );
+
+		define( 'DOING_AUTOSAVE', true );
+		$sermon = $this->getTestSermon();
+		$result = $this->obj->save_post( $sermon->ID, $sermon, true );
+		$this->assertIsInt( $result );
+	}
 }

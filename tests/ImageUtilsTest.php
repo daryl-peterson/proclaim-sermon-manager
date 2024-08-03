@@ -15,29 +15,26 @@ use DRPSermonManager\ImageUtils;
  *
  * @since       1.0.0
  */
-class ImageUtilsTest extends BaseTest
-{
-    protected ImageUtils $obj;
+class ImageUtilsTest extends BaseTest {
 
-    public function setup(): void
-    {
-        $this->obj = ImageUtils::init();
-    }
+	protected ImageUtils $obj;
 
-    public function testRegister()
-    {
-        $this->obj->register();
+	public function setup(): void {
+		$this->obj = ImageUtils::init();
+	}
 
-        $result = has_action('after_setup_theme');
-        $this->assertTrue($result);
-    }
+	public function testRegister() {
+		$this->obj->register();
 
-    public function testMisc()
-    {
-        $result = $this->obj->addImageSizes();
-        $this->assertNull($result);
+		$result = has_action( 'after_setup_theme' );
+		$this->assertTrue( $result );
+	}
 
-        $result = has_image_size('sermon_small');
-        $this->assertTrue($result);
-    }
+	public function testMisc() {
+		$result = $this->obj->addImageSizes();
+		$this->assertNull( $result );
+
+		$result = has_image_size( 'sermon_small' );
+		$this->assertTrue( $result );
+	}
 }

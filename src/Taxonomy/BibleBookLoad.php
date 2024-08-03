@@ -1,5 +1,14 @@
 <?php
-
+/**
+ * Loads bible books taxomony data.
+ *
+ * @package     Sermon Manager
+ * @author      Daryl Peterson <@gmail.com>
+ * @copyright   Copyright (c) 2024, Daryl Peterson
+ * @license     https://www.gnu.org/licenses/gpl-3.0.txt
+ *
+ * @since       1.0.0
+ */
 namespace DRPSermonManager\Taxonomy;
 
 use DRPSermonManager\App;
@@ -9,58 +18,87 @@ use DRPSermonManager\Interfaces\Initable;
 use DRPSermonManager\Interfaces\Registrable;
 use DRPSermonManager\Logging\Logger;
 
-defined('ABSPATH') or exit;
+// @codeCoverageIgnoreStart
+defined( 'ABSPATH' ) || exit;
+// @codeCoverageIgnoreEnd
 
 /**
- * Load Bible books.
+ * Loads bible books taxomony data.
  *
+ * @package     Sermon Manager
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
  *
  * @since       1.0.0
  */
-class BibleBookLoad implements Initable, Registrable
-{
-    public static function init(): BibleBookLoad
-    {
-        return new self();
-    }
+class BibleBookLoad implements Initable, Registrable {
 
-    public function register(): void
-    {
-        add_action('drpsermon_after_post_setup', [$this, 'run'], 10, 1);
-    }
+	/**
+	 * Get initialize object.
+	 *
+	 * @return BibleBookLoad
+	 *
+	 * @since 1.0.0
+	 */
+	public static function init(): BibleBookLoad {
+		return new self();
+	}
 
-    public function run(): void
-    {
-        $opts = App::getOptionsInt();
+	/**
+	 * Register callbacks.
+	 *
+	 * @return void
+	 *
+	 * @since 1.0.0
+	 */
+	public function register(): void {
+		add_action( 'drpsermon_after_post_setup', array( $this, 'run' ), 10, 1 );
+	}
 
-        $ran = $opts->get('bible_books_loaded', false);
-        if ($ran && !defined('PHPUNIT_TESTING')) {
-            // @codeCoverageIgnoreStart
-            return;
-            // @codeCoverageIgnoreEnd
-        }
+	/**
+	 * Check if Bible books have been loaded.
+	 * - Call function to load them.
+	 *
+	 * @return void
+	 */
+	public function run(): void {
+		$opts = App::getOptionsInt();
 
-        $this->load();
-        $opts->set('bible_books_loaded', true);
-    }
+		$ran = $opts->get( 'bible_books_loaded', false );
+		if ( $ran && ! defined( 'PHPUNIT_TESTING' ) ) {
+			// @codeCoverageIgnoreStart
+			return;
+			// @codeCoverageIgnoreEnd
+		}
 
-    private function load()
-    {
-        $books = BIBLE::BOOKS;
-        $tax = TAX::BIBLE_BOOK;
+		$this->load();
+		$opts->set( 'bible_books_loaded', true );
+	}
 
-        try {
-            foreach ($books as $book) {
-                $slug = trim(strtolower(str_replace([' ', '_'], ['-', '-'], $book)));
-                wp_insert_term($book, $tax, ['slug' => $slug]);
-            }
-            // @codeCoverageIgnoreStart
-        } catch (\Throwable $th) {
-            Logger::error(['MESSAGE' => $th->getMessage(), 'TRACE' => $th->getTrace()]);
-            // @codeCoverageIgnoreEnd
-        }
-    }
+	/**
+	 * Load Bible books
+	 *
+	 * @return void
+	 */
+	private function load() {
+		$books = BIBLE::BOOKS;
+		$tax   = TAX::BIBLE_BOOK;
+
+		try {
+			foreach ( $books as $book ) {
+				$slug = trim( strtolower( str_replace( array( ' ', '_' ), array( '-', '-' ), $book ) ) );
+				wp_insert_term( $book, $tax, array( 'slug' => $slug ) );
+			}
+			// @codeCoverageIgnoreStart
+		} catch ( \Throwable $th ) {
+			Logger::error(
+				array(
+					'MESSAGE' => $th->getMessage(),
+					'TRACE'   => $th->getTrace(),
+				)
+			);
+			// @codeCoverageIgnoreEnd
+		}
+	}
 }

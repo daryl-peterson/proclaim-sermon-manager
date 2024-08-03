@@ -18,25 +18,23 @@ use DRPSermonManager\TextDomain;
  *
  * @since       1.0.0
  */
-class TextDomainTest extends BaseTest
-{
-    public TextDomainInt $obj;
+class TextDomainTest extends BaseTest {
 
-    public function setup(): void
-    {
-        $this->obj = App::getTextDomainInt();
-    }
+	public TextDomainInt $obj;
 
-    public function testLoadDomain()
-    {
-        $hook = Helper::getKeyName(TextDomain::INIT_KEY);
-        do_action($hook);
-        $this->assertIsString($hook);
+	public function setup(): void {
+		$this->obj = App::getTextDomainInt();
+	}
 
-        $result = $this->obj->switchToSiteLocale();
-        $this->assertNull($result);
+	public function testLoadDomain() {
+		$hook = Helper::get_key_name( TextDomain::INIT_KEY );
+		do_action( $hook );
+		$this->assertIsString( $hook );
 
-        $result = $this->obj->restoreLocale();
-        $this->assertNull($result);
-    }
+		$result = $this->obj->switch_to_tite_locale();
+		$this->assertNull( $result );
+
+		$result = $this->obj->restore_locale();
+		$this->assertNull( $result );
+	}
 }

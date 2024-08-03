@@ -16,39 +16,40 @@ use DRPSermonManager\Logging\Logger;
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
  */
-class RolesTest extends BaseTest
-{
-    public RolesInt $obj;
+class RolesTest extends BaseTest {
 
-    public function setup(): void
-    {
-        $this->obj = App::getRolesInt();
-    }
+	public RolesInt $obj;
 
-    public function testAdd()
-    {
-        $result = $this->obj->add();
-        $this->assertNull($result);
-    }
+	public function setup(): void {
+		$this->obj = App::getRolesInt();
+	}
 
-    public function testRemove()
-    {
-        $result = $result = $this->obj->remove();
-        $this->assertNull($result);
-        $this->obj->add();
-    }
+	public function testAdd() {
+		$result = $this->obj->add();
+		$this->assertNull( $result );
+	}
 
-    public function testAdministrator()
-    {
-        $role = get_role('administrator');
-        $this->assertInstanceOf(\WP_Role::class, $role);
+	public function testRemove() {
+		$result = $result = $this->obj->remove();
+		$this->assertNull( $result );
+		$this->obj->add();
+	}
 
-        $list = CAP::LIST;
+	public function testAdministrator() {
+		$role = get_role( 'administrator' );
+		$this->assertInstanceOf( \WP_Role::class, $role );
 
-        foreach ($list as $cap) {
-            $has = $role->has_cap($cap);
-            Logger::debug(['CAP' => $cap, 'HAS' => $has]);
-            $this->assertTrue($has);
-        }
-    }
+		$list = CAP::LIST;
+
+		foreach ( $list as $cap ) {
+			$has = $role->has_cap( $cap );
+			Logger::debug(
+				array(
+					'CAP' => $cap,
+					'HAS' => $has,
+				)
+			);
+			$this->assertTrue( $has );
+		}
+	}
 }

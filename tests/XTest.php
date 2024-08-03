@@ -18,13 +18,12 @@ use const DRPSermonManager\FILE;
  *
  * @since       1.0.0
  */
-class XTest extends BaseTest
-{
-    public function testMisc()
-    {
-        Activator::init()->run();
+class XTest extends BaseTest {
 
-        $result = Helper::isPluginActive(plugin_basename(FILE));
-        $this->assertTrue($result);
-    }
+	public function testMisc() {
+		Activator::init()->run();
+
+		$result = Helper::is_plugin_active( plugin_basename( FILE ) );
+		$this->assertTrue( $result );
+	}
 }
