@@ -7,6 +7,7 @@
 			"DRPSermonManager\\Abstracts\\": "src/Core/Abstracts",
 			"DRPSermonManager\\Constants\\": "src/Core/Constants",
 			"DRPSermonManager\\Exceptions\\": "src/Core/Exceptions",
+			"DRPSermonManager\\Facades\\": "src/Core/Facades",
 			"DRPSermonManager\\Interfaces\\": "src/Core/Interfaces",
 			"DRPSermonManager\\Logging\\": "src/Core/Logging",
 			"DRPSermonManager\\Traits\\": "src/Core/Traits",
@@ -19,7 +20,7 @@
 			"email": "daryl.peterson@gmail.com"
 		}
 	],
-	"apcu-autoloader": true,
+	"classmap-authoritative": true,
 	"require": {
 		"php-di/php-di": "^7.0.7",
 		"cmb2/cmb2": "^2.11"
