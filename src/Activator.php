@@ -49,11 +49,13 @@ class Activator implements Initable, Runable {
 
 			if ( ( is_admin() && current_user_can( 'activate_plugins' ) ) || defined( 'PHPUNIT_TESTING' ) ) {
 				activate_plugin( plugin_basename( FILE ) );
+				// phpcs:disable
 				if ( isset( $_GET['activate'] ) ) {
 					// @codeCoverageIgnoreStart
 					unset( $_GET['activate'] );
 					// @codeCoverageIgnoreEnd
 				}
+				// phpcs:enable
 			}
 			// @codeCoverageIgnoreStart
 		} catch ( \Throwable $th ) {

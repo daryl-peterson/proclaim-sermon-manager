@@ -30,10 +30,17 @@ use DRPSermonManager\Interfaces\RequirementCheckInt;
  */
 class RequirementCheck implements RequirementCheckInt {
 
+	/**
+	 * Notice interface
+	 *
+	 * @var NoticeInt
+	 */
 	private NoticeInt $notice;
 
 	/**
-	 * Set object properties.
+	 * Initialize object.
+	 *
+	 * @param NoticeInt $notice Notice interface.
 	 */
 	public function __construct( NoticeInt $notice ) {
 

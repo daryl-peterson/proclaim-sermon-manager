@@ -31,7 +31,7 @@ interface TaxonomyRegInt {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @throws PluginException
+	 * @throws PluginException Throws exception if not exist.
 	 */
 	public function add(): void;
 
@@ -40,7 +40,7 @@ interface TaxonomyRegInt {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @throws PluginException
+	 * @throws PluginException Throws exception if exist.
 	 */
 	public function remove(): void;
 

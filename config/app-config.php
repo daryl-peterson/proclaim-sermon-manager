@@ -1,4 +1,14 @@
 <?php
+/**
+ * App configuration.
+ *
+ * @package     Sermon Manager
+ *
+ * @author      Daryl Peterson <@gmail.com>
+ * @copyright   Copyright (c) 2024, Daryl Peterson
+ * @license     https://www.gnu.org/licenses/gpl-3.0.txt
+ * @since       1.0.0
+ */
 
 namespace DRPSermonManager;
 
@@ -29,7 +39,4 @@ return array(
 	RequirementsInt::class     => Requirements::class,
 	RolesInt::class            => Roles::class,
 	PostTypeSetupInt::class    => PostTypeSetup::class,
-
-
-
 );

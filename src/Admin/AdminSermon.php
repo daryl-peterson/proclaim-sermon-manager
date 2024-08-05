@@ -57,6 +57,8 @@ class AdminSermon implements Registrable {
 	/**
 	 * Initialize object.
 	 *
+	 * @param OptionsInt $options Options interface.
+	 *
 	 * @since 1.0.0
 	 */
 	public function __construct( OptionsInt $options ) {

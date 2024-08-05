@@ -89,11 +89,11 @@ class PostTypeReg implements PostTypeRegInt {
 
 		if ( ! $this->exist() || is_wp_error( $result ) ) {
 			// @codeCoverageIgnoreStart
-			$message = 'Failed to add post type ' . $this->pt;
+			$message = __( 'Failed to add post type : ', 'drpsermon' ) . $this->pt;
 			if ( is_wp_error( $result ) ) {
 				$message = $this->get_wp_error_message( $result );
 			}
-			throw new PluginException( $message );
+			throw new PluginException( esc_html( $message ) );
 			// @codeCoverageIgnoreEnd
 		}
 	}
@@ -119,16 +119,22 @@ class PostTypeReg implements PostTypeRegInt {
 			$result = unregister_post_type( $this->pt );
 			// @codeCoverageIgnoreStart
 		} catch ( \Throwable $th ) {
+			Logger::error(
+				array(
+					'MESSAGE' => $th->getMessage(),
+					'TRACE'   => $th->getTrace(),
+				)
+			);
 			// @codeCoverageIgnoreEnd
 		}
 
 		if ( $this->exist() || is_wp_error( $result ) ) {
 			// @codeCoverageIgnoreStart
-			$message = 'Failed to remove post type ' . $this->pt;
+			$message = __( 'Failed to remove post type : ', 'drpsermon' ) . $this->pt;
 			if ( is_wp_error( $result ) ) {
 				$message = $this->get_wp_error_message( $result );
 			}
-			throw new PluginException( $message );
+			throw new PluginException( esc_html( $message ) );
 			// @codeCoverageIgnoreEnd
 		}
 	}

@@ -47,6 +47,8 @@ class Plugin implements PluginInt {
 	/**
 	 * Set object properties.
 	 *
+	 * @param NoticeInt $notice Notice interface.
+	 *
 	 * @since 1.0.0
 	 */
 	public function __construct( NoticeInt $notice ) {

@@ -201,7 +201,7 @@ class PostTypeSetup implements PostTypeSetupInt {
 	 */
 	public function get_post_type( string $post_type ): PostTypeRegInt {
 		if ( ! isset( $this->post_types[ $post_type ] ) ) {
-			throw new PluginException( "Invalid post type : $post_type" );
+			throw new PluginException( esc_html( "Invalid post type : $post_type" ) );
 		}
 
 		return $this->post_types[ $post_type ];

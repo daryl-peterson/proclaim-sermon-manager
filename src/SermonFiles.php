@@ -14,7 +14,6 @@ namespace DRPSermonManager;
 
 use DRPSermonManager\Constants\META;
 use DRPSermonManager\Constants\PT;
-use DRPSermonManager\Logging\Logger;
 
 // @codeCoverageIgnoreStart
 defined( 'ABSPATH' ) || exit;
@@ -36,11 +35,6 @@ class SermonFiles {
 	 * Show meta box.
 	 */
 	public function show(): void {
-		if ( defined( 'CMB2_VERSION' ) ) {
-			Logger::debug( array( 'CMB2_VERSION' => CMB2_VERSION ) );
-		} else {
-			Logger::debug( 'CMB2 VERSION ???' );
-		}
 
 		$post_type = PT::SERMON;
 

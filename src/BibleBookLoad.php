@@ -34,8 +34,23 @@ defined( 'ABSPATH' ) || exit;
  */
 class BibleBookLoad implements Registrable {
 
+	/**
+	 * Options interface.
+	 *
+	 * @var OptionsInt
+	 *
+	 * @since 1.0.0
+	 */
 	public OptionsInt $options;
 
+
+	/**
+	 * Initialize object.
+	 *
+	 * @param OptionsInt $options Options interface.
+	 *
+	 * @since 1.0.0
+	 */
 	public function __construct( OptionsInt $options ) {
 		$this->options = $options;
 	}

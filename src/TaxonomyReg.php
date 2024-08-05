@@ -53,6 +53,10 @@ class TaxonomyReg implements TaxonomyRegInt {
 	/**
 	 * Initialize object properties.
 	 *
+	 * @param string $taxonomy Taxonomomy name.
+	 * @param string $post_type Post type name.
+	 * @param string $config_file Configuration file.
+	 *
 	 * @since 1.0.0
 	 */
 	public function __construct( string $taxonomy, string $post_type, string $config_file ) {
@@ -65,6 +69,7 @@ class TaxonomyReg implements TaxonomyRegInt {
 	 * Add Taxonomy
 	 *
 	 * @return void
+	 * @throws PluginException Thow exception if not exist.
 	 *
 	 * @since 1.0.0
 	 */
@@ -108,7 +113,8 @@ class TaxonomyReg implements TaxonomyRegInt {
 	 * Remove taxonomy.
 	 *
 	 * @return void
-	 *
+	 * @throws PluginException Thow exception if not exist.
+
 	 * @since 1.0.0
 	 */
 	public function remove(): void {

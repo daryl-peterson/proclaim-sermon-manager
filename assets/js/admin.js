@@ -1,6 +1,11 @@
-var $j = jQuery.noConflict();
+/**
+ * Admin js / jquery.
+ *
+ * @package Sermon Manager
+ *
+ * @since 1.0.0
+ */
 
-// $j is now an alias to the jQuery function; creating the new alias is optional.
 jQuery( document ).ready(
 	function ($) {
 

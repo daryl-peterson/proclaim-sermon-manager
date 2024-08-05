@@ -12,11 +12,9 @@
 
 namespace DRPSermonManager;
 
-use DRPSermonManager\Exceptions\NotFoundException;
-use DRPSermonManager\Logging\Logger;
+use DRPSermonManager\Exceptions\NotfoundException;
 use Psr\Container\ContainerInterface;
 use ReflectionClass;
-use ReflectionException;
 
 /**
  * Service container.
@@ -70,8 +68,10 @@ class Container implements ContainerInterface {
 	public function has( $id ): bool {
 		try {
 			$item = $this->resolve( $id );
-		} catch ( NotFoundException $e ) {
+			// @codeCoverageIgnoreStart
+		} catch ( \Throwable $th ) {
 			return false;
+			// @codeCoverageIgnoreEnd
 		}
 		if ( $item instanceof ReflectionClass ) {
 			return $item->isInstantiable();
@@ -84,22 +84,26 @@ class Container implements ContainerInterface {
 	 *
 	 * @param string $key   Container key name.
 	 * @param mixed  $value  Value to user.
-	 * @return void
+	 * @return Container
+	 *
+	 * @since 1.0.0
 	 */
-	public function set( string $key, mixed $value ) {
+	public function set( string $key, mixed $value ): Container {
 		$this->services[ $key ] = $value;
 		return $this;
 	}
 
 	/**
-	 * Get item from container
+	 * Get item from container.
 	 *
-	 * @param string $id Item name to resovle
+	 * @param string $id Item name to resovle.
 	 * @return mixed null|object|ReflectionClass
+	 * @throws NotFoundException If not found.
 	 *
 	 * @since 1.0.0
 	 */
 	private function resolve( string $id ): mixed {
+		$error = false;
 		try {
 			$name = $id;
 			if ( isset( $this->services[ $id ] ) ) {
@@ -108,37 +112,48 @@ class Container implements ContainerInterface {
 					return $name();
 				}
 			}
-			return ( new ReflectionClass( $name ) );
-		} catch ( ReflectionException $e ) {
-			Logger::error( array( 'NOT FOUND ID' => $id ) );
-			throw new NotFoundException( $e->getMessage(), $e->getCode(), $e );
 
+			$result = new ReflectionClass( $name );
+			return $result;
+		} catch ( \ReflectionException $th ) {
+			$error = true;
+			// @codeCoverageIgnoreStart
+		} catch ( \Throwable $th ) {
+			$error = true;
+			// @codeCoverageIgnoreEnd
 		}
+
+		throw new NotFoundException( esc_html( $th->getMessage() ), (int) $th->getCode() );
 	}
 
 	/**
 	 * Get object instance.
 	 *
 	 * @param ReflectionClass $item Reflectionclass with the name of the object to initiate.
-	 * @return void
+	 * @return mixed
+	 *
+	 * @since 1.0.0
 	 */
-	private function get_instance( ReflectionClass $item ) {
+	private function get_instance( ReflectionClass $item ): mixed {
 		$constructor = $item->getConstructor();
 
+		// @codeCoverageIgnoreStart
 		if ( $item->hasMethod( 'init' ) ) {
 			return call_user_func( $item->name . '::init' );
 		}
+		// @codeCoverageIgnoreEnd
 
 		if ( $item->hasMethod( 'get_instance' ) ) {
 			return call_user_func( $item->name . '::get_instance' );
 		}
 
-		if ( is_null( $constructor ) || $constructor->getNumberOfRequiredParameters() == 0 ) {
+		if ( is_null( $constructor ) || $constructor->getNumberOfRequiredParameters() === 0 ) {
 			return $item->newInstance();
 		}
 		$params = array();
 		foreach ( $constructor->getParameters() as $param ) {
-			if ( $type = $param->getType() ) {
+			$type = $param->getType();
+			if ( isset( $type ) ) {
 				$params[] = $this->get( $type->getName() );
 			}
 		}

@@ -74,27 +74,34 @@ class PostTypeUtils {
 		return true;
 	}
 
+	/**
+	 * Get current post type.
+	 *
+	 * @return array|null
+	 */
 	public static function get_current_post_type(): ?array {
 		global $post, $typenow, $current_screen;
 
-		// we have a post so we can just get the post type from that
+		// We have a post so we can just get the post type from that.
 		if ( $post && $post->post_type ) {
 			return $post->post_type;
 
-			// check the global $typenow - set in admin.php
+			// Check the global $typenow - set in admin.php.
 		} elseif ( $typenow ) {
 			return $typenow;
 
-			// check the global $current_screen object - set in sceen.php
+			// Check the global $current_screen object - set in sceen.php.
 		} elseif ( $current_screen && $current_screen->post_type ) {
 			return $current_screen->post_type;
 
-			// lastly check the post_type querystring
+			// lastly check the post_type querystring.
+			// phpcs:disable
 		} elseif ( isset( $_REQUEST['post_type'] ) ) {
 			return sanitize_key( $_REQUEST['post_type'] );
+			// phpcs:enable
 		}
 
-		// we do not know the post type!
+		// We do not know the post type!
 		return null;
 	}
 }

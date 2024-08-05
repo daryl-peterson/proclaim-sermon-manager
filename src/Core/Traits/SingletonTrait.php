@@ -24,10 +24,15 @@ namespace DRPSermonManager\Traits;
  */
 trait SingletonTrait {
 
+	/**
+	 * Object instance
+	 *
+	 * @var mixed
+	 */
 	protected static $instance;
 
 	/**
-	 * Get object instance
+	 * Get object instance.
 	 *
 	 * @return static
 	 */

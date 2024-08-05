@@ -30,14 +30,14 @@ use DRPSermonManager\Logging\Logger;
 class Requirements implements RequirementsInt {
 
 	/**
-	 * Notice interface
+	 * Notice interface.
 	 *
 	 * @var NoticeInt
 	 */
 	private NoticeInt $notice;
 
 	/**
-	 * Requirements check
+	 * Requirements check.
 	 *
 	 * @var RequirementCheck
 	 */
@@ -45,6 +45,9 @@ class Requirements implements RequirementsInt {
 
 	/**
 	 * Set object properties.
+	 *
+	 * @param NoticeInt           $notice Notice interface.
+	 * @param RequirementCheckInt $checks Requirement check interface.
 	 *
 	 * @since 1.0.0
 	 */
