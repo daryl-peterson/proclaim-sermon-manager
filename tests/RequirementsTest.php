@@ -4,6 +4,8 @@ namespace DRPSermonManager\Tests;
 
 use DRPSermonManager\App;
 use DRPSermonManager\Exceptions\PluginException;
+use DRPSermonManager\Interfaces\RequirementCheckInt;
+use DRPSermonManager\Interfaces\RequirementsInt;
 use DRPSermonManager\RequirementCheck;
 use DRPSermonManager\Requirements;
 
@@ -20,33 +22,32 @@ use DRPSermonManager\Requirements;
  */
 class RequirementsTest extends BaseTest {
 
-	private RequirementCheck $obj;
+	private RequirementCheck $check;
+	private RequirementsInt $require;
 
 	public function setup(): void {
-		$this->obj = App::getRequirementCheckInt();
+		$this->check   = $this->app->get( RequirementCheckInt::class );
+		$this->require = $this->app->get( RequirementsInt::class );
 	}
 
 	public function teardown(): void {
-		$obj = Requirements::init();
-		$obj->notice()->delete();
+		$this->require->notice()->delete();
 	}
 
 	public function tester() {
 		wp_set_current_user( 1 );
 
-		$obj    = Requirements::init();
-		$result = $obj->is_compatible();
+		$result = $this->require->is_compatible();
 		$this->assertNull( $result );
-		$obj->is_compatible();
 	}
 
 	public function testPHPVer() {
 		$this->expectException( PluginException::class );
-		$this->obj->check_php_ver( '9.0' );
+		$this->check->check_php_ver( '9.0' );
 	}
 
 	public function testWPVer() {
 		$this->expectException( PluginException::class );
-		$this->obj->check_wp_ver( '7.0' );
+		$this->check->check_wp_ver( '7.0' );
 	}
 }

@@ -24,7 +24,7 @@ namespace DRPSermonManager\Interfaces;
  *
  * @since       1.0.0
  */
-interface RolesInt extends Initable {
+interface RolesInt {
 
 	/**
 	 * Add custom capabilities to roles.
@@ -36,7 +36,16 @@ interface RolesInt extends Initable {
 	/**
 	 * Remove custom capabilities from roles.
 	 *
+	 * @return void
 	 * @since 1.0.0
 	 */
 	public function remove(): void;
+
+	/**
+	 * Register callbacks.
+	 *
+	 * @return void
+	 * @since 1.0.0
+	 */
+	public function register(): void;
 }

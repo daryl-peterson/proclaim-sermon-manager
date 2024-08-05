@@ -31,7 +31,6 @@ class QueueScripts implements Initable, Registrable {
 	public function initScriptStyles() {
 		// @codeCoverageIgnoreStart
 		$file = Helper::get_url() . 'assets/css/admin.css';
-		Logger::debug( array( 'CSS FILE' => $file ) );
 		wp_register_style( 'drpsermon-admin-style', $file );
 
 		// $file = 'https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.css';

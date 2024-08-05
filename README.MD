@@ -1,5 +1,5 @@
 # Sermon Manager
-Wordpress plugin for managing plugins. Name will be changing.
+Wordpress plugin for managing plugins. Name will be changing. Thinking Proclaim
 
 ## Composer - Optimization Level 2/A: Authoritative class maps
 [See https://getcomposer.org/doc/articles/autoloader-optimization.md#optimization-level-2-a-authoritative-class-maps](https://getcomposer.org/doc/articles/autoloader-optimization.md#optimization-level-2-a-authoritative-class-maps)

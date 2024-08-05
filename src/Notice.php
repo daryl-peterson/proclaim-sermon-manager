@@ -43,7 +43,7 @@ class Notice implements NoticeInt {
 	 */
 	protected function __construct() {
 		// @codeCoverageIgnoreStart
-		$this->options = App::getOptionsInt();
+		$this->options = App::init()->get( OptionsInt::class );
 		// @codeCoverageIgnoreEnd
 	}
 

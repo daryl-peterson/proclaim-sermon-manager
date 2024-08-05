@@ -24,7 +24,7 @@ use DRPSermonManager\Exceptions\PluginException;
  *
  * @since       1.0.0
  */
-interface PostTypeSetupInt extends Initable, Registrable {
+interface PostTypeSetupInt extends Registrable {
 
 	/**
 	 * Add post types and taxonomy.

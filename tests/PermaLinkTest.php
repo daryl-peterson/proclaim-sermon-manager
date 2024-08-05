@@ -5,6 +5,7 @@ namespace DRPSermonManager\Tests;
 use DRPSermonManager\App;
 use DRPSermonManager\Interfaces\PermaLinkInt;
 use DRPSermonManager\Logging\Logger;
+use DRPSermonManager\PermaLinks;
 
 /**
  * Class description.
@@ -22,14 +23,11 @@ class PermaLinkTest extends BaseTest {
 	public PermaLinkInt $obj;
 
 	public function setup(): void {
-		$this->obj = App::getPermalinkInt();
+		$this->obj = App::init()->get( PermaLinkInt::class );
 	}
 
 	public function testPermaLinkStructure() {
 		$result = $this->obj->get();
 		$this->assertIsArray( $result );
-
-		Logger::debug( $result );
-		$this->obj->get();
 	}
 }

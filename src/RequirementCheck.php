@@ -3,9 +3,12 @@
  * Run check to see if plugin can be activated / installed.
  *
  * @package     Sermon Manager
+ *
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
+ *
+ * @since 1.0.0
  */
 
 namespace DRPSermonManager;
@@ -15,7 +18,15 @@ use DRPSermonManager\Interfaces\NoticeInt;
 use DRPSermonManager\Interfaces\RequirementCheckInt;
 
 /**
- * Run checks to see if requirements are met. If not throw PluginException.
+ * Run check to see if plugin can be activated / installed.
+ *
+ * @package     Sermon Manager
+ *
+ * @author      Daryl Peterson <@gmail.com>
+ * @copyright   Copyright (c) 2024, Daryl Peterson
+ * @license     https://www.gnu.org/licenses/gpl-3.0.txt
+ *
+ * @since 1.0.0
  */
 class RequirementCheck implements RequirementCheckInt {
 
@@ -24,20 +35,9 @@ class RequirementCheck implements RequirementCheckInt {
 	/**
 	 * Set object properties.
 	 */
-	protected function __construct() {
+	public function __construct( NoticeInt $notice ) {
 
-		$this->notice = App::getNoticeInt();
-	}
-
-	/**
-	 * Initialize object properties.
-	 *
-	 * @return RequirementCheckInt
-	 *
-	 * @since 1.0.0
-	 */
-	public static function init(): RequirementCheckInt {
-		return new self();
+		$this->notice = $notice;
 	}
 
 	/**

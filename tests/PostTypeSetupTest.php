@@ -27,7 +27,7 @@ class PostTypeSetupTest extends BaseTest {
 	public PostTypeSetupInt $obj;
 
 	public function setup(): void {
-		$this->obj = App::getPostTypeSetupInt();
+		$this->obj = $this->app->get( PostTypeSetupInt::class );
 	}
 
 	public function testGetPostTypes() {

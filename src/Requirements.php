@@ -13,6 +13,7 @@
 namespace DRPSermonManager;
 
 use DRPSermonManager\Interfaces\NoticeInt;
+use DRPSermonManager\Interfaces\RequirementCheckInt;
 use DRPSermonManager\Interfaces\RequirementsInt;
 use DRPSermonManager\Logging\Logger;
 
@@ -40,27 +41,16 @@ class Requirements implements RequirementsInt {
 	 *
 	 * @var RequirementCheck
 	 */
-	private RequirementCheck $require;
+	private RequirementCheck $checks;
 
 	/**
 	 * Set object properties.
 	 *
 	 * @since 1.0.0
 	 */
-	protected function __construct() {
-		$this->notice  = Notice::init();
-		$this->require = RequirementCheck::init();
-	}
-
-	/**
-	 * Initialize object properties.
-	 *
-	 * @return RequirementCheckInt
-	 *
-	 * @since 1.0.0
-	 */
-	public static function init(): Requirements {
-		return new self();
+	public function __construct( NoticeInt $notice, RequirementCheckInt $checks ) {
+		$this->notice = $notice;
+		$this->checks = $checks;
 	}
 
 	/**
@@ -115,7 +105,7 @@ class Requirements implements RequirementsInt {
 		$transient = Helper::get_key_name( 'compatible' );
 		try {
 			Logger::debug( 'CHECKING REQUIREMENTS' );
-			$this->require->run();
+			$this->checks->run();
 			Logger::debug( 'REQUIREMENTS MET' );
 			set_transient( $transient, true, 500 );
 

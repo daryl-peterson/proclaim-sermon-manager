@@ -7,7 +7,7 @@
 
 namespace DRPSermonManager;
 
-$permalinks = PermaLinks::init()->get();
+$permalinks = App::init()->permalinks();
 use DRPSermonManager\Constants\CAP;
 use DRPSermonManager\Constants\PT;
 

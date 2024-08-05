@@ -24,7 +24,7 @@ use DRPSermonManager\Exceptions\PluginException;
  *
  * @since       1.0.0
  */
-interface TaxonomyRegInt extends Initable {
+interface TaxonomyRegInt {
 
 	/**
 	 * Add taxonomy.

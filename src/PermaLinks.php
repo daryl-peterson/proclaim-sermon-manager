@@ -15,9 +15,10 @@ namespace DRPSermonManager;
 
 use DRPSermonManager\Constants\PT;
 use DRPSermonManager\Constants\TAX;
+use DRPSermonManager\Interfaces\OptionsInt;
 use DRPSermonManager\Interfaces\PermaLinkInt;
+use DRPSermonManager\Interfaces\TextDomainInt;
 use DRPSermonManager\Traits\SingletonTrait;
-
 
 /**
  * Permalink singleton.
@@ -42,17 +43,11 @@ class PermaLinks implements PermaLinkInt {
 	private array $permalinks;
 
 	/**
-	 * Initialize object.
+	 * Text domain
 	 *
-	 * @return PermaLinkInt
-	 * @since 1.0.0
+	 * @var TextDomain
 	 */
-	public static function init(): PermaLinkInt {
-		$obj = self::get_instance();
-		$obj->config();
-
-		return $obj;
-	}
+	private TextDomain $text;
 
 	/**
 	 * Get permalinks array.
@@ -61,6 +56,11 @@ class PermaLinks implements PermaLinkInt {
 	 * @since 1.0.0
 	 */
 	public function get(): array {
+		if ( ! isset( $this->text ) ) {
+			$this->text = App::init()->get( TextDomainInt::class );
+		}
+		$this->config();
+
 		return $this->permalinks;
 	}
 
@@ -76,6 +76,7 @@ class PermaLinks implements PermaLinkInt {
 			return;
 			// @codeCoverageIgnoreEnd
 		}
+
 		$action_key = Helper::get_key_name( 'PERMALINK_CONFIG' );
 		if ( did_action( $action_key ) && ! defined( 'PHPUNIT_TESTING' ) ) {
 			// @codeCoverageIgnoreStart
@@ -83,12 +84,18 @@ class PermaLinks implements PermaLinkInt {
 			// @codeCoverageIgnoreEnd
 		}
 
-		$opts = App::getOptionsInt();
 		if ( did_action( 'admin_init' ) ) {
 			// @codeCoverageIgnoreStart
-			TextDomain::init()->switch_to_tite_locale();
+			$this->text->switch_to_site_locale();
 			// @codeCoverageIgnoreEnd
 		}
+
+		/**
+		 * Options interface.
+		 *
+		 * @var OptionsInt $opts
+		 */
+		$opts = App::init()->get( OptionsInt::class );
 
 		$perm = wp_parse_args(
 			(array) $opts->get( 'permalinks', array() ),
@@ -139,7 +146,7 @@ class PermaLinks implements PermaLinkInt {
 
 		if ( did_action( 'admin_init' ) ) {
 			// @codeCoverageIgnoreStart
-			TextDomain::init()->restore_locale();
+			$this->text->restore_locale();
 			// @codeCoverageIgnoreEnd
 		}
 

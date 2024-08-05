@@ -2,6 +2,7 @@
 
 namespace DRPSermonManager\Tests;
 
+use DRPSermonManager\App;
 use DRPSermonManager\SermonDetail;
 
 /**
@@ -17,12 +18,12 @@ use DRPSermonManager\SermonDetail;
 class SermonDetailsTest extends BaseTest {
 
 	public function testInit() {
-		$obj = SermonDetail::init();
+		$obj = App::init()->get( SermonDetail::class );
 		$this->assertNotNull( $obj );
 	}
 
 	public function testShow() {
-		$obj = SermonDetail::init()->show();
+		$obj = App::init()->get( SermonDetail::class )->show();
 		$this->assertNull( $obj );
 	}
 }

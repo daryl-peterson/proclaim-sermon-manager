@@ -12,7 +12,7 @@ namespace DRPSermonManager;
 use DRPSermonManager\Constants\CAP;
 use DRPSermonManager\Constants\TAX;
 
-$permalinks   = PermaLinks::init()->get();
+$permalinks   = App::init()->permalinks();
 $slug         = TAX::TOPICS;
 $capabilities = array(
 	'manage_terms' => CAP::MANAGE_CATAGORIES,

@@ -2,6 +2,7 @@
 
 namespace DRPSermonManager\Tests;
 
+use DRPSermonManager\App;
 use DRPSermonManager\Constants\PT;
 use PHPUnit\Framework\TestCase;
 
@@ -18,11 +19,14 @@ use PHPUnit\Framework\TestCase;
  */
 class BaseTest extends TestCase {
 
+	protected App $app;
+
 	public function __construct( string $name ) {
 		parent::__construct( $name );
 		if ( ! defined( 'PHPUNIT_TESTING' ) ) {
 			define( 'PHPUNIT_TESTING', true );
 		}
+		$this->app = App::init();
 	}
 
 	public function getAdminUser(): \WP_User {

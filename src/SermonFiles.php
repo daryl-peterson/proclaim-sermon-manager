@@ -33,19 +33,15 @@ defined( 'ABSPATH' ) || exit;
 class SermonFiles {
 
 	/**
-	 * Initialize object properties.
-	 *
-	 * @return SermonFiles
-	 * @since 1.0.0
-	 */
-	public static function init(): SermonFiles {
-		return new self();
-	}
-
-	/**
 	 * Show meta box.
 	 */
 	public function show(): void {
+		if ( defined( 'CMB2_VERSION' ) ) {
+			Logger::debug( array( 'CMB2_VERSION' => CMB2_VERSION ) );
+		} else {
+			Logger::debug( 'CMB2 VERSION ???' );
+		}
+
 		$post_type = PT::SERMON;
 
 		$cmb = \new_cmb2_box(

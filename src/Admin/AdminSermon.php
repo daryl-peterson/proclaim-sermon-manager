@@ -16,6 +16,7 @@ use DRPSermonManager\App;
 use DRPSermonManager\Constants\PT;
 use DRPSermonManager\Constants\TAX;
 use DRPSermonManager\Interfaces\Initable;
+use DRPSermonManager\Interfaces\OptionsInt;
 use DRPSermonManager\Interfaces\Registrable;
 use DRPSermonManager\Logging\Logger;
 use DRPSermonManager\PostTypeUtils;
@@ -37,7 +38,7 @@ defined( 'ABSPATH' ) || exit;
  *
  * @since       1.0.0
  */
-class AdminSermon implements Initable, Registrable {
+class AdminSermon implements Registrable {
 
 	/**
 	 * Post type
@@ -47,21 +48,20 @@ class AdminSermon implements Initable, Registrable {
 	protected string $post_type;
 
 	/**
+	 * Options Interface.
+	 *
+	 * @var OptionsInt
+	 */
+	protected OptionsInt $options;
+
+	/**
 	 * Initialize object.
 	 *
 	 * @since 1.0.0
 	 */
-	protected function __construct() {
+	public function __construct( OptionsInt $options ) {
 		$this->post_type = PT::SERMON;
-	}
-
-	/**
-	 * Get initialize object.
-	 *
-	 * @return AdminSermon
-	 */
-	public static function init(): AdminSermon {
-		return new self();
+		$this->options   = $options;
 	}
 
 	/**
@@ -148,8 +148,8 @@ class AdminSermon implements Initable, Registrable {
 	 * @return void
 	 */
 	public function show_meta_boxes(): void {
-		SermonDetail::init()->show();
-		SermonFiles::init()->show();
+		App::init()->get( SermonDetail::class )->show();
+		App::init()->get( SermonFiles::class )->show();
 	}
 
 	/**
@@ -173,7 +173,7 @@ class AdminSermon implements Initable, Registrable {
 			return;
 		}
 
-		$opts    = App::getOptionsInt();
+		$opts    = $this->options;
 		$orderby = $opts->get( 'archive_orderby', '' );
 		$order   = $opts->get( 'archive_order', 'desc' );
 

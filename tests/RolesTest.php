@@ -21,7 +21,7 @@ class RolesTest extends BaseTest {
 	public RolesInt $obj;
 
 	public function setup(): void {
-		$this->obj = App::getRolesInt();
+		$this->obj = $this->app->get( RolesInt::class );
 	}
 
 	public function testAdd() {

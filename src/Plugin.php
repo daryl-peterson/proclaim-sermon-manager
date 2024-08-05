@@ -17,11 +17,21 @@ use DRPSermonManager\Admin\AdminSermon;
 use DRPSermonManager\Admin\QueueScripts;
 use DRPSermonManager\Interfaces\NoticeInt;
 use DRPSermonManager\Interfaces\PluginInt;
+use DRPSermonManager\Interfaces\PostTypeSetupInt;
+use DRPSermonManager\Interfaces\RequirementsInt;
+use DRPSermonManager\Interfaces\RolesInt;
+use DRPSermonManager\Interfaces\TextDomainInt;
 use DRPSermonManager\Logging\Logger;
-use DRPSermonManager\Taxonomy\BibleBookLoad;
+use DRPSermonManager\BibleBookLoad;
 
 /**
  * Plugin main class.
+ *
+ * @package     Sermon Manager
+ *
+ * @author      Daryl Peterson <@gmail.com>
+ * @copyright   Copyright (c) 2024, Daryl Peterson
+ * @license     https://www.gnu.org/licenses/gpl-3.0.txt
  *
  * @since       1.0.0
  */
@@ -34,14 +44,13 @@ class Plugin implements PluginInt {
 	 */
 	private NoticeInt $notice;
 
-
 	/**
 	 * Set object properties.
 	 *
 	 * @since 1.0.0
 	 */
-	public function __construct() {
-		$this->notice = App::getNoticeInt();
+	public function __construct( NoticeInt $notice ) {
+		$this->notice = $notice;
 	}
 
 	/**
@@ -49,7 +58,7 @@ class Plugin implements PluginInt {
 	 *
 	 * @return void
 	 */
-	public function init(): void {
+	public function register(): void {
 		try {
 			$hook = Helper::get_key_name( 'PLUGIN_INIT' );
 
@@ -63,14 +72,19 @@ class Plugin implements PluginInt {
 			add_action( 'shutdown', array( $this, 'shutdown' ) );
 			add_action( 'admin_notices', array( $this, 'show_notice' ) );
 
+			$app = App::init();
+
 			// Load other classes.
-			Requirements::init()->register();
-			App::getTextDomainInt()->register();
-			App::getPostTypeSetupInt()->register();
-			QueueScripts::init()->register();
-			AdminSermon::init()->register();
+			$app->get( RequirementsInt::class )->register();
+			$app->get( TextDomainInt::class )->register();
+			$app->get( PostTypeSetupInt::class )->register();
+			$app->get( RolesInt::class )->register();
+			$app->get( AdminSermon::class )->register();
+			$app->get( BibleBookLoad::class )->register();
+
 			ImageUtils::init()->register();
-			BibleBookLoad::init()->register();
+			QueueScripts::init()->register();
+			SermonImage::init()->register();
 
 			Logger::debug( 'PLUGIN HOOKS INITIALIZED' );
 			do_action( $hook );

@@ -86,12 +86,6 @@ class Options implements OptionsInt {
 			} else {
 				$result = \update_option( $option_name, $value );
 			}
-			Logger::debug(
-				array(
-					'OPTION NAME'  => $option_name,
-					'OPTION VALUE' => $value,
-				)
-			);
 
 			return $result;
 			// @codeCoverageIgnoreStart

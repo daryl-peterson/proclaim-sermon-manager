@@ -5,6 +5,7 @@ namespace DRPSermonManager\Tests;
 use DRPSermonManager\App;
 use DRPSermonManager\Interfaces\NoticeInt;
 use DRPSermonManager\Logging\Logger;
+use DRPSermonManager\Notice;
 
 class NoticeTest extends BaseTest {
 
@@ -12,7 +13,7 @@ class NoticeTest extends BaseTest {
 		$title   = 'This is the tile';
 		$message = 'This is the message';
 
-		$obj = App::getNoticeInt( NoticeInt::class );
+		$obj = Notice::init();
 		$obj->set_success( $title, $message );
 		$obj->set_warning( $title, $message );
 		$obj->set_info( $title, $message );

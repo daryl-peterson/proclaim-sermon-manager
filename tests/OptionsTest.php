@@ -4,6 +4,7 @@ namespace DRPSermonManager\Tests;
 
 use DRPSermonManager\App;
 use DRPSermonManager\Helper;
+use DRPSermonManager\Interfaces\OptionsInt;
 use DRPSermonManager\Options;
 
 /**
@@ -18,7 +19,7 @@ class OptionsTest extends BaseTest {
 	public Options $obj;
 
 	public function setup(): void {
-		$this->obj = App::getOptionsInt();
+		$this->obj = $this->app->get( OptionsInt::class );
 	}
 
 	public function testMethods() {

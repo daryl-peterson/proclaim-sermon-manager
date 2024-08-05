@@ -10,7 +10,7 @@
  * @since       1.0.0
  */
 
-namespace DRPSermonManager\Abstracts;
+namespace DRPSermonManager;
 
 use DRPSermonManager\Exceptions\PluginException;
 use DRPSermonManager\Helper;
@@ -27,7 +27,7 @@ use DRPSermonManager\Logging\Logger;
  *
  * @since       1.0.0
  */
-abstract class TaxonomyRegAbs implements TaxonomyRegInt {
+class TaxonomyReg implements TaxonomyRegInt {
 
 	/**
 	 * Taxonomy.
@@ -55,17 +55,10 @@ abstract class TaxonomyRegAbs implements TaxonomyRegInt {
 	 *
 	 * @since 1.0.0
 	 */
-	abstract protected function __construct();
-
-	/**
-	 * Get initialize Taxonomy registration interface.
-	 *
-	 * @return TaxonomyRegInt Taxonomy registration interface.
-	 *
-	 * @since 1.0.0
-	 */
-	public static function init(): TaxonomyRegInt {
-		return new static();
+	public function __construct( string $taxonomy, string $post_type, string $config_file ) {
+		$this->taxonomy    = $taxonomy;
+		$this->post_type   = $post_type;
+		$this->config_file = $config_file;
 	}
 
 	/**

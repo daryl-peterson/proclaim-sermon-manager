@@ -10,9 +10,10 @@ namespace DRPSermonManager;
 
 use DRPSermonManager\Constants\CAP;
 use DRPSermonManager\Constants\TAX;
+use DRPSermonManager\Interfaces\OptionsInt;
 
-$permalinks   = PermaLinks::init()->get();
-$opts         = App::getOptionsInt();
+$permalinks   = App::init()->permalinks();
+$opts         = App::init()->get( OptionsInt::class );
 $slug         = TAX::SERVICE_TYPE;
 $capabilities = array(
 	'manage_terms' => CAP::MANAGE_CATAGORIES,

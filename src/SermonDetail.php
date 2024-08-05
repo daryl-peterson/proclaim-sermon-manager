@@ -15,6 +15,7 @@ namespace DRPSermonManager;
 use DRPSermonManager\Constants\META;
 use DRPSermonManager\Constants\PT;
 use DRPSermonManager\Constants\TAX;
+use DRPSermonManager\Interfaces\OptionsInt;
 
 // @codeCoverageIgnoreStart
 defined( 'ABSPATH' ) || exit;
@@ -25,12 +26,19 @@ defined( 'ABSPATH' ) || exit;
  */
 class SermonDetail {
 
-	public static function init() {
-		return new self();
+	/**
+	 * Options interface
+	 *
+	 * @var OptionsInt
+	 */
+	private OptionsInt $options;
+
+	public function __construct( OptionsInt $options ) {
+		$this->options = $options;
 	}
 
 	public function show(): void {
-		$options = Options::init();
+		$options = $this->options;
 
 		// @codeCoverageIgnoreStart
 		switch ( $options->get( 'date_format', '' ) ) {

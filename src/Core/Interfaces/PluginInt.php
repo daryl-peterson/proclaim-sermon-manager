@@ -24,7 +24,7 @@ interface PluginInt {
 	 *
 	 * @since 1.0.0
 	 */
-	public function init(): void;
+	public function register(): void;
 
 
 	/**

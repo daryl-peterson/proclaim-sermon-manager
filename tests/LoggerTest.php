@@ -23,11 +23,5 @@ class LoggerTest extends BaseTest {
 
 		$result = new LogFormatter();
 		$this->assertNotNull( $result );
-
-		$result = App::getOptionsInt();
-		$this->assertNotNull( $result );
-
-		$result = Requirements::init();
-		$this->assertNotNull( $result );
 	}
 }

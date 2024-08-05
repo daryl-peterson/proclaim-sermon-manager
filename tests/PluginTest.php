@@ -21,11 +21,11 @@ class PluginTest extends BaseTest {
 	public PluginInt $obj;
 
 	public function setup(): void {
-		$this->obj = App::getPluginInt();
+		$this->obj = $this->app->plugin();
 	}
 
-	public function testInit() {
-		$result = $this->obj->init();
+	public function testRegister() {
+		$result = $this->obj->register();
 		$this->assertNull( $result );
 	}
 

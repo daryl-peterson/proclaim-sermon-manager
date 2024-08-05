@@ -10,7 +10,7 @@
  * @since       1.0.0
  */
 
-namespace DRPSermonManager\Abstracts;
+namespace DRPSermonManager;
 
 use DRPSermonManager\Exceptions\PluginException;
 use DRPSermonManager\Helper;
@@ -18,7 +18,7 @@ use DRPSermonManager\Interfaces\PostTypeRegInt;
 use DRPSermonManager\Logging\Logger;
 
 /**
- * Post type registration abstract.
+ * Post type registration.
  *
  * @package     Sermon Manager
  * @author      Daryl Peterson <@gmail.com>
@@ -27,7 +27,7 @@ use DRPSermonManager\Logging\Logger;
  *
  * @since       1.0.0
  */
-abstract class PostTypeRegAbs implements PostTypeRegInt {
+class PostTypeReg implements PostTypeRegInt {
 
 	/**
 	 * Post type.
@@ -42,6 +42,19 @@ abstract class PostTypeRegAbs implements PostTypeRegInt {
 	 * @var string
 	 */
 	protected string $config_file;
+
+	/**
+	 * Initialize object.
+	 *
+	 * @param string $post_type Post type.
+	 * @param string $config_file Config file.
+	 *
+	 * @since 1.0.0
+	 */
+	public function __construct( string $post_type, string $config_file ) {
+		$this->pt          = $post_type;
+		$this->config_file = $config_file;
+	}
 
 	/**
 	 * Add post type.
@@ -61,8 +74,7 @@ abstract class PostTypeRegAbs implements PostTypeRegInt {
 		}
 
 		try {
-			$def = Helper::get_config( $this->config_file );
-			Logger::debug( $def );
+			$def    = Helper::get_config( $this->config_file );
 			$result = register_post_type( $this->pt, $def );
 			// @codeCoverageIgnoreStart
 		} catch ( \Throwable $th ) {

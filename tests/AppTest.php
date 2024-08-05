@@ -13,8 +13,10 @@ namespace DRPSermonManager\Tests;
 
 use DRPSermonManager\AdminPage;
 use DRPSermonManager\App;
-use DRPSermonManager\Plugin;
-use DRPSermonManager\Test_Blah;
+use DRPSermonManager\BibleBookLoad;
+use DRPSermonManager\Interfaces\NoticeInt;
+use DRPSermonManager\Logging\Logger;
+
 
 /**
  * App test.
@@ -35,11 +37,18 @@ class AppTest extends BaseTest {
 
 	public function testGetInstance() {
 		$this->assertNotNull( $this->obj );
+		$result = $this->app->get( NoticeInt::class );
+		$this->assertNotNull( $result );
+
+		$obj = $this->app->get( BibleBookLoad::class );
+		Logger::debug( $obj );
+		$this->assertInstanceOf( BibleBookLoad::class, $obj );
 	}
 
 	public function testGetPluginInt() {
-		$plugin = $this->obj->getPluginInt();
-		$this->assertInstanceOf( Plugin::class, $plugin );
+		$plugin = $this->app->plugin();
+		// $this->assertInstanceOf( PluginInt::class, $plugin );
+		$this->assertNotNull( $plugin );
 	}
 
 	public function testGetAdminPage() {

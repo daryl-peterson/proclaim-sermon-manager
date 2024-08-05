@@ -21,14 +21,13 @@ use DRPSermonManager\Interfaces\RolesInt;
 class Roles implements RolesInt {
 
 	/**
-	 * Initialize object.
+	 * Register callbacks.
 	 *
-	 * @return RolesInt Roles interface.
-	 *
+	 * @return void
 	 * @since 1.0.0
 	 */
-	public static function init(): RolesInt {
-		return new self();
+	public function register(): void {
+		add_action( 'drpsermon_after_post_setup', array( $this, 'add' ) );
 	}
 
 	/**

@@ -24,7 +24,7 @@ namespace DRPSermonManager\Interfaces;
  *
  * @since       1.0.0
  */
-interface PermaLinkInt extends Initable {
+interface PermaLinkInt {
 
 	/**
 	 * Return permalink array.

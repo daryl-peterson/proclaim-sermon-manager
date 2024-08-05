@@ -14,6 +14,7 @@
 namespace DRPSermonManager\Tests;
 
 use DRPSermonManager\Admin\AdminSermon;
+use DRPSermonManager\App;
 use DRPSermonManager\Constants\PT;
 
 /**
@@ -32,7 +33,7 @@ class AdminSermonTest extends BaseTest {
 	protected AdminSermon $obj;
 
 	public function setup(): void {
-		$this->obj = AdminSermon::init();
+		$this->obj = App::init()->get( AdminSermon::class );
 	}
 
 	public function testSavePost() {

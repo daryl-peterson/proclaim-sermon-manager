@@ -10,12 +10,11 @@
  * @since       1.0.0
  */
 
-namespace DRPSermonManager\Taxonomy;
+namespace DRPSermonManager;
 
-use DRPSermonManager\App;
 use DRPSermonManager\Constants\BIBLE;
 use DRPSermonManager\Constants\TAX;
-use DRPSermonManager\Interfaces\Initable;
+use DRPSermonManager\Interfaces\OptionsInt;
 use DRPSermonManager\Interfaces\Registrable;
 use DRPSermonManager\Logging\Logger;
 
@@ -33,17 +32,12 @@ defined( 'ABSPATH' ) || exit;
  *
  * @since       1.0.0
  */
-class BibleBookLoad implements Initable, Registrable {
+class BibleBookLoad implements Registrable {
 
-	/**
-	 * Get initialize object.
-	 *
-	 * @return BibleBookLoad
-	 *
-	 * @since 1.0.0
-	 */
-	public static function init(): BibleBookLoad {
-		return new self();
+	public OptionsInt $options;
+
+	public function __construct( OptionsInt $options ) {
+		$this->options = $options;
 	}
 
 	/**
@@ -64,9 +58,8 @@ class BibleBookLoad implements Initable, Registrable {
 	 * @return void
 	 */
 	public function run(): void {
-		$opts = App::getOptionsInt();
 
-		$ran = $opts->get( 'bible_books_loaded', false );
+		$ran = $this->options->get( 'bible_books_loaded', false );
 		if ( $ran && ! defined( 'PHPUNIT_TESTING' ) ) {
 			// @codeCoverageIgnoreStart
 			return;
@@ -74,7 +67,7 @@ class BibleBookLoad implements Initable, Registrable {
 		}
 
 		$this->load();
-		$opts->set( 'bible_books_loaded', true );
+		$this->options->set( 'bible_books_loaded', true );
 	}
 
 	/**

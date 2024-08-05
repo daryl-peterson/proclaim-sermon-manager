@@ -32,17 +32,6 @@ class TextDomain implements TextDomainInt {
 	public const INIT_KEY = 'TEXT_DOMAIN_INIT';
 
 	/**
-	 * Initialize object.
-	 *
-	 * @since 1.0.0
-	 */
-	public static function init(): TextDomainInt {
-		$obj = new self();
-
-		return $obj;
-	}
-
-	/**
 	 * Register callbacks
 	 *
 	 * @return void

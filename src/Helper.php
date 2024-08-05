@@ -186,19 +186,16 @@ class Helper {
 				$path .= '.php';
 			}
 
-			Logger::debug( array( 'PATH' => $path ) );
-
 			if ( file_exists( $path ) ) {
 				return include $path;
 			}
-
-			Logger::debug( array( 'PATH' => $path ) );
 			// @codeCoverageIgnoreStart
 		} catch ( \Throwable $th ) {
 			Logger::error(
 				array(
 					'MESSAGE' => $th->getMessage(),
 					'TRACE'   => $th->getTrace(),
+					'PATH'    => $path,
 				)
 			);
 			throw new PluginException( esc_html( $th->getMessage() ) );

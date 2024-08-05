@@ -26,7 +26,7 @@ use DRPSermonManager\Exceptions\PluginException;
  *
  * @since       1.0.0
  */
-interface PostTypeRegInt extends Initable {
+interface PostTypeRegInt {
 
 	/**
 	 * Add post type.

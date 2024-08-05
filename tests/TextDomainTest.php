@@ -23,7 +23,7 @@ class TextDomainTest extends BaseTest {
 	public TextDomainInt $obj;
 
 	public function setup(): void {
-		$this->obj = App::getTextDomainInt();
+		$this->obj = App::init()->get( TextDomainInt::class );
 	}
 
 	public function testLoadDomain() {
