@@ -2,7 +2,7 @@
 /**
  * Plugin main class.
  *
- * @package     Sermon Manager
+ * @package     Proclain Sermon Manager
  *
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
@@ -13,7 +13,6 @@
 
 namespace DRPSermonManager;
 
-use DRPSermonManager\Admin\AdminSermon;
 use DRPSermonManager\Admin\QueueScripts;
 use DRPSermonManager\Interfaces\NoticeInt;
 use DRPSermonManager\Interfaces\PluginInt;
@@ -23,11 +22,13 @@ use DRPSermonManager\Interfaces\RolesInt;
 use DRPSermonManager\Interfaces\TextDomainInt;
 use DRPSermonManager\Logging\Logger;
 use DRPSermonManager\BibleLoad;
+use DRPSermonManager\Constants\Filters;
+
 
 /**
  * Plugin main class.
  *
- * @package     Sermon Manager
+ * @package     Proclain Sermon Manager
  *
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
@@ -63,7 +64,7 @@ class Plugin implements PluginInt {
 	public function register(): void {
 		try {
 			FatalError::check();
-			$hook = Helper::get_key_name( 'PLUGIN_INIT' );
+			$hook = Filters::AFTER_PLUGIN_LOAD;
 
 			if ( did_action( $hook ) && ! defined( 'PHPUNIT_TESTING' ) ) {
 				// @codeCoverageIgnoreStart
@@ -81,15 +82,16 @@ class Plugin implements PluginInt {
 			$app->get( TextDomainInt::class )->register();
 			$app->get( PostTypeSetupInt::class )->register();
 			$app->get( RolesInt::class )->register();
-			$app->get( AdminSermon::class )->register();
+
 			$app->get( BibleLoad::class )->register();
 			$app->get( TaxonomyImg::class )->register();
 
-			ImageUtils::init()->register();
 			QueueScripts::init()->register();
+			SermonEdit::init()->register();
+			SermonListTable::init()->register();
+			ImageUtils::init()->register();
 			SermonImage::init()->register();
 
-			Logger::debug( 'PLUGIN HOOKS INITIALIZED' );
 			do_action( $hook );
 
 			// @codeCoverageIgnoreStart
@@ -108,9 +110,6 @@ class Plugin implements PluginInt {
 		Logger::debug( 'Activated' );
 		// @todo Add activation cleanup
 	}
-
-
-
 
 	/**
 	 * Deactivation.

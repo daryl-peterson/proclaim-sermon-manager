@@ -2,7 +2,7 @@
 /**
  * Admin sermon post edit / add.
  *
- * @package     Sermon Manager
+ * @package     Proclain Sermon Manager
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
@@ -10,11 +10,12 @@
  * @since       1.0.0
  */
 
-namespace DRPSermonManager\Admin;
+namespace DRPSermonManager;
 
 use DRPSermonManager\App;
 use DRPSermonManager\Constants\PT;
 use DRPSermonManager\Constants\Tax;
+use DRPSermonManager\Interfaces\Initable;
 use DRPSermonManager\Interfaces\OptionsInt;
 use DRPSermonManager\Interfaces\Registrable;
 use DRPSermonManager\Logging\Logger;
@@ -30,14 +31,14 @@ defined( 'ABSPATH' ) || exit;
 /**
  * Admin sermon post edit / add.
  *
- * @package     Sermon Manager
+ * @package     Proclain Sermon Manager
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
  *
  * @since       1.0.0
  */
-class AdminSermon implements Registrable {
+class SermonEdit implements Initable, Registrable {
 
 	/**
 	 * Post type
@@ -60,9 +61,19 @@ class AdminSermon implements Registrable {
 	 *
 	 * @since 1.0.0
 	 */
-	public function __construct( OptionsInt $options ) {
+	protected function __construct() {
 		$this->post_type = PT::SERMON;
-		$this->options   = $options;
+		$this->options   = App::init()->get( OptionsInt::class );
+	}
+
+	/**
+	 * Get initialize object.
+	 *
+	 * @return SermonEdit
+	 * @since 1.0.0
+	 */
+	public static function init(): SermonEdit {
+		return new self();
 	}
 
 	/**

@@ -2,7 +2,7 @@
 /**
  * Sermon utils.
  *
- * @package     Sermon Manager
+ * @package     Proclain Sermon Manager
  *
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
@@ -22,7 +22,7 @@ defined( 'ABSPATH' ) || exit;
 /**
  * Sermon utils.
  *
- * @package     Sermon Manager
+ * @package     Proclain Sermon Manager
  *
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
@@ -103,5 +103,27 @@ class PostTypeUtils {
 
 		// We do not know the post type!
 		return null;
+	}
+
+	/**
+	 * Gets the number of views a specific post has.
+	 *
+	 * - Post Info\
+	 * `$post_info = array('post_id' => $post->ID);`
+	 *
+	 * @param array $post_info Key value pair array.
+	 * @return string
+	 */
+	public static function get_view_count( array $post_info = array() ): string {
+		global $post;
+
+		$data  = array(
+			'before'  => '',
+			'after'   => '',
+			'post_id' => $post->ID,
+		);
+		$data  = array_merge( $data, $post_info );
+		$views = intval( get_post_meta( $data['post_id'], 'Views', true ) );
+		return $data['before'] . number_format_i18n( $views ) . $data['after'];
 	}
 }

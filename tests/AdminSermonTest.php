@@ -2,7 +2,7 @@
 /**
  * Admin sermon test.
  *
- * @package     Sermon Manager
+ * @package     Proclain Sermon Manager
  *
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
@@ -13,14 +13,12 @@
 
 namespace DRPSermonManager\Tests;
 
-use DRPSermonManager\Admin\AdminSermon;
-use DRPSermonManager\App;
-use DRPSermonManager\Constants\PT;
+use DRPSermonManager\SermonEdit;
 
 /**
  * Admin sermon test.
  *
- * @package     Sermon Manager
+ * @package     Proclain Sermon Manager
  *
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
@@ -30,10 +28,10 @@ use DRPSermonManager\Constants\PT;
  */
 class AdminSermonTest extends BaseTest {
 
-	protected AdminSermon $obj;
+	protected SermonEdit $obj;
 
 	public function setup(): void {
-		$this->obj = App::init()->get( AdminSermon::class );
+		$this->obj = SermonEdit::init();
 	}
 
 	public function testSavePost() {

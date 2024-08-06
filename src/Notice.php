@@ -2,7 +2,7 @@
 /**
  * Admin notice.
  *
- * @package     Sermon Manager.
+ * @package     Proclain Sermon Manager.
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
@@ -61,12 +61,7 @@ class Notice implements NoticeInt {
 	 */
 	public function show_notice(): void {
 		$option = $this->options->get( $this->option_name, null );
-		Logger::debug(
-			array(
-				'OPTION NAME'  => $this->options,
-				'OPTION VALUE' => $option,
-			)
-		);
+
 		if ( ! isset( $option ) ) {
 			return;
 		}

@@ -2,7 +2,7 @@
 /**
  * Taxonomy utilities.
  *
- * @package     Sermon Manager
+ * @package     Proclain Sermon Manager
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
@@ -17,7 +17,7 @@ use DRPSermonManager\Constants\PT;
 /**
  * Taxonomy utilities.
  *
- * @package     Sermon Manager
+ * @package     Proclain Sermon Manager
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt

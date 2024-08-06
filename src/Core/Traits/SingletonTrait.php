@@ -2,7 +2,7 @@
 /**
  * Singleton trait
  *
- * @package     Sermon Manager
+ * @package     Proclain Sermon Manager
  *
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
@@ -15,7 +15,7 @@ namespace DRPSermonManager\Traits;
 /**
  * Singleton trait
  *
- * @package     Sermon Manager
+ * @package     Proclain Sermon Manager
  *
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson

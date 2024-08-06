@@ -2,7 +2,7 @@
 /**
  * Helper class.
  *
- * @package     Sermon Manager
+ * @package     Proclain Sermon Manager
  *
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
@@ -15,11 +15,12 @@ namespace DRPSermonManager;
 
 use DRPSermonManager\Exceptions\PluginException;
 use DRPSermonManager\Logging\Logger;
+use ReflectionClass;
 
 /**
  * Helper class.
  *
- * @package     Sermon Manager
+ * @package     Proclain Sermon Manager
  *
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
@@ -133,8 +134,6 @@ class Helper {
 		return get_transient( $transient );
 	}
 
-
-
 	/**
 	 * Wrapper function for set_transient.
 	 * - Add a the prefix used for this plugin.
@@ -203,5 +202,23 @@ class Helper {
 		}
 
 		throw new PluginException( 'Unable able to locate config file :' . esc_html( $file ) );
+	}
+
+	/**
+	 * Get class short name
+	 *
+	 * @param object|string $object Class object or name.
+	 * @return ?string
+	 *
+	 * @since 1.0.0
+	 */
+	public static function get_short_name( object|string $object ): ?string {
+		try {
+			$reflect = new ReflectionClass( $object );
+			return $reflect->getShortName();
+
+		} catch ( \Throwable $th ) {
+			return null;
+		}
 	}
 }

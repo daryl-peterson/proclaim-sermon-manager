@@ -2,7 +2,7 @@
 /**
  * Run check to see if plugin can be activated / installed.
  *
- * @package     Sermon Manager
+ * @package     Proclain Sermon Manager
  *
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
@@ -20,7 +20,7 @@ use DRPSermonManager\Interfaces\RequirementCheckInt;
 /**
  * Run check to see if plugin can be activated / installed.
  *
- * @package     Sermon Manager
+ * @package     Proclain Sermon Manager
  *
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson

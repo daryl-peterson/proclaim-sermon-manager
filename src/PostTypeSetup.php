@@ -4,7 +4,7 @@
  * - Stub - calls other object methods.
  * - Used so other object don't have to register callbacks.
  *
- * @package     Sermon Manager
+ * @package     Proclain Sermon Manager
  *
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
@@ -16,7 +16,7 @@
 namespace DRPSermonManager;
 
 use DRPSermonManager\PostTypeReg;
-use DRPSermonManager\Constants\Actions;
+use DRPSermonManager\Constants\Filters;
 use DRPSermonManager\Constants\PT;
 use DRPSermonManager\Constants\Tax;
 use DRPSermonManager\Exceptions\PluginException;
@@ -31,7 +31,7 @@ use DRPSermonManager\TaxonomyReg;
  * - Stub - calls other object methods.
  * - Used so other object don't have to register callbacks.
  *
- * @package     Sermon Manager
+ * @package     Proclain Sermon Manager
  *
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
@@ -80,7 +80,7 @@ class PostTypeSetup implements PostTypeSetupInt {
 	 */
 	public function register(): void {
 		add_action( 'init', array( $this, 'add' ) );
-		add_action( Actions::FLUSH_REWRITE_RULES, array( $this, 'flush' ) );
+		add_action( Filters::FLUSH_REWRITE_RULES, array( $this, 'flush' ) );
 	}
 
 	/**
@@ -118,7 +118,7 @@ class PostTypeSetup implements PostTypeSetupInt {
 				}
 			}
 
-			do_action( Actions::AFTER_POST_SETUP );
+			do_action( Filters::AFTER_POST_SETUP );
 
 			// @codeCoverageIgnoreStart
 		} catch ( \Throwable $th ) {

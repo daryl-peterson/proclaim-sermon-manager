@@ -2,7 +2,7 @@
 /**
  * Manage Sermons with ease.
  *
- * @package     Sermon Manager
+ * @package     Proclain Sermon Manager
  * @category
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
@@ -11,9 +11,9 @@
  * ----------------------------------------------------------------------------
  *
  * @wordpress-plugin
- * Plugin Name:         DRP Sermon Manager
+ * Plugin Name:         Proclain Sermon Manager
  * Plugin URI:
- * Description:         DRP Sermon Manager for wordpess
+ * Description:         Proclain Sermon Manager for wordpess
  * Version:             1.0.0
  * Author:              Daryl Peterson
  * Author URI:

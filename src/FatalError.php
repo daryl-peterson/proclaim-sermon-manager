@@ -2,7 +2,7 @@
 /**
  * Fatal error handling.
  *
- * @package     Sermon Manager
+ * @package     Proclain Sermon Manager
  *
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
@@ -19,7 +19,7 @@ use DRPSermonManager\Logging\Logger;
 /**
  * Fatal error handling.
  *
- * @package     Sermon Manager
+ * @package     Proclain Sermon Manager
  *
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
@@ -45,7 +45,6 @@ class FatalError {
 		 */
 		$opts  = App::init()->get( OptionsInt::class );
 		$error = $opts->get( 'fatal_error' );
-		Logger::debug( array( 'FATAL ERROR' => $error ) );
 		if ( ! isset( $error ) ) {
 			return;
 		}

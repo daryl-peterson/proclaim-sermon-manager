@@ -2,7 +2,7 @@
 /**
  * Loads bible books taxomony data.
  *
- * @package     Sermon Manager
+ * @package     Proclain Sermon Manager
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
@@ -12,9 +12,10 @@
 
 namespace DRPSermonManager;
 
-use DRPSermonManager\Constants\Actions;
+use DRPSermonManager\Constants\Filters;
 use DRPSermonManager\Constants\Bible;
 use DRPSermonManager\Constants\Tax;
+use DRPSermonManager\Interfaces\Initable;
 use DRPSermonManager\Interfaces\OptionsInt;
 use DRPSermonManager\Interfaces\Registrable;
 use DRPSermonManager\Logging\Logger;
@@ -26,7 +27,7 @@ defined( 'ABSPATH' ) || exit;
 /**
  * Loads bible books taxomony data.
  *
- * @package     Sermon Manager
+ * @package     Proclain Sermon Manager
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
@@ -43,7 +44,6 @@ class BibleLoad implements Registrable {
 	 * @since 1.0.0
 	 */
 	public OptionsInt $options;
-
 
 	/**
 	 * Initialize object.
@@ -64,7 +64,7 @@ class BibleLoad implements Registrable {
 	 * @since 1.0.0
 	 */
 	public function register(): void {
-		add_action( Actions::AFTER_POST_SETUP, array( $this, 'run' ), 10, 1 );
+		add_action( Filters::AFTER_POST_SETUP, array( $this, 'run' ), 10, 1 );
 	}
 
 	/**
