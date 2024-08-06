@@ -2,7 +2,7 @@
 /**
  * Plugin main class.
  *
- * @package     Proclain Sermon Manager
+ * @package     Proclaim Sermon Manager
  *
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
@@ -28,7 +28,7 @@ use DRPSermonManager\Constants\Filters;
 /**
  * Plugin main class.
  *
- * @package     Proclain Sermon Manager
+ * @package     Proclaim Sermon Manager
  *
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
@@ -84,7 +84,7 @@ class Plugin implements PluginInt {
 			$app->get( RolesInt::class )->register();
 
 			$app->get( BibleLoad::class )->register();
-			$app->get( TaxonomyImg::class )->register();
+			$app->get( TaxonomyListTable::class )->register();
 
 			QueueScripts::init()->register();
 			SermonEdit::init()->register();

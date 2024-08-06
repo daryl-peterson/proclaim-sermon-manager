@@ -2,7 +2,7 @@
 /**
  * Log formatter
  *
- * @package     Proclain Sermon Manager
+ * @package     Proclaim Sermon Manager
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
@@ -17,7 +17,7 @@ use DRPSermonManager\Interfaces\LogFormatterInt;
 /**
  * Log formatter
  *
- * @package     Proclain Sermon Manager
+ * @package     Proclaim Sermon Manager
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt

@@ -2,7 +2,7 @@
 /**
  * Register requirement checks to be run.
  *
- * @package     Proclain Sermon Manager
+ * @package     Proclaim Sermon Manager
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
@@ -20,7 +20,7 @@ use DRPSermonManager\Logging\Logger;
 /**
  * Register requirement checks to be run.
  *
- * @package     Proclain Sermon Manager
+ * @package     Proclaim Sermon Manager
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
@@ -100,13 +100,10 @@ class Requirements implements RequirementsInt {
 	 * @since 1.0.0
 	 */
 	public function is_compatible(): void {
-		$transient = Helper::get_key_name( 'compatible' );
 		try {
 			$this->checks->run();
-			set_transient( $transient, true, 500 );
 			// @codeCoverageIgnoreStart
 		} catch ( \Throwable $th ) {
-			delete_transient( $transient );
 			FatalError::set( $th->getMessage(), $th );
 			// @codeCoverageIgnoreEnd
 		}

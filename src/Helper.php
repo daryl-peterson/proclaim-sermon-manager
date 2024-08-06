@@ -2,7 +2,7 @@
 /**
  * Helper class.
  *
- * @package     Proclain Sermon Manager
+ * @package     Proclaim Sermon Manager
  *
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
@@ -20,7 +20,7 @@ use ReflectionClass;
 /**
  * Helper class.
  *
- * @package     Proclain Sermon Manager
+ * @package     Proclaim Sermon Manager
  *
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson

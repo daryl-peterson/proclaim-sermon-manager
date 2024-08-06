@@ -1,8 +1,9 @@
 <?php
+
 /**
  * Sermon list table.
  *
- * @package     Proclain Sermon Manager
+ * @package     Proclaim Sermon Manager
  *
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
@@ -13,6 +14,7 @@
 namespace DRPSermonManager;
 
 use DRPSermonManager\Constants\Filters;
+use DRPSermonManager\Constants\Meta;
 use DRPSermonManager\Constants\PT;
 use DRPSermonManager\Constants\Tax;
 use DRPSermonManager\Interfaces\Initable;
@@ -22,7 +24,7 @@ use DRPSermonManager\Logging\Logger;
 /**
  * Sermon list table.
  *
- * @package     Proclain Sermon Manager
+ * @package     Proclaim Sermon Manager
  *
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
@@ -46,16 +48,16 @@ class SermonListTable implements Initable, Registrable {
 	private array $columns;
 
 	public function __construct() {
-		$this->pt                  = PT::SERMON;
-		$this->columns['cb']       = '<input type="checkbox" />';
-		$this->columns['title']    = __( 'Sermon Title', 'drpsermon' );
-		$this->columns['preacher'] = TaxUtils::get_taxonomy_field( Tax::PREACHER, 'singular_name' );
-		$this->columns['series']   = __( 'Sermon Series', 'drpsermon' );
-		$this->columns['topics']   = __( 'Topics', 'drpsermon' );
-		$this->columns['views']    = __( 'Views', 'drpsermon' );
-		$this->columns['comments'] = __( 'Comments', 'drpsermon' );
-		$this->columns['preached'] = __( 'Preached', 'drpsermon' );
-		$this->columns['date']     = __( 'Published' );
+		$this->pt                       = PT::SERMON;
+		$this->columns['cb']            = '<input type="checkbox" />';
+		$this->columns['title']         = __( 'Sermon Title', 'drpsermon' );
+		$this->columns[ Tax::PREACHER ] = TaxUtils::get_taxonomy_field( Tax::PREACHER, 'singular_name' );
+		$this->columns[ Tax::SERIES ]   = __( 'Sermon Series', 'drpsermon' );
+		$this->columns[ Tax::TOPICS ]   = __( 'Topics', 'drpsermon' );
+		$this->columns['views']         = __( 'Views', 'drpsermon' );
+		$this->columns['comments']      = __( 'Comments', 'drpsermon' );
+		$this->columns['preached']      = __( 'Preached', 'drpsermon' );
+		$this->columns['date']          = __( 'Published' );
 	}
 
 	public static function init(): SermonListTable {
@@ -82,19 +84,21 @@ class SermonListTable implements Initable, Registrable {
 	public function render_sermon_columns( $column ) {
 		global $post;
 
+		Logger::debug( array( 'COLUMN' => $column ) );
+
 		try {
 			if ( empty( $post->ID ) ) {
 				return;
 			}
 
 			switch ( $column ) {
-				case 'preacher':
+				case Tax::PREACHER:
 					$data = get_the_term_list( $post->ID, Tax::PREACHER, '', ', ', '' );
 					break;
-				case 'series':
+				case Tax::SERIES:
 					$data = get_the_term_list( $post->ID, Tax::SERIES, '', ', ', '' );
 					break;
-				case 'topics':
+				case Tax::TOPICS:
 					$data = get_the_term_list( $post->ID, Tax::TOPICS, '', ', ', '' );
 					break;
 				case 'views':
@@ -139,38 +143,12 @@ class SermonListTable implements Initable, Registrable {
 	public function set_columns( array $columns ): array {
 		if ( empty( $columns ) && ! is_array( $columns ) ) {
 			$columns = array();
-
 		}
 		if ( isset( $columns['comments'] ) ) {
 			$this->columns['comments'] = $columns['comments'];
 		}
 		return $this->columns + $columns;
 	}
-
-	/**
-	 * Set column content.
-	 *
-	 * @param mixed  $content Content.
-	 * @param string $column_name Column name.
-	 * @param int    $term_id
-	 * @return mixed
-	 *
-	 * @since 1.0.0
-	 */
-	public function set_column_content( mixed $content, string $column_name, int $term_id ): mixed {
-
-		switch ( $column_name ) {
-			case 'drpsermon-tax-id':
-				break;
-			case 'drpsermon-image':
-				break;
-			default:
-				break;
-		}
-
-		return $content;
-	}
-
 
 	/**
 	 * Set sortable columns
@@ -183,9 +161,10 @@ class SermonListTable implements Initable, Registrable {
 	public function set_sortable_columns( array $columns ): array {
 
 		$custom = array(
-			'title'    => 'title',
-			'preached' => 'preached',
-			'views'    => 'views',
+			'title'     => 'title',
+			Tax::SERIES => Tax::SERIES,
+			Meta::DATE  => Meta::DATE,
+			'views'     => 'views',
 		);
 
 		return wp_parse_args( $custom, $columns );
@@ -241,18 +220,22 @@ class SermonListTable implements Initable, Registrable {
 	 */
 	public function sermon_filters_query( $query ) {
 
-		if ( ! $this->post_type_match() ) {
-			return;
-		}
+		try {
+			if ( ! $this->post_type_match() ) {
+				return;
+			}
 
-		if ( isset( $query->query_vars[ Tax::SERVICE_TYPE ] ) ) {
-			$query->query_vars['tax_query'] = array(
-				array(
-					'taxonomy' => Tax::SERVICE_TYPE,
-					'field'    => 'slug',
-					'terms'    => $query->query_vars[ Tax::SERVICE_TYPE ],
-				),
-			);
+			if ( isset( $query->query_vars[ Tax::SERVICE_TYPE ] ) ) {
+				$query->query_vars['tax_query'] = array(
+					array(
+						'taxonomy' => Tax::SERVICE_TYPE,
+						'field'    => 'slug',
+						'terms'    => $query->query_vars[ Tax::SERVICE_TYPE ],
+					),
+				);
+			}
+		} catch ( \Throwable $th ) {
+			FatalError::set( $th->getMessage(), $th );
 		}
 	}
 
@@ -265,44 +248,47 @@ class SermonListTable implements Initable, Registrable {
 	 */
 	public function request_query( $vars ) {
 
-		if ( ! $this->post_type_match() ) {
-			return $vars;
-		}
-
-		if ( isset( $vars['orderby'] ) ) {
-
-			// Sorting.
-			switch ( $vars['orderby'] ) {
-				case 'preached':
-					$vars = array_merge(
-						$vars,
-						array(
-							'meta_key'       => 'sermon_date',
-							'orderby'        => 'meta_value_num',
-							'meta_value_num' => time(),
-							'meta_compare'   => '<=',
-						)
-					);
-					break;
-
-				case 'views':
-					$vars = array_merge(
-						$vars,
-						array(
-							'meta_key' => 'Views',
-							'orderby'  => 'meta_value_num',
-						)
-					);
-					break;
+		try {
+			if ( ! $this->post_type_match() ) {
+				return $vars;
 			}
+
+			if ( isset( $vars['orderby'] ) ) {
+
+				// Sorting.
+				switch ( $vars['orderby'] ) {
+					case 'preached':
+						$vars = array_merge(
+							$vars,
+							array(
+								'meta_key'       => 'sermon_date',
+								'orderby'        => 'meta_value_num',
+								'meta_value_num' => time(),
+								'meta_compare'   => '<=',
+							)
+						);
+						break;
+
+					case 'views':
+						$vars = array_merge(
+							$vars,
+							array(
+								'meta_key' => 'Views',
+								'orderby'  => 'meta_value_num',
+							)
+						);
+						break;
+				}
+			}
+
+			if ( isset( $vars[ $this->pt ] ) && trim( $vars[ $this->pt ] ) === '' ) {
+				unset( $vars[ $this->pt ] );
+			}
+
+			return $vars;
+		} catch ( \Throwable $th ) {
+			FatalError::set( $th->getMessage(), $th );
 		}
-
-		if ( isset( $vars[ $this->pt ] ) && trim( $vars[ $this->pt ] ) === '' ) {
-			unset( $vars[ $this->pt ] );
-
-		}
-
-		return $vars;
 	}
 
 	public function sermon_filters() {

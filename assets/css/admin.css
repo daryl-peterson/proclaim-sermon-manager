@@ -38,18 +38,14 @@
 		vertical-align: top;
 	}
 
-	#drpsermon-image,
-	.drpsermon-image,
-	.column-drpsermon-image,
-	#drpsermon-tax-id,
-	.drpsermon-tax-id,
-	.column-drpsermon-tax-id,
-	#drpsermon-description,
-	.drpsermon-description,
-	.column-drpsermon-description {
-		display: block;
-	}
+}
 
+.drpsermon-image-thumb {
+	border-radius: 15px;
+	background: #d0d1d1;
+	padding: 3px;
+	width: 75px;
+	height: 75px;
 }
 
 #drpsermon-image,
@@ -70,6 +66,9 @@
 	#drpsermon-image,
 	.drpsermon-image,
 	.column-drpsermon-image,
+	#drpsermon-count,
+	.drpsermon-count,
+	.column-drpsermon-count,
 	#drpsermon-tax-id,
 	.drpsermon-tax-id,
 	.column-drpsermon-tax-id,
@@ -85,6 +84,9 @@
 	#drpsermon-image,
 	.drpsermon-image,
 	.column-drpsermon-image,
+	#drpsermon-count,
+	.drpsermon-count,
+	.column-drpsermon-count,
 	#drpsermon-tax-id,
 	.drpsermon-tax-id,
 	.column-drpsermon-tax-id,

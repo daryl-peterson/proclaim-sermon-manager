@@ -2,7 +2,7 @@
 /**
  * Taxonomy Image.
  *
- * @package     Proclain Sermon Manager
+ * @package     Proclaim Sermon Manager
  *
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
@@ -12,6 +12,7 @@
 
 namespace DRPSermonManager;
 
+use DRPSermonManager\Constants\Meta;
 use DRPSermonManager\Constants\Tax;
 use DRPSermonManager\Interfaces\Registrable;
 use DRPSermonManager\Logging\Logger;
@@ -19,14 +20,14 @@ use DRPSermonManager\Logging\Logger;
 /**
  * Taxonomy Image.
  *
- * @package     Proclain Sermon Manager
+ * @package     Proclaim Sermon Manager
  *
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
  * @since       1.0.0
  */
-class TaxonomyImg implements Registrable {
+class TaxonomyListTable implements Registrable {
 
 	/**
 	 * Table columns
@@ -48,12 +49,12 @@ class TaxonomyImg implements Registrable {
 	public function __construct() {
 		$this->columns = array(
 			'cb'                    => '<input type="checkbox" />',
-			'drpsermon-tax-id'      => 'ID',
 			'drpsermon-image'       => 'Image',
 			'name'                  => 'Name',
+
 			'drpsermon-description' => 'Description',
 			'slug'                  => 'Slug',
-			'count'                 => 'Count',
+			'drpsermon-count'       => 'Count',
 		);
 		$this->tax     = array(
 			Tax::PREACHER,
@@ -74,6 +75,7 @@ class TaxonomyImg implements Registrable {
 		}
 		add_action( 'cmb2_admin_init', array( $this, 'cmb' ) );
 
+		add_filter( 'list_table_primary_column', array( $this, 'list_table_primary_column' ), 10, 2 );
 		foreach ( $this->tax as $taxonomy ) {
 			add_filter( "manage_edit-{$taxonomy}_sortable_columns", array( $this, 'set_sortable_columns' ) );
 			add_filter( "manage_{$taxonomy}_custom_column", array( $this, 'set_column_content' ), 10, 3 );
@@ -103,6 +105,23 @@ class TaxonomyImg implements Registrable {
 	 */
 	public function set_columns( array $columns ): array {
 		return $this->columns;
+	}
+
+	/**
+	 * Set list table primary column
+	 * Support for WordPress 4.3.
+	 *
+	 * @param string $default   Existing primary column.
+	 * @param string $screen_id Current screen ID.
+	 *
+	 * @return string
+	 */
+	public function list_table_primary_column( string $default, string $screen_id ): string {
+		if ( in_array( $screen_id, $this->tax ) ) {
+			return 'name';
+		}
+
+		return $default;
 	}
 
 	/**
@@ -139,6 +158,9 @@ class TaxonomyImg implements Registrable {
 	}
 
 
+
+
+
 	/**
 	 * Set column content.
 	 *
@@ -150,7 +172,6 @@ class TaxonomyImg implements Registrable {
 	 * @since 1.0.0
 	 */
 	public function set_column_content( mixed $content, string $column_name, int $term_id ): mixed {
-		$name = $this->get_taxonomy_name();
 
 		switch ( $column_name ) {
 			case 'drpsermon-tax-id':
@@ -159,11 +180,15 @@ class TaxonomyImg implements Registrable {
 				$content = "<a href=\"$link\" title=\"Edit\">$term_id</a>";
 				break;
 			case 'drpsermon-image':
-				$img = get_term_meta( $term_id, $name . '_image', true );
-
+				$name = $this->get_taxonomy_name();
+				if ( ! isset( $name ) ) {
+					return $content;
+				}
+				$img     = get_term_meta( $term_id, $name . '_image_id', true );
+				$url     = wp_get_attachment_image_url( $img );
 				$html    = <<<EOT
 
-					<img src="$img" style="height:75px;width:75px">
+					<img class="drpsermon-image-thumb" src="$url">
 				EOT;
 				$content = $html;
 				break;
@@ -172,10 +197,9 @@ class TaxonomyImg implements Registrable {
 				$content = term_description( $term_id, $taxonomy );
 				$content = wp_trim_words( $content, 10 );
 				break;
-			case 'count':
-				if ( isset( $content ) ) {
-					$content = 0;
-				}
+			case 'drpsermon-count':
+				$name    = $this->get_taxonomy_name();
+				$content = get_term( $term_id, $name );
 				break;
 			default:
 				break;
@@ -193,7 +217,6 @@ class TaxonomyImg implements Registrable {
 	 * @since 1.0.0
 	 */
 	public function set_sortable_columns( array $columns ): array {
-		$columns['drpsermon-tax-id']      = 'id';
 		$columns['drpsermon-description'] = 'descriptioin';
 		$columns['count']                 = 'count';
 		Logger::debug( array( 'SORTABLE' => $columns ) );
@@ -210,7 +233,10 @@ class TaxonomyImg implements Registrable {
 	private function get_taxonomy_name(): string {
 		$name   = '';
 		$screen = get_current_screen();
-		$tax    = get_taxonomy( $screen->taxonomy );
+		if ( ! isset( $screen ) ) {
+			return '';
+		}
+		$tax = get_taxonomy( $screen->taxonomy );
 		if ( isset( $tax ) ) {
 			$name = $tax->name;
 		}

@@ -4,7 +4,7 @@
  * - Stub - calls other object methods.
  * - Used so other object don't have to register callbacks.
  *
- * @package     Proclain Sermon Manager
+ * @package     Proclaim Sermon Manager
  *
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
@@ -31,7 +31,7 @@ use DRPSermonManager\TaxonomyReg;
  * - Stub - calls other object methods.
  * - Used so other object don't have to register callbacks.
  *
- * @package     Proclain Sermon Manager
+ * @package     Proclaim Sermon Manager
  *
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
@@ -63,11 +63,11 @@ class PostTypeSetup implements PostTypeSetupInt {
 	public function __construct() {
 		$pt                        = PT::SERMON;
 		$this->post_types[ $pt ]   = new PostTypeReg( PT::SERMON, 'post-type-sermon.php' );
+		$this->taxonomies[ $pt ][] = new TaxonomyReg( Tax::BIBLE_BOOK, PT::SERMON, 'taxonomy-bible-book.php' );
 		$this->taxonomies[ $pt ][] = new TaxonomyReg( Tax::PREACHER, PT::SERMON, 'taxonomy-preacher.php' );
 		$this->taxonomies[ $pt ][] = new TaxonomyReg( Tax::SERIES, PT::SERMON, 'taxonomy-series.php' );
-		$this->taxonomies[ $pt ][] = new TaxonomyReg( Tax::TOPICS, PT::SERMON, 'taxonomy-topics.php' );
-		$this->taxonomies[ $pt ][] = new TaxonomyReg( Tax::BIBLE_BOOK, PT::SERMON, 'taxonomy-bible-book.php' );
 		$this->taxonomies[ $pt ][] = new TaxonomyReg( Tax::SERVICE_TYPE, PT::SERMON, 'taxonomy-service-type.php' );
+		$this->taxonomies[ $pt ][] = new TaxonomyReg( Tax::TOPICS, PT::SERMON, 'taxonomy-topics.php' );
 	}
 
 

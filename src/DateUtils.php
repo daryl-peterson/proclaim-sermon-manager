@@ -10,7 +10,7 @@ use DRPSermonManager\Logging\Logger;
 /**
  * Date utils.
  *
- * @package     Proclain Sermon Manager
+ * @package     Proclaim Sermon Manager
  * @category
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
