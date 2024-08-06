@@ -22,7 +22,7 @@ use DRPSermonManager\Interfaces\RequirementsInt;
 use DRPSermonManager\Interfaces\RolesInt;
 use DRPSermonManager\Interfaces\TextDomainInt;
 use DRPSermonManager\Logging\Logger;
-use DRPSermonManager\BibleBookLoad;
+use DRPSermonManager\BibleLoad;
 
 /**
  * Plugin main class.
@@ -62,6 +62,7 @@ class Plugin implements PluginInt {
 	 */
 	public function register(): void {
 		try {
+			FatalError::check();
 			$hook = Helper::get_key_name( 'PLUGIN_INIT' );
 
 			if ( did_action( $hook ) && ! defined( 'PHPUNIT_TESTING' ) ) {
@@ -74,15 +75,15 @@ class Plugin implements PluginInt {
 			add_action( 'shutdown', array( $this, 'shutdown' ) );
 			add_action( 'admin_notices', array( $this, 'show_notice' ) );
 
-			$app = App::init();
-
 			// Load other classes.
+			$app = App::init();
 			$app->get( RequirementsInt::class )->register();
 			$app->get( TextDomainInt::class )->register();
 			$app->get( PostTypeSetupInt::class )->register();
 			$app->get( RolesInt::class )->register();
 			$app->get( AdminSermon::class )->register();
-			$app->get( BibleBookLoad::class )->register();
+			$app->get( BibleLoad::class )->register();
+			$app->get( TaxonomyImg::class )->register();
 
 			ImageUtils::init()->register();
 			QueueScripts::init()->register();
@@ -93,12 +94,7 @@ class Plugin implements PluginInt {
 
 			// @codeCoverageIgnoreStart
 		} catch ( \Throwable $th ) {
-			Logger::error(
-				array(
-					'MESSAGE' => $th->getMessage(),
-					'TRACE'   => $th->getTrace(),
-				)
-			);
+			FatalError::set( $th->getMessage(), $th );
 			// @codeCoverageIgnoreEnd
 		}
 	}
@@ -112,6 +108,9 @@ class Plugin implements PluginInt {
 		Logger::debug( 'Activated' );
 		// @todo Add activation cleanup
 	}
+
+
+
 
 	/**
 	 * Deactivation.
@@ -138,6 +137,7 @@ class Plugin implements PluginInt {
 	 * @return void
 	 */
 	public function shutdown(): void {
+
 		Logger::debug( "SHUTDOWN\n" . str_repeat( '-', 80 ) . "\n\n\n" );
 	}
 }

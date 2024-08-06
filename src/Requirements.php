@@ -78,12 +78,7 @@ class Requirements implements RequirementsInt {
 
 			// @codeCoverageIgnoreStart
 		} catch ( \Throwable $th ) {
-			Logger::error(
-				array(
-					'MESSAGE' => $th->getMessage(),
-					'TRACE'   => $th->getTrace(),
-				)
-			);
+			FatalError::set( $th->getMessage(), $th );
 			// @codeCoverageIgnoreEnd
 		}
 	}
@@ -115,9 +110,7 @@ class Requirements implements RequirementsInt {
 			// @codeCoverageIgnoreStart
 		} catch ( \Throwable $th ) {
 			delete_transient( $transient );
-			Deactivator::init()->run();
-
-			return;
+			FatalError::set( $th->getMessage(), $th );
 			// @codeCoverageIgnoreEnd
 		}
 	}

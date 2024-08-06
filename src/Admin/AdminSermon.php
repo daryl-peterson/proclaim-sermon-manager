@@ -14,8 +14,7 @@ namespace DRPSermonManager\Admin;
 
 use DRPSermonManager\App;
 use DRPSermonManager\Constants\PT;
-use DRPSermonManager\Constants\TAX;
-use DRPSermonManager\Interfaces\Initable;
+use DRPSermonManager\Constants\Tax;
 use DRPSermonManager\Interfaces\OptionsInt;
 use DRPSermonManager\Interfaces\Registrable;
 use DRPSermonManager\Logging\Logger;
@@ -73,7 +72,7 @@ class AdminSermon implements Registrable {
 	 * @since 1.0.0
 	 */
 	public function register(): void {
-		if ( ! is_admin() ) {
+		if ( ! is_admin() && ! defined( 'PHPUNIT_TESTING' ) ) {
 			return;
 		}
 
@@ -206,7 +205,7 @@ class AdminSermon implements Registrable {
 	 *
 	 * @return void
 	 */
-	public function remove_meta_boxes() {
+	public function remove_meta_boxes(): void {
 
 		// @codeCoverageIgnoreStart
 		if ( ! function_exists( '\remove_meta_box' ) ) {
@@ -217,6 +216,6 @@ class AdminSermon implements Registrable {
 		// @codeCoverageIgnoreEnd
 
 		remove_meta_box( 'postcustom', $this->post_type, 'normal' );
-		remove_meta_box( 'tagsdiv-' . TAX::SERVICE_TYPE, $this->post_type, 'high' );
+		remove_meta_box( 'tagsdiv-' . Tax::SERVICE_TYPE, $this->post_type, 'high' );
 	}
 }

@@ -8,7 +8,7 @@
 namespace DRPSermonManager;
 
 $permalinks = App::init()->permalinks();
-use DRPSermonManager\Constants\CAP;
+use DRPSermonManager\Constants\Caps;
 use DRPSermonManager\Constants\PT;
 
 return array(
@@ -41,14 +41,14 @@ return array(
 	'show_ui'             => true,
 	'capability_type'     => PT::SERMON,
 	'capabilities'        => array(
-		CAP::MANAGE_CATAGORIES => CAP::MANAGE_CATAGORIES,
-		CAP::MANAGE_SETTINGS   => CAP::MANAGE_SETTINGS,
+		Caps::MANAGE_CATAGORIES => Caps::MANAGE_CATAGORIES,
+		Caps::MANAGE_SETTINGS   => Caps::MANAGE_SETTINGS,
 	),
 	'map_meta_cap'        => true,
 	'publicly_queryable'  => true,
 	'exclude_from_search' => false,
 	'show_in_menu'        => true,
-	'menu_icon'           => 'icon-drpsermon',
+	'menu_icon'           => 'dashicons-drpsermon-bible-inv',
 	'hierarchical'        => false,
 	'rewrite'             => array(
 		'slug'       => $permalinks[ PT::SERMON ],

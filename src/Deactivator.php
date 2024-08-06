@@ -13,7 +13,6 @@
 
 namespace DRPSermonManager;
 
-use DRPSermonManager\Interfaces\DeactivatorInt;
 use DRPSermonManager\Logging\Logger;
 
 /**
@@ -30,22 +29,13 @@ use DRPSermonManager\Logging\Logger;
 class Deactivator {
 
 	/**
-	 * Initialize object
-	 *
-	 * @return DeactivatorInt
-	 * @since 1.0.0
-	 */
-	public static function init(): Deactivator {
-		return new self();
-	}
-
-	/**
 	 * Run deactivation.
 	 *
 	 * @return void
 	 * @since 1.0.0
 	 */
-	public function run(): void {
+	public static function run(): void {
+
 		// @codeCoverageIgnoreStart
 		if ( ! function_exists( '\is_plugin_active' ) ) {
 			$file = ABSPATH . 'wp-admin/includes/plugin.php';
@@ -54,7 +44,7 @@ class Deactivator {
 		}
 		// @codeCoverageIgnoreEnd
 
-		if ( ( is_admin() && current_user_can( 'activate_plugins' ) ) || defined( 'PHPUNIT_TESTING' ) ) {
+		if ( ( is_admin() || defined( 'PHPUNIT_TESTING' ) ) ) {
 			deactivate_plugins( plugin_basename( FILE ) );
 
 			// phpcs:disable

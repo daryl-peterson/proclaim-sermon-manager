@@ -14,7 +14,7 @@
 namespace DRPSermonManager;
 
 use DRPSermonManager\Constants\PT;
-use DRPSermonManager\Constants\TAX;
+use DRPSermonManager\Constants\Tax;
 use DRPSermonManager\Interfaces\OptionsInt;
 use DRPSermonManager\Interfaces\PermaLinkInt;
 use DRPSermonManager\Interfaces\TextDomainInt;
@@ -56,7 +56,7 @@ class PermaLinks implements PermaLinkInt {
 	 * @since 1.0.0
 	 */
 	public function get(): array {
-		if ( ! isset( $this->text ) ) {
+		if ( ! isset( $this->text ) || defined( 'PHPUNIT_TESTING' ) ) {
 			$this->text = App::init()->get( TextDomainInt::class );
 		}
 		$this->config();
@@ -100,31 +100,31 @@ class PermaLinks implements PermaLinkInt {
 		$perm = wp_parse_args(
 			(array) $opts->get( 'permalinks', array() ),
 			array(
-				TAX::PREACHER            => trim( sanitize_title( $opts->get( TAX::PREACHER, '' ) ) ),
-				TAX::SERIES              => '',
-				TAX::TOPICS              => '',
-				TAX::BIBLE_BOOK          => '',
-				TAX::SERVICE_TYPE        => trim( sanitize_title( $opts->get( 'service_type_label', '' ) ) ),
+				Tax::PREACHER            => trim( sanitize_title( $opts->get( Tax::PREACHER, '' ) ) ),
+				Tax::SERIES              => '',
+				Tax::TOPICS              => '',
+				Tax::BIBLE_BOOK          => '',
+				Tax::SERVICE_TYPE        => trim( sanitize_title( $opts->get( 'service_type_label', '' ) ) ),
 				PT::SERMON               => trim( $opts->get( 'archive_slug', '' ) ),
 				'use_verbose_page_rules' => false,
 			)
 		);
 
 		// Ensure rewrite slugs are set.
-		$perm[ TAX::PREACHER ] = empty( $perm[ TAX::PREACHER ] ) ?
-			_x( 'preacher', 'slug', 'drpsermon' ) : $perm[ TAX::PREACHER ];
+		$perm[ Tax::PREACHER ] = empty( $perm[ Tax::PREACHER ] ) ?
+			_x( 'preacher', 'slug', 'drpsermon' ) : $perm[ Tax::PREACHER ];
 
-		$perm[ TAX::SERIES ] = empty( $perm[ TAX::SERIES ] ) ?
-			_x( 'series', 'slug', 'drpsermon' ) : $perm[ TAX::SERIES ];
+		$perm[ Tax::SERIES ] = empty( $perm[ Tax::SERIES ] ) ?
+			_x( 'series', 'slug', 'drpsermon' ) : $perm[ Tax::SERIES ];
 
-		$perm[ TAX::TOPICS ] = empty( $perm[ TAX::TOPICS ] ) ?
-			_x( 'topics', 'slug', 'drpsermon' ) : $perm[ TAX::TOPICS ];
+		$perm[ Tax::TOPICS ] = empty( $perm[ Tax::TOPICS ] ) ?
+			_x( 'topics', 'slug', 'drpsermon' ) : $perm[ Tax::TOPICS ];
 
-		$perm[ TAX::BIBLE_BOOK ] = empty( $perm[ TAX::BIBLE_BOOK ] ) ?
-			_x( 'book', 'slug', 'drpsermon' ) : $perm[ TAX::BIBLE_BOOK ];
+		$perm[ Tax::BIBLE_BOOK ] = empty( $perm[ Tax::BIBLE_BOOK ] ) ?
+			_x( 'book', 'slug', 'drpsermon' ) : $perm[ Tax::BIBLE_BOOK ];
 
-		$perm[ TAX::SERVICE_TYPE ] = empty( $perm[ TAX::SERVICE_TYPE ] ) ?
-			_x( 'service-type', 'slug', 'drpsermon' ) : $perm[ TAX::SERVICE_TYPE ];
+		$perm[ Tax::SERVICE_TYPE ] = empty( $perm[ Tax::SERVICE_TYPE ] ) ?
+			_x( 'service-type', 'slug', 'drpsermon' ) : $perm[ Tax::SERVICE_TYPE ];
 
 		$perm[ PT::SERMON ] = empty( $perm[ PT::SERMON ] ) ?
 			_x( 'sermons', 'slug', 'drpsermon' ) : $perm[ PT::SERMON ];

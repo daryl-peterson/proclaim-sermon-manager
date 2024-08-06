@@ -56,7 +56,7 @@ class LogFile {
 		try {
 
 			$fs = @wp_filesize( $file );
-			if ( ! $fs || ( $fs > 2000000 ) ) {
+			if ( ! $fs || ( $fs > 5000000 ) ) {
 				$this->truncate( $file );
 
 				return;

@@ -12,8 +12,9 @@
 
 namespace DRPSermonManager;
 
-use DRPSermonManager\Constants\BIBLE;
-use DRPSermonManager\Constants\TAX;
+use DRPSermonManager\Constants\Actions;
+use DRPSermonManager\Constants\Bible;
+use DRPSermonManager\Constants\Tax;
 use DRPSermonManager\Interfaces\OptionsInt;
 use DRPSermonManager\Interfaces\Registrable;
 use DRPSermonManager\Logging\Logger;
@@ -32,7 +33,7 @@ defined( 'ABSPATH' ) || exit;
  *
  * @since       1.0.0
  */
-class BibleBookLoad implements Registrable {
+class BibleLoad implements Registrable {
 
 	/**
 	 * Options interface.
@@ -63,7 +64,7 @@ class BibleBookLoad implements Registrable {
 	 * @since 1.0.0
 	 */
 	public function register(): void {
-		add_action( 'drpsermon_after_post_setup', array( $this, 'run' ), 10, 1 );
+		add_action( Actions::AFTER_POST_SETUP, array( $this, 'run' ), 10, 1 );
 	}
 
 	/**
@@ -91,8 +92,8 @@ class BibleBookLoad implements Registrable {
 	 * @return void
 	 */
 	private function load() {
-		$books = BIBLE::BOOKS;
-		$tax   = TAX::BIBLE_BOOK;
+		$books = Bible::BOOKS;
+		$tax   = Tax::BIBLE_BOOK;
 
 		try {
 			foreach ( $books as $book ) {

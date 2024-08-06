@@ -9,16 +9,16 @@
 
 namespace DRPSermonManager;
 
-use DRPSermonManager\Constants\CAP;
-use DRPSermonManager\Constants\TAX;
+use DRPSermonManager\Constants\Caps;
+use DRPSermonManager\Constants\Tax;
 
 $permalinks   = App::init()->permalinks();
-$slug         = TAX::BIBLE_BOOK;
+$slug         = Tax::BIBLE_BOOK;
 $capabilities = array(
-	'manage_terms' => CAP::MANAGE_CATAGORIES,
-	'edit_terms'   => CAP::MANAGE_CATAGORIES,
-	'delete_terms' => CAP::MANAGE_CATAGORIES,
-	'assign_terms' => CAP::MANAGE_CATAGORIES,
+	'manage_terms' => Caps::MANAGE_CATAGORIES,
+	'edit_terms'   => Caps::MANAGE_CATAGORIES,
+	'delete_terms' => Caps::MANAGE_CATAGORIES,
+	'assign_terms' => Caps::MANAGE_CATAGORIES,
 );
 
 return array(

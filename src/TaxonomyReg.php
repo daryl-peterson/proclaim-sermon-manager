@@ -1,6 +1,6 @@
 <?php
 /**
- * Abstract taxonomy registration interface.
+ * Taxonomy Registration.
  *
  * @package     Sermon Manager
  * @author      Daryl Peterson <@gmail.com>
@@ -18,7 +18,7 @@ use DRPSermonManager\Interfaces\TaxonomyRegInt;
 use DRPSermonManager\Logging\Logger;
 
 /**
- * Abstract taxonomy registration interface.
+ * Taxonomy Registration.
  *
  * @package     Sermon Manager
  * @author      Daryl Peterson <@gmail.com>

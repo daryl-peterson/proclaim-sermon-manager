@@ -3,12 +3,12 @@
 namespace DRPSermonManager\Tests;
 
 use DRPSermonManager\Constants\PT;
-use DRPSermonManager\Constants\TAX;
+use DRPSermonManager\Constants\Tax;
 use DRPSermonManager\TaxonomyReg;
 use WP_Error;
 
 /**
- * Class description
+ * Taxonomy registration test.
  *
  * @package
  * @category
@@ -20,7 +20,7 @@ use WP_Error;
 class TaxonomyRegTest extends BaseTest {
 
 	public function test_get_wp_error() {
-		$obj = new TaxonomyReg( TAX::PREACHER, PT::SERMON, 'taxonomy-preacher.php' );
+		$obj = new TaxonomyReg( Tax::PREACHER, PT::SERMON, 'taxonomy-preacher.php' );
 
 		$msg    = 'Test Error';
 		$error  = new WP_Error( '', $msg );

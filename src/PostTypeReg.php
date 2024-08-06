@@ -68,6 +68,7 @@ class PostTypeReg implements PostTypeRegInt {
 		if ( ! defined( 'PHPUNIT_TESTING' ) ) {
 			// @codeCoverageIgnoreStart
 			if ( ! is_blog_installed() || $exist ) {
+
 				return;
 			}
 			// @codeCoverageIgnoreEnd
@@ -78,12 +79,7 @@ class PostTypeReg implements PostTypeRegInt {
 			$result = register_post_type( $this->pt, $def );
 			// @codeCoverageIgnoreStart
 		} catch ( \Throwable $th ) {
-			Logger::error(
-				array(
-					'MESSAGE' => $th->getMessage(),
-					'TRACE'   => $th->getTrace(),
-				)
-			);
+			throw new PluginException( $th->getMessage(), $th->getCode(), $th );
 			// @codeCoverageIgnoreEnd
 		}
 
@@ -91,9 +87,9 @@ class PostTypeReg implements PostTypeRegInt {
 			// @codeCoverageIgnoreStart
 			$message = __( 'Failed to add post type : ', 'drpsermon' ) . $this->pt;
 			if ( is_wp_error( $result ) ) {
-				$message = $this->get_wp_error_message( $result );
+				$message = $result->get_error_message();
 			}
-			throw new PluginException( esc_html( $message ) );
+			throw new PluginException( $message );
 			// @codeCoverageIgnoreEnd
 		}
 	}
@@ -132,9 +128,9 @@ class PostTypeReg implements PostTypeRegInt {
 			// @codeCoverageIgnoreStart
 			$message = __( 'Failed to remove post type : ', 'drpsermon' ) . $this->pt;
 			if ( is_wp_error( $result ) ) {
-				$message = $this->get_wp_error_message( $result );
+				$message = $result->get_error_message();
 			}
-			throw new PluginException( esc_html( $message ) );
+			throw new PluginException( $message );
 			// @codeCoverageIgnoreEnd
 		}
 	}
@@ -147,17 +143,5 @@ class PostTypeReg implements PostTypeRegInt {
 	 */
 	public function exist(): bool {
 		return post_type_exists( $this->pt );
-	}
-
-	/**
-	 * Get WP_Error message.
-	 *
-	 * @param \WP_Error $error WP Error.
-	 * @since 1.0.0
-	 *
-	 * @return string
-	 */
-	public function get_wp_error_message( \WP_Error $error ): string {
-		return $error->get_error_message();
 	}
 }

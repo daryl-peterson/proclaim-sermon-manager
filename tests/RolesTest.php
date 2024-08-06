@@ -3,7 +3,7 @@
 namespace DRPSermonManager\Tests;
 
 use DRPSermonManager\App;
-use DRPSermonManager\Constants\CAP;
+use DRPSermonManager\Constants\Caps;
 use DRPSermonManager\Interfaces\RolesInt;
 use DRPSermonManager\Logging\Logger;
 
@@ -39,7 +39,7 @@ class RolesTest extends BaseTest {
 		$role = get_role( 'administrator' );
 		$this->assertInstanceOf( \WP_Role::class, $role );
 
-		$list = CAP::LIST;
+		$list = Caps::LIST;
 
 		foreach ( $list as $cap ) {
 			$has = $role->has_cap( $cap );

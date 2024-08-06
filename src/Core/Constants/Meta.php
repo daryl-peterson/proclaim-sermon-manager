@@ -24,7 +24,7 @@ namespace DRPSermonManager\Constants;
  *
  * @since       1.0.0
  */
-class META {
+class Meta {
 
 	public const AUDIO         = 'drpsermon_audio';
 	public const AUDIO_ID      = 'drpsermon_audio_id';

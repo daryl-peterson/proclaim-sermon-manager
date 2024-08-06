@@ -53,14 +53,4 @@ interface PostTypeRegInt {
 	 * @since 1.0.0
 	 */
 	public function exist(): bool;
-
-	/**
-	 * Get WP_Error message.
-	 *
-	 * @param \WP_Error $error WP Error.
-	 * @since 1.0.0
-	 *
-	 * @return string
-	 */
-	public function get_wp_error_message( \WP_Error $error ): string;
 }

@@ -12,7 +12,7 @@
 
 namespace DRPSermonManager;
 
-use DRPSermonManager\Constants\META;
+use DRPSermonManager\Constants\Meta;
 use DRPSermonManager\Constants\PT;
 
 // @codeCoverageIgnoreStart
@@ -40,7 +40,7 @@ class SermonFiles {
 
 		$cmb = \new_cmb2_box(
 			array(
-				'id'           => $post_type,
+				'id'           => 'drpsermon_files',
 				'title'        => esc_html__( 'Sermon Files', 'drpsermon' ),
 				'object_types' => array( $post_type ),
 				'context'      => 'normal',
@@ -52,7 +52,7 @@ class SermonFiles {
 			array(
 				'name' => esc_html__( 'Location of MP3', 'drpsermon' ),
 				'desc' => esc_html__( 'Upload an audio file or enter an URL.', 'drpsermon' ),
-				'id'   => META::AUDIO,
+				'id'   => Meta::AUDIO,
 				'type' => 'file',
 				'text' => array(
 					'add_upload_file_text' => 'Add Sermon Audio', // Change upload button text. Default: "Add or Upload File".
@@ -67,7 +67,7 @@ class SermonFiles {
 					esc_html__( 'Length in %s format (fill out only for remote files, local files will get data calculated by default)', 'drpsermon' ),
 					'<code>' . esc_html__( 'hh:mm:ss', 'drpsermon' ) . '</code>'
 				),
-				'id'   => META::DURATION,
+				'id'   => Meta::DURATION,
 				'type' => 'text',
 			)
 		);
@@ -75,7 +75,7 @@ class SermonFiles {
 			array(
 				'name' => esc_html__( 'Video Embed Code', 'drpsermon' ),
 				'desc' => esc_html__( 'Paste your embed code for Vimeo, Youtube, Facebook, or direct video file here', 'drpsermon' ),
-				'id'   => META::VIDEO,
+				'id'   => Meta::VIDEO,
 				'type' => 'textarea_code',
 			)
 		);
@@ -83,7 +83,7 @@ class SermonFiles {
 			array(
 				'name' => esc_html__( 'Video Link', 'drpsermon' ),
 				'desc' => esc_html__( 'Paste your link for Vimeo, Youtube, Facebook, or direct video file here', 'drpsermon' ),
-				'id'   => META::VIDEO_LINK,
+				'id'   => Meta::VIDEO_LINK,
 				'type' => 'text_url',
 			)
 		);
@@ -92,7 +92,7 @@ class SermonFiles {
 			array(
 				'name'       => esc_html__( 'Sermon Notes', 'drpsermon' ),
 				'desc'       => esc_html__( 'Upload  pdf files.', 'drpsermon' ),
-				'id'         => META::NOTES,
+				'id'         => Meta::NOTES,
 				'type'       => 'file_list',
 				'text'       => array(
 					'add_upload_file_text' => esc_html__( 'Add File', 'drpsermon' ),
@@ -108,7 +108,7 @@ class SermonFiles {
 			array(
 				'name' => esc_html__( 'Bulletin', 'drpsermon' ),
 				'desc' => esc_html__( 'Upload pdf files.', 'drpsermon' ),
-				'id'   => META::BULLETIN,
+				'id'   => Meta::BULLETIN,
 				'type' => 'file_list',
 				'text' => array(
 					'add_upload_file_text' => esc_html__( 'Add File', 'drpsermon' ),

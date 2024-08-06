@@ -33,6 +33,9 @@ class QueueScripts implements Initable, Registrable {
 		$file = Helper::get_url() . 'assets/css/admin.css';
 		wp_register_style( 'drpsermon-admin-style', $file );
 
+		$file = Helper::get_url() . 'assets/css/drpsermon-icons.css';
+		wp_register_style( 'drpsermon-admin-icons', $file );
+
 		// $file = 'https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.css';
 		// wp_register_style('drpsermon-jquery-ui-style', $file);
 
@@ -45,6 +48,7 @@ class QueueScripts implements Initable, Registrable {
 		if ( is_admin() ) {
 			// @codeCoverageIgnoreStart
 			wp_enqueue_style( 'drpsermon-admin-style' );
+			wp_enqueue_style( 'drpsermon-admin-icons' );
 			wp_enqueue_media();
 			// @codeCoverageIgnoreEnd
 		}

@@ -16,9 +16,9 @@
 namespace DRPSermonManager;
 
 use DRPSermonManager\PostTypeReg;
-use DRPSermonManager\Constants\ACTIONS;
+use DRPSermonManager\Constants\Actions;
 use DRPSermonManager\Constants\PT;
-use DRPSermonManager\Constants\TAX;
+use DRPSermonManager\Constants\Tax;
 use DRPSermonManager\Exceptions\PluginException;
 use DRPSermonManager\Interfaces\PostTypeRegInt;
 use DRPSermonManager\Interfaces\PostTypeSetupInt;
@@ -63,11 +63,11 @@ class PostTypeSetup implements PostTypeSetupInt {
 	public function __construct() {
 		$pt                        = PT::SERMON;
 		$this->post_types[ $pt ]   = new PostTypeReg( PT::SERMON, 'post-type-sermon.php' );
-		$this->taxonomies[ $pt ][] = new TaxonomyReg( TAX::PREACHER, PT::SERMON, 'taxonomy-preacher.php' );
-		$this->taxonomies[ $pt ][] = new TaxonomyReg( TAX::SERIES, PT::SERMON, 'taxonomy-series.php' );
-		$this->taxonomies[ $pt ][] = new TaxonomyReg( TAX::TOPICS, PT::SERMON, 'taxonomy-topics.php' );
-		$this->taxonomies[ $pt ][] = new TaxonomyReg( TAX::BIBLE_BOOK, PT::SERMON, 'taxonomy-bible-book.php' );
-		$this->taxonomies[ $pt ][] = new TaxonomyReg( TAX::SERVICE_TYPE, PT::SERMON, 'taxonomy-service-type.php' );
+		$this->taxonomies[ $pt ][] = new TaxonomyReg( Tax::PREACHER, PT::SERMON, 'taxonomy-preacher.php' );
+		$this->taxonomies[ $pt ][] = new TaxonomyReg( Tax::SERIES, PT::SERMON, 'taxonomy-series.php' );
+		$this->taxonomies[ $pt ][] = new TaxonomyReg( Tax::TOPICS, PT::SERMON, 'taxonomy-topics.php' );
+		$this->taxonomies[ $pt ][] = new TaxonomyReg( Tax::BIBLE_BOOK, PT::SERMON, 'taxonomy-bible-book.php' );
+		$this->taxonomies[ $pt ][] = new TaxonomyReg( Tax::SERVICE_TYPE, PT::SERMON, 'taxonomy-service-type.php' );
 	}
 
 
@@ -80,7 +80,7 @@ class PostTypeSetup implements PostTypeSetupInt {
 	 */
 	public function register(): void {
 		add_action( 'init', array( $this, 'add' ) );
-		add_action( ACTIONS::FLUSH_REWRITE_RULES, array( $this, 'flush' ) );
+		add_action( Actions::FLUSH_REWRITE_RULES, array( $this, 'flush' ) );
 	}
 
 	/**
@@ -118,11 +118,11 @@ class PostTypeSetup implements PostTypeSetupInt {
 				}
 			}
 
-			do_action( 'drpsermon_after_post_setup' );
+			do_action( Actions::AFTER_POST_SETUP );
 
 			// @codeCoverageIgnoreStart
 		} catch ( \Throwable $th ) {
-			FatalError::set( $th );
+			throw new PluginException( $th->getMessage(), $th->getCode(), $th );
 			// @codeCoverageIgnoreEnd
 		}
 	}
@@ -168,7 +168,7 @@ class PostTypeSetup implements PostTypeSetupInt {
 
 			// @codeCoverageIgnoreStart
 		} catch ( \Throwable $th ) {
-			FatalError::set( $th );
+			throw new PluginException( $th->getMessage(), $th->getCode(), $th );
 			// @codeCoverageIgnoreEnd
 		}
 	}
@@ -196,8 +196,9 @@ class PostTypeSetup implements PostTypeSetupInt {
 	 *
 	 * @param string $post_type Post type.
 	 * @return PostTypeRegInt Post type registration interface.
+	 * @throws PluginException Throw exception if post type is not defined in array.
 	 *
-	 * @throws PluginException Throw exception if post type is not define in array.
+	 * @since 1.0.0
 	 */
 	public function get_post_type( string $post_type ): PostTypeRegInt {
 		if ( ! isset( $this->post_types[ $post_type ] ) ) {
@@ -212,6 +213,8 @@ class PostTypeSetup implements PostTypeSetupInt {
 	 *
 	 * @param string $post_type Post type.
 	 * @return array|null Array of taxonomies.
+	 *
+	 * @since 1.0.0
 	 */
 	public function get_post_type_taxonomies( string $post_type ): ?array {
 		if ( ! isset( $this->taxonomies[ $post_type ] ) ) {

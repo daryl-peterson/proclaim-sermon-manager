@@ -12,9 +12,9 @@
 
 namespace DRPSermonManager;
 
-use DRPSermonManager\Constants\META;
+use DRPSermonManager\Constants\Meta;
 use DRPSermonManager\Constants\PT;
-use DRPSermonManager\Constants\TAX;
+use DRPSermonManager\Constants\Tax;
 use DRPSermonManager\Interfaces\OptionsInt;
 
 // @codeCoverageIgnoreStart
@@ -72,7 +72,7 @@ class SermonDetail {
 		 */
 		$cmb = \new_cmb2_box(
 			array(
-				'id'           => 'sermon_details',
+				'id'           => 'drpsermon_details',
 				'title'        => __( 'Sermon Details', 'drpsermon' ),
 				'object_types' => array( $post_type ), // Post type
 				'context'      => 'normal',
@@ -90,7 +90,7 @@ class SermonDetail {
 			array(
 				'name'         => esc_html__( 'Date Preached', 'drpsermon' ),
 				'desc'         => '<br>' . wp_sprintf( esc_html__( 'format: %s', 'drpsermon' ), $date_format_label ),
-				'id'           => META::DATE,
+				'id'           => Meta::DATE,
 				'type'         => 'text_date_timestamp',
 				'date_format'  => $date_format,
 				'autocomplete' => 'off',
@@ -100,24 +100,24 @@ class SermonDetail {
 		// Service Type
 		$cmb->add_field(
 			array(
-				'name'             => TaxUtils::get_taxonomy_field( TAX::SERVICE_TYPE, 'singular_name' ),
+				'name'             => TaxUtils::get_taxonomy_field( Tax::SERVICE_TYPE, 'singular_name' ),
 				// translators: %1$s The singular label. Default Service Type.
 				// translators: %2$s The plural label. Default Service Types.
 				// translators: %3$s <a href="edit-tags.php?taxonomy=drpsermon_service_type&post_type=drpsermon" target="_blank">here</a>.
 				'desc'             => wp_sprintf(
 					esc_html__( 'Select the %1$s. Modify the %2$s %3$s.', 'drpsermon' ),
-					strtolower( TaxUtils::get_taxonomy_field( TAX::SERVICE_TYPE, 'singular_name' ) ),
-					strtolower( TaxUtils::get_taxonomy_field( TAX::SERVICE_TYPE, 'label' ) ),
+					strtolower( TaxUtils::get_taxonomy_field( Tax::SERVICE_TYPE, 'singular_name' ) ),
+					strtolower( TaxUtils::get_taxonomy_field( Tax::SERVICE_TYPE, 'label' ) ),
 					'<a href="' . admin_url( 'edit-tags.php?taxonomy=drpsermon_service_type&post_type=drpsermon' ) . '" target="_blank">here</a>'
 				),
 				'id'               => Meta::SERVICE_TYPE,
 				'type'             => 'select',
 				'show_option_none' => true,
-				'options'          => TaxUtils::get_term_options( TAX::SERVICE_TYPE ),
+				'options'          => TaxUtils::get_term_options( Tax::SERVICE_TYPE ),
 			)
 		);
 
-		$meta = META::BIBLE_PASSAGE;
+		$meta = Meta::BIBLE_PASSAGE;
 		// translators: %1$s Bible book.
 		// translators: %2$s The plural label. Bible books.
 		$desc = wp_sprintf(
@@ -139,7 +139,7 @@ class SermonDetail {
 		/**
 		 * Description meta.
 		 */
-		$meta = META::DESCRIPTION;
+		$meta = Meta::DESCRIPTION;
 		$cmb->add_field(
 			array(
 				'name'    => esc_html__( 'Description', 'drpsermon' ),

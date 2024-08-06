@@ -49,13 +49,12 @@ if ( file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
  */
 require_once __DIR__ . '/vendor/cmb2/cmb2/init.php';
 
-const NAME       = 'Sermon Manager';
-const FILE       = __FILE__;
-const KEY_PREFIX = 'drpsermon';
-const DOMAIN     = 'drpsermon';
-const NS         = __NAMESPACE__;
-const LOG_FILE   = 'drp-sermon-manager.log';
-
+const NAME           = 'Sermon Manager';
+const FILE           = __FILE__;
+const KEY_PREFIX     = 'drpsermon';
+const DOMAIN         = 'drpsermon';
+const NS             = __NAMESPACE__;
+const LOG_FILE       = 'drp-sermon-manager.log';
 const PLUGIN_MIN_PHP = '8.1.0';
 const PLUGIN_MIN_WP  = '6.4.0';
 

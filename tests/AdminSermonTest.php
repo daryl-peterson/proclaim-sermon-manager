@@ -57,4 +57,14 @@ class AdminSermonTest extends BaseTest {
 		$result = $this->obj->save_post( $sermon->ID, $sermon, true );
 		$this->assertIsInt( $result );
 	}
+
+	public function test_show_meta_boxes() {
+		$result = $this->obj->show_meta_boxes();
+		$this->assertNull( $result );
+	}
+
+	public function test_remove_meta_boxes() {
+		$result = $this->obj->remove_meta_boxes();
+		$this->assertNull( $result );
+	}
 }

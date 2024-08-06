@@ -64,7 +64,9 @@ class TaxUtils {
 			return $taxonomy->labels->$field_name;
 		}
 
+		// @codeCoverageIgnoreStart
 		return null;
+		// @codeCoverageIgnoreEnd
 	}
 
 	/**

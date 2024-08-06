@@ -13,7 +13,7 @@ namespace DRPSermonManager\Tests;
 
 use DRPSermonManager\AdminPage;
 use DRPSermonManager\App;
-use DRPSermonManager\BibleBookLoad;
+use DRPSermonManager\BibleLoad;
 use DRPSermonManager\Exceptions\NotfoundException;
 use DRPSermonManager\Interfaces\NoticeInt;
 use DRPSermonManager\Interfaces\PluginInt;
@@ -42,9 +42,9 @@ class AppTest extends BaseTest {
 		$result = $this->app->get( NoticeInt::class );
 		$this->assertNotNull( $result );
 
-		$obj = $this->app->get( BibleBookLoad::class );
+		$obj = $this->app->get( BibleLoad::class );
 		Logger::debug( $obj );
-		$this->assertInstanceOf( BibleBookLoad::class, $obj );
+		$this->assertInstanceOf( BibleLoad::class, $obj );
 	}
 
 	public function test_plugin() {

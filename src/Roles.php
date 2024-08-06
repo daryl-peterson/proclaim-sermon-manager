@@ -12,7 +12,7 @@
 
 namespace DRPSermonManager;
 
-use DRPSermonManager\Constants\CAP;
+use DRPSermonManager\Constants\Caps;
 use DRPSermonManager\Interfaces\RolesInt;
 
 /**
@@ -48,37 +48,37 @@ class Roles implements RolesInt {
 			}
 
 			// Read sermons.
-			$role->add_cap( CAP::READ_SERMON );
-			$role->add_cap( CAP::READ_PRIVATE_SERMONS );
+			$role->add_cap( Caps::READ_SERMON );
+			$role->add_cap( Caps::READ_PRIVATE_SERMONS );
 
 			// Edit sermons.
-			$role->add_cap( CAP::EDIT_SERMON );
-			$role->add_cap( CAP::EDIT_SERMONS );
-			$role->add_cap( CAP::EDIT_PRIVATE_SERMONS );
-			$role->add_cap( CAP::EDIT_PUBLISHED_SERMONS );
+			$role->add_cap( Caps::EDIT_SERMON );
+			$role->add_cap( Caps::EDIT_SERMONS );
+			$role->add_cap( Caps::EDIT_PRIVATE_SERMONS );
+			$role->add_cap( Caps::EDIT_PUBLISHED_SERMONS );
 
 			// Delete sermons.
-			$role->add_cap( CAP::DELETE_SERMON );
-			$role->add_cap( CAP::DELETE_SERMONS );
-			$role->add_cap( CAP::DELETE_PUBLISHED_SERMONS );
-			$role->add_cap( CAP::DELETE_PRIVATE_SERMONS );
+			$role->add_cap( Caps::DELETE_SERMON );
+			$role->add_cap( Caps::DELETE_SERMONS );
+			$role->add_cap( Caps::DELETE_PUBLISHED_SERMONS );
+			$role->add_cap( Caps::DELETE_PRIVATE_SERMONS );
 
 			// Publish sermons.
-			$role->add_cap( CAP::PUBLISH_SERMONS );
+			$role->add_cap( Caps::PUBLISH_SERMONS );
 
 			// Manage categories & tags.
-			$role->add_cap( CAP::MANAGE_CATAGORIES );
+			$role->add_cap( Caps::MANAGE_CATAGORIES );
 
 			// Add additional roles for administrator.
 			if ( 'administrator' === $role_name ) {
 				// Access to Sermon Manager Settings.
-				$role->add_cap( CAP::MANAGE_SETTINGS );
+				$role->add_cap( Caps::MANAGE_SETTINGS );
 			}
 
 			// Add additional roles for administrator and editor.
 			if ( 'author' !== $role_name ) {
-				$role->add_cap( CAP::EDIT_OTHERS_SERMONS );
-				$role->add_cap( CAP::DELETE_OTHERS_SERMONS );
+				$role->add_cap( Caps::EDIT_OTHERS_SERMONS );
+				$role->add_cap( Caps::DELETE_OTHERS_SERMONS );
 			}
 		}
 	}
@@ -102,37 +102,37 @@ class Roles implements RolesInt {
 			}
 
 			// Read sermons.
-			$role->remove_cap( CAP::READ_SERMON );
-			$role->remove_cap( CAP::READ_PRIVATE_SERMONS );
+			$role->remove_cap( Caps::READ_SERMON );
+			$role->remove_cap( Caps::READ_PRIVATE_SERMONS );
 
 			// Edit sermons.
-			$role->remove_cap( CAP::EDIT_SERMON );
-			$role->remove_cap( CAP::EDIT_SERMONS );
-			$role->remove_cap( CAP::EDIT_PRIVATE_SERMONS );
-			$role->remove_cap( CAP::DELETE_PUBLISHED_SERMONS );
+			$role->remove_cap( Caps::EDIT_SERMON );
+			$role->remove_cap( Caps::EDIT_SERMONS );
+			$role->remove_cap( Caps::EDIT_PRIVATE_SERMONS );
+			$role->remove_cap( Caps::DELETE_PUBLISHED_SERMONS );
 
 			// Delete sermons.
-			$role->remove_cap( CAP::DELETE_SERMON );
-			$role->remove_cap( CAP::DELETE_SERMONS );
-			$role->remove_cap( CAP::DELETE_PUBLISHED_SERMONS );
-			$role->remove_cap( CAP::DELETE_PRIVATE_SERMONS );
+			$role->remove_cap( Caps::DELETE_SERMON );
+			$role->remove_cap( Caps::DELETE_SERMONS );
+			$role->remove_cap( Caps::DELETE_PUBLISHED_SERMONS );
+			$role->remove_cap( Caps::DELETE_PRIVATE_SERMONS );
 
 			// Publish sermons.
-			$role->remove_cap( CAP::PUBLISH_SERMONS );
+			$role->remove_cap( Caps::PUBLISH_SERMONS );
 
 			// Manage categories & tags.
-			$role->remove_cap( CAP::MANAGE_CATAGORIES );
+			$role->remove_cap( Caps::MANAGE_CATAGORIES );
 
 			// Add additional roles for administrator.
 			if ( 'administrator' === $role_name ) {
 				// Access to Sermon Manager Settings.
-				$role->remove_cap( CAP::MANAGE_SETTINGS );
+				$role->remove_cap( Caps::MANAGE_SETTINGS );
 			}
 
 			// Add additional roles for administrator and editor.
 			if ( 'author' !== $role_name ) {
-				$role->remove_cap( CAP::EDIT_OTHERS_SERMONS );
-				$role->remove_cap( CAP::DELETE_OTHERS_SERMONS );
+				$role->remove_cap( Caps::EDIT_OTHERS_SERMONS );
+				$role->remove_cap( Caps::DELETE_OTHERS_SERMONS );
 			}
 		}
 	}

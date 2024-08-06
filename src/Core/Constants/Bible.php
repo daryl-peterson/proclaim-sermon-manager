@@ -24,7 +24,7 @@ namespace DRPSermonManager\Constants;
  *
  * @since       1.0.0
  */
-class BIBLE {
+class Bible {
 
 	public const BOOKS = array(
 		'Genesis',

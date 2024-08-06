@@ -9,21 +9,21 @@
 
 namespace DRPSermonManager;
 
-use DRPSermonManager\Constants\CAP;
-use DRPSermonManager\Constants\TAX;
+use DRPSermonManager\Constants\Caps;
+use DRPSermonManager\Constants\Tax;
 use DRPSermonManager\Interfaces\OptionsInt;
 
 $permalinks = App::init()->permalinks();
 $opts       = App::init()->get( OptionsInt::class );
-$slug       = TAX::PREACHER;
+$slug       = Tax::PREACHER;
 $label      = $opts->get( 'preacher_label', false ) ?
 		strtolower( $opts->get( 'preacher_label' ) ) : __( 'Preacher', 'drpsermon' );
 
 $capabilities = array(
-	'manage_terms' => CAP::MANAGE_CATAGORIES,
-	'edit_terms'   => CAP::MANAGE_CATAGORIES,
-	'delete_terms' => CAP::MANAGE_CATAGORIES,
-	'assign_terms' => CAP::MANAGE_CATAGORIES,
+	'manage_terms' => Caps::MANAGE_CATAGORIES,
+	'edit_terms'   => Caps::MANAGE_CATAGORIES,
+	'delete_terms' => Caps::MANAGE_CATAGORIES,
+	'assign_terms' => Caps::MANAGE_CATAGORIES,
 );
 
 return array(

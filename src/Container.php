@@ -123,7 +123,10 @@ class Container implements ContainerInterface {
 			// @codeCoverageIgnoreEnd
 		}
 
-		throw new NotFoundException( esc_html( $th->getMessage() ), (int) $th->getCode() );
+		throw new NotFoundException(
+			esc_html( $th->getMessage() ),
+			(int) $th->getCode()
+		);
 	}
 
 	/**

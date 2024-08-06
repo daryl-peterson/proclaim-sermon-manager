@@ -8,18 +8,18 @@
 
 namespace DRPSermonManager;
 
-use DRPSermonManager\Constants\CAP;
-use DRPSermonManager\Constants\TAX;
+use DRPSermonManager\Constants\Caps;
+use DRPSermonManager\Constants\Tax;
 use DRPSermonManager\Interfaces\OptionsInt;
 
 $permalinks   = App::init()->permalinks();
 $opts         = App::init()->get( OptionsInt::class );
-$slug         = TAX::SERVICE_TYPE;
+$slug         = Tax::SERVICE_TYPE;
 $capabilities = array(
-	'manage_terms' => CAP::MANAGE_CATAGORIES,
-	'edit_terms'   => CAP::MANAGE_CATAGORIES,
-	'delete_terms' => CAP::MANAGE_CATAGORIES,
-	'assign_terms' => CAP::MANAGE_CATAGORIES,
+	'manage_terms' => Caps::MANAGE_CATAGORIES,
+	'edit_terms'   => Caps::MANAGE_CATAGORIES,
+	'delete_terms' => Caps::MANAGE_CATAGORIES,
+	'assign_terms' => Caps::MANAGE_CATAGORIES,
 );
 $label        = __( 'Service Type', 'drpsermon' );
 $option_label = strtolower( $opts->get( 'service_type_label', '' ) );

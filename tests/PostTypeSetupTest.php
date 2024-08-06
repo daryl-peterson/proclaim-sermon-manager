@@ -89,9 +89,6 @@ class PostTypeSetupTest extends BaseTest {
 			$objPostType = $this->obj->get_post_type( $type );
 			$this->assertInstanceOf( PostTypeRegInt::class, $objPostType );
 
-			$error  = new \WP_Error( 'This is a test WP Error' );
-			$result = $objPostType->get_wp_error_message( $error );
-			$this->assertIsString( $result );
 		}
 	}
 }
