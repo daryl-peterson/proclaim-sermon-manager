@@ -2,7 +2,7 @@
 /**
  * Manage Sermons with ease.
  *
- * @package     Proclaim Sermon Manager
+ * @package     DRPSM\Proclaim Sermon Manager
  * @category
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson

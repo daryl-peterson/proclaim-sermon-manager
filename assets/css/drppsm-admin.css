@@ -54,6 +54,7 @@
 	display: block;
 	border: none;
 	width: 100%;
+	opacity: 0.8;
 }
 
 #drppsm-image,

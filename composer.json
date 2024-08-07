@@ -11,7 +11,10 @@
 			"DRPPSM\\Logging\\": "src/Core/Logging",
 			"DRPPSM\\Traits\\": "src/Core/Traits",
 			"DRPPSM\\Tests\\": "tests/"
-		}
+		},
+		"files": [
+			"src/functions.php"
+		]
 	},
 	"authors": [
 		{

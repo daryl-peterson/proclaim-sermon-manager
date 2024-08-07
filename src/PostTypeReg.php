@@ -65,18 +65,20 @@ class PostTypeReg implements PostTypeRegInt {
 	 */
 	public function add(): void {
 		$exist = $this->exist();
-		if ( ! defined( 'PHPUNIT_TESTING' ) ) {
-			// @codeCoverageIgnoreStart
-			if ( ! is_blog_installed() || $exist ) {
 
-				return;
-			}
-			// @codeCoverageIgnoreEnd
+		if ( defined( 'PHPUNIT_TESTING' ) && $exist ) {
+			$this->remove();
+		}
+
+		if ( ! is_blog_installed() || $exist ) {
+			return;
 		}
 
 		try {
-			$def    = Helper::get_config( $this->config_file );
+			$def = Helper::get_config( $this->config_file );
+			Logger::debug( array( $this->pt, $this->config_file, $def ) );
 			$result = register_post_type( $this->pt, $def );
+			Logger::debug( array( 'RESULT' => $result ) );
 			// @codeCoverageIgnoreStart
 		} catch ( \Throwable $th ) {
 			throw new PluginException( $th->getMessage(), $th->getCode(), $th );
@@ -103,12 +105,13 @@ class PostTypeReg implements PostTypeRegInt {
 	 */
 	public function remove(): void {
 		$exist = $this->exist();
-		if ( ! defined( 'PHPUNIT_TESTING' ) ) {
-			// @codeCoverageIgnoreStart
-			if ( ! is_blog_installed() || ( ! $exist ) ) {
-				return;
-			}
-			// @codeCoverageIgnoreEnd
+
+		if ( defined( 'PHPUNIT_TESTING' ) && ! $exist ) {
+			$this->add();
+		}
+
+		if ( ! is_blog_installed() || ( ! $exist ) ) {
+			return;
 		}
 
 		try {

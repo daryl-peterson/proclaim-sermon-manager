@@ -90,7 +90,7 @@ class Plugin implements PluginInt {
 			SermonEdit::init()->register();
 			SermonListTable::init()->register();
 			ImageUtils::init()->register();
-			SermonImage::init()->register();
+			ImageSizes::init()->register();
 
 			do_action( $hook );
 

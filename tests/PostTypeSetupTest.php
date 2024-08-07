@@ -67,7 +67,6 @@ class PostTypeSetupTest extends BaseTest {
 
 		$this->obj->remove();
 		$this->obj->add();
-		$this->obj->remove();
 
 		$result = $this->obj->add();
 		$this->assertNull( $result );

@@ -46,11 +46,11 @@ class TaxonomyListTable implements Registrable {
 	 */
 	public function __construct() {
 		$this->columns = array(
-			'cb'                  => '<input type="checkbox" />',
+			'cb'                 => '<input type="checkbox" />',
 			'drppsm-image'       => 'Image',
-			'name'                => 'Name',
+			'name'               => 'Name',
 			'drppsm-description' => 'Description',
-			'slug'                => 'Slug',
+			'slug'               => 'Slug',
 			'drppsm-count'       => 'Count',
 		);
 		$this->tax     = array(
@@ -75,6 +75,7 @@ class TaxonomyListTable implements Registrable {
 		add_filter( 'list_table_primary_column', array( $this, 'list_table_primary_column' ), 10, 2 );
 
 		foreach ( $this->tax as $taxonomy ) {
+			add_filter( "{$taxonomy}_row_actions", array( $this, 'row_actions' ), 100, 2 );
 			add_filter( "manage_edit-{$taxonomy}_sortable_columns", array( $this, 'set_sortable_columns' ) );
 			add_filter( "manage_{$taxonomy}_custom_column", array( $this, 'set_column_content' ), 10, 3 );
 			add_filter( "manage_edit-{$taxonomy}_columns", array( $this, 'set_columns' ), 10, 1 );
@@ -203,6 +204,17 @@ class TaxonomyListTable implements Registrable {
 		return $columns;
 	}
 
+
+	public function row_actions( array $actions, \WP_Term $tag ): array {
+		Logger::debug( array( $actions, $tag ) );
+
+		if ( isset( $actions['view'] ) ) {
+			unset( $actions['view'] );
+		}
+
+		return $actions;
+	}
+
 	/**
 	 * Get term count.
 	 *
@@ -251,12 +263,25 @@ class TaxonomyListTable implements Registrable {
 	 * @since 1.0.0
 	 */
 	private function get_image_url( int $term_id ): ?string {
+
+		$temp = wp_get_registered_image_subsizes();
+		Logger::debug( $temp );
+
 		$name     = $this->get_tax_name();
 		$image_id = get_term_meta( $term_id, $name . '_image_id', true );
-		if ( ! $image_id || empty( $image_id ) ) {
-			return null;
+		if ( $image_id && ! empty( $image_id ) ) {
+			return wp_get_attachment_image_url( $image_id, 'sermon_small' );
 		}
-		$url = wp_get_attachment_image_url( $image_id );
+
+		$url = get_term_meta( $term_id, $name . '_image', true );
+		if ( $url && ! empty( $url ) ) {
+			return $url;
+		}
+
+		$ds   = DIRECTORY_SEPARATOR;
+		$url  = Helper::get_url();
+		$url .= 'assets' . $ds . 'images' . $ds . 'blank-preacher-min.png';
+
 		return $url;
 	}
 

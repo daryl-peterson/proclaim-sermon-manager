@@ -1,8 +1,9 @@
 <?php
 /**
- * Sermon images
+ * Sermon images.
  *
- * @package     Proclaim Sermon Manager
+ * @package     DRPPSM
+ * @subpackage  ImageSizes
  *
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
@@ -12,73 +13,57 @@
 
 namespace DRPPSM;
 
+use DRPPSM\Interfaces\Initable;
+use DRPPSM\Interfaces\Registrable;
+
 /**
- * Sermon images
+ * Sermon images.
  *
- * @package     Proclaim Sermon Manager
+ * @package     DRPPSM
  *
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
  * @since       1.0.0
  */
-class SermonImage {
+class ImageSizes implements Initable, Registrable {
 
 
-	public static function init() {
+	/**
+	 * Get initalize object.
+	 *
+	 * @return ImageSizes
+	 * @since 1.0.0
+	 */
+	public static function init(): ImageSizes {
 		return new self();
 	}
 
-	public function register() {
-		add_action( 'init', array( $this, 'sermon_image_plugin_add_image_size' ) );
-		add_filter( 'attachment_fields_to_edit', array( $this, 'sermon_image_plugin_modal_button' ), 20, 2 );
-	}
 	/**
-	 * Get a url to a file in this plugin.
+	 * Register callbacks.
 	 *
-	 * @return    string
-	 * @access    private
-	 * @since     0.7
+	 * @return void
+	 * @since 1.0.0
 	 */
-	public function sermon_image_plugin_url( $file = '' ) {
-		static $path = '';
-		if ( empty( $path ) ) {
-			$path = plugin_dir_url( __FILE__ );
+	public function register(): void {
+		add_action( 'after_setup_theme', array( $this, 'add_image_sizes' ) );
+		// add_filter( 'attachment_fields_to_edit', array( $this, 'sermon_image_plugin_modal_button' ), 20, 2 );
+	}
+
+	/**
+	 * Add image sizes.
+	 *
+	 * @return void
+	 * @since 1.0.0
+	 */
+	public function add_image_sizes() {
+		if ( function_exists( 'add_image_size' ) ) {
+			add_image_size( 'sermon_small2', 75, 75, true );
+			add_image_size( 'sermon_medium2', 300, 200, true );
+			add_image_size( 'sermon_wide2', 940, 350, true );
 		}
-
-		return $path . $file;
 	}
 
-	/**
-	 * Detail Image Size.
-	 *
-	 * @return    array     Configuration for the "detail" image size.
-	 * @access    private
-	 * @since     0.7
-	 */
-	public function sermon_image_plugin_detail_image_size() {
-		return array(
-			'name' => 'detail',
-			'size' => array( 75, 75, true ),
-		);
-	}
-
-
-	/**
-	 * Register custom image size with WordPress.
-	 *
-	 * @access    private
-	 * @since     2010-10-28
-	 */
-	public function sermon_image_plugin_add_image_size() {
-		$detail = sermon_image_plugin_detail_image_size();
-		add_image_size(
-			$detail['name'],
-			$detail['size'][0],
-			$detail['size'][1],
-			$detail['size'][2]
-		);
-	}
 
 	/**
 	 * Modal Button.

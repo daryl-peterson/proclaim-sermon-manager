@@ -76,12 +76,9 @@ class TaxonomyReg implements TaxonomyRegInt {
 	public function add(): void {
 		$exist  = $this->exist();
 		$result = false;
-		if ( ! defined( 'PHPUNIT_TESTING' ) ) {
-			// @codeCoverageIgnoreStart
-			if ( ! is_blog_installed() || $exist ) {
-				return;
-			}
-			// @codeCoverageIgnoreEnd
+
+		if ( ! is_blog_installed() || $exist ) {
+			return;
 		}
 
 		try {
@@ -119,12 +116,9 @@ class TaxonomyReg implements TaxonomyRegInt {
 	 */
 	public function remove(): void {
 		$exist = $this->exist();
-		if ( ! defined( 'PHPUNIT_TESTING' ) ) {
-			// @codeCoverageIgnoreStart
-			if ( ! is_blog_installed() || ( ! $exist ) ) {
-				return;
-			}
-			// @codeCoverageIgnoreEnd
+
+		if ( ! is_blog_installed() || ( ! $exist ) ) {
+			return;
 		}
 
 		try {
@@ -146,6 +140,7 @@ class TaxonomyReg implements TaxonomyRegInt {
 			if ( is_wp_error( $result ) ) {
 				$message = $this->get_wp_error_message( $result );
 			}
+			Logger::error( array( $this, $message ) );
 			throw new PluginException( esc_html( $message ) );
 			// @codeCoverageIgnoreEnd
 		}
