@@ -66,10 +66,6 @@ class PostTypeReg implements PostTypeRegInt {
 	public function add(): void {
 		$exist = $this->exist();
 
-		if ( defined( 'PHPUNIT_TESTING' ) && $exist ) {
-			$this->remove();
-		}
-
 		if ( ! is_blog_installed() || $exist ) {
 			return;
 		}
@@ -105,10 +101,6 @@ class PostTypeReg implements PostTypeRegInt {
 	 */
 	public function remove(): void {
 		$exist = $this->exist();
-
-		if ( defined( 'PHPUNIT_TESTING' ) && ! $exist ) {
-			$this->add();
-		}
 
 		if ( ! is_blog_installed() || ( ! $exist ) ) {
 			return;

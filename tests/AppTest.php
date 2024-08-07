@@ -21,6 +21,7 @@ use DRPPSM\Logging\Logger;
 use stdClass;
 
 use function DRPPSM\app;
+use function DRPPSM\app_get;
 
 /**
  * App test.
@@ -47,9 +48,14 @@ class AppTest extends BaseTest {
 		$obj = $this->app->get( BibleLoad::class );
 		Logger::debug( $obj );
 		$this->assertInstanceOf( BibleLoad::class, $obj );
+	}
 
+	public function test_app() {
 		$obj = app();
 		$this->assertInstanceOf( App::class, $obj );
+
+		$this->expectException( NotfoundException::class );
+		app_get( 'blah' );
 	}
 
 	public function test_plugin() {

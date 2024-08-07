@@ -7,13 +7,11 @@
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
- *
  * @since       1.0.0
  */
 
 namespace DRPPSM\Tests;
 
-use DRPPSM\App;
 use DRPPSM\Constants\PT;
 use DRPPSM\Exceptions\PluginException;
 use DRPPSM\Interfaces\PostTypeRegInt;
@@ -65,12 +63,27 @@ class PostTypeSetupTest extends BaseTest {
 
 		$pt = PT::SERMON;
 
-		$this->obj->remove();
+		$exist = post_type_exists( $pt );
+
+		if ( ! $exist ) {
+			$result = $this->obj->add();
+			$this->assertNull( $result );
+		} else {
+			$result = $this->obj->remove();
+			$this->assertNull( $result );
+		}
+
+		$exist = post_type_exists( $pt );
+
+		if ( $exist ) {
+			$result = $this->obj->remove();
+			$this->assertNull( $result );
+		} else {
+			$result = $this->obj->remove();
+			$this->assertNull( $result );
+		}
+
 		$this->obj->add();
-
-		$result = $this->obj->add();
-		$this->assertNull( $result );
-
 		$exist = post_type_exists( $pt );
 		$this->assertTrue( $exist );
 

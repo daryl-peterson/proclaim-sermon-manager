@@ -1,9 +1,9 @@
 <?php
 /**
- * Taxonomy Image.
+ * Taxonomy list table.
+ * - Adds images to specific taxonomy.
  *
- * @package     Proclaim Sermon Manager
- *
+ * @package     DRPPSM
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
@@ -13,11 +13,13 @@
 namespace DRPPSM;
 
 use DRPPSM\Constants\Tax;
+use DRPPSM\Interfaces\Initable;
 use DRPPSM\Interfaces\Registrable;
 use DRPPSM\Logging\Logger;
 
 /**
- * Taxonomy Image.
+ * Taxonomy list table.
+ * - Adds images to specific taxonomy.
  *
  * @package     DRPPSM
  * @author      Daryl Peterson <@gmail.com>
@@ -25,7 +27,7 @@ use DRPPSM\Logging\Logger;
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
  * @since       1.0.0
  */
-class TaxonomyListTable implements Registrable {
+class TaxonomyListTable implements Initable, Registrable {
 
 	/**
 	 * Table columns
@@ -44,7 +46,7 @@ class TaxonomyListTable implements Registrable {
 	/**
 	 * Initialize object.
 	 */
-	public function __construct() {
+	protected function __construct() {
 		$this->columns = array(
 			'cb'                 => '<input type="checkbox" />',
 			'drppsm-image'       => 'Image',
@@ -58,6 +60,16 @@ class TaxonomyListTable implements Registrable {
 			Tax::SERIES,
 			Tax::TOPICS,
 		);
+	}
+
+	/**
+	 * Get initialized object.
+	 *
+	 * @return TaxonomyListTable
+	 * @since 1.0.0
+	 */
+	public static function init(): TaxonomyListTable {
+		return new self();
 	}
 
 	/**

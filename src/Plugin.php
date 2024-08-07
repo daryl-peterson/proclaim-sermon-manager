@@ -82,13 +82,12 @@ class Plugin implements PluginInt {
 			$app->get( TextDomainInt::class )->register();
 			$app->get( PostTypeSetupInt::class )->register();
 			$app->get( RolesInt::class )->register();
-
 			$app->get( BibleLoad::class )->register();
-			$app->get( TaxonomyListTable::class )->register();
 
 			QueueScripts::init()->register();
 			SermonEdit::init()->register();
 			SermonListTable::init()->register();
+			TaxonomyListTable::init()->register();
 			ImageUtils::init()->register();
 			ImageSizes::init()->register();
 
