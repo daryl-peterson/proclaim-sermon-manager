@@ -6,18 +6,19 @@
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
- *
  * @since       1.0.0
  */
 
 namespace DRPPSM;
 
-use DRPPSM\Constants\Meta;
-use DRPPSM\Constants\PT;
-
 // @codeCoverageIgnoreStart
 defined( 'ABSPATH' ) || exit;
 // @codeCoverageIgnoreEnd
+
+use DRPPSM\Constants\Meta;
+use DRPPSM\Constants\PT;
+
+
 
 /**
  * Sermon files meta boxes.
@@ -26,7 +27,6 @@ defined( 'ABSPATH' ) || exit;
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
- *
  * @since       1.0.0
  */
 class SermonFiles {

@@ -3,15 +3,18 @@
  * Fatal error handling.
  *
  * @package     Proclaim Sermon Manager
- *
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
- *
  * @since       1.0.0
  */
 
 namespace DRPPSM;
+
+// @codeCoverageIgnoreStart
+defined( 'ABSPATH' ) || exit;
+// @codeCoverageIgnoreEnd
+
 
 use DRPPSM\Interfaces\OptionsInt;
 use DRPPSM\Logging\Logger;
@@ -20,11 +23,9 @@ use DRPPSM\Logging\Logger;
  * Fatal error handling.
  *
  * @package     Proclaim Sermon Manager
- *
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
- *
  * @since       1.0.0
  */
 class FatalError {

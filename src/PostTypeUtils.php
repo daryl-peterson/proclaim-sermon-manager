@@ -3,31 +3,27 @@
  * Sermon utils.
  *
  * @package     Proclaim Sermon Manager
- *
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
- *
  * @since       1.0.0
  */
 
 namespace DRPPSM;
 
-use DRPPSM\Constants\PT;
-
 // @codeCoverageIgnoreStart
 defined( 'ABSPATH' ) || exit;
 // @codeCoverageIgnoreEnd
+
+use DRPPSM\Constants\PT;
 
 /**
  * Sermon utils.
  *
  * @package     Proclaim Sermon Manager
- *
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
- *
  * @since       1.0.0
  */
 class PostTypeUtils {
@@ -38,6 +34,7 @@ class PostTypeUtils {
 	 * @param integer  $post_id Post ID.
 	 * @param \WP_Post $post WordPress Post.
 	 * @return boolean True if the post may be saved, false if not.
+	 * @since 1.0.0
 	 */
 	public static function is_savable( int $post_id, \WP_Post $post ) {
 		if ( ! defined( 'PHPUNIT_TESTING' ) ) {
@@ -78,6 +75,7 @@ class PostTypeUtils {
 	 * Get current post type.
 	 *
 	 * @return array|null
+	 * @since 1.0.0
 	 */
 	public static function get_current_post_type(): ?array {
 		global $post, $typenow, $current_screen;
@@ -108,11 +106,12 @@ class PostTypeUtils {
 	/**
 	 * Gets the number of views a specific post has.
 	 *
-	 * - Post Info\
-	 * `$post_info = array('post_id' => $post->ID);`
+	 * - Post Info
+	 * > $post_info = array('post_id' => $post->ID);
 	 *
 	 * @param array $post_info Key value pair array.
 	 * @return string
+	 * @since 1.0.0
 	 */
 	public static function get_view_count( array $post_info = array() ): string {
 		global $post;

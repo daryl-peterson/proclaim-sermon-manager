@@ -13,6 +13,10 @@
 
 namespace DRPPSM;
 
+// @codeCoverageIgnoreStart
+defined( 'ABSPATH' ) || exit;
+// @codeCoverageIgnoreEnd
+
 use DRPPSM\Constants\Filters;
 use DRPPSM\Constants\Meta;
 use DRPPSM\Constants\PT;

@@ -5,15 +5,17 @@
  * - Used so other object don't have to register callbacks.
  *
  * @package     Proclaim Sermon Manager
- *
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
- *
  * @since       1.0.0
  */
 
 namespace DRPPSM;
+
+// @codeCoverageIgnoreStart
+defined( 'ABSPATH' ) || exit;
+// @codeCoverageIgnoreEnd
 
 use DRPPSM\PostTypeReg;
 use DRPPSM\Constants\Filters;
@@ -32,11 +34,9 @@ use DRPPSM\TaxonomyReg;
  * - Used so other object don't have to register callbacks.
  *
  * @package     Proclaim Sermon Manager
- *
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
- *
  * @since       1.0.0
  */
 class PostTypeSetup implements PostTypeSetupInt {
@@ -75,7 +75,6 @@ class PostTypeSetup implements PostTypeSetupInt {
 	 * Register callbacks.
 	 *
 	 * @return void
-	 *
 	 * @since 1.0.0
 	 */
 	public function register(): void {
@@ -86,6 +85,7 @@ class PostTypeSetup implements PostTypeSetupInt {
 	/**
 	 * Add post types and taxonomy.
 	 *
+	 * @return void
 	 * @since 1.0.0
 	 */
 	public function add(): void {
@@ -130,6 +130,7 @@ class PostTypeSetup implements PostTypeSetupInt {
 	/**
 	 * Remove post types and taxonomy.
 	 *
+	 * @return void
 	 * @since 1.0.0
 	 */
 	public function remove(): void {
@@ -174,9 +175,10 @@ class PostTypeSetup implements PostTypeSetupInt {
 	}
 
 	/**
-	 * Flush rewrite rule
+	 * Flush rewrite rule.
 	 *
 	 * @return void
+	 * @since 1.0.0
 	 */
 	public function flush(): void {
 		flush_rewrite_rules();
@@ -186,6 +188,7 @@ class PostTypeSetup implements PostTypeSetupInt {
 	 * Get post type list.
 	 *
 	 * @return array Post types array.
+	 * @since 1.0.0
 	 */
 	public function get_post_type_list(): array {
 		return array_keys( $this->post_types );
@@ -197,7 +200,6 @@ class PostTypeSetup implements PostTypeSetupInt {
 	 * @param string $post_type Post type.
 	 * @return PostTypeRegInt Post type registration interface.
 	 * @throws PluginException Throw exception if post type is not defined in array.
-	 *
 	 * @since 1.0.0
 	 */
 	public function get_post_type( string $post_type ): PostTypeRegInt {
@@ -213,7 +215,6 @@ class PostTypeSetup implements PostTypeSetupInt {
 	 *
 	 * @param string $post_type Post type.
 	 * @return array|null Array of taxonomies.
-	 *
 	 * @since 1.0.0
 	 */
 	public function get_post_type_taxonomies( string $post_type ): ?array {

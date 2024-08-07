@@ -6,6 +6,7 @@
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
+ * @since       1.0.0
  *
  * @uses Helper::getKeyName
  *
@@ -15,6 +16,11 @@
  */
 
 namespace DRPPSM;
+
+// @codeCoverageIgnoreStart
+defined( 'ABSPATH' ) || exit;
+// @codeCoverageIgnoreEnd
+
 
 use DRPPSM\Interfaces\OptionsInt;
 use DRPPSM\Logging\Logger;
@@ -27,6 +33,7 @@ use DRPPSM\Traits\SingletonTrait;
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
+ * @since       1.0.0
  *
  * @uses Helper::getKeyName
  *

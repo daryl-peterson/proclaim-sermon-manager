@@ -2,9 +2,7 @@
 /**
  * Sermon images.
  *
- * @package     DRPPSM
- * @subpackage  ImageSizes
- *
+ * @package     Proclaim Sermon Manager
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
@@ -13,14 +11,18 @@
 
 namespace DRPPSM;
 
+// @codeCoverageIgnoreStart
+defined( 'ABSPATH' ) || exit;
+// @codeCoverageIgnoreEnd
+
+
 use DRPPSM\Interfaces\Initable;
 use DRPPSM\Interfaces\Registrable;
 
 /**
  * Sermon images.
  *
- * @package     DRPPSM
- *
+ * @package     Proclaim Sermon Manager
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt

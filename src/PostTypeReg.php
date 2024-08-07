@@ -6,11 +6,15 @@
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
- *
  * @since       1.0.0
  */
 
 namespace DRPPSM;
+
+// @codeCoverageIgnoreStart
+defined( 'ABSPATH' ) || exit;
+// @codeCoverageIgnoreEnd
+
 
 use DRPPSM\Exceptions\PluginException;
 use DRPPSM\Helper;
@@ -24,7 +28,6 @@ use DRPPSM\Logging\Logger;
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
- *
  * @since       1.0.0
  */
 class PostTypeReg implements PostTypeRegInt {
@@ -48,7 +51,6 @@ class PostTypeReg implements PostTypeRegInt {
 	 *
 	 * @param string $post_type Post type.
 	 * @param string $config_file Config file.
-	 *
 	 * @since 1.0.0
 	 */
 	public function __construct( string $post_type, string $config_file ) {
@@ -59,9 +61,9 @@ class PostTypeReg implements PostTypeRegInt {
 	/**
 	 * Add post type.
 	 *
-	 * @since 1.0.0
-	 *
+	 * @return void
 	 * @throws PluginException Throws exception on failure.
+	 * @since 1.0.0
 	 */
 	public function add(): void {
 		$exist = $this->exist();
@@ -95,9 +97,9 @@ class PostTypeReg implements PostTypeRegInt {
 	/**
 	 * Remove post type.
 	 *
-	 * @since 1.0.0
-	 *
+	 * @return void
 	 * @throws PluginException Throws excepton on failure.
+	 * @since 1.0.0
 	 */
 	public function remove(): void {
 		$exist = $this->exist();

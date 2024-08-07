@@ -7,11 +7,14 @@
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
- *
  * @since       1.0.0
  */
 
 namespace DRPPSM;
+
+// @codeCoverageIgnoreStart
+defined( 'ABSPATH' ) || exit;
+// @codeCoverageIgnoreEnd
 
 use DRPPSM\Interfaces\TextDomainInt;
 use DRPPSM\Logging\Logger;
@@ -20,11 +23,9 @@ use DRPPSM\Logging\Logger;
  * Language locales.
  *
  * @package     Proclaim Sermon Manager
- *
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
- *
  * @since       1.0.0
  */
 class TextDomain implements TextDomainInt {
@@ -54,6 +55,7 @@ class TextDomain implements TextDomainInt {
 	/**
 	 * Load domain locales
 	 *
+	 * @return void
 	 * @since 1.0.0
 	 */
 	public function load_domain(): void {
@@ -63,6 +65,7 @@ class TextDomain implements TextDomainInt {
 	/**
 	 * Switch to site language.
 	 *
+	 * @return void
 	 * @since 1.0
 	 */
 	public function switch_to_site_locale(): void {
@@ -95,7 +98,8 @@ class TextDomain implements TextDomainInt {
 	/**
 	 * Restore language to original.
 	 *
-	 * @since 1.0
+	 * @return void
+	 * @since 1.0.0
 	 */
 	public function restore_locale(): void {
 		try {

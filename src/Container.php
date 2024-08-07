@@ -3,7 +3,6 @@
  * Service container.
  *
  * @package     Proclaim Sermon Manager
- *
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
@@ -11,6 +10,10 @@
  */
 
 namespace DRPPSM;
+
+// @codeCoverageIgnoreStart
+defined( 'ABSPATH' ) || exit;
+// @codeCoverageIgnoreEnd
 
 use DRPPSM\Exceptions\NotfoundException;
 use Psr\Container\ContainerInterface;
@@ -20,7 +23,6 @@ use ReflectionClass;
  * Service container.
  *
  * @package     Proclaim Sermon Manager
- *
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt

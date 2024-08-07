@@ -6,11 +6,14 @@
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
- *
  * @since       1.0.0
  */
 
 namespace DRPPSM;
+
+// @codeCoverageIgnoreStart
+defined( 'ABSPATH' ) || exit;
+// @codeCoverageIgnoreEnd
 
 use DRPPSM\App;
 use DRPPSM\Constants\PT;
@@ -24,9 +27,7 @@ use DRPPSM\SermonDetail;
 use DRPPSM\SermonFiles;
 use DRPPSM\TaxUtils;
 
-// @codeCoverageIgnoreStart
-defined( 'ABSPATH' ) || exit;
-// @codeCoverageIgnoreEnd
+
 
 /**
  * Admin sermon post edit / add.
@@ -35,7 +36,6 @@ defined( 'ABSPATH' ) || exit;
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
- *
  * @since       1.0.0
  */
 class SermonEdit implements Initable, Registrable {

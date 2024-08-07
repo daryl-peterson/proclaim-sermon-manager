@@ -6,11 +6,14 @@
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
- *
  * @since       1.0.0
  */
 
 namespace DRPPSM;
+
+// @codeCoverageIgnoreStart
+defined( 'ABSPATH' ) || exit;
+// @codeCoverageIgnoreEnd
 
 use DRPPSM\Constants\PT;
 
@@ -21,7 +24,6 @@ use DRPPSM\Constants\PT;
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
- *
  * @since       1.0.0
  */
 class TaxUtils {
@@ -31,7 +33,6 @@ class TaxUtils {
 	 *
 	 * @param string $post_type Post type to get taxomomies for.
 	 * @return array Taxonomy name array.
-	 *
 	 * @since 1.0.0
 	 */
 	public static function get_taxonomies( string $post_type = '' ): array {
@@ -48,6 +49,7 @@ class TaxUtils {
 	 * @param string|integer|\WP_Taxonomy $taxonomy Taxonomy.
 	 * @param string                      $field_name Field name to get.
 	 * @return string|null String if found, null if not.
+	 * @since 1.0.0
 	 */
 	public static function get_taxonomy_field( string|int|\WP_Taxonomy $taxonomy, string $field_name ): ?string {
 		$taxonomy = get_taxonomy( $taxonomy );
@@ -74,6 +76,7 @@ class TaxUtils {
 	 *
 	 * @param string $taxonomy Taxonomy name to get terms for.
 	 * @return array Terms array.
+	 * @since 1.0.0
 	 */
 	public static function get_term_options( $taxonomy = 'category' ): array {
 		$args['taxonomy'] = $taxonomy;

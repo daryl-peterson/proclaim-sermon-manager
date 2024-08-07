@@ -6,11 +6,14 @@
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
- *
  * @since       1.0.0
  */
 
 namespace DRPPSM;
+
+// @codeCoverageIgnoreStart
+defined( 'ABSPATH' ) || exit;
+// @codeCoverageIgnoreEnd
 
 use DRPPSM\Constants\Filters;
 use DRPPSM\Constants\Bible;
@@ -20,10 +23,6 @@ use DRPPSM\Interfaces\OptionsInt;
 use DRPPSM\Interfaces\Registrable;
 use DRPPSM\Logging\Logger;
 
-// @codeCoverageIgnoreStart
-defined( 'ABSPATH' ) || exit;
-// @codeCoverageIgnoreEnd
-
 /**
  * Loads bible books taxomony data.
  *
@@ -31,7 +30,6 @@ defined( 'ABSPATH' ) || exit;
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
- *
  * @since       1.0.0
  */
 class BibleLoad implements Registrable {

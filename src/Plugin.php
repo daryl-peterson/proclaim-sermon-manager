@@ -3,15 +3,17 @@
  * Plugin main class.
  *
  * @package     Proclaim Sermon Manager
- *
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
- *
  * @since       1.0.0
  */
 
 namespace DRPPSM;
+
+// @codeCoverageIgnoreStart
+defined( 'ABSPATH' ) || exit;
+// @codeCoverageIgnoreEnd
 
 use DRPPSM\Admin\QueueScripts;
 use DRPPSM\Interfaces\NoticeInt;
@@ -24,16 +26,13 @@ use DRPPSM\Logging\Logger;
 use DRPPSM\BibleLoad;
 use DRPPSM\Constants\Filters;
 
-
 /**
  * Plugin main class.
  *
  * @package     Proclaim Sermon Manager
- *
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
- *
  * @since       1.0.0
  */
 class Plugin implements PluginInt {
@@ -88,7 +87,6 @@ class Plugin implements PluginInt {
 			SermonEdit::init()->register();
 			SermonListTable::init()->register();
 			TaxonomyListTable::init()->register();
-			ImageUtils::init()->register();
 			ImageSizes::init()->register();
 
 			do_action( $hook );
