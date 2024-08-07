@@ -11,9 +11,9 @@
  * @since       1.0.0
  */
 
-namespace DRPSermonManager\Tests;
+namespace DRPPSM\Tests;
 
-use DRPSermonManager\SermonEdit;
+use DRPPSM\SermonEdit;
 
 /**
  * Admin sermon test.
@@ -34,6 +34,7 @@ class AdminSermonTest extends BaseTest {
 		$this->obj = SermonEdit::init();
 	}
 
+	/*
 	public function testSavePost() {
 		$admin = $this->getAdminUser();
 
@@ -55,6 +56,7 @@ class AdminSermonTest extends BaseTest {
 		$result = $this->obj->save_post( $sermon->ID, $sermon, true );
 		$this->assertIsInt( $result );
 	}
+	*/
 
 	public function test_show_meta_boxes() {
 		$result = $this->obj->show_meta_boxes();

@@ -10,18 +10,16 @@
  * @since       1.0.0
  */
 
-namespace DRPSermonManager;
+namespace DRPPSM;
 
-use DRPSermonManager\Constants\Meta;
-use DRPSermonManager\Constants\Tax;
-use DRPSermonManager\Interfaces\Registrable;
-use DRPSermonManager\Logging\Logger;
+use DRPPSM\Constants\Tax;
+use DRPPSM\Interfaces\Registrable;
+use DRPPSM\Logging\Logger;
 
 /**
  * Taxonomy Image.
  *
- * @package     Proclaim Sermon Manager
- *
+ * @package     DRPPSM
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
@@ -48,13 +46,12 @@ class TaxonomyListTable implements Registrable {
 	 */
 	public function __construct() {
 		$this->columns = array(
-			'cb'                    => '<input type="checkbox" />',
-			'drpsermon-image'       => 'Image',
-			'name'                  => 'Name',
-
-			'drpsermon-description' => 'Description',
-			'slug'                  => 'Slug',
-			'drpsermon-count'       => 'Count',
+			'cb'                  => '<input type="checkbox" />',
+			'drppsm-image'       => 'Image',
+			'name'                => 'Name',
+			'drppsm-description' => 'Description',
+			'slug'                => 'Slug',
+			'drppsm-count'       => 'Count',
 		);
 		$this->tax     = array(
 			Tax::PREACHER,
@@ -67,6 +64,7 @@ class TaxonomyListTable implements Registrable {
 	 * Register callbacks.
 	 *
 	 * @return void
+	 * @since 1.0.0
 	 */
 	public function register(): void {
 
@@ -74,8 +72,8 @@ class TaxonomyListTable implements Registrable {
 			return;
 		}
 		add_action( 'cmb2_admin_init', array( $this, 'cmb' ) );
-
 		add_filter( 'list_table_primary_column', array( $this, 'list_table_primary_column' ), 10, 2 );
+
 		foreach ( $this->tax as $taxonomy ) {
 			add_filter( "manage_edit-{$taxonomy}_sortable_columns", array( $this, 'set_sortable_columns' ) );
 			add_filter( "manage_{$taxonomy}_custom_column", array( $this, 'set_column_content' ), 10, 3 );
@@ -93,7 +91,6 @@ class TaxonomyListTable implements Registrable {
 			$this->add_image_field( $taxonomy );
 		}
 	}
-
 
 	/**
 	 * Set columns for table.
@@ -129,6 +126,7 @@ class TaxonomyListTable implements Registrable {
 	 *
 	 * @param string $taxonomy Image taxonomy.
 	 * @return void
+	 * @since 1.0.0
 	 */
 	public function add_image_field( string $taxonomy ): void {
 		$prefix = $taxonomy . '_';
@@ -139,73 +137,59 @@ class TaxonomyListTable implements Registrable {
 		$cmb_term = new_cmb2_box(
 			array(
 				'id'           => $prefix . 'edit',
-				// Doesn't output for term boxes.
-				'title'        => esc_html__( 'Category Metabox', 'drpsermon' ),
-				// Tells CMB2 to use term_meta vs post_meta.
+				'title'        => esc_html__( 'Category Metabox', 'drppsm' ),
 				'object_types' => array( 'term' ),
-				// Tells CMB2 which taxonomies should have these fields.
 				'taxonomies'   => array( $taxonomy ),
 			)
 		);
 
 		$cmb_term->add_field(
 			array(
-				'name' => esc_html__( 'Image', 'drpsermon' ),
+				'name' => esc_html__( 'Image', 'drppsm' ),
 				'id'   => $prefix . 'image',
 				'type' => 'file',
 			)
 		);
 	}
 
-
-
-
-
 	/**
 	 * Set column content.
 	 *
 	 * @param mixed  $content Content.
 	 * @param string $column_name Column name.
-	 * @param int    $term_id
+	 * @param int    $term_id Taxonomy term id.
 	 * @return mixed
-	 *
 	 * @since 1.0.0
 	 */
 	public function set_column_content( mixed $content, string $column_name, int $term_id ): mixed {
+		try {
+			$edit_link = get_edit_term_link( $term_id );
+			switch ( $column_name ) {
+				case 'drppsm-image':
+					$content = $this->get_image( $term_id, $edit_link );
+					break;
+				case 'drppsm-description':
+					$content = term_description( $term_id );
+					$content = wp_trim_words( $content, 10 );
+					break;
+				case 'drppsm-count':
+					$content = $this->get_term_count( $term_id );
+					break;
+				default:
+					break;
+			}
 
-		switch ( $column_name ) {
-			case 'drpsermon-tax-id':
-				$link = get_edit_term_link( $term_id );
-				Logger::debug( array( 'LINK' => $link ) );
-				$content = "<a href=\"$link\" title=\"Edit\">$term_id</a>";
-				break;
-			case 'drpsermon-image':
-				$name = $this->get_taxonomy_name();
-				if ( ! isset( $name ) ) {
-					return $content;
-				}
-				$img     = get_term_meta( $term_id, $name . '_image_id', true );
-				$url     = wp_get_attachment_image_url( $img );
-				$html    = <<<EOT
-
-					<img class="drpsermon-image-thumb" src="$url">
-				EOT;
-				$content = $html;
-				break;
-			case 'drpsermon-description':
-				global $taxonomy;
-				$content = term_description( $term_id, $taxonomy );
-				$content = wp_trim_words( $content, 10 );
-				break;
-			case 'drpsermon-count':
-				$name    = $this->get_taxonomy_name();
-				$content = get_term( $term_id, $name );
-				break;
-			default:
-				break;
+			return $content;
+			// @codeCoverageIgnoreStart
+		} catch ( \Throwable $th ) {
+			Logger::error(
+				array(
+					'MESSAGE' => $th->getMessage(),
+					'TRACE'   => $th->getTrace(),
+				)
+			);
+			// @codeCoverageIgnoreEnd
 		}
-
-		return $content;
 	}
 
 	/**
@@ -213,33 +197,77 @@ class TaxonomyListTable implements Registrable {
 	 *
 	 * @param array $columns Columns array.
 	 * @return array
-	 *
 	 * @since 1.0.0
 	 */
 	public function set_sortable_columns( array $columns ): array {
-		$columns['drpsermon-description'] = 'descriptioin';
-		$columns['count']                 = 'count';
-		Logger::debug( array( 'SORTABLE' => $columns ) );
 		return $columns;
+	}
+
+	/**
+	 * Get term count.
+	 *
+	 * @param integer $term_id Taxonomy term id.
+	 * @return int
+	 * @since 1.0.0
+	 */
+	private function get_term_count( int $term_id ): int {
+		$tax  = $this->get_tax_name();
+		$term = get_term( $term_id, $tax );
+		if ( ! $term instanceof \WP_Term ) {
+			return 0;
+		}
+		return (int) $term->count;
+	}
+
+	/**
+	 * Get image.
+	 *
+	 * @param int    $term_id   Taxonomy term id.
+	 * @param string $edit_link Edit link.
+	 * @return string
+	 * @since 1.0.0
+	 */
+	private function get_image( int $term_id, string $edit_link ): string {
+		$url = $this->get_image_url( $term_id );
+		$img = '';
+		if ( $url ) {
+			$img = "<img src=\"$url\" alt=\"Image\">";
+		}
+		$html = <<<EOT
+		<a href="$edit_link" title="Edit">
+			<div class="drppsm-tax-thumb">
+				$img
+			</div>
+		</a>
+		EOT;
+		return $html;
+	}
+
+	/**
+	 * Get image url.
+	 *
+	 * @param integer $term_id Term ID
+	 * @return string|null
+	 * @since 1.0.0
+	 */
+	private function get_image_url( int $term_id ): ?string {
+		$name     = $this->get_tax_name();
+		$image_id = get_term_meta( $term_id, $name . '_image_id', true );
+		if ( ! $image_id || empty( $image_id ) ) {
+			return null;
+		}
+		$url = wp_get_attachment_image_url( $image_id );
+		return $url;
 	}
 
 	/**
 	 * Get taxonomy name
 	 *
 	 * @return string
-	 *
 	 * @since 1.0.0
 	 */
-	private function get_taxonomy_name(): string {
-		$name   = '';
-		$screen = get_current_screen();
-		if ( ! isset( $screen ) ) {
-			return '';
-		}
-		$tax = get_taxonomy( $screen->taxonomy );
-		if ( isset( $tax ) ) {
-			$name = $tax->name;
-		}
-		return $name;
+	private function get_tax_name(): ?string {
+		global $taxnow;
+		return $taxnow;
 	}
 }

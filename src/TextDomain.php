@@ -11,10 +11,10 @@
  * @since       1.0.0
  */
 
-namespace DRPSermonManager;
+namespace DRPPSM;
 
-use DRPSermonManager\Interfaces\TextDomainInt;
-use DRPSermonManager\Logging\Logger;
+use DRPPSM\Interfaces\TextDomainInt;
+use DRPPSM\Logging\Logger;
 
 /**
  * Language locales.

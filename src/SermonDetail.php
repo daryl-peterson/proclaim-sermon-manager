@@ -10,12 +10,12 @@
  * @since       1.0.0
  */
 
-namespace DRPSermonManager;
+namespace DRPPSM;
 
-use DRPSermonManager\Constants\Meta;
-use DRPSermonManager\Constants\PT;
-use DRPSermonManager\Constants\Tax;
-use DRPSermonManager\Interfaces\OptionsInt;
+use DRPPSM\Constants\Meta;
+use DRPPSM\Constants\PT;
+use DRPPSM\Constants\Tax;
+use DRPPSM\Interfaces\OptionsInt;
 
 // @codeCoverageIgnoreStart
 defined( 'ABSPATH' ) || exit;
@@ -72,8 +72,8 @@ class SermonDetail {
 		 */
 		$cmb = \new_cmb2_box(
 			array(
-				'id'           => 'drpsermon_details',
-				'title'        => __( 'Sermon Details', 'drpsermon' ),
+				'id'           => 'drppsm_details',
+				'title'        => __( 'Sermon Details', 'drppsm' ),
 				'object_types' => array( $post_type ), // Post type
 				'context'      => 'normal',
 				'priority'     => 'high',
@@ -88,8 +88,8 @@ class SermonDetail {
 		 */
 		$cmb->add_field(
 			array(
-				'name'         => esc_html__( 'Date Preached', 'drpsermon' ),
-				'desc'         => '<br>' . wp_sprintf( esc_html__( 'format: %s', 'drpsermon' ), $date_format_label ),
+				'name'         => esc_html__( 'Date Preached', 'drppsm' ),
+				'desc'         => '<br>' . wp_sprintf( esc_html__( 'format: %s', 'drppsm' ), $date_format_label ),
 				'id'           => Meta::DATE,
 				'type'         => 'text_date_timestamp',
 				'date_format'  => $date_format,
@@ -103,12 +103,12 @@ class SermonDetail {
 				'name'             => TaxUtils::get_taxonomy_field( Tax::SERVICE_TYPE, 'singular_name' ),
 				// translators: %1$s The singular label. Default Service Type.
 				// translators: %2$s The plural label. Default Service Types.
-				// translators: %3$s <a href="edit-tags.php?taxonomy=drpsermon_service_type&post_type=drpsermon" target="_blank">here</a>.
+				// translators: %3$s <a href="edit-tags.php?taxonomy=drppsm_service_type&post_type=drppsm" target="_blank">here</a>.
 				'desc'             => wp_sprintf(
-					esc_html__( 'Select the %1$s. Modify the %2$s %3$s.', 'drpsermon' ),
+					esc_html__( 'Select the %1$s. Modify the %2$s %3$s.', 'drppsm' ),
 					strtolower( TaxUtils::get_taxonomy_field( Tax::SERVICE_TYPE, 'singular_name' ) ),
 					strtolower( TaxUtils::get_taxonomy_field( Tax::SERVICE_TYPE, 'label' ) ),
-					'<a href="' . admin_url( 'edit-tags.php?taxonomy=drpsermon_service_type&post_type=drpsermon' ) . '" target="_blank">here</a>'
+					'<a href="' . admin_url( 'edit-tags.php?taxonomy=drppsm_service_type&post_type=drppsm' ) . '" target="_blank">here</a>'
 				),
 				'id'               => Meta::SERVICE_TYPE,
 				'type'             => 'select',
@@ -121,15 +121,15 @@ class SermonDetail {
 		// translators: %1$s Bible book.
 		// translators: %2$s The plural label. Bible books.
 		$desc = wp_sprintf(
-			esc_html__( 'Enter the Bible passage with the full book names, e.g. %1$s Or multiple books like %2$s', 'drpsermon' ),
-			'<code>' . esc_html__( 'John 3:16-18', 'drpsermon' ) . '</code><br>',
+			esc_html__( 'Enter the Bible passage with the full book names, e.g. %1$s Or multiple books like %2$s', 'drppsm' ),
+			'<code>' . esc_html__( 'John 3:16-18', 'drppsm' ) . '</code><br>',
 			'<code>' .
-			esc_html( 'John 3:16-18, Luke 2:1-3', 'drpsermon' ) .
+			esc_html( 'John 3:16-18, Luke 2:1-3', 'drppsm' ) .
 			'</code>'
 		);
 		$cmb->add_field(
 			array(
-				'name' => esc_html__( 'Main Bible Passage', 'drpsermon' ),
+				'name' => esc_html__( 'Main Bible Passage', 'drppsm' ),
 				'desc' => $desc,
 				'id'   => 'bible_passage',
 				'type' => 'text',
@@ -142,10 +142,10 @@ class SermonDetail {
 		$meta = Meta::DESCRIPTION;
 		$cmb->add_field(
 			array(
-				'name'    => esc_html__( 'Description', 'drpsermon' ),
+				'name'    => esc_html__( 'Description', 'drppsm' ),
 				'desc'    => esc_html__(
 					'Type a brief description about this sermon, an outline, or a full manuscript',
-					'drpsermon'
+					'drppsm'
 				),
 				'id'      => $meta,
 				'type'    => 'wysiwyg',

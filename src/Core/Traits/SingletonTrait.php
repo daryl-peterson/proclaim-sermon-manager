@@ -10,7 +10,7 @@
  * @since       1.0.0
  */
 
-namespace DRPSermonManager\Traits;
+namespace DRPPSM\Traits;
 
 /**
  * Singleton trait

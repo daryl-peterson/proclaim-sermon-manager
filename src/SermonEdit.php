@@ -10,19 +10,19 @@
  * @since       1.0.0
  */
 
-namespace DRPSermonManager;
+namespace DRPPSM;
 
-use DRPSermonManager\App;
-use DRPSermonManager\Constants\PT;
-use DRPSermonManager\Constants\Tax;
-use DRPSermonManager\Interfaces\Initable;
-use DRPSermonManager\Interfaces\OptionsInt;
-use DRPSermonManager\Interfaces\Registrable;
-use DRPSermonManager\Logging\Logger;
-use DRPSermonManager\PostTypeUtils;
-use DRPSermonManager\SermonDetail;
-use DRPSermonManager\SermonFiles;
-use DRPSermonManager\TaxUtils;
+use DRPPSM\App;
+use DRPPSM\Constants\PT;
+use DRPPSM\Constants\Tax;
+use DRPPSM\Interfaces\Initable;
+use DRPPSM\Interfaces\OptionsInt;
+use DRPPSM\Interfaces\Registrable;
+use DRPPSM\Logging\Logger;
+use DRPPSM\PostTypeUtils;
+use DRPPSM\SermonDetail;
+use DRPPSM\SermonFiles;
+use DRPPSM\TaxUtils;
 
 // @codeCoverageIgnoreStart
 defined( 'ABSPATH' ) || exit;
@@ -90,7 +90,7 @@ class SermonEdit implements Initable, Registrable {
 		add_action( 'pre_get_posts', array( $this, 'fix_ordering' ), 90 );
 		add_filter( 'use_block_editor_for_post_type', array( $this, 'disable_gutenberg' ), 10, 2 );
 		add_action( 'cmb2_admin_init', array( $this, 'show_meta_boxes' ) );
-		add_action( 'save_post_drpsermon', array( $this, 'save_post' ), 40, 3 );
+		add_action( 'save_post_drppsm', array( $this, 'save_post' ), 40, 3 );
 		add_action( 'admin_menu', array( $this, 'remove_meta_boxes' ) );
 	}
 

@@ -1,8 +1,8 @@
 <?php
 
-namespace DRPSermonManager\Tests;
+namespace DRPPSM\Tests;
 
-use DRPSermonManager\Logging\LogFile;
+use DRPPSM\Logging\LogFile;
 
 /**
  * Log file test.

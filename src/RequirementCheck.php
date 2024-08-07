@@ -11,11 +11,11 @@
  * @since 1.0.0
  */
 
-namespace DRPSermonManager;
+namespace DRPPSM;
 
-use DRPSermonManager\Exceptions\PluginException;
-use DRPSermonManager\Interfaces\NoticeInt;
-use DRPSermonManager\Interfaces\RequirementCheckInt;
+use DRPPSM\Exceptions\PluginException;
+use DRPPSM\Interfaces\NoticeInt;
+use DRPPSM\Interfaces\RequirementCheckInt;
 
 /**
  * Run check to see if plugin can be activated / installed.
@@ -70,7 +70,7 @@ class RequirementCheck implements RequirementCheckInt {
 		if ( empty( $version ) ) {
 			$version = PLUGIN_MIN_PHP;
 		}
-		$message = __( 'This Plugin requires PHP : ', 'drpsermon' ) . $version;
+		$message = __( 'This Plugin requires PHP : ', 'drppsm' ) . $version;
 		if ( version_compare( PHP_VERSION, $version ) >= 0 ) {
 			return;
 		}
@@ -93,8 +93,8 @@ class RequirementCheck implements RequirementCheckInt {
 		if ( empty( $version ) ) {
 			$version = PLUGIN_MIN_WP;
 		}
-		$title   = __( 'Requiment Not Met', 'drpsermon' );
-		$message = __( 'This Plugin requires WP : ', 'drpsermon' ) . $version;
+		$title   = __( 'Requiment Not Met', 'drppsm' );
+		$message = __( 'This Plugin requires WP : ', 'drppsm' ) . $version;
 		if ( version_compare( $wp_version, $version ) >= 0 ) {
 			return;
 		}

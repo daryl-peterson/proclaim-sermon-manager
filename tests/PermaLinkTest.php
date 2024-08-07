@@ -1,11 +1,11 @@
 <?php
 
-namespace DRPSermonManager\Tests;
+namespace DRPPSM\Tests;
 
-use DRPSermonManager\App;
-use DRPSermonManager\Interfaces\PermaLinkInt;
-use DRPSermonManager\Logging\Logger;
-use DRPSermonManager\PermaLinks;
+use DRPPSM\App;
+use DRPPSM\Interfaces\PermaLinkInt;
+use DRPPSM\Logging\Logger;
+use DRPPSM\PermaLinks;
 
 /**
  * Class description.

@@ -1,11 +1,11 @@
 <?php
 
-namespace DRPSermonManager\Tests;
+namespace DRPPSM\Tests;
 
-use DRPSermonManager\Exceptions\PluginException;
-use DRPSermonManager\Helper;
+use DRPPSM\Exceptions\PluginException;
+use DRPPSM\Helper;
 
-use const DRPSermonManager\KEY_PREFIX;
+use const DRPPSM\KEY_PREFIX;
 
 class HelperTest extends BaseTest {
 

@@ -3,14 +3,14 @@
 	"type": "project",
 	"autoload": {
 		"psr-4": {
-			"DRPSermonManager\\": "src/",
-			"DRPSermonManager\\Abstracts\\": "src/Core/Abstracts",
-			"DRPSermonManager\\Constants\\": "src/Core/Constants",
-			"DRPSermonManager\\Exceptions\\": "src/Core/Exceptions",
-			"DRPSermonManager\\Interfaces\\": "src/Core/Interfaces",
-			"DRPSermonManager\\Logging\\": "src/Core/Logging",
-			"DRPSermonManager\\Traits\\": "src/Core/Traits",
-			"DRPSermonManager\\Tests\\": "tests/"
+			"DRPPSM\\": "src/",
+			"DRPPSM\\Abstracts\\": "src/Core/Abstracts",
+			"DRPPSM\\Constants\\": "src/Core/Constants",
+			"DRPPSM\\Exceptions\\": "src/Core/Exceptions",
+			"DRPPSM\\Interfaces\\": "src/Core/Interfaces",
+			"DRPPSM\\Logging\\": "src/Core/Logging",
+			"DRPPSM\\Traits\\": "src/Core/Traits",
+			"DRPPSM\\Tests\\": "tests/"
 		}
 	},
 	"authors": [

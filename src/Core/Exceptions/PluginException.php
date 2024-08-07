@@ -11,7 +11,7 @@
  * @since       1.0.0
  */
 
-namespace DRPSermonManager\Exceptions;
+namespace DRPPSM\Exceptions;
 
 /**
  * Plugin exception.

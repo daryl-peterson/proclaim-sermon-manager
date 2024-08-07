@@ -11,7 +11,7 @@
  * @since       1.0.0
  */
 
-namespace DRPSermonManager\Constants;
+namespace DRPPSM\Constants;
 
 /**
  * Bible Books.
@@ -23,6 +23,7 @@ namespace DRPSermonManager\Constants;
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
  *
  * @since       1.0.0
+ *
  */
 class Bible {
 

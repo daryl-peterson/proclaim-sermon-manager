@@ -1,9 +1,9 @@
 <?php
 
-namespace DRPSermonManager\Tests;
+namespace DRPPSM\Tests;
 
-use DRPSermonManager\App;
-use DRPSermonManager\Constants\PT;
+use DRPPSM\App;
+use DRPPSM\Constants\PT;
 use PHPUnit\Framework\TestCase;
 
 /**

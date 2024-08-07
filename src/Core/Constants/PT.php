@@ -11,7 +11,7 @@
  * @since       1.0.0
  */
 
-namespace DRPSermonManager\Constants;
+namespace DRPPSM\Constants;
 
 /**
  * Post type constants.

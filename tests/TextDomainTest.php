@@ -1,11 +1,11 @@
 <?php
 
-namespace DRPSermonManager\Tests;
+namespace DRPPSM\Tests;
 
-use DRPSermonManager\App;
-use DRPSermonManager\Helper;
-use DRPSermonManager\Interfaces\TextDomainInt;
-use DRPSermonManager\TextDomain;
+use DRPPSM\App;
+use DRPPSM\Helper;
+use DRPPSM\Interfaces\TextDomainInt;
+use DRPPSM\TextDomain;
 
 /**
  * Class description.

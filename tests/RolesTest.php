@@ -1,11 +1,11 @@
 <?php
 
-namespace DRPSermonManager\Tests;
+namespace DRPPSM\Tests;
 
-use DRPSermonManager\App;
-use DRPSermonManager\Constants\Caps;
-use DRPSermonManager\Interfaces\RolesInt;
-use DRPSermonManager\Logging\Logger;
+use DRPPSM\App;
+use DRPPSM\Constants\Caps;
+use DRPPSM\Interfaces\RolesInt;
+use DRPPSM\Logging\Logger;
 
 /**
  * Test role capabilities.

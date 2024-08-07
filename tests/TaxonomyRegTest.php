@@ -1,10 +1,10 @@
 <?php
 
-namespace DRPSermonManager\Tests;
+namespace DRPPSM\Tests;
 
-use DRPSermonManager\Constants\PT;
-use DRPSermonManager\Constants\Tax;
-use DRPSermonManager\TaxonomyReg;
+use DRPPSM\Constants\PT;
+use DRPPSM\Constants\Tax;
+use DRPPSM\TaxonomyReg;
 use WP_Error;
 
 /**

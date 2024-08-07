@@ -10,9 +10,9 @@
  * @since       1.0.0
  */
 
-namespace DRPSermonManager;
+namespace DRPPSM;
 
-use DRPSermonManager\Exceptions\NotfoundException;
+use DRPPSM\Exceptions\NotfoundException;
 use Psr\Container\ContainerInterface;
 use ReflectionClass;
 

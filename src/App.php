@@ -10,11 +10,11 @@
  * @since       1.0.0
  */
 
-namespace DRPSermonManager;
+namespace DRPPSM;
 
-use DRPSermonManager\Interfaces\Initable;
-use DRPSermonManager\Interfaces\PluginInt;
-use DRPSermonManager\Traits\SingletonTrait;
+use DRPPSM\Interfaces\Initable;
+use DRPPSM\Interfaces\PluginInt;
+use DRPPSM\Traits\SingletonTrait;
 
 /**
  * App service locator.

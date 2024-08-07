@@ -8,9 +8,9 @@
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
  */
 
-namespace DRPSermonManager\Tests;
+namespace DRPPSM\Tests;
 
-use DRPSermonManager\Interfaces\PluginInt;
+use DRPPSM\Interfaces\PluginInt;
 
 /**
  * Plugin test.

@@ -10,9 +10,9 @@
  * @since       1.0.0
  */
 
-namespace DRPSermonManager\Logging;
+namespace DRPPSM\Logging;
 
-use DRPSermonManager\Interfaces\LogFormatterInt;
+use DRPPSM\Interfaces\LogFormatterInt;
 
 /**
  * Log formatter

@@ -11,11 +11,11 @@
  * @since       1.0.0
  */
 
-namespace DRPSermonManager\Admin;
+namespace DRPPSM\Admin;
 
-use DRPSermonManager\Helper;
-use DRPSermonManager\Interfaces\Initable;
-use DRPSermonManager\Interfaces\Registrable;
+use DRPPSM\Helper;
+use DRPPSM\Interfaces\Initable;
+use DRPPSM\Interfaces\Registrable;
 
 /**
  * Queue scritps / styles.
@@ -67,17 +67,17 @@ class QueueScripts implements Initable, Registrable {
 	 */
 	public function init_script_styles() {
 		// @codeCoverageIgnoreStart
-		$file = Helper::get_url() . 'assets/css/admin.css';
-		wp_register_style( 'drpsermon-admin-style', $file );
+		$file = Helper::get_url() . 'assets/css/drppsm-admin.css';
+		wp_register_style( 'drppsm-admin-style', $file );
 
-		$file = Helper::get_url() . 'assets/css/drpsermon-icons.css';
-		wp_register_style( 'drpsermon-admin-icons', $file );
+		$file = Helper::get_url() . 'assets/css/drppsm-icons.css';
+		wp_register_style( 'drppsm-admin-icons', $file );
 
 		// $file = 'https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.css';
-		// wp_register_style('drpsermon-jquery-ui-style', $file);
+		// wp_register_style('drppsm-jquery-ui-style', $file);
 
 		$file = Helper::get_url() . 'assets/js/admin.js';
-		wp_register_script( 'drpsermon-admin-script', $file );
+		wp_register_script( 'drppsm-admin-script', $file );
 		// @codeCoverageIgnoreEnd
 	}
 
@@ -90,8 +90,8 @@ class QueueScripts implements Initable, Registrable {
 	public function load(): void {
 		if ( is_admin() ) {
 			// @codeCoverageIgnoreStart
-			wp_enqueue_style( 'drpsermon-admin-style' );
-			wp_enqueue_style( 'drpsermon-admin-icons' );
+			wp_enqueue_style( 'drppsm-admin-style' );
+			wp_enqueue_style( 'drppsm-admin-icons' );
 			wp_enqueue_media();
 			// @codeCoverageIgnoreEnd
 		}
@@ -108,6 +108,6 @@ class QueueScripts implements Initable, Registrable {
 			return;
 		}
 		// wp_enqueue_script('jquery-ui-datepicker');
-		wp_enqueue_script( 'drpsermon-admin-script' );
+		wp_enqueue_script( 'drppsm-admin-script' );
 	}
 }

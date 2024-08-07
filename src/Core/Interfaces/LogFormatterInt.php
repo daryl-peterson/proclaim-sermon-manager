@@ -11,9 +11,9 @@
  * @since       1.0.0
  */
 
-namespace DRPSermonManager\Interfaces;
+namespace DRPPSM\Interfaces;
 
-use DRPSermonManager\Logging\LogRecord;
+use DRPPSM\Logging\LogRecord;
 
 /**
  * Log formatter interface.

@@ -13,18 +13,18 @@
  * @since       1.0.0
  */
 
-namespace DRPSermonManager;
+namespace DRPPSM;
 
-use DRPSermonManager\PostTypeReg;
-use DRPSermonManager\Constants\Filters;
-use DRPSermonManager\Constants\PT;
-use DRPSermonManager\Constants\Tax;
-use DRPSermonManager\Exceptions\PluginException;
-use DRPSermonManager\Interfaces\PostTypeRegInt;
-use DRPSermonManager\Interfaces\PostTypeSetupInt;
-use DRPSermonManager\Interfaces\TaxonomyRegInt;
-use DRPSermonManager\Logging\Logger;
-use DRPSermonManager\TaxonomyReg;
+use DRPPSM\PostTypeReg;
+use DRPPSM\Constants\Filters;
+use DRPPSM\Constants\PT;
+use DRPPSM\Constants\Tax;
+use DRPPSM\Exceptions\PluginException;
+use DRPPSM\Interfaces\PostTypeRegInt;
+use DRPPSM\Interfaces\PostTypeSetupInt;
+use DRPPSM\Interfaces\TaxonomyRegInt;
+use DRPPSM\Logging\Logger;
+use DRPPSM\TaxonomyReg;
 
 /**
  * Register post types and taxonomies.

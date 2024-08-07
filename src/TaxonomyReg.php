@@ -10,12 +10,12 @@
  * @since       1.0.0
  */
 
-namespace DRPSermonManager;
+namespace DRPPSM;
 
-use DRPSermonManager\Exceptions\PluginException;
-use DRPSermonManager\Helper;
-use DRPSermonManager\Interfaces\TaxonomyRegInt;
-use DRPSermonManager\Logging\Logger;
+use DRPPSM\Exceptions\PluginException;
+use DRPPSM\Helper;
+use DRPPSM\Interfaces\TaxonomyRegInt;
+use DRPPSM\Logging\Logger;
 
 /**
  * Taxonomy Registration.

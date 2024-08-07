@@ -11,7 +11,7 @@
  * @since       1.0.0
  */
 
-namespace DRPSermonManager\Constants;
+namespace DRPPSM\Constants;
 
 /**
  * Capability constants.
@@ -23,35 +23,36 @@ namespace DRPSermonManager\Constants;
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
  *
  * @since       1.0.0
+ *
  */
 class Caps {
 
 	// Read sermons.
-	public const READ_SERMON          = 'read_drpsermon';
-	public const READ_PRIVATE_SERMONS = 'read_private_drpsermons';
+	public const READ_SERMON          = 'drppsm_read';
+	public const READ_PRIVATE_SERMONS = 'drppsm_read_private';
 
 	// Edit sermons.
-	public const EDIT_SERMON            = 'edit_drpsermon';
-	public const EDIT_SERMONS           = 'edit_drpsermons';
-	public const EDIT_PRIVATE_SERMONS   = 'edit_private_drpsermons';
-	public const EDIT_PUBLISHED_SERMONS = 'edit_published_drpsermons';
-	public const EDIT_OTHERS_SERMONS    = 'edit_others_drpsermons';
+	public const EDIT_SERMON            = 'drppsm_edit';
+	public const EDIT_SERMONS           = 'drppsm_edits';
+	public const EDIT_PRIVATE_SERMONS   = 'drppsm_edit_private';
+	public const EDIT_PUBLISHED_SERMONS = 'drppsm_edit_published';
+	public const EDIT_OTHERS_SERMONS    = 'drppsm_edit_others';
 
 	// Delete sermons.
-	public const DELETE_SERMON            = 'delete_drpsermon';
-	public const DELETE_SERMONS           = 'delete_drpsermons';
-	public const DELETE_PUBLISHED_SERMONS = 'delete_published_drpsermons';
-	public const DELETE_PRIVATE_SERMONS   = 'delete_private_drpsermons';
-	public const DELETE_OTHERS_SERMONS    = 'delete_others_drpsermons';
+	public const DELETE_SERMON            = 'drppsm_delete';
+	public const DELETE_SERMONS           = 'drppsm_deletes';
+	public const DELETE_PUBLISHED_SERMONS = 'drppsm_delete_published';
+	public const DELETE_PRIVATE_SERMONS   = 'drppsm_delete_private';
+	public const DELETE_OTHERS_SERMONS    = 'drppsm_delete_others';
 
 	// Publish.
-	public const PUBLISH_SERMONS = 'publish_drpsermons';
+	public const PUBLISH_SERMONS = 'drppsm_publish';
 
 	// Manage categories & tags.
-	public const MANAGE_CATAGORIES = 'manage_drpsermon_categories';
+	public const MANAGE_CATAGORIES = 'drppsm_manage_categories';
 
 	// Administrator.
-	public const MANAGE_SETTINGS = 'manage_drpsermon_settings';
+	public const MANAGE_SETTINGS = 'drppsm_manage_settings';
 
 	// List.
 	public const LIST = array(

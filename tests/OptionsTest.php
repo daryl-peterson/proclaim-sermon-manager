@@ -1,11 +1,11 @@
 <?php
 
-namespace DRPSermonManager\Tests;
+namespace DRPPSM\Tests;
 
-use DRPSermonManager\App;
-use DRPSermonManager\Helper;
-use DRPSermonManager\Interfaces\OptionsInt;
-use DRPSermonManager\Options;
+use DRPPSM\App;
+use DRPPSM\Helper;
+use DRPPSM\Interfaces\OptionsInt;
+use DRPPSM\Options;
 
 /**
  * Options test.

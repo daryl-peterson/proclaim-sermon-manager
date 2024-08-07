@@ -11,9 +11,9 @@
  * @since       1.0.0
  */
 
-namespace DRPSermonManager;
+namespace DRPPSM;
 
-use DRPSermonManager\Logging\Logger;
+use DRPPSM\Logging\Logger;
 
 /**
  * Deactivate plugin.

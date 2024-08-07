@@ -10,17 +10,17 @@
  * @since       1.0.0
  */
 
-namespace DRPSermonManager;
+namespace DRPPSM;
 
-use DRPSermonManager\Interfaces\NoticeInt;
-use DRPSermonManager\Interfaces\OptionsInt;
-use DRPSermonManager\Interfaces\PermaLinkInt;
-use DRPSermonManager\Interfaces\PluginInt;
-use DRPSermonManager\Interfaces\PostTypeSetupInt;
-use DRPSermonManager\Interfaces\RequirementCheckInt;
-use DRPSermonManager\Interfaces\RequirementsInt;
-use DRPSermonManager\Interfaces\RolesInt;
-use DRPSermonManager\Interfaces\TextDomainInt;
+use DRPPSM\Interfaces\NoticeInt;
+use DRPPSM\Interfaces\OptionsInt;
+use DRPPSM\Interfaces\PermaLinkInt;
+use DRPPSM\Interfaces\PluginInt;
+use DRPPSM\Interfaces\PostTypeSetupInt;
+use DRPPSM\Interfaces\RequirementCheckInt;
+use DRPPSM\Interfaces\RequirementsInt;
+use DRPPSM\Interfaces\RolesInt;
+use DRPPSM\Interfaces\TextDomainInt;
 
 
 return array(

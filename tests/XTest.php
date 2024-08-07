@@ -1,11 +1,11 @@
 <?php
 
-namespace DRPSermonManager\Tests;
+namespace DRPPSM\Tests;
 
-use DRPSermonManager\Activator;
-use DRPSermonManager\Helper;
+use DRPPSM\Activator;
+use DRPPSM\Helper;
 
-use const DRPSermonManager\FILE;
+use const DRPPSM\FILE;
 
 /**
  * Class description.

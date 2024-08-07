@@ -10,9 +10,9 @@
  * @since       1.0.0
  */
 
-namespace DRPSermonManager\Logging;
+namespace DRPPSM\Logging;
 
-use const DRPSermonManager\LOG_FILE;
+use const DRPPSM\LOG_FILE;
 
 /**
  * Fix Log size.

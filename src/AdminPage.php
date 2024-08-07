@@ -8,10 +8,10 @@
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
  */
 
-namespace DRPSermonManager;
+namespace DRPPSM;
 
-use DRPSermonManager\Constants\PT;
-use DRPSermonManager\Logging\Logger;
+use DRPPSM\Constants\PT;
+use DRPPSM\Logging\Logger;
 
 /**
  * Create admin settings page for plugin.
@@ -111,7 +111,7 @@ class AdminPage {
 	public function addMenuPage(): string|bool {
 		return add_submenu_page(
 			'edit.php?post_type=' . $this->postType,
-			__( 'Sermon Manager Settings', 'drpsermon' ),
+			__( 'Sermon Manager Settings', 'drppsm' ),
 			'Vimeo',
 			'manage_options',
 			$this->slug,

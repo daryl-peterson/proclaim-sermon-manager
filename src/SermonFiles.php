@@ -10,10 +10,10 @@
  * @since       1.0.0
  */
 
-namespace DRPSermonManager;
+namespace DRPPSM;
 
-use DRPSermonManager\Constants\Meta;
-use DRPSermonManager\Constants\PT;
+use DRPPSM\Constants\Meta;
+use DRPPSM\Constants\PT;
 
 // @codeCoverageIgnoreStart
 defined( 'ABSPATH' ) || exit;
@@ -40,8 +40,8 @@ class SermonFiles {
 
 		$cmb = \new_cmb2_box(
 			array(
-				'id'           => 'drpsermon_files',
-				'title'        => esc_html__( 'Sermon Files', 'drpsermon' ),
+				'id'           => 'drppsm_files',
+				'title'        => esc_html__( 'Sermon Files', 'drppsm' ),
 				'object_types' => array( $post_type ),
 				'context'      => 'normal',
 				'priority'     => 'high',
@@ -50,8 +50,8 @@ class SermonFiles {
 		);
 		$cmb->add_field(
 			array(
-				'name' => esc_html__( 'Location of MP3', 'drpsermon' ),
-				'desc' => esc_html__( 'Upload an audio file or enter an URL.', 'drpsermon' ),
+				'name' => esc_html__( 'Location of MP3', 'drppsm' ),
+				'desc' => esc_html__( 'Upload an audio file or enter an URL.', 'drppsm' ),
 				'id'   => Meta::AUDIO,
 				'type' => 'file',
 				'text' => array(
@@ -61,11 +61,11 @@ class SermonFiles {
 		);
 		$cmb->add_field(
 			array(
-				'name' => esc_html__( 'MP3 Duration', 'drpsermon' ),
+				'name' => esc_html__( 'MP3 Duration', 'drppsm' ),
 				// translators: %s see msgid "hh:mm:ss", effectively <code>hh:mm:ss</code>.
 				'desc' => wp_sprintf(
-					esc_html__( 'Length in %s format (fill out only for remote files, local files will get data calculated by default)', 'drpsermon' ),
-					'<code>' . esc_html__( 'hh:mm:ss', 'drpsermon' ) . '</code>'
+					esc_html__( 'Length in %s format (fill out only for remote files, local files will get data calculated by default)', 'drppsm' ),
+					'<code>' . esc_html__( 'hh:mm:ss', 'drppsm' ) . '</code>'
 				),
 				'id'   => Meta::DURATION,
 				'type' => 'text',
@@ -73,16 +73,16 @@ class SermonFiles {
 		);
 		$cmb->add_field(
 			array(
-				'name' => esc_html__( 'Video Embed Code', 'drpsermon' ),
-				'desc' => esc_html__( 'Paste your embed code for Vimeo, Youtube, Facebook, or direct video file here', 'drpsermon' ),
+				'name' => esc_html__( 'Video Embed Code', 'drppsm' ),
+				'desc' => esc_html__( 'Paste your embed code for Vimeo, Youtube, Facebook, or direct video file here', 'drppsm' ),
 				'id'   => Meta::VIDEO,
 				'type' => 'textarea_code',
 			)
 		);
 		$cmb->add_field(
 			array(
-				'name' => esc_html__( 'Video Link', 'drpsermon' ),
-				'desc' => esc_html__( 'Paste your link for Vimeo, Youtube, Facebook, or direct video file here', 'drpsermon' ),
+				'name' => esc_html__( 'Video Link', 'drppsm' ),
+				'desc' => esc_html__( 'Paste your link for Vimeo, Youtube, Facebook, or direct video file here', 'drppsm' ),
 				'id'   => Meta::VIDEO_LINK,
 				'type' => 'text_url',
 			)
@@ -90,12 +90,12 @@ class SermonFiles {
 
 		$cmb->add_field(
 			array(
-				'name'       => esc_html__( 'Sermon Notes', 'drpsermon' ),
-				'desc'       => esc_html__( 'Upload  pdf files.', 'drpsermon' ),
+				'name'       => esc_html__( 'Sermon Notes', 'drppsm' ),
+				'desc'       => esc_html__( 'Upload  pdf files.', 'drppsm' ),
 				'id'         => Meta::NOTES,
 				'type'       => 'file_list',
 				'text'       => array(
-					'add_upload_file_text' => esc_html__( 'Add File', 'drpsermon' ),
+					'add_upload_file_text' => esc_html__( 'Add File', 'drppsm' ),
 					// Change upload button text. Default: "Add or Upload File".
 				),
 				'query_args' => array(
@@ -106,12 +106,12 @@ class SermonFiles {
 		);
 		$cmb->add_field(
 			array(
-				'name' => esc_html__( 'Bulletin', 'drpsermon' ),
-				'desc' => esc_html__( 'Upload pdf files.', 'drpsermon' ),
+				'name' => esc_html__( 'Bulletin', 'drppsm' ),
+				'desc' => esc_html__( 'Upload pdf files.', 'drppsm' ),
 				'id'   => Meta::BULLETIN,
 				'type' => 'file_list',
 				'text' => array(
-					'add_upload_file_text' => esc_html__( 'Add File', 'drpsermon' ),
+					'add_upload_file_text' => esc_html__( 'Add File', 'drppsm' ),
 					// Change upload button text. Default: "Add or Upload File".
 				),
 			)

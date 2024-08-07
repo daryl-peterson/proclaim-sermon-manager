@@ -10,12 +10,12 @@
  * @since       1.0.0
  */
 
-namespace DRPSermonManager;
+namespace DRPPSM;
 
-use DRPSermonManager\Exceptions\PluginException;
-use DRPSermonManager\Helper;
-use DRPSermonManager\Interfaces\PostTypeRegInt;
-use DRPSermonManager\Logging\Logger;
+use DRPPSM\Exceptions\PluginException;
+use DRPPSM\Helper;
+use DRPPSM\Interfaces\PostTypeRegInt;
+use DRPPSM\Logging\Logger;
 
 /**
  * Post type registration.
@@ -85,7 +85,7 @@ class PostTypeReg implements PostTypeRegInt {
 
 		if ( ! $this->exist() || is_wp_error( $result ) ) {
 			// @codeCoverageIgnoreStart
-			$message = __( 'Failed to add post type : ', 'drpsermon' ) . $this->pt;
+			$message = __( 'Failed to add post type : ', 'drppsm' ) . $this->pt;
 			if ( is_wp_error( $result ) ) {
 				$message = $result->get_error_message();
 			}
@@ -126,7 +126,7 @@ class PostTypeReg implements PostTypeRegInt {
 
 		if ( $this->exist() || is_wp_error( $result ) ) {
 			// @codeCoverageIgnoreStart
-			$message = __( 'Failed to remove post type : ', 'drpsermon' ) . $this->pt;
+			$message = __( 'Failed to remove post type : ', 'drppsm' ) . $this->pt;
 			if ( is_wp_error( $result ) ) {
 				$message = $result->get_error_message();
 			}

@@ -5,37 +5,37 @@
  * @package Sermon Manager
  */
 
-namespace DRPSermonManager;
+namespace DRPPSM;
 
 $permalinks = App::init()->permalinks();
-use DRPSermonManager\Constants\Caps;
-use DRPSermonManager\Constants\PT;
+use DRPPSM\Constants\Caps;
+use DRPPSM\Constants\PT;
 
 return array(
 	'labels'              => array(
-		'name'                  => __( 'Sermons', 'drpsermon' ),
-		'singular_name'         => __( 'Sermon', 'drpsermon' ),
-		'all_items'             => __( 'Sermons', 'drpsermon' ),
-		'menu_name'             => _x( 'Sermons', 'menu', 'drpsermon' ),
-		'add_new'               => __( 'Add New', 'drpsermon' ),
-		'add_new_item'          => __( 'Add new sermon', 'drpsermon' ),
-		'edit'                  => __( 'Edit', 'drpsermon' ),
-		'edit_item'             => __( 'Edit sermon', 'drpsermon' ),
-		'new_item'              => __( 'New sermon', 'drpsermon' ),
-		'view'                  => __( 'View sermon', 'drpsermon' ),
-		'view_item'             => __( 'View sermon', 'drpsermon' ),
-		'search_items'          => __( 'Search sermon', 'drpsermon' ),
-		'not_found'             => __( 'No sermons found', 'drpsermon' ),
-		'not_found_in_trash'    => __( 'No sermons found in trash', 'drpsermon' ),
-		'featured_image'        => __( 'Sermon image', 'drpsermon' ),
-		'set_featured_image'    => __( 'Set sermon image', 'drpsermon' ),
-		'remove_featured_image' => __( 'Remove sermon image', 'drpsermon' ),
-		'use_featured_image'    => __( 'Use as sermon image', 'drpsermon' ),
-		'insert_into_item'      => __( 'Insert to sermon', 'drpsermon' ),
-		'uploaded_to_this_item' => __( 'Uploaded to this sermon', 'drpsermon' ),
-		'filter_items_list'     => __( 'Filter sermon', 'drpsermon' ),
-		'items_list_navigation' => __( 'Sermon navigation', 'drpsermon' ),
-		'items_list'            => __( 'Sermon list', 'drpsermon' ),
+		'name'                  => __( 'Sermons', 'drppsm' ),
+		'singular_name'         => __( 'Sermon', 'drppsm' ),
+		'all_items'             => __( 'Sermons', 'drppsm' ),
+		'menu_name'             => _x( 'Sermons', 'menu', 'drppsm' ),
+		'add_new'               => __( 'Add New', 'drppsm' ),
+		'add_new_item'          => __( 'Add new sermon', 'drppsm' ),
+		'edit'                  => __( 'Edit', 'drppsm' ),
+		'edit_item'             => __( 'Edit sermon', 'drppsm' ),
+		'new_item'              => __( 'New sermon', 'drppsm' ),
+		'view'                  => __( 'View sermon', 'drppsm' ),
+		'view_item'             => __( 'View sermon', 'drppsm' ),
+		'search_items'          => __( 'Search sermon', 'drppsm' ),
+		'not_found'             => __( 'No sermons found', 'drppsm' ),
+		'not_found_in_trash'    => __( 'No sermons found in trash', 'drppsm' ),
+		'featured_image'        => __( 'Sermon image', 'drppsm' ),
+		'set_featured_image'    => __( 'Set sermon image', 'drppsm' ),
+		'remove_featured_image' => __( 'Remove sermon image', 'drppsm' ),
+		'use_featured_image'    => __( 'Use as sermon image', 'drppsm' ),
+		'insert_into_item'      => __( 'Insert to sermon', 'drppsm' ),
+		'uploaded_to_this_item' => __( 'Uploaded to this sermon', 'drppsm' ),
+		'filter_items_list'     => __( 'Filter sermon', 'drppsm' ),
+		'items_list_navigation' => __( 'Sermon navigation', 'drppsm' ),
+		'items_list'            => __( 'Sermon list', 'drppsm' ),
 	),
 	'public'              => true,
 	'show_ui'             => true,
@@ -48,7 +48,7 @@ return array(
 	'publicly_queryable'  => true,
 	'exclude_from_search' => false,
 	'show_in_menu'        => true,
-	'menu_icon'           => 'dashicons-drpsermon-bible-inv',
+	'menu_icon'           => 'dashicons-drppsm-holy-spirit',
 	'hierarchical'        => false,
 	'rewrite'             => array(
 		'slug'       => $permalinks[ PT::SERMON ],

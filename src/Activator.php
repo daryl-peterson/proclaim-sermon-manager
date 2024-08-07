@@ -10,11 +10,11 @@
  * @since       1.0.0
  */
 
-namespace DRPSermonManager;
+namespace DRPPSM;
 
-use DRPSermonManager\Interfaces\Initable;
-use DRPSermonManager\Interfaces\Runable;
-use DRPSermonManager\Logging\Logger;
+use DRPPSM\Interfaces\Initable;
+use DRPPSM\Interfaces\Runable;
+use DRPPSM\Logging\Logger;
 
 /**
  * Activate plugin.

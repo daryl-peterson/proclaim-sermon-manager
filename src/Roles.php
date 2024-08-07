@@ -10,10 +10,10 @@
  * @since       1.0.0
  */
 
-namespace DRPSermonManager;
+namespace DRPPSM;
 
-use DRPSermonManager\Constants\Caps;
-use DRPSermonManager\Interfaces\RolesInt;
+use DRPPSM\Constants\Caps;
+use DRPPSM\Interfaces\RolesInt;
 
 /**
  * Add custom capabilities to roles.
@@ -27,7 +27,7 @@ class Roles implements RolesInt {
 	 * @since 1.0.0
 	 */
 	public function register(): void {
-		add_action( 'drpsermon_after_post_setup', array( $this, 'add' ) );
+		add_action( 'drppsm_after_post_setup', array( $this, 'add' ) );
 	}
 
 	/**

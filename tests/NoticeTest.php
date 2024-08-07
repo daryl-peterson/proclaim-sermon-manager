@@ -1,11 +1,11 @@
 <?php
 
-namespace DRPSermonManager\Tests;
+namespace DRPPSM\Tests;
 
-use DRPSermonManager\App;
-use DRPSermonManager\Interfaces\NoticeInt;
-use DRPSermonManager\Logging\Logger;
-use DRPSermonManager\Notice;
+use DRPPSM\App;
+use DRPPSM\Interfaces\NoticeInt;
+use DRPPSM\Logging\Logger;
+use DRPPSM\Notice;
 
 class NoticeTest extends BaseTest {
 

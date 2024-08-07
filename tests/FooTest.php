@@ -1,8 +1,8 @@
 <?php
 
-namespace DRPSermonManager\Tests;
+namespace DRPPSM\Tests;
 
-use DRPSermonManager\Logging\Logger;
+use DRPPSM\Logging\Logger;
 
 /**
  * Class description.

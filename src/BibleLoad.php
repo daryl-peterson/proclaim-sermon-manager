@@ -10,15 +10,15 @@
  * @since       1.0.0
  */
 
-namespace DRPSermonManager;
+namespace DRPPSM;
 
-use DRPSermonManager\Constants\Filters;
-use DRPSermonManager\Constants\Bible;
-use DRPSermonManager\Constants\Tax;
-use DRPSermonManager\Interfaces\Initable;
-use DRPSermonManager\Interfaces\OptionsInt;
-use DRPSermonManager\Interfaces\Registrable;
-use DRPSermonManager\Logging\Logger;
+use DRPPSM\Constants\Filters;
+use DRPPSM\Constants\Bible;
+use DRPPSM\Constants\Tax;
+use DRPPSM\Interfaces\Initable;
+use DRPPSM\Interfaces\OptionsInt;
+use DRPPSM\Interfaces\Registrable;
+use DRPPSM\Logging\Logger;
 
 // @codeCoverageIgnoreStart
 defined( 'ABSPATH' ) || exit;

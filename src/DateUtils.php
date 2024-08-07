@@ -1,11 +1,11 @@
 <?php
 
-namespace DRPSermonManager;
+namespace DRPPSM;
 
-use DRPSermonManager\Constants\Filters;
-use DRPSermonManager\Constants\Meta;
-use DRPSermonManager\Constants\PT;
-use DRPSermonManager\Logging\Logger;
+use DRPPSM\Constants\Filters;
+use DRPPSM\Constants\Meta;
+use DRPPSM\Constants\PT;
+use DRPPSM\Logging\Logger;
 
 /**
  * Date utils.

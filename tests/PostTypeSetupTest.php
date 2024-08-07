@@ -11,13 +11,13 @@
  * @since       1.0.0
  */
 
-namespace DRPSermonManager\Tests;
+namespace DRPPSM\Tests;
 
-use DRPSermonManager\App;
-use DRPSermonManager\Constants\PT;
-use DRPSermonManager\Exceptions\PluginException;
-use DRPSermonManager\Interfaces\PostTypeRegInt;
-use DRPSermonManager\Interfaces\PostTypeSetupInt;
+use DRPPSM\App;
+use DRPPSM\Constants\PT;
+use DRPPSM\Exceptions\PluginException;
+use DRPPSM\Interfaces\PostTypeRegInt;
+use DRPPSM\Interfaces\PostTypeSetupInt;
 
 /**
  * Post type setup test.

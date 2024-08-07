@@ -14,11 +14,11 @@
  * @see https://developer.wordpress.org/reference/functions/update_option/
  */
 
-namespace DRPSermonManager;
+namespace DRPPSM;
 
-use DRPSermonManager\Interfaces\OptionsInt;
-use DRPSermonManager\Logging\Logger;
-use DRPSermonManager\Traits\SingletonTrait;
+use DRPPSM\Interfaces\OptionsInt;
+use DRPPSM\Logging\Logger;
+use DRPPSM\Traits\SingletonTrait;
 
 /**
  * Manage options (wp_options) settings.

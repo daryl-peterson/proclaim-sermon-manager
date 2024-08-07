@@ -1,6 +1,6 @@
 <?php
 
-namespace DRPSermonManager;
+namespace DRPPSM;
 
 /**
  * Sermon list table cmb.

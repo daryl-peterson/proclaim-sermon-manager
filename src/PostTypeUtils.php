@@ -11,9 +11,9 @@
  * @since       1.0.0
  */
 
-namespace DRPSermonManager;
+namespace DRPPSM;
 
-use DRPSermonManager\Constants\PT;
+use DRPPSM\Constants\PT;
 
 // @codeCoverageIgnoreStart
 defined( 'ABSPATH' ) || exit;

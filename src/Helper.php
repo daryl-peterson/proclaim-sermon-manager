@@ -11,10 +11,10 @@
  * @since       1.0.0
  */
 
-namespace DRPSermonManager;
+namespace DRPPSM;
 
-use DRPSermonManager\Exceptions\PluginException;
-use DRPSermonManager\Logging\Logger;
+use DRPPSM\Exceptions\PluginException;
+use DRPPSM\Logging\Logger;
 use ReflectionClass;
 
 /**

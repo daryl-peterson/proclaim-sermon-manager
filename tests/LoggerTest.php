@@ -1,11 +1,11 @@
 <?php
 
-namespace DRPSermonManager\Tests;
+namespace DRPPSM\Tests;
 
-use DRPSermonManager\App;
-use DRPSermonManager\Logging\LogFormatter;
-use DRPSermonManager\Logging\Logger;
-use DRPSermonManager\Requirements;
+use DRPPSM\App;
+use DRPPSM\Logging\LogFormatter;
+use DRPPSM\Logging\Logger;
+use DRPPSM\Requirements;
 
 class LoggerTest extends BaseTest {
 

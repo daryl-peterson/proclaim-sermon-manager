@@ -7,10 +7,10 @@
  * @return array Series config.
  */
 
-namespace DRPSermonManager;
+namespace DRPPSM;
 
-use DRPSermonManager\Constants\Caps;
-use DRPSermonManager\Constants\Tax;
+use DRPPSM\Constants\Caps;
+use DRPPSM\Constants\Tax;
 
 $permalinks   = App::init()->permalinks();
 $slug         = Tax::SERIES;
@@ -23,20 +23,20 @@ $capabilities = array(
 
 return array(
 	'hierarchical' => false,
-	'label'        => __( 'Series', 'drpsermon' ),
+	'label'        => __( 'Series', 'drppsm' ),
 	'labels'       => array(
-		'name'              => __( 'Series', 'drpsermon' ),
-		'singular_name'     => __( 'Series', 'drpsermon' ),
-		'menu_name'         => _x( 'Series', 'menu', 'drpsermon' ),
-		'search_items'      => __( 'Search series', 'drpsermon' ),
-		'all_items'         => __( 'All series', 'drpsermon' ),
+		'name'              => __( 'Series', 'drppsm' ),
+		'singular_name'     => __( 'Series', 'drppsm' ),
+		'menu_name'         => _x( 'Series', 'menu', 'drppsm' ),
+		'search_items'      => __( 'Search series', 'drppsm' ),
+		'all_items'         => __( 'All series', 'drppsm' ),
 		'parent_item'       => null,
 		'parent_item_colon' => null,
-		'edit_item'         => __( 'Edit series', 'drpsermon' ),
-		'update_item'       => __( 'Update series', 'drpsermon' ),
-		'add_new_item'      => __( 'Add new series', 'drpsermon' ),
-		'new_item_name'     => __( 'New series name', 'drpsermon' ),
-		'not_found'         => __( 'No series found', 'drpsermon' ),
+		'edit_item'         => __( 'Edit series', 'drppsm' ),
+		'update_item'       => __( 'Update series', 'drppsm' ),
+		'add_new_item'      => __( 'Add new series', 'drppsm' ),
+		'new_item_name'     => __( 'New series name', 'drppsm' ),
+		'not_found'         => __( 'No series found', 'drppsm' ),
 	),
 	'show_ui'      => true,
 	'query_var'    => true,

@@ -11,15 +11,15 @@
  * @since       1.0.0
  */
 
-namespace DRPSermonManager;
+namespace DRPPSM;
 
-use DRPSermonManager\Constants\Filters;
-use DRPSermonManager\Constants\Meta;
-use DRPSermonManager\Constants\PT;
-use DRPSermonManager\Constants\Tax;
-use DRPSermonManager\Interfaces\Initable;
-use DRPSermonManager\Interfaces\Registrable;
-use DRPSermonManager\Logging\Logger;
+use DRPPSM\Constants\Filters;
+use DRPPSM\Constants\Meta;
+use DRPPSM\Constants\PT;
+use DRPPSM\Constants\Tax;
+use DRPPSM\Interfaces\Initable;
+use DRPPSM\Interfaces\Registrable;
+use DRPPSM\Logging\Logger;
 
 /**
  * Sermon list table.
@@ -50,13 +50,13 @@ class SermonListTable implements Initable, Registrable {
 	public function __construct() {
 		$this->pt                       = PT::SERMON;
 		$this->columns['cb']            = '<input type="checkbox" />';
-		$this->columns['title']         = __( 'Sermon Title', 'drpsermon' );
+		$this->columns['title']         = __( 'Sermon Title', 'drppsm' );
 		$this->columns[ Tax::PREACHER ] = TaxUtils::get_taxonomy_field( Tax::PREACHER, 'singular_name' );
-		$this->columns[ Tax::SERIES ]   = __( 'Sermon Series', 'drpsermon' );
-		$this->columns[ Tax::TOPICS ]   = __( 'Topics', 'drpsermon' );
-		$this->columns['views']         = __( 'Views', 'drpsermon' );
-		$this->columns['comments']      = __( 'Comments', 'drpsermon' );
-		$this->columns['preached']      = __( 'Preached', 'drpsermon' );
+		$this->columns[ Tax::SERIES ]   = __( 'Sermon Series', 'drppsm' );
+		$this->columns[ Tax::TOPICS ]   = __( 'Topics', 'drppsm' );
+		$this->columns['views']         = __( 'Views', 'drppsm' );
+		$this->columns['comments']      = __( 'Comments', 'drppsm' );
+		$this->columns['preached']      = __( 'Preached', 'drppsm' );
 		$this->columns['date']          = __( 'Published' );
 	}
 
@@ -305,7 +305,7 @@ class SermonListTable implements Initable, Registrable {
 		);
 
 		$field   = TaxUtils::get_taxonomy_field( $service_type, 'singular_name' );
-		$label   = wp_sprintf( __( 'Filter by %s', 'drpsermon' ), $field );
+		$label   = wp_sprintf( __( 'Filter by %s', 'drppsm' ), $field );
 		$options = "<option value=\"\">$label</option>";
 
 		foreach ( $terms as $term ) {

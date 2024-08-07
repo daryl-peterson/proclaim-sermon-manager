@@ -1,9 +1,9 @@
 <?php
 
-namespace DRPSermonManager;
+namespace DRPPSM;
 
-use DRPSermonManager\Interfaces\Initable;
-use DRPSermonManager\Interfaces\Registrable;
+use DRPPSM\Interfaces\Initable;
+use DRPPSM\Interfaces\Registrable;
 
 /**
  * Class description.

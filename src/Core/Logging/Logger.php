@@ -10,10 +10,10 @@
  * @since       1.0.0
  */
 
-namespace DRPSermonManager\Logging;
+namespace DRPPSM\Logging;
 
-use DRPSermonManager\Interfaces\LoggerInt;
-use DRPSermonManager\Traits\SingletonTrait;
+use DRPPSM\Interfaces\LoggerInt;
+use DRPPSM\Traits\SingletonTrait;
 
 /**
  * Logging

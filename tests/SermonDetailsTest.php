@@ -1,9 +1,9 @@
 <?php
 
-namespace DRPSermonManager\Tests;
+namespace DRPPSM\Tests;
 
-use DRPSermonManager\App;
-use DRPSermonManager\SermonDetail;
+use DRPPSM\App;
+use DRPPSM\SermonDetail;
 
 /**
  * Class description

@@ -11,18 +11,18 @@
  * @since       1.0.0
  */
 
-namespace DRPSermonManager;
+namespace DRPPSM;
 
-use DRPSermonManager\Admin\QueueScripts;
-use DRPSermonManager\Interfaces\NoticeInt;
-use DRPSermonManager\Interfaces\PluginInt;
-use DRPSermonManager\Interfaces\PostTypeSetupInt;
-use DRPSermonManager\Interfaces\RequirementsInt;
-use DRPSermonManager\Interfaces\RolesInt;
-use DRPSermonManager\Interfaces\TextDomainInt;
-use DRPSermonManager\Logging\Logger;
-use DRPSermonManager\BibleLoad;
-use DRPSermonManager\Constants\Filters;
+use DRPPSM\Admin\QueueScripts;
+use DRPPSM\Interfaces\NoticeInt;
+use DRPPSM\Interfaces\PluginInt;
+use DRPPSM\Interfaces\PostTypeSetupInt;
+use DRPPSM\Interfaces\RequirementsInt;
+use DRPPSM\Interfaces\RolesInt;
+use DRPPSM\Interfaces\TextDomainInt;
+use DRPPSM\Logging\Logger;
+use DRPPSM\BibleLoad;
+use DRPPSM\Constants\Filters;
 
 
 /**
@@ -118,6 +118,15 @@ class Plugin implements PluginInt {
 	 */
 	public function deactivate(): void {
 		Logger::debug( 'DEACTIVATING' );
+
+		$app = App::init();
+		/**
+		 * Post type
+		 *
+		 * @var PostTypeSetupInt $pt
+		 */
+		$pt = $app->get( PostTypeSetupInt::class );
+		$pt->remove();
 		// @todo Add deactivation cleanup
 	}
 

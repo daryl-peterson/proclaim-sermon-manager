@@ -7,10 +7,10 @@
  * @return array Taxonomy config.
  */
 
-namespace DRPSermonManager;
+namespace DRPPSM;
 
-use DRPSermonManager\Constants\Caps;
-use DRPSermonManager\Constants\Tax;
+use DRPPSM\Constants\Caps;
+use DRPPSM\Constants\Tax;
 
 $permalinks   = App::init()->permalinks();
 $slug         = Tax::TOPICS;
@@ -23,20 +23,20 @@ $capabilities = array(
 
 return array(
 	'hierarchical' => false,
-	'label'        => __( 'Topics', 'drpsermon' ),
+	'label'        => __( 'Topics', 'drppsm' ),
 	'labels'       => array(
-		'name'              => __( 'Topics', 'drpsermon' ),
-		'singular_name'     => __( 'Topic', 'drpsermon' ),
-		'menu_name'         => _x( 'Topics', 'menu', 'drpsermon' ),
-		'search_items'      => __( 'Search topics', 'drpsermon' ),
-		'all_items'         => __( 'All topics', 'drpsermon' ),
+		'name'              => __( 'Topics', 'drppsm' ),
+		'singular_name'     => __( 'Topic', 'drppsm' ),
+		'menu_name'         => _x( 'Topics', 'menu', 'drppsm' ),
+		'search_items'      => __( 'Search topics', 'drppsm' ),
+		'all_items'         => __( 'All topics', 'drppsm' ),
 		'parent_item'       => null,
 		'parent_item_colon' => null,
-		'edit_item'         => __( 'Edit topic', 'drpsermon' ),
-		'update_item'       => __( 'Update topic', 'drpsermon' ),
-		'add_new_item'      => __( 'Add new topic', 'drpsermon' ),
-		'new_item_name'     => __( 'New topic name', 'drpsermon' ),
-		'not_found'         => __( 'No topics found', 'drpsermon' ),
+		'edit_item'         => __( 'Edit topic', 'drppsm' ),
+		'update_item'       => __( 'Update topic', 'drppsm' ),
+		'add_new_item'      => __( 'Add new topic', 'drppsm' ),
+		'new_item_name'     => __( 'New topic name', 'drppsm' ),
+		'not_found'         => __( 'No topics found', 'drppsm' ),
 	),
 	'show_ui'      => true,
 	'query_var'    => true,

@@ -9,12 +9,12 @@
  * @since       1.0.0
  */
 
-namespace DRPSermonManager;
+namespace DRPPSM;
 
-use DRPSermonManager\Interfaces\NoticeInt;
-use DRPSermonManager\Interfaces\OptionsInt;
-use DRPSermonManager\Logging\Logger;
-use DRPSermonManager\Traits\SingletonTrait;
+use DRPPSM\Interfaces\NoticeInt;
+use DRPPSM\Interfaces\OptionsInt;
+use DRPPSM\Logging\Logger;
+use DRPPSM\Traits\SingletonTrait;
 
 
 /**

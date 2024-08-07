@@ -11,15 +11,15 @@
  * ----------------------------------------------------------------------------
  *
  * @wordpress-plugin
- * Plugin Name:         Proclain Sermon Manager
+ * Plugin Name:         Proclaim Sermon Manager
  * Plugin URI:
- * Description:         Proclain Sermon Manager for wordpess
+ * Description:         Proclaim Sermon Manager for wordpess
  * Version:             1.0.0
  * Author:              Daryl Peterson
  * Author URI:
  * License:             GPL-2.0+
  * License URI:         http://www.gnu.org/licenses/gpl-2.0.txt
- * Text Domain:         drpsermon
+ * Text Domain:         drppsm
  * Domain Path:         /languages
  * Requires PHP:        8.1
  * Requires at least:   6.4
@@ -30,9 +30,9 @@
  * any later version.
  */
 
-namespace DRPSermonManager;
+namespace DRPPSM;
 
-use DRPSermonManager\Logging\Logger;
+use DRPPSM\Logging\Logger;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -51,8 +51,8 @@ require_once __DIR__ . '/vendor/cmb2/cmb2/init.php';
 
 const NAME           = 'Sermon Manager';
 const FILE           = __FILE__;
-const KEY_PREFIX     = 'drpsermon';
-const DOMAIN         = 'drpsermon';
+const KEY_PREFIX     = 'drppsm';
+const DOMAIN         = 'drppsm';
 const NS             = __NAMESPACE__;
 const LOG_FILE       = 'drp-sermon-manager.log';
 const PLUGIN_MIN_PHP = '8.1.0';

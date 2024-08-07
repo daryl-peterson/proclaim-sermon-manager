@@ -1,9 +1,9 @@
 <?php
 
 
-namespace DRPSermonManager\Tests;
+namespace DRPPSM\Tests;
 
-use DRPSermonManager\TaxUtils;
+use DRPPSM\TaxUtils;
 
 /**
  * Tax utilities test

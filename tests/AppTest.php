@@ -9,15 +9,15 @@
  * @since       1.0.0
  */
 
-namespace DRPSermonManager\Tests;
+namespace DRPPSM\Tests;
 
-use DRPSermonManager\AdminPage;
-use DRPSermonManager\App;
-use DRPSermonManager\BibleLoad;
-use DRPSermonManager\Exceptions\NotfoundException;
-use DRPSermonManager\Interfaces\NoticeInt;
-use DRPSermonManager\Interfaces\PluginInt;
-use DRPSermonManager\Logging\Logger;
+use DRPPSM\AdminPage;
+use DRPPSM\App;
+use DRPPSM\BibleLoad;
+use DRPPSM\Exceptions\NotfoundException;
+use DRPPSM\Interfaces\NoticeInt;
+use DRPPSM\Interfaces\PluginInt;
+use DRPPSM\Logging\Logger;
 use stdClass;
 
 /**

@@ -11,10 +11,10 @@
  * @since       1.0.0
  */
 
-namespace DRPSermonManager;
+namespace DRPPSM;
 
-use DRPSermonManager\Interfaces\OptionsInt;
-use DRPSermonManager\Logging\Logger;
+use DRPPSM\Interfaces\OptionsInt;
+use DRPPSM\Logging\Logger;
 
 /**
  * Fatal error handling.

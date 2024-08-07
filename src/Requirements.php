@@ -10,12 +10,12 @@
  * @since 1.0.0
  */
 
-namespace DRPSermonManager;
+namespace DRPPSM;
 
-use DRPSermonManager\Interfaces\NoticeInt;
-use DRPSermonManager\Interfaces\RequirementCheckInt;
-use DRPSermonManager\Interfaces\RequirementsInt;
-use DRPSermonManager\Logging\Logger;
+use DRPPSM\Interfaces\NoticeInt;
+use DRPPSM\Interfaces\RequirementCheckInt;
+use DRPPSM\Interfaces\RequirementsInt;
+use DRPPSM\Logging\Logger;
 
 /**
  * Register requirement checks to be run.

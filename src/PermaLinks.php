@@ -11,14 +11,14 @@
  * @since       1.0.0
  */
 
-namespace DRPSermonManager;
+namespace DRPPSM;
 
-use DRPSermonManager\Constants\PT;
-use DRPSermonManager\Constants\Tax;
-use DRPSermonManager\Interfaces\OptionsInt;
-use DRPSermonManager\Interfaces\PermaLinkInt;
-use DRPSermonManager\Interfaces\TextDomainInt;
-use DRPSermonManager\Traits\SingletonTrait;
+use DRPPSM\Constants\PT;
+use DRPPSM\Constants\Tax;
+use DRPPSM\Interfaces\OptionsInt;
+use DRPPSM\Interfaces\PermaLinkInt;
+use DRPPSM\Interfaces\TextDomainInt;
+use DRPPSM\Traits\SingletonTrait;
 
 /**
  * Permalink singleton.
@@ -112,22 +112,22 @@ class PermaLinks implements PermaLinkInt {
 
 		// Ensure rewrite slugs are set.
 		$perm[ Tax::PREACHER ] = empty( $perm[ Tax::PREACHER ] ) ?
-			_x( 'preacher', 'slug', 'drpsermon' ) : $perm[ Tax::PREACHER ];
+			_x( 'preacher', 'slug', 'drppsm' ) : $perm[ Tax::PREACHER ];
 
 		$perm[ Tax::SERIES ] = empty( $perm[ Tax::SERIES ] ) ?
-			_x( 'series', 'slug', 'drpsermon' ) : $perm[ Tax::SERIES ];
+			_x( 'series', 'slug', 'drppsm' ) : $perm[ Tax::SERIES ];
 
 		$perm[ Tax::TOPICS ] = empty( $perm[ Tax::TOPICS ] ) ?
-			_x( 'topics', 'slug', 'drpsermon' ) : $perm[ Tax::TOPICS ];
+			_x( 'topics', 'slug', 'drppsm' ) : $perm[ Tax::TOPICS ];
 
 		$perm[ Tax::BIBLE_BOOK ] = empty( $perm[ Tax::BIBLE_BOOK ] ) ?
-			_x( 'book', 'slug', 'drpsermon' ) : $perm[ Tax::BIBLE_BOOK ];
+			_x( 'book', 'slug', 'drppsm' ) : $perm[ Tax::BIBLE_BOOK ];
 
 		$perm[ Tax::SERVICE_TYPE ] = empty( $perm[ Tax::SERVICE_TYPE ] ) ?
-			_x( 'service-type', 'slug', 'drpsermon' ) : $perm[ Tax::SERVICE_TYPE ];
+			_x( 'service-type', 'slug', 'drppsm' ) : $perm[ Tax::SERVICE_TYPE ];
 
 		$perm[ PT::SERMON ] = empty( $perm[ PT::SERMON ] ) ?
-			_x( 'sermons', 'slug', 'drpsermon' ) : $perm[ PT::SERMON ];
+			_x( 'sermons', 'slug', 'drppsm' ) : $perm[ PT::SERMON ];
 
 		foreach ( $perm as $key => $value ) {
 			$perm[ $key ] = untrailingslashit( $value );

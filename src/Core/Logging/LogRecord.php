@@ -10,9 +10,9 @@
  * @since       1.0.0
  */
 
-namespace DRPSermonManager\Logging;
+namespace DRPPSM\Logging;
 
-use DRPSermonManager\Helper;
+use DRPPSM\Helper;
 /**
  * Log record format
  *

@@ -1,13 +1,13 @@
 <?php
 
-namespace DRPSermonManager\Tests;
+namespace DRPPSM\Tests;
 
-use DRPSermonManager\App;
-use DRPSermonManager\Exceptions\PluginException;
-use DRPSermonManager\Interfaces\RequirementCheckInt;
-use DRPSermonManager\Interfaces\RequirementsInt;
-use DRPSermonManager\RequirementCheck;
-use DRPSermonManager\Requirements;
+use DRPPSM\App;
+use DRPPSM\Exceptions\PluginException;
+use DRPPSM\Interfaces\RequirementCheckInt;
+use DRPPSM\Interfaces\RequirementsInt;
+use DRPPSM\RequirementCheck;
+use DRPPSM\Requirements;
 
 /**
  * Class description.
