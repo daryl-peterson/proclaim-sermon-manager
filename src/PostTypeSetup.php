@@ -176,7 +176,7 @@ class PostTypeSetup implements PostTypeSetupInt {
 	 * @since 1.0.0
 	 */
 	public function flush(): void {
-		flush_rewrite_rules();
+		flush_rewrite_rules( false );
 	}
 
 	/**

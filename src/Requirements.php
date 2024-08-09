@@ -70,7 +70,6 @@ class Requirements implements RequirementsInt {
 				// @codeCoverageIgnoreEnd
 			}
 			add_action( 'admin_init', array( $this, 'is_compatible' ) );
-			Logger::debug( 'REQUIREMENTS HOOKS INITIALIZED' );
 			do_action( $hook );
 
 			return true;

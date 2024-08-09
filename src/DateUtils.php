@@ -61,8 +61,6 @@ class DateUtils {
 			return false;
 		}
 
-		Logger::debug( array( 'DATE' => $date ) );
-
 		// Save original date to a variable to allow later filtering.
 		$orig_date = $date;
 
@@ -72,11 +70,9 @@ class DateUtils {
 			$dt = \DateTime::createFromFormat( 'U', $date_copy );
 			if ( $dt->format( 'H' ) !== '00' || $dt->format( 'i' ) !== '00' ) {
 				$has_time = true;
-				Logger::debug( array( 'HAS DATE' => $date ) );
 			}
 		} else {
-			$date = self::sanitize( $date );
-			Logger::debug( array( 'SANTIZED DATE' => $date ) );
+			$date      = self::sanitize( $date );
 			$sanitized = true;
 			update_post_meta( $post->ID, Meta::DATE, $date );
 		}
@@ -103,7 +99,6 @@ class DateUtils {
 			list( $hours, $minutes, $seconds ) = $time;
 
 			$date += $hours * HOUR_IN_SECONDS + $minutes * MINUTE_IN_SECONDS + $seconds;
-			Logger::debug( array( 'NOT HAS TIME' => $date ) );
 		}
 
 		/*
@@ -131,7 +126,6 @@ class DateUtils {
 		 * @param bool   $force_unix_sanitation If the sanitation is forced
 		 */
 		$result = apply_filters( Filters::SERMON_DATES_GET, $date, $orig_date, $format, $force_unix_sanitation );
-		Logger::debug( $result );
 		return $result;
 	}
 

@@ -13,7 +13,6 @@
 
 namespace DRPPSM;
 
-use DRPPSM\Constants\Filters;
 use DRPPSM\Constants\Meta;
 use DRPPSM\Constants\PT;
 use DRPPSM\Constants\Tax;
@@ -96,6 +95,7 @@ class SermonListTable implements Initable, Registrable {
 		add_filter( 'list_table_primary_column', array( $this, 'set_table_primary_column' ), 10, 2 );
 		add_filter( 'post_row_actions', array( $this, 'row_actions' ), 100, 2 );
 		add_action( 'restrict_manage_posts', array( $this, 'restrict_manage_posts' ) );
+
 		add_filter( 'request', array( $this, 'request_query' ) );
 		add_filter( 'parse_query', array( $this, 'sermon_filters_query' ) );
 
@@ -248,24 +248,27 @@ class SermonListTable implements Initable, Registrable {
 	 * Filter the sermons on service type.
 	 *
 	 * @param \WP_Query $query The query.
+	 * @return void
 	 * @since 1.0.0
 	 */
-	public function sermon_filters_query( \WP_Query $query ) {
+	public function sermon_filters_query( \WP_Query $query ): void {
 
 		try {
-			if ( $this->post_type_match() ) {
-
-				if ( isset( $query->query_vars[ Tax::SERVICE_TYPE ] ) ) {
-					$query->query_vars['tax_query'] = array(
-						array(
-							'taxonomy' => Tax::SERVICE_TYPE,
-							'field'    => 'slug',
-							'terms'    => $query->query_vars[ Tax::SERVICE_TYPE ],
-						),
-					);
-					Logger::error( $query->query_vars[ Tax::SERVICE_TYPE ] );
-				}
+			if ( ! $this->post_type_match() ) {
+				return;
 			}
+
+			if ( isset( $query->query_vars[ Tax::SERVICE_TYPE ] ) ) {
+				$query->query_vars['tax_query'] = array(
+					array(
+						'taxonomy' => Tax::SERVICE_TYPE,
+						'field'    => 'slug',
+						'terms'    => $query->query_vars[ Tax::SERVICE_TYPE ],
+					),
+				);
+				Logger::debug( $query );
+			}
+
 			// @codeCoverageIgnoreStart
 		} catch ( \Throwable $th ) {
 			Logger::error(
@@ -276,6 +279,7 @@ class SermonListTable implements Initable, Registrable {
 			);
 			// @codeCoverageIgnoreEnd
 		}
+		return;
 	}
 
 	/**
@@ -289,6 +293,7 @@ class SermonListTable implements Initable, Registrable {
 
 		try {
 			if ( ! $this->post_type_match() ) {
+				Logger::debug( 'NOT POST TYPE MATCH' );
 				return $vars;
 			}
 
@@ -379,7 +384,8 @@ class SermonListTable implements Initable, Registrable {
 				$options
 			</select>
 		EOT;
-		echo apply_filters( Filters::SERMON_FILTER, $output );
+		// echo apply_filters( Filters::SERMON_FILTER, $output );
+		echo $output;
 	}
 
 	/**
