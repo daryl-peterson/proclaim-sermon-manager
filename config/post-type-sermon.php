@@ -11,6 +11,8 @@
 
 namespace DRPPSM;
 
+defined( 'ABSPATH' ) || exit;
+
 $permalinks = App::init()->permalinks();
 use DRPPSM\Constants\Caps;
 use DRPPSM\Constants\PT;
