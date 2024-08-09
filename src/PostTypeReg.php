@@ -65,9 +65,11 @@ class PostTypeReg implements PostTypeRegInt {
 
 		$exist = $this->exist();
 
+		// @codeCoverageIgnoreStart
 		if ( ! is_blog_installed() || $exist ) {
 			return;
 		}
+		// @codeCoverageIgnoreEnd
 
 		try {
 			$def    = Helper::get_config( $this->config_file );

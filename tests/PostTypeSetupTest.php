@@ -78,39 +78,34 @@ class PostTypeSetupTest extends BaseTest {
 		$this->assertNull( $result );
 	}
 
-	public function testAddRemove() {
+	public function test_add_remove() {
 		global $wp_post_types;
 
 		$pt = PT::SERMON;
 
 		$exist = post_type_exists( $pt );
 
-		// $result = $this->obj->remove();
-
-		/*
 		if ( ! $exist ) {
 			$result = $this->obj->add();
-			$this->assertNull( $result );
+			$this->assertIsArray( $result );
 		} else {
 			$result = $this->obj->remove();
-			$this->assertNull( $result );
+			$this->assertIsArray( $result );
 		}
 
 		$exist = post_type_exists( $pt );
 
 		if ( $exist ) {
 			$result = $this->obj->remove();
-			$this->assertNull( $result );
+			$this->assertIsArray( $result );
 		} else {
 			$result = $this->obj->remove();
-			$this->assertNull( $result );
+			$this->assertIsArray( $result );
 		}
 
 		$this->obj->add();
 		$exist = post_type_exists( $pt );
 		$this->assertTrue( $exist );
-
-		*/
 
 		$result = $this->obj->flush();
 		$this->assertNull( null );

@@ -217,5 +217,7 @@ class SermonEdit implements Initable, Registrable {
 		inc_remove_meta_box();
 		remove_meta_box( 'postcustom', $this->post_type, 'normal' );
 		remove_meta_box( 'tagsdiv-' . Tax::SERVICE_TYPE, $this->post_type, 'high' );
+		remove_meta_box( 'commentsdiv', $this->post_type, 'normal' );
+		remove_meta_box( 'revisionsdiv', $this->post_type, 'normal' );
 	}
 }
