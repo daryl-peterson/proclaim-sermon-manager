@@ -11,16 +11,10 @@
 
 namespace DRPPSM;
 
-// @codeCoverageIgnoreStart
-defined( 'ABSPATH' ) || exit;
-// @codeCoverageIgnoreEnd
-
-use DRPPSM\Constants\Filters;
 use DRPPSM\Constants\Bible;
 use DRPPSM\Constants\Tax;
 use DRPPSM\Interfaces\Initable;
 use DRPPSM\Interfaces\OptionsInt;
-use DRPPSM\Interfaces\Registrable;
 use DRPPSM\Logging\Logger;
 
 /**
@@ -32,7 +26,7 @@ use DRPPSM\Logging\Logger;
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
  * @since       1.0.0
  */
-class BibleLoad implements Registrable {
+class BibleLoad implements Initable {
 
 	/**
 	 * Options interface.
@@ -44,25 +38,22 @@ class BibleLoad implements Registrable {
 	public OptionsInt $options;
 
 	/**
-	 * Initialize object.
-	 *
-	 * @param OptionsInt $options Options interface.
+	 * Initialize object properties.
 	 *
 	 * @since 1.0.0
 	 */
-	public function __construct( OptionsInt $options ) {
-		$this->options = $options;
+	protected function __construct() {
+		$this->options = get_options_int();
 	}
 
 	/**
-	 * Register callbacks.
+	 * Get intialize object.
 	 *
-	 * @return void
-	 *
+	 * @return BibleLoad
 	 * @since 1.0.0
 	 */
-	public function register(): void {
-		add_action( Filters::AFTER_POST_SETUP, array( $this, 'run' ), 10, 1 );
+	public static function init(): BibleLoad {
+		return new static();
 	}
 
 	/**
@@ -70,6 +61,7 @@ class BibleLoad implements Registrable {
 	 * - Call function to load them.
 	 *
 	 * @return void
+	 * @since 1.0.0
 	 */
 	public function run(): void {
 
@@ -89,14 +81,24 @@ class BibleLoad implements Registrable {
 	 *
 	 * @return void
 	 */
-	private function load() {
+	private function load(): void {
 		$books = Bible::BOOKS;
 		$tax   = Tax::BIBLE_BOOK;
 
 		try {
 			foreach ( $books as $book ) {
-				$slug = trim( strtolower( str_replace( array( ' ', '_' ), array( '-', '-' ), $book ) ) );
-				wp_insert_term( $book, $tax, array( 'slug' => $slug ) );
+				$slug = trim(
+					strtolower(
+						str_replace(
+							array( ' ', '_' ),
+							array( '-', '-' ),
+							$book
+						)
+					)
+				);
+				if ( ! term_exists( $book, $tax ) ) {
+					wp_insert_term( $book, $tax, array( 'slug' => $slug ) );
+				}
 			}
 			// @codeCoverageIgnoreStart
 		} catch ( \Throwable $th ) {

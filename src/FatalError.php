@@ -11,11 +11,6 @@
 
 namespace DRPPSM;
 
-// @codeCoverageIgnoreStart
-defined( 'ABSPATH' ) || exit;
-// @codeCoverageIgnoreEnd
-
-
 use DRPPSM\Interfaces\OptionsInt;
 use DRPPSM\Logging\Logger;
 
@@ -33,9 +28,8 @@ class FatalError {
 	/**
 	 * Check if any fatal errors occured.
 	 *
-	 * @since 1.0.0
-	 *
 	 * @return void
+	 * @since 1.0.0
 	 */
 	public static function check(): void {
 
@@ -60,17 +54,15 @@ class FatalError {
 
 		$opts->delete( 'fatal_error' );
 		Deactivator::run();
-		wp_die( $message, NAME );
+		wp_die( wp_kses( $message, allowed_html() ), wp_kses_data( NAME ) );
 	}
 
 	/**
 	 * Set error message
 	 *
-	 * @param string     $Message
+	 * @param string     $message Message to display.
 	 * @param \Throwable $th Throwable.
-	 *
 	 * @return void
-	 *
 	 * @since 1.0.0
 	 */
 	public static function set( string $message, \Throwable $th ): void {

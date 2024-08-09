@@ -1,14 +1,34 @@
 <?php
+/**
+ * PHPUnit bootstrap
+ *
+ * @package
+ * @author      Daryl Peterson <@gmail.com>
+ * @copyright   Copyright (c) 2024, Daryl Peterson
+ * @license     https://www.gnu.org/licenses/gpl-3.0.txt
+ * @since       1.0.0
+ */
 
-require_once __DIR__ . '/../vendor/autoload.php';
+use function DRPPSM\inc_admin_plugin;
+
+/**
+ * Load WordPress core.
+ */
 require_once __DIR__ . '/../../../../wp-load.php';
-
-
-// Allows for some testing even if plugin is not enabled
-if ( ! function_exists( '\is_plugin_active' ) ) {
-	$file = ABSPATH . 'wp-admin/includes/plugin.php';
-	require_once $file;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit( 'ABSPATH NOT DEFINED' );
 }
+
+/**
+ * Load Composer autoload.
+ */
+require_once __DIR__ . '/../vendor/autoload.php';
+
+/**
+ * Include wp-admin/includes/plugin.php
+ */
+inc_admin_plugin();
+
 
 $dir      = dirname( __DIR__, 1 );
 $info     = pathinfo( $dir );
@@ -19,5 +39,9 @@ $plugin   = plugin_basename( $dir );
 if ( ! is_plugin_active( $plugin ) ) {
 	require_once $inc_file;
 }
+
+/**
+ * Include CMB2.
+ */
 require_once __DIR__ . '/../vendor/cmb2/cmb2/init.php';
 require_once __DIR__ . '/../vendor/cmb2/cmb2/includes/helper-functions.php';

@@ -12,10 +12,6 @@
 
 namespace DRPPSM;
 
-// @codeCoverageIgnoreStart
-defined( 'ABSPATH' ) || exit;
-// @codeCoverageIgnoreEnd
-
 use DRPPSM\Constants\Tax;
 use DRPPSM\Interfaces\Initable;
 use DRPPSM\Interfaces\Registrable;
@@ -102,6 +98,7 @@ class TaxonomyListTable implements Initable, Registrable {
 	 * CMB2 add image fields
 	 *
 	 * @return void
+	 * @since 1.0.0
 	 */
 	public function cmb(): void {
 		foreach ( $this->tax as $taxonomy ) {
@@ -114,7 +111,6 @@ class TaxonomyListTable implements Initable, Registrable {
 	 *
 	 * @param array $columns Table columns.
 	 * @return array
-	 *
 	 * @since 1.0.0
 	 */
 	public function set_columns( array $columns ): array {
@@ -125,17 +121,17 @@ class TaxonomyListTable implements Initable, Registrable {
 	 * Set list table primary column
 	 * Support for WordPress 4.3.
 	 *
-	 * @param string $default   Existing primary column.
+	 * @param string $existing   Existing primary column.
 	 * @param string $screen_id Current screen ID.
-	 *
 	 * @return string
+	 * @since 1.0.0
 	 */
-	public function list_table_primary_column( string $default, string $screen_id ): string {
-		if ( in_array( $screen_id, $this->tax ) ) {
+	public function list_table_primary_column( string $existing, string $screen_id ): string {
+		if ( in_array( $screen_id, $this->tax, true ) ) {
 			return 'name';
 		}
 
-		return $default;
+		return $existing;
 	}
 
 	/**
@@ -220,14 +216,17 @@ class TaxonomyListTable implements Initable, Registrable {
 		return $columns;
 	}
 
-
+	/**
+	 * Remove view from row actions.
+	 *
+	 * @param array    $actions Existing actions.
+	 * @param \WP_Term $tag Term.
+	 * @return array
+	 */
 	public function row_actions( array $actions, \WP_Term $tag ): array {
-		Logger::debug( array( $actions, $tag ) );
-
 		if ( isset( $actions['view'] ) ) {
 			unset( $actions['view'] );
 		}
-
 		return $actions;
 	}
 
@@ -274,7 +273,7 @@ class TaxonomyListTable implements Initable, Registrable {
 	/**
 	 * Get image url.
 	 *
-	 * @param integer $term_id Term ID
+	 * @param integer $term_id Term ID.
 	 * @return string|null
 	 * @since 1.0.0
 	 */

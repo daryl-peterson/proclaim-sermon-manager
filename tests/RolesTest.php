@@ -1,46 +1,74 @@
 <?php
+/**
+ * Test role capabilities.
+ *
+ * @package     Proclaim Sermon Manager
+ * @author      Daryl Peterson <@gmail.com>
+ * @copyright   Copyright (c) 2024, Daryl Peterson
+ * @license     https://www.gnu.org/licenses/gpl-3.0.txt
+ * @since       1.0.0
+ */
 
 namespace DRPPSM\Tests;
 
-use DRPPSM\App;
 use DRPPSM\Constants\Caps;
+use DRPPSM\Constants\PT;
 use DRPPSM\Interfaces\RolesInt;
 use DRPPSM\Logging\Logger;
 
 /**
  * Test role capabilities.
  *
- * @category
- *
+ * @package     Proclaim Sermon Manager
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
+ * @since       1.0.0
  */
 class RolesTest extends BaseTest {
 
 	public RolesInt $obj;
 
+	/**
+	 * This method is called before each test.
+	 *
+	 * @return void
+	 */
 	public function setup(): void {
 		$this->obj = $this->app->get( RolesInt::class );
 	}
 
-	public function testAdd() {
+	/**
+	 * Test role add.
+	 *
+	 * @return void
+	 */
+	public function test_add() {
 		$result = $this->obj->add();
-		$this->assertNull( $result );
+		$this->assertIsArray( $result );
 	}
 
-	public function testRemove() {
+	/**
+	 * Test role remove.
+	 *
+	 * @return void
+	 */
+	public function test_remove() {
 		$result = $result = $this->obj->remove();
-		$this->assertNull( $result );
+		$this->assertIsArray( $result );
 		$this->obj->add();
 	}
 
-	public function testAdministrator() {
-		$role = get_role( 'administrator' );
+	/**
+	 * Test administrator.
+	 *
+	 * @return void
+	 */
+	public function test_admin() {
+		$role = get_role( Caps::ROLE_ADMIN );
 		$this->assertInstanceOf( \WP_Role::class, $role );
 
 		$list = Caps::LIST;
-
 		foreach ( $list as $cap ) {
 			$has = $role->has_cap( $cap );
 			Logger::debug(
@@ -51,5 +79,35 @@ class RolesTest extends BaseTest {
 			);
 			$this->assertTrue( $has );
 		}
+	}
+
+	/**
+	 * Test get role caps.
+	 *
+	 * @return void
+	 */
+	public function test_get_role_caps() {
+
+		$result = $this->obj->get_role_caps();
+		$this->assertIsArray( $result );
+
+		foreach ( $result as $role_name => $caps ) {
+
+			$role = get_role( $role_name );
+			if ( ! $role instanceof \WP_Role ) {
+				continue;
+			}
+			foreach ( $caps as $key => $value ) {
+				if ( strpos( $key, PT::SERMON ) !== false ) {
+					$role->remove_cap( $key );
+
+					$result = $role->has_cap( $key );
+					$this->isFalse( $result );
+				}
+			}
+		}
+		$result = $this->obj->get_role_caps();
+		$this->assertIsArray( $result );
+		$this->obj->add();
 	}
 }

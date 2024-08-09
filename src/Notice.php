@@ -11,10 +11,6 @@
 
 namespace DRPPSM;
 
-// @codeCoverageIgnoreStart
-defined( 'ABSPATH' ) || exit;
-// @codeCoverageIgnoreEnd
-
 use DRPPSM\Interfaces\NoticeInt;
 use DRPPSM\Interfaces\OptionsInt;
 use DRPPSM\Traits\SingletonTrait;
@@ -66,12 +62,16 @@ class Notice implements NoticeInt {
 
 	/**
 	 * Display notice if it exist.
+	 *
+	 * @since 1.0.0
+	 * @return string|null Notice strig if exist.
 	 */
-	public function show_notice(): void {
+	public function show_notice(): ?string {
 		$option = $this->options->get( $this->option_name, null );
+		$html   = null;
 
 		if ( ! isset( $option ) ) {
-			return;
+			return null;
 		}
 
 		$title        = esc_html( isset( $option['title'] ) ? $option['title'] : '' );
@@ -85,9 +85,10 @@ class Notice implements NoticeInt {
 				</div>
 			HTML;
 
-			echo esc_js( $html );
+			echo wp_kses( $html, allowed_html() );
 			$this->options->delete( $this->option_name );
 		}
+		return $html;
 	}
 
 	/**

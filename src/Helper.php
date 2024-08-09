@@ -11,10 +11,6 @@
 
 namespace DRPPSM;
 
-// @codeCoverageIgnoreStart
-defined( 'ABSPATH' ) || exit;
-// @codeCoverageIgnoreEnd
-
 use DRPPSM\Exceptions\PluginException;
 use DRPPSM\Logging\Logger;
 use ReflectionClass;
@@ -154,9 +150,12 @@ class Helper {
 	 *
 	 * @param string $date  Date string to convert.
 	 * @return string
+	 * @since 1.0.0
 	 */
 	public static function gmt_to_local( string $date ) {
-		$mdate = date( 'Y-m-d H:i:s', strtotime( $date ) );
+		// $mdate = date( 'Y-m-d H:i:s', strtotime( $date ) );
+
+		$mdate = gmdate( 'Y-m-d H:i:s', strtotime( $date ) );
 
 		$tz = new \DateTimeZone( 'GMT' );
 		$dt = new \DateTime( $mdate, $tz );
@@ -172,8 +171,8 @@ class Helper {
 	 *
 	 * @param string $file File to load configuration from.
 	 * @return mixed
-	 *
 	 * @throws PluginException Throws exception if the configuration file is unable to load.
+	 * @since 1.0.0
 	 */
 	public static function get_config( string $file ): mixed {
 
@@ -207,14 +206,13 @@ class Helper {
 	/**
 	 * Get class short name
 	 *
-	 * @param object|string $object Class object or name.
+	 * @param object|string $obj Class object or name.
 	 * @return ?string
-	 *
 	 * @since 1.0.0
 	 */
-	public static function get_short_name( object|string $object ): ?string {
+	public static function get_short_name( object|string $obj ): ?string {
 		try {
-			$reflect = new ReflectionClass( $object );
+			$reflect = new ReflectionClass( $obj );
 			return $reflect->getShortName();
 
 		} catch ( \Throwable $th ) {

@@ -13,10 +13,6 @@
 
 namespace DRPPSM;
 
-// @codeCoverageIgnoreStart
-defined( 'ABSPATH' ) || exit;
-// @codeCoverageIgnoreEnd
-
 use DRPPSM\PostTypeReg;
 use DRPPSM\Constants\Filters;
 use DRPPSM\Constants\PT;
@@ -85,12 +81,13 @@ class PostTypeSetup implements PostTypeSetupInt {
 	/**
 	 * Add post types and taxonomy.
 	 *
-	 * @return void
+	 * @return array
 	 * @since 1.0.0
 	 */
-	public function add(): void {
+	public function add(): array {
 		try {
-			$list = $this->get_post_type_list();
+			$list   = $this->get_post_type_list();
+			$status = array();
 
 			foreach ( $list as $post_type ) {
 				/**
@@ -100,13 +97,9 @@ class PostTypeSetup implements PostTypeSetupInt {
 				 */
 				$obj = $this->get_post_type( $post_type );
 				$obj->add();
-				$taxonomies = $this->get_post_type_taxonomies( $post_type );
+				$taxonomies = (array) $this->get_post_type_taxonomies( $post_type );
 
-				if ( ! isset( $taxonomies ) ) {
-					// @codeCoverageIgnoreStart
-					continue;
-					// @codeCoverageIgnoreEnd
-				}
+				$status[ $post_type ]['status'] = $obj->exist();
 
 				/**
 				 * Taxonomy registration interface.
@@ -115,10 +108,14 @@ class PostTypeSetup implements PostTypeSetupInt {
 				 */
 				foreach ( $taxonomies as $taxonomy ) {
 					$taxonomy->add();
+					$status[ $post_type ]['taxonomies'][ $taxonomy->get_name() ] = $taxonomy->exist();
 				}
 			}
 
+			flush_rewrite_rules( false );
 			do_action( Filters::AFTER_POST_SETUP );
+			Logger::error( $status );
+			return $status;
 
 			// @codeCoverageIgnoreStart
 		} catch ( \Throwable $th ) {
@@ -130,13 +127,13 @@ class PostTypeSetup implements PostTypeSetupInt {
 	/**
 	 * Remove post types and taxonomy.
 	 *
-	 * @return void
+	 * @return array
 	 * @since 1.0.0
 	 */
-	public function remove(): void {
+	public function remove(): array {
 		try {
-			$list = $this->get_post_type_list();
-			Logger::debug( array( 'GET POST TYPE LIST' => $list ) );
+			$list   = $this->get_post_type_list();
+			$status = array();
 
 			foreach ( $list as $post_type ) {
 				/**
@@ -144,15 +141,11 @@ class PostTypeSetup implements PostTypeSetupInt {
 				 *
 				 * @var PostTypeRegInt $obj
 				 */
-				$obj        = $this->get_post_type( $post_type );
-				$taxonomies = $this->get_post_type_taxonomies( $post_type );
 
-				if ( ! isset( $taxonomies ) ) {
-					// @codeCoverageIgnoreStart
-					$obj->remove();
-					continue;
-					// @codeCoverageIgnoreEnd
-				}
+				$obj        = $this->get_post_type( $post_type );
+				$taxonomies = (array) $this->get_post_type_taxonomies( $post_type );
+				$obj->remove();
+				$status[ $post_type ]['status'] = $obj->exist();
 
 				/**
 				 * Taxonomy registration interface.
@@ -160,13 +153,15 @@ class PostTypeSetup implements PostTypeSetupInt {
 				 * @var TaxonomyRegInt $taxonomy
 				 */
 				foreach ( $taxonomies as $taxonomy ) {
-					Logger::debug( array( 'TAXONOMY' => $taxonomy ) );
 					$taxonomy->remove();
+					$status[ $post_type ]['taxonomies'][ $taxonomy->get_name() ] = $taxonomy->exist();
 				}
 
-				$obj->remove();
+				// $status[ $post_type ]['status'] = $obj->exist();
+
 			}
 
+			return $status;
 			// @codeCoverageIgnoreStart
 		} catch ( \Throwable $th ) {
 			throw new PluginException( $th->getMessage(), $th->getCode(), $th );
@@ -195,11 +190,11 @@ class PostTypeSetup implements PostTypeSetupInt {
 	}
 
 	/**
-	 * Get post type from array.
+	 * Get post type from setup array.
+	 * - If post type does not exist throw exception.
 	 *
-	 * @param string $post_type Post type.
-	 * @return PostTypeRegInt Post type registration interface.
-	 * @throws PluginException Throw exception if post type is not defined in array.
+	 * @param string $post_type Post type name.
+	 * @throws PluginException Throws exception if type does not exist in setup array.
 	 * @since 1.0.0
 	 */
 	public function get_post_type( string $post_type ): PostTypeRegInt {
@@ -213,8 +208,8 @@ class PostTypeSetup implements PostTypeSetupInt {
 	/**
 	 * Get post type taxonomies.
 	 *
-	 * @param string $post_type Post type.
-	 * @return array|null Array of taxonomies.
+	 * @param string $post_type Post type name.
+	 * @return null|array
 	 * @since 1.0.0
 	 */
 	public function get_post_type_taxonomies( string $post_type ): ?array {

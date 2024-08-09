@@ -11,16 +11,12 @@
 
 namespace DRPPSM;
 
-// @codeCoverageIgnoreStart
-defined( 'ABSPATH' ) || exit;
-// @codeCoverageIgnoreEnd
-
 use DRPPSM\Constants\Caps;
 use DRPPSM\Constants\Tax;
 use DRPPSM\Interfaces\OptionsInt;
 
-$permalinks   = App::init()->permalinks();
-$opts         = App::init()->get( OptionsInt::class );
+$permalinks   = app()->permalinks();
+$opts         = app()->get( OptionsInt::class );
 $slug         = Tax::SERVICE_TYPE;
 $capabilities = array(
 	'manage_terms' => Caps::MANAGE_CATAGORIES,

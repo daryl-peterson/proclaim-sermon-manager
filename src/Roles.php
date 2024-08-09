@@ -11,10 +11,6 @@
 
 namespace DRPPSM;
 
-// @codeCoverageIgnoreStart
-defined( 'ABSPATH' ) || exit;
-// @codeCoverageIgnoreEnd
-
 use DRPPSM\Constants\Caps;
 use DRPPSM\Interfaces\RolesInt;
 
@@ -30,119 +26,123 @@ use DRPPSM\Interfaces\RolesInt;
 class Roles implements RolesInt {
 
 	/**
-	 * Register callbacks.
+	 * List of roles to update.
 	 *
-	 * @return void
+	 * @var array
+	 */
+	private array $role_list;
+
+	/**
+	 * List of capabilities.
+	 *
+	 * @var array
+	 */
+	private array $caps;
+
+	/**
+	 * List of special capabilities.
+	 *
+	 * @var array
+	 */
+	private array $privileges;
+
+	/**
+	 * Initialize object properties.
+	 *
 	 * @since 1.0.0
 	 */
-	public function register(): void {
-		add_action( 'drppsm_after_post_setup', array( $this, 'add' ) );
+	public function __construct() {
+		$this->role_list  = Caps::ROLES;
+		$this->caps       = Caps::LIST;
+		$this->privileges = Caps::PRIVILEGES;
 	}
 
 	/**
 	 * Add capablilities to roles.
 	 *
-	 * @return void
+	 * @return array Roles / caps.
 	 * @since 1.0.0
 	 */
-	public function add(): void {
-		$role_list = array( 'administrator', 'editor', 'author' );
-
-		foreach ( $role_list as $role_name ) {
+	public function add(): array {
+		$status = array();
+		foreach ( $this->role_list as $role_name ) {
 			$role = get_role( $role_name );
-			if ( null === $role || ! ( $role instanceof \WP_Role ) ) {
-				// @codeCoverageIgnoreStart
+			if ( ! $this->is_valid_role( $role ) ) {
 				continue;
-				// @codeCoverageIgnoreEnd
 			}
+			$status[ $role_name ]['status'] = 'valid';
 
-			// Read sermons.
-			$role->add_cap( Caps::READ_SERMON );
-			$role->add_cap( Caps::READ_PRIVATE_SERMONS );
+			foreach ( $this->caps as $capability ) {
 
-			// Edit sermons.
-			$role->add_cap( Caps::EDIT_SERMON );
-			$role->add_cap( Caps::EDIT_SERMONS );
-			$role->add_cap( Caps::EDIT_PRIVATE_SERMONS );
-			$role->add_cap( Caps::EDIT_PUBLISHED_SERMONS );
-
-			// Delete sermons.
-			$role->add_cap( Caps::DELETE_SERMON );
-			$role->add_cap( Caps::DELETE_SERMONS );
-			$role->add_cap( Caps::DELETE_PUBLISHED_SERMONS );
-			$role->add_cap( Caps::DELETE_PRIVATE_SERMONS );
-
-			// Publish sermons.
-			$role->add_cap( Caps::PUBLISH_SERMONS );
-
-			// Manage categories & tags.
-			$role->add_cap( Caps::MANAGE_CATAGORIES );
-
-			// Add additional roles for administrator.
-			if ( 'administrator' === $role_name ) {
-				// Access to Sermon Manager Settings.
-				$role->add_cap( Caps::MANAGE_SETTINGS );
-			}
-
-			// Add additional roles for administrator and editor.
-			if ( 'author' !== $role_name ) {
-				$role->add_cap( Caps::EDIT_OTHERS_SERMONS );
-				$role->add_cap( Caps::DELETE_OTHERS_SERMONS );
+				if ( ! in_array( $capability, $this->privileges ) ) {
+					$role->add_cap( $capability );
+					$status[ $role_name ]['cap'][] = $capability;
+					continue;
+				}
+				if ( in_array( $role_name, $this->privileges[ $capability ] ) ) {
+					$role->add_cap( $capability );
+					$status[ $role_name ]['cap'][] = $capability;
+				}
 			}
 		}
+		return $status;
 	}
 
 	/**
 	 * Remove capabilities from roles.
 	 *
-	 * @return void
-	 *
+	 * @return array Roles / caps.
 	 * @since 1.0.0
 	 */
-	public function remove(): void {
-		$role_list = array( 'administrator', 'editor', 'author' );
-
-		foreach ( $role_list as $role_name ) {
+	public function remove(): array {
+		$status = array();
+		foreach ( $this->role_list as $role_name ) {
 			$role = get_role( $role_name );
-			if ( null === $role || ! ( $role instanceof \WP_Role ) ) {
-				// @codeCoverageIgnoreStart
+			if ( ! $this->is_valid_role( $role ) ) {
 				continue;
-				// @codeCoverageIgnoreEnd
 			}
+			$status[ $role_name ]['status'] = 'valid';
 
-			// Read sermons.
-			$role->remove_cap( Caps::READ_SERMON );
-			$role->remove_cap( Caps::READ_PRIVATE_SERMONS );
-
-			// Edit sermons.
-			$role->remove_cap( Caps::EDIT_SERMON );
-			$role->remove_cap( Caps::EDIT_SERMONS );
-			$role->remove_cap( Caps::EDIT_PRIVATE_SERMONS );
-			$role->remove_cap( Caps::DELETE_PUBLISHED_SERMONS );
-
-			// Delete sermons.
-			$role->remove_cap( Caps::DELETE_SERMON );
-			$role->remove_cap( Caps::DELETE_SERMONS );
-			$role->remove_cap( Caps::DELETE_PUBLISHED_SERMONS );
-			$role->remove_cap( Caps::DELETE_PRIVATE_SERMONS );
-
-			// Publish sermons.
-			$role->remove_cap( Caps::PUBLISH_SERMONS );
-
-			// Manage categories & tags.
-			$role->remove_cap( Caps::MANAGE_CATAGORIES );
-
-			// Add additional roles for administrator.
-			if ( 'administrator' === $role_name ) {
-				// Access to Sermon Manager Settings.
-				$role->remove_cap( Caps::MANAGE_SETTINGS );
-			}
-
-			// Add additional roles for administrator and editor.
-			if ( 'author' !== $role_name ) {
-				$role->remove_cap( Caps::EDIT_OTHERS_SERMONS );
-				$role->remove_cap( Caps::DELETE_OTHERS_SERMONS );
+			foreach ( $this->caps as $capability ) {
+				$role->remove_cap( $capability );
+				$status[ $role_name ]['cap'][] = $capability;
 			}
 		}
+		return $status;
+	}
+
+	/**
+	 * Get list of roles and capabilities.
+	 *
+	 * @return array
+	 * @since 1.0.0
+	 */
+	public function get_role_caps(): array {
+		$caps = array();
+
+		foreach ( $this->role_list as $role_name ) {
+			$role = get_role( $role_name );
+
+			if ( ! isset( $role ) ) {
+				continue;
+			}
+			$caps[ $role_name ] = $role->capabilities;
+
+		}
+		return $caps;
+	}
+
+	/**
+	 * Check if the role is valid.
+	 *
+	 * @param mixed $role Role to check.
+	 * @return bool
+	 * @since 1.0.0
+	 */
+	public function is_valid_role( mixed $role ): bool {
+		if ( null === $role || ! ( $role instanceof \WP_Role ) ) {
+			return false;
+		}
+		return true;
 	}
 }

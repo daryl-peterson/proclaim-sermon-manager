@@ -6,7 +6,6 @@
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
- *
  * @since       1.0.0
  */
 
@@ -21,7 +20,6 @@ use const DRPPSM\LOG_FILE;
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
- *
  * @since       1.0.0
  */
 class LogFile {
@@ -31,7 +29,6 @@ class LogFile {
 	 *
 	 * @param string $level Log leve to use for file.
 	 * @return string|null If successfull return string, if not null.
-	 *
 	 * @since 1.0.0
 	 */
 	public static function get( string $level ): ?string {
@@ -49,13 +46,12 @@ class LogFile {
 	 *
 	 * @param string $file
 	 * @return void
-	 *
 	 * @since 1.0.0
 	 */
 	public function check_file_size( string $file ): void {
 		try {
 
-			$fs = @wp_filesize( $file );
+			$fs = wp_filesize( $file );
 			if ( ! $fs || ( $fs > 5000000 ) ) {
 				$this->truncate( $file );
 
@@ -74,7 +70,6 @@ class LogFile {
 	 *
 	 * @param string $level Log level.
 	 * @return string|null If successfull return string, if not null.
-	 *
 	 * @since 1.0.0
 	 */
 	public function get_log_file( string $level ): ?string {
@@ -82,7 +77,7 @@ class LogFile {
 
 		$log_file = LOG_FILE;
 		if ( defined( 'WP_DEBUG_LOG' ) ) {
-			$log_file = dirname( WP_DEBUG_LOG ) . '/' . LOG_FILE;
+			$log_file = dirname( WP_DEBUG_LOG ) . DIRECTORY_SEPARATOR . LOG_FILE . "-$level.log";
 		}
 
 		// @codeCoverageIgnoreEnd
@@ -94,7 +89,6 @@ class LogFile {
 	 *
 	 * @param string $file File name.
 	 * @return void
-	 *
 	 * @since 1.0.0
 	 */
 	public function truncate( string $file ): void {
@@ -107,6 +101,7 @@ class LogFile {
 
 			// Nothing to do here.
 		} catch ( \Throwable $th ) {
+			unset( $th );
 		}
 		// @codeCoverageIgnoreEnd
 	}

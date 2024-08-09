@@ -11,20 +11,15 @@
 
 namespace DRPPSM;
 
-// @codeCoverageIgnoreStart
-defined( 'ABSPATH' ) || exit;
-// @codeCoverageIgnoreEnd
-
 use DRPPSM\Admin\QueueScripts;
 use DRPPSM\Interfaces\NoticeInt;
 use DRPPSM\Interfaces\PluginInt;
 use DRPPSM\Interfaces\PostTypeSetupInt;
 use DRPPSM\Interfaces\RequirementsInt;
-use DRPPSM\Interfaces\RolesInt;
 use DRPPSM\Interfaces\TextDomainInt;
-use DRPPSM\Logging\Logger;
 use DRPPSM\BibleLoad;
 use DRPPSM\Constants\Filters;
+use DRPPSM\Logging\Logger;
 
 /**
  * Plugin main class.
@@ -58,16 +53,17 @@ class Plugin implements PluginInt {
 	/**
 	 * Initialize plugin hooks.
 	 *
-	 * @return void
+	 * @return bool
+	 * @since 1.0.0
 	 */
-	public function register(): void {
+	public function register(): bool {
 		try {
 			FatalError::check();
 			$hook = Filters::AFTER_PLUGIN_LOAD;
 
 			if ( did_action( $hook ) && ! defined( 'PHPUNIT_TESTING' ) ) {
 				// @codeCoverageIgnoreStart
-				return;
+				return true;
 				// @codeCoverageIgnoreEnd
 			}
 			register_activation_hook( FILE, array( $this, 'activate' ) );
@@ -76,12 +72,10 @@ class Plugin implements PluginInt {
 			add_action( 'admin_notices', array( $this, 'show_notice' ) );
 
 			// Load other classes.
-			$app = App::init();
+			$app = app();
 			$app->get( RequirementsInt::class )->register();
 			$app->get( TextDomainInt::class )->register();
 			$app->get( PostTypeSetupInt::class )->register();
-			$app->get( RolesInt::class )->register();
-			$app->get( BibleLoad::class )->register();
 
 			QueueScripts::init()->register();
 			SermonEdit::init()->register();
@@ -91,6 +85,8 @@ class Plugin implements PluginInt {
 
 			do_action( $hook );
 
+			return true;
+
 			// @codeCoverageIgnoreStart
 		} catch ( \Throwable $th ) {
 			FatalError::set( $th->getMessage(), $th );
@@ -99,50 +95,57 @@ class Plugin implements PluginInt {
 	}
 
 	/**
-	 * Activativation.
+	 * Activation.
 	 *
-	 * @return void
+	 * @return bool Return true if activated with no errors. If errors false.
+	 * @since 1.0.0
 	 */
-	public function activate(): void {
-		Logger::debug( 'Activated' );
-		// @todo Add activation cleanup
+	public function activate(): bool {
+		try {
+			$obj = get_roles_int();
+			$obj->add();
+
+			BibleLoad::init()->run();
+
+		} catch ( \Throwable $th ) {
+			Logger::error(
+				array(
+					'MESSAGE' => $th->getMessage(),
+					'TRACE'   => $th->getTrace(),
+				)
+			);
+			return false;
+		}
+		return true;
 	}
 
 	/**
 	 * Deactivation.
 	 *
-	 * @return void
+	 * @return bool Return true if no errors. If errors false.
+	 * @since 1.0.0
 	 */
-	public function deactivate(): void {
-		Logger::debug( 'DEACTIVATING' );
-
-		$app = App::init();
-		/**
-		 * Post type
-		 *
-		 * @var PostTypeSetupInt $pt
-		 */
-		$pt = $app->get( PostTypeSetupInt::class );
-		$pt->remove();
-		// @todo Add deactivation cleanup
+	public function deactivate(): bool {
+		return true;
 	}
 
 	/**
-	 * Dispaly admin notice
+	 * Display notice if it exist.
 	 *
-	 * @return void
+	 * @return string|null Notice strig if exist.
+	 * @since 1.0.0
 	 */
-	public function show_notice(): void {
-		$this->notice->show_notice();
+	public function show_notice(): ?string {
+		return $this->notice->show_notice();
 	}
 
 	/**
 	 * Shut down cleanup.
 	 *
-	 * @return void
+	 * @return bool Return true if successfull.
+	 * @since 1.0.0
 	 */
-	public function shutdown(): void {
-
-		Logger::debug( "SHUTDOWN\n" . str_repeat( '-', 80 ) . "\n\n\n" );
+	public function shutdown(): bool {
+		return true;
 	}
 }

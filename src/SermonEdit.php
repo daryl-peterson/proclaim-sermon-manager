@@ -11,10 +11,6 @@
 
 namespace DRPPSM;
 
-// @codeCoverageIgnoreStart
-defined( 'ABSPATH' ) || exit;
-// @codeCoverageIgnoreEnd
-
 use DRPPSM\App;
 use DRPPSM\Constants\PT;
 use DRPPSM\Constants\Tax;
@@ -26,8 +22,6 @@ use DRPPSM\PostTypeUtils;
 use DRPPSM\SermonDetail;
 use DRPPSM\SermonFiles;
 use DRPPSM\TaxUtils;
-
-
 
 /**
  * Admin sermon post edit / add.
@@ -44,6 +38,7 @@ class SermonEdit implements Initable, Registrable {
 	 * Post type
 	 *
 	 * @var string
+	 * @since 1.0.0
 	 */
 	protected string $post_type;
 
@@ -51,14 +46,14 @@ class SermonEdit implements Initable, Registrable {
 	 * Options Interface.
 	 *
 	 * @var OptionsInt
+	 * @since 1.0.0
 	 */
 	protected OptionsInt $options;
 
 	/**
 	 * Initialize object.
 	 *
-	 * @param OptionsInt $options Options interface.
-	 *
+	 * @var OptionsInt $options Options interface.
 	 * @since 1.0.0
 	 */
 	protected function __construct() {
@@ -215,17 +210,10 @@ class SermonEdit implements Initable, Registrable {
 	 * Remove meta boxes.
 	 *
 	 * @return void
+	 * @since 1.0.0
 	 */
 	public function remove_meta_boxes(): void {
-
-		// @codeCoverageIgnoreStart
-		if ( ! function_exists( '\remove_meta_box' ) ) {
-			$file = ABSPATH . 'wp-admin/includes/template.php';
-			Logger::debug( "Including file: $file" );
-			require_once $file;
-		}
-		// @codeCoverageIgnoreEnd
-
+		inc_remove_meta_box();
 		remove_meta_box( 'postcustom', $this->post_type, 'normal' );
 		remove_meta_box( 'tagsdiv-' . Tax::SERVICE_TYPE, $this->post_type, 'high' );
 	}

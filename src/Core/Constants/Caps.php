@@ -11,11 +11,6 @@
 
 namespace DRPPSM\Constants;
 
-// @codeCoverageIgnoreStart
-defined( 'ABSPATH' ) || exit;
-// @codeCoverageIgnoreEnd
-
-
 /**
  * Capability constants.
  *
@@ -27,32 +22,36 @@ defined( 'ABSPATH' ) || exit;
  */
 class Caps {
 
-	// Read sermons.
-	public const READ_SERMON          = 'drppsm_read';
-	public const READ_PRIVATE_SERMONS = 'drppsm_read_private';
 
-	// Edit sermons.
-	public const EDIT_SERMON            = 'drppsm_edit';
-	public const EDIT_SERMONS           = 'drppsm_edits';
-	public const EDIT_PRIVATE_SERMONS   = 'drppsm_edit_private';
-	public const EDIT_PUBLISHED_SERMONS = 'drppsm_edit_published';
-	public const EDIT_OTHERS_SERMONS    = 'drppsm_edit_others';
+	public const ROLE_ADMIN  = 'administrator';
+	public const ROLE_EDITOR = 'editor';
+	public const ROLE_AUTHOR = 'author';
 
-	// Delete sermons.
-	public const DELETE_SERMON            = 'drppsm_delete';
-	public const DELETE_SERMONS           = 'drppsm_deletes';
-	public const DELETE_PUBLISHED_SERMONS = 'drppsm_delete_published';
-	public const DELETE_PRIVATE_SERMONS   = 'drppsm_delete_private';
-	public const DELETE_OTHERS_SERMONS    = 'drppsm_delete_others';
+	public const ROLES = array(
+		self::ROLE_ADMIN,
+		self::ROLE_EDITOR,
+		self::ROLE_AUTHOR,
+	);
 
-	// Publish.
-	public const PUBLISH_SERMONS = 'drppsm_publish';
+	// Singular.
+	public const READ_SERMON   = 'read_' . PT::SERMON;
+	public const EDIT_SERMON   = 'edit_' . PT::SERMON;
+	public const DELETE_SERMON = 'delete_' . PT::SERMON;
 
-	// Manage categories & tags.
-	public const MANAGE_CATAGORIES = 'drppsm_manage_categories';
+	// Plural.
+	public const READ_PRIVATE_SERMONS     = 'read_private_' . PT::SERMONS;
+	public const EDIT_SERMONS             = 'edit_' . PT::SERMONS;
+	public const EDIT_PRIVATE_SERMONS     = 'edit_private_' . PT::SERMONS;
+	public const EDIT_PUBLISHED_SERMONS   = 'edit_published_' . PT::SERMONS;
+	public const EDIT_OTHERS_SERMONS      = 'edit_others_' . PT::SERMONS;
+	public const DELETE_SERMONS           = 'delete_' . PT::SERMONS;
+	public const DELETE_PUBLISHED_SERMONS = 'delete_published_' . PT::SERMONS;
+	public const DELETE_PRIVATE_SERMONS   = 'delete_private_' . PT::SERMONS;
+	public const DELETE_OTHERS_SERMONS    = 'delete_others_' . PT::SERMONS;
+	public const PUBLISH_SERMONS          = 'publish_' . PT::SERMONS;
 
-	// Administrator.
-	public const MANAGE_SETTINGS = 'drppsm_manage_settings';
+	public const MANAGE_CATAGORIES = 'manage_categories_' . PT::SERMON;
+	public const MANAGE_SETTINGS   = 'manage_settings_' . PT::SERMON;
 
 	// List.
 	public const LIST = array(
@@ -70,5 +69,11 @@ class Caps {
 		self::PUBLISH_SERMONS,
 		self::MANAGE_CATAGORIES,
 		self::MANAGE_SETTINGS,
+	);
+
+	public const PRIVILEGES = array(
+		self::MANAGE_SETTINGS       => array( self::ROLE_ADMIN ),
+		self::EDIT_OTHERS_SERMONS   => array( self::ROLE_ADMIN, self::ROLE_EDITOR ),
+		self::DELETE_OTHERS_SERMONS => array( self::ROLE_ADMIN, self::ROLE_EDITOR ),
 	);
 }

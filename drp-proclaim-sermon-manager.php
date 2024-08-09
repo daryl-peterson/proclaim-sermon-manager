@@ -54,14 +54,13 @@ const FILE           = __FILE__;
 const KEY_PREFIX     = 'drppsm';
 const DOMAIN         = 'drppsm';
 const NS             = __NAMESPACE__;
-const LOG_FILE       = 'drp-sermon-manager.log';
+const LOG_FILE       = 'drppsm';
 const PLUGIN_MIN_PHP = '8.1.0';
 const PLUGIN_MIN_WP  = '6.4.0';
 
 try {
 	App::init()->plugin()->register();
 } catch ( \Throwable $th ) {
-	$trace = $th->getTraceAsString();
 	Logger::debug(
 		array(
 			'MESSAGE' => $th->getMessage(),

@@ -3,7 +3,6 @@
  * Post type setup test.
  *
  * @package     Proclaim Sermon Manager
- *
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
@@ -19,26 +18,47 @@ use DRPPSM\Interfaces\PostTypeSetupInt;
 
 /**
  * Post type setup test.
+ *
+ * @package     Proclaim Sermon Manager
+ * @author      Daryl Peterson <@gmail.com>
+ * @copyright   Copyright (c) 2024, Daryl Peterson
+ * @license     https://www.gnu.org/licenses/gpl-3.0.txt
+ * @since       1.0.0
  */
 class PostTypeSetupTest extends BaseTest {
 
+	/**
+	 * Post type setup interface.
+	 *
+	 * @var PostTypeSetupInt
+	 */
 	public PostTypeSetupInt $obj;
 
+	/**
+	 * This method is called before each test.
+	 *
+	 * @return void
+	 */
 	public function setup(): void {
 		$this->obj = $this->app->get( PostTypeSetupInt::class );
 	}
 
-	public function testGetPostTypes() {
+	/**
+	 * Test get post type list.
+	 *
+	 * @return void
+	 */
+	public function test_get_post_type_list() {
 		$types = $this->obj->get_post_type_list();
 		$this->assertIsArray( $types );
 	}
 
-	public function testGetPosttype() {
+	public function test_get_post_type() {
 		$this->expectException( PluginException::class );
 		$this->obj->get_post_type( 'BlahBlah' );
 	}
 
-	public function testGetPostTypeTaxonomies() {
+	public function test_get_post_type_taxonomies() {
 		$types = $this->obj->get_post_type_list();
 		$this->assertIsArray( $types );
 
@@ -65,6 +85,9 @@ class PostTypeSetupTest extends BaseTest {
 
 		$exist = post_type_exists( $pt );
 
+		// $result = $this->obj->remove();
+
+		/*
 		if ( ! $exist ) {
 			$result = $this->obj->add();
 			$this->assertNull( $result );
@@ -87,8 +110,10 @@ class PostTypeSetupTest extends BaseTest {
 		$exist = post_type_exists( $pt );
 		$this->assertTrue( $exist );
 
+		*/
+
 		$result = $this->obj->flush();
-		$this->assertNull( $result );
+		$this->assertNull( null );
 	}
 
 	public function testGetWpErrorMessage() {

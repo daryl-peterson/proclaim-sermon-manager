@@ -12,10 +12,6 @@
 
 namespace DRPPSM;
 
-// @codeCoverageIgnoreStart
-defined( 'ABSPATH' ) || exit;
-// @codeCoverageIgnoreEnd
-
 use DRPPSM\Interfaces\TextDomainInt;
 use DRPPSM\Logging\Logger;
 

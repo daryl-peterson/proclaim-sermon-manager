@@ -11,10 +11,6 @@
 
 namespace DRPPSM;
 
-// @codeCoverageIgnoreStart
-defined( 'ABSPATH' ) || exit;
-// @codeCoverageIgnoreEnd
-
 use DRPPSM\Interfaces\NoticeInt;
 use DRPPSM\Interfaces\RequirementCheckInt;
 use DRPPSM\Interfaces\RequirementsInt;

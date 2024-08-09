@@ -11,11 +11,6 @@
 
 namespace DRPPSM;
 
-// @codeCoverageIgnoreStart
-defined( 'ABSPATH' ) || exit;
-// @codeCoverageIgnoreEnd
-
-
 use DRPPSM\Interfaces\Initable;
 use DRPPSM\Interfaces\Registrable;
 

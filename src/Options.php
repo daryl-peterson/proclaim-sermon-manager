@@ -17,11 +17,6 @@
 
 namespace DRPPSM;
 
-// @codeCoverageIgnoreStart
-defined( 'ABSPATH' ) || exit;
-// @codeCoverageIgnoreEnd
-
-
 use DRPPSM\Interfaces\OptionsInt;
 use DRPPSM\Logging\Logger;
 use DRPPSM\Traits\SingletonTrait;

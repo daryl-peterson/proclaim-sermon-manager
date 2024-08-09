@@ -6,6 +6,7 @@
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
+ * @since       1.0.0
  */
 
 namespace DRPPSM\Tests;
@@ -23,28 +24,34 @@ class PluginTest extends BaseTest {
 		$this->obj = $this->app->plugin();
 	}
 
-	public function testRegister() {
+	public function test_register() {
 		$result = $this->obj->register();
-		$this->assertNull( $result );
+		$this->assertTrue( $result );
 	}
 
-	public function testActivate() {
+
+	public function test_activate() {
 		$result = $this->obj->activate();
-		$this->assertNull( $result );
+		$this->assertTrue( $result );
 	}
 
-	public function testDeactivate() {
+	public function test_deactivate() {
 		$result = $this->obj->deactivate();
-		$this->assertNull( $result );
+		$this->assertTrue( $result );
 	}
 
-	public function testShowNotice() {
+
+	public function test_show_notice() {
 		$result = $this->obj->show_notice();
-		$this->assertNull( $result );
+		if ( ! isset( $result ) ) {
+			$this->assertNull( $result );
+		} else {
+			$this->assertIsString( $result );
+		}
 	}
 
-	public function testShutdown() {
+	public function test_shut_down() {
 		$result = $this->obj->shutdown();
-		$this->assertNull( $result );
+		$this->assertTrue( $result );
 	}
 }

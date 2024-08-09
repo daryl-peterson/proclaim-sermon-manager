@@ -11,10 +11,6 @@
 
 namespace DRPPSM;
 
-// @codeCoverageIgnoreStart
-defined( 'ABSPATH' ) || exit;
-// @codeCoverageIgnoreEnd
-
 use DRPPSM\Interfaces\Initable;
 use DRPPSM\Interfaces\PluginInt;
 use DRPPSM\Traits\SingletonTrait;
@@ -26,7 +22,6 @@ use DRPPSM\Traits\SingletonTrait;
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
- *
  * @since       1.0.0
  */
 class App implements Initable {
@@ -62,7 +57,6 @@ class App implements Initable {
 	 * Get initialize object.
 	 *
 	 * @return App
-	 *
 	 * @since 1.0.0
 	 */
 	public static function init(): App {
@@ -75,7 +69,6 @@ class App implements Initable {
 	 * @param string $key Container key.
 	 * @param mixed  $value Container value.
 	 * @return App
-	 *
 	 * @since 1.0.0
 	 */
 	public function set( string $key, mixed $value ): App {

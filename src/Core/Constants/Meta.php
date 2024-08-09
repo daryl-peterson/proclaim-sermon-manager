@@ -11,10 +11,6 @@
 
 namespace DRPPSM\Constants;
 
-// @codeCoverageIgnoreStart
-defined( 'ABSPATH' ) || exit;
-// @codeCoverageIgnoreEnd
-
 /**
  * Meta constants.
  *

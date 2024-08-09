@@ -6,7 +6,6 @@
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
- *
  * @since       1.0.0
  */
 
@@ -18,6 +17,12 @@ use DRPPSM\Logging\Logger;
 
 /**
  * Activate plugin.
+ *
+ * @package     Proclaim Sermon Manager
+ * @author      Daryl Peterson <@gmail.com>
+ * @copyright   Copyright (c) 2024, Daryl Peterson
+ * @license     https://www.gnu.org/licenses/gpl-3.0.txt
+ * @since       1.0.0
  */
 class Activator implements Initable, Runable {
 
@@ -39,13 +44,7 @@ class Activator implements Initable, Runable {
 	 */
 	public function run(): void {
 		try {
-			// @codeCoverageIgnoreStart
-			if ( ! function_exists( '\is_plugin_active' ) ) {
-				$file = ABSPATH . 'wp-admin/includes/plugin.php';
-				Logger::debug( "Including file: $file" );
-				require_once $file;
-			}
-			// @codeCoverageIgnoreEnd
+			inc_admin_plugin();
 
 			if ( ( is_admin() && current_user_can( 'activate_plugins' ) ) || defined( 'PHPUNIT_TESTING' ) ) {
 				activate_plugin( plugin_basename( FILE ) );

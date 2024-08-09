@@ -11,10 +11,6 @@
 
 namespace DRPPSM;
 
-// @codeCoverageIgnoreStart
-defined( 'ABSPATH' ) || exit;
-// @codeCoverageIgnoreEnd
-
 use DRPPSM\Constants\Filters;
 use DRPPSM\Constants\Meta;
 use DRPPSM\Constants\PT;
@@ -44,7 +40,6 @@ class DateUtils {
 	 * @param bool        $localize              If set to false, it will skip date localization. Default true.
 	 *
 	 * @return string|false Date when sermon was preached. False on failure.
-	 *
 	 * @since 1.0.0
 	 */
 	public static function get( string $format = '', null|int|\WP_Post $post = null, $force_unix_sanitation = false, $localize = true ) {
@@ -114,20 +109,16 @@ class DateUtils {
 		/*
 		 * Check if format is set. If not, set to WP defined, or in super rare cases
 		 * when WP format is not defined, set it to Unix timestamp.
+		 *
 		 */
 		if ( empty( $format ) ) {
 			$format = get_option( 'date_format', 'U' );
 		}
 
 		// Format it.
+		// phpcs:disable
 		$date = $localize ? date_i18n( $format, $date ) : date( $format, $date );
-		Logger::debug(
-			array(
-				'FORMATTED DATE' => $date,
-				date_i18n( $format, $date ),
-				date( $format, $date ),
-			)
-		);
+		// phpcs:enable
 
 		/**
 		 * Filters the date a post was preached

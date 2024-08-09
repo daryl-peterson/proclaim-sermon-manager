@@ -11,11 +11,6 @@
 
 namespace DRPPSM\Constants;
 
-// @codeCoverageIgnoreStart
-defined( 'ABSPATH' ) || exit;
-// @codeCoverageIgnoreEnd
-
-
 /**
  * Taxonomy constants.
  *
@@ -27,9 +22,9 @@ defined( 'ABSPATH' ) || exit;
  */
 class Tax {
 
-	public const BIBLE_BOOK   = 'drppsm_bible_book';
+	public const BIBLE_BOOK   = 'drppsm_bible';
 	public const PREACHER     = 'drppsm_preacher';
-	public const SERVICE_TYPE = 'drppsm_service_type';
+	public const SERVICE_TYPE = 'drppsm_stype';
 	public const SERIES       = 'drppsm_series';
 	public const TOPICS       = 'drppsm_topics';
 }

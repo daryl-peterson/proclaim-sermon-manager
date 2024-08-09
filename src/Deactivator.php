@@ -11,10 +11,6 @@
 
 namespace DRPPSM;
 
-// @codeCoverageIgnoreStart
-defined( 'ABSPATH' ) || exit;
-// @codeCoverageIgnoreEnd
-
 use DRPPSM\Logging\Logger;
 
 /**
@@ -35,14 +31,7 @@ class Deactivator {
 	 * @since 1.0.0
 	 */
 	public static function run(): void {
-
-		// @codeCoverageIgnoreStart
-		if ( ! function_exists( '\is_plugin_active' ) ) {
-			$file = ABSPATH . 'wp-admin/includes/plugin.php';
-			Logger::debug( "Including file: $file" );
-			require_once $file;
-		}
-		// @codeCoverageIgnoreEnd
+		inc_admin_plugin();
 
 		if ( ( is_admin() || defined( 'PHPUNIT_TESTING' ) ) ) {
 			deactivate_plugins( plugin_basename( FILE ) );

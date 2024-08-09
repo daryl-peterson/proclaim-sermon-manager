@@ -13,10 +13,6 @@
 
 namespace DRPPSM;
 
-// @codeCoverageIgnoreStart
-defined( 'ABSPATH' ) || exit;
-// @codeCoverageIgnoreEnd
-
 use DRPPSM\Constants\Filters;
 use DRPPSM\Constants\Meta;
 use DRPPSM\Constants\PT;
@@ -24,6 +20,7 @@ use DRPPSM\Constants\Tax;
 use DRPPSM\Interfaces\Initable;
 use DRPPSM\Interfaces\Registrable;
 use DRPPSM\Logging\Logger;
+use WP_Query;
 
 /**
  * Sermon list table.
@@ -51,7 +48,12 @@ class SermonListTable implements Initable, Registrable {
 	 */
 	private array $columns;
 
-	public function __construct() {
+	/**
+	 * Set object properties.
+	 *
+	 * @since 1.0.0
+	 */
+	protected function __construct() {
 		$this->pt                       = PT::SERMON;
 		$this->columns['cb']            = '<input type="checkbox" />';
 		$this->columns['title']         = __( 'Sermon Title', 'drppsm' );
@@ -64,31 +66,46 @@ class SermonListTable implements Initable, Registrable {
 		$this->columns['date']          = __( 'Published' );
 	}
 
+	/**
+	 * Get initialized object.
+	 *
+	 * @return SermonListTable
+	 * @since 1.0.0
+	 */
 	public static function init(): SermonListTable {
 
 		$result = new self();
 		return $result;
 	}
 
+	/**
+	 * Register callbacks.
+	 *
+	 * @return void
+	 * @since 1.0.0
+	 */
 	public function register(): void {
+		if ( ! post_type_exists( $this->pt ) || ! is_admin() ) {
+			return;
+		}
 		add_filter( "manage_edit-{$this->pt}_sortable_columns", array( $this, 'set_sortable_columns' ) );
-		// add_filter( "manage_{$this->pt}_custom_column", array( $this, 'set_column_content' ), 10, 3 );
-		add_action( "manage_{$this->pt}_posts_custom_column", array( $this, 'render_sermon_columns' ), 2 );
+		add_action( "manage_{$this->pt}_posts_custom_column", array( $this, 'render_columns' ), 2 );
 		add_filter( "manage_edit-{$this->pt}_columns", array( $this, 'set_columns' ), 10, 1 );
-		add_filter( 'list_table_primary_column', array( $this, 'list_table_primary_column' ), 10, 2 );
+		add_filter( 'list_table_primary_column', array( $this, 'set_table_primary_column' ), 10, 2 );
 		add_filter( 'post_row_actions', array( $this, 'row_actions' ), 100, 2 );
 		add_action( 'restrict_manage_posts', array( $this, 'restrict_manage_posts' ) );
 		add_filter( 'request', array( $this, 'request_query' ) );
 		add_filter( 'parse_query', array( $this, 'sermon_filters_query' ) );
-
-		// do_action( 'after_sm_admin_post_types' );
 	}
 
-
-	public function render_sermon_columns( $column ) {
+	/**
+	 * Render columns.
+	 *
+	 * @return void
+	 * @since 1.0.0
+	 */
+	public function render_columns( $column ): void {
 		global $post;
-
-		Logger::debug( array( 'COLUMN' => $column ) );
 
 		try {
 			if ( empty( $post->ID ) ) {
@@ -130,7 +147,13 @@ class SermonListTable implements Initable, Registrable {
 				$data = __( 'Error' );
 			}
 		} catch ( \Throwable $th ) {
-			FatalError::set( $th->getMessage(), $th );
+			Logger::error(
+				array(
+					'MESSAGE' => $th->getMessage(),
+					'TRACE'   => $th->getTrace(),
+				)
+			);
+			$data = __( 'Error' );
 		}
 
 		echo $data;
@@ -141,7 +164,6 @@ class SermonListTable implements Initable, Registrable {
 	 *
 	 * @param array $columns Table columns.
 	 * @return array
-	 *
 	 * @since 1.0.0
 	 */
 	public function set_columns( array $columns ): array {
@@ -159,7 +181,6 @@ class SermonListTable implements Initable, Registrable {
 	 *
 	 * @param array $columns Columns array.
 	 * @return array
-	 *
 	 * @since 1.0.0
 	 */
 	public function set_sortable_columns( array $columns ): array {
@@ -180,10 +201,9 @@ class SermonListTable implements Initable, Registrable {
 	 *
 	 * @param string $default   Existing primary column.
 	 * @param string $screen_id Current screen ID.
-	 *
 	 * @return string
 	 */
-	public function list_table_primary_column( string $default, string $screen_id ): string {
+	public function set_table_primary_column( string $default, string $screen_id ): string {
 		if ( "edit-{$this->pt}" === $screen_id ) {
 			return 'title';
 		}
@@ -194,10 +214,10 @@ class SermonListTable implements Initable, Registrable {
 	/**
 	 * Set row actions for sermons
 	 *
-	 * @param array   $actions The existing actions.
-	 * @param WP_Post $post    Sermon or other post instance.
-	 *
+	 * @param array    $actions  The existing actions.
+	 * @param \WP_Post $post    Sermon or other post instance.
 	 * @return array
+	 * @since 1.0.0
 	 */
 	public function row_actions( array $actions, \WP_Post $post ): array {
 		if ( ! $this->post_type_match() ) {
@@ -207,9 +227,12 @@ class SermonListTable implements Initable, Registrable {
 	}
 
 	/**
-	 * Filters for post types.
+	 * Create filters for service type.
+	 *
+	 * @return void
+	 * @since 1.0.0
 	 */
-	public function restrict_manage_posts() {
+	public function restrict_manage_posts(): void {
 		if ( ! $this->post_type_match() ) {
 			return;
 		}
@@ -218,28 +241,29 @@ class SermonListTable implements Initable, Registrable {
 	}
 
 	/**
-	 * Filter the sermons in admin based on options
+	 * Filter the sermons on service type.
 	 *
-	 * @param mixed $query The query.
+	 * @param WP_Query $query The query.
+	 * @since 1.0.0
 	 */
-	public function sermon_filters_query( $query ) {
+	public function sermon_filters_query( \WP_Query $query ) {
 
 		try {
-			if ( ! $this->post_type_match() ) {
-				return;
-			}
+			if ( $this->post_type_match() ) {
 
-			if ( isset( $query->query_vars[ Tax::SERVICE_TYPE ] ) ) {
-				$query->query_vars['tax_query'] = array(
-					array(
-						'taxonomy' => Tax::SERVICE_TYPE,
-						'field'    => 'slug',
-						'terms'    => $query->query_vars[ Tax::SERVICE_TYPE ],
-					),
-				);
+				if ( isset( $query->query_vars[ Tax::SERVICE_TYPE ] ) ) {
+					$query->query_vars['tax_query'] = array(
+						array(
+							'taxonomy' => Tax::SERVICE_TYPE,
+							'field'    => 'slug',
+							'terms'    => $query->query_vars[ Tax::SERVICE_TYPE ],
+						),
+					);
+					Logger::error( $query );
+				}
 			}
 		} catch ( \Throwable $th ) {
-			FatalError::set( $th->getMessage(), $th );
+			// FatalError::set( $th->getMessage(), $th );
 		}
 	}
 
@@ -247,8 +271,8 @@ class SermonListTable implements Initable, Registrable {
 	 * Filters and sorting handler.
 	 *
 	 * @param array $vars Current filtering arguments.
-	 *
 	 * @return array
+	 * @since 1.0.0
 	 */
 	public function request_query( $vars ) {
 
@@ -288,14 +312,28 @@ class SermonListTable implements Initable, Registrable {
 			if ( isset( $vars[ $this->pt ] ) && trim( $vars[ $this->pt ] ) === '' ) {
 				unset( $vars[ $this->pt ] );
 			}
-
 			return $vars;
+
+			// @codeCoverageIgnoreStart
 		} catch ( \Throwable $th ) {
-			FatalError::set( $th->getMessage(), $th );
+			Logger::error(
+				array(
+					'MESSAGE' => $th->getMessage(),
+					'TRACE'   => $th,
+				)
+			);
+			// @codeCoverageIgnoreEnd
 		}
+		return $vars;
 	}
 
-	public function sermon_filters() {
+	/**
+	 * Create sermon filters.
+	 *
+	 * @return void
+	 * @since 1.0.0
+	 */
+	public function sermon_filters(): void {
 		global $wp_query;
 
 		$service_type = Tax::SERVICE_TYPE;
@@ -333,11 +371,19 @@ class SermonListTable implements Initable, Registrable {
 		echo apply_filters( Filters::SERMON_FILTER, $output );
 	}
 
+	/**
+	 * Check if post type is a match.
+	 *
+	 * @return boolean True if post type matches.
+	 * @since 1.0.0
+	 */
 	private function post_type_match(): bool {
 		global $typenow;
+
+		$result = false;
 		if ( $this->pt === $typenow ) {
-			return true;
+			$result = true;
 		}
-		return false;
+		return $result;
 	}
 }

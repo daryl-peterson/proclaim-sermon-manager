@@ -10,13 +10,15 @@
  */
 namespace DRPPSM;
 
-// @codeCoverageIgnoreStart
-defined( 'ABSPATH' ) || exit;
-// @codeCoverageIgnoreEnd
-
 $permalinks = App::init()->permalinks();
 use DRPPSM\Constants\Caps;
 use DRPPSM\Constants\PT;
+
+
+$capabilities = array(
+	Caps::MANAGE_SETTINGS   => Caps::MANAGE_SETTINGS,
+	Caps::MANAGE_CATAGORIES => Caps::MANAGE_CATAGORIES,
+);
 
 return array(
 	'labels'              => array(
@@ -47,10 +49,7 @@ return array(
 	'public'              => true,
 	'show_ui'             => true,
 	'capability_type'     => PT::SERMON,
-	'capabilities'        => array(
-		Caps::MANAGE_CATAGORIES => Caps::MANAGE_CATAGORIES,
-		Caps::MANAGE_SETTINGS   => Caps::MANAGE_SETTINGS,
-	),
+	'capabilities'        => $capabilities,
 	'map_meta_cap'        => true,
 	'publicly_queryable'  => true,
 	'exclude_from_search' => false,

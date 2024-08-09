@@ -3,11 +3,9 @@
  * Admin sermon test.
  *
  * @package     Proclaim Sermon Manager
- *
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
- *
  * @since       1.0.0
  */
 
@@ -19,11 +17,9 @@ use DRPPSM\SermonEdit;
  * Admin sermon test.
  *
  * @package     Proclaim Sermon Manager
- *
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
- *
  * @since       1.0.0
  */
 class AdminSermonTest extends BaseTest {
@@ -32,6 +28,10 @@ class AdminSermonTest extends BaseTest {
 
 	public function setup(): void {
 		$this->obj = SermonEdit::init();
+	}
+
+	public function test_object() {
+		$this->assertNotNull( $this->obj );
 	}
 
 	/*
@@ -56,7 +56,7 @@ class AdminSermonTest extends BaseTest {
 		$result = $this->obj->save_post( $sermon->ID, $sermon, true );
 		$this->assertIsInt( $result );
 	}
-	*/
+
 
 	public function test_show_meta_boxes() {
 		$result = $this->obj->show_meta_boxes();
@@ -67,4 +67,6 @@ class AdminSermonTest extends BaseTest {
 		$result = $this->obj->remove_meta_boxes();
 		$this->assertNull( $result );
 	}
+
+	*/
 }

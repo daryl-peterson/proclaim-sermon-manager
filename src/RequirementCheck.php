@@ -11,10 +11,6 @@
 
 namespace DRPPSM;
 
-// @codeCoverageIgnoreStart
-defined( 'ABSPATH' ) || exit;
-// @codeCoverageIgnoreEnd
-
 use DRPPSM\Exceptions\PluginException;
 use DRPPSM\Interfaces\NoticeInt;
 use DRPPSM\Interfaces\RequirementCheckInt;

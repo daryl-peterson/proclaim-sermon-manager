@@ -190,7 +190,12 @@ EOF;
 			}
 			// @codeCoverageIgnoreStart
 		} catch ( \Throwable $th ) {
-			Logger::error( $th->getMessage() );
+			Logger::error(
+				array(
+					'MESSAGE' => $th->getMessage(),
+					'TRACE'   => $th->getTrace(),
+				)
+			);
 			// @codeCoverageIgnoreEnd
 		}
 	}

@@ -11,11 +11,6 @@
 
 namespace DRPPSM;
 
-// @codeCoverageIgnoreStart
-defined( 'ABSPATH' ) || exit;
-// @codeCoverageIgnoreEnd
-
-
 use DRPPSM\Constants\PT;
 use DRPPSM\Constants\Tax;
 use DRPPSM\Interfaces\OptionsInt;

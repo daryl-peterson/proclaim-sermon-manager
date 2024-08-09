@@ -64,11 +64,10 @@ class TaxonomyReg implements TaxonomyRegInt {
 	}
 
 	/**
-	 * Add Taxonomy
+	 * Add Taxonomy.
 	 *
 	 * @return void
-	 * @throws PluginException Thow exception if not exist.
-	 *
+	 * @throws PluginException Throw exception if not exist.
 	 * @since 1.0.0
 	 */
 	public function add(): void {
@@ -82,6 +81,7 @@ class TaxonomyReg implements TaxonomyRegInt {
 		try {
 			$def    = Helper::get_config( $this->config_file );
 			$result = register_taxonomy( $this->taxonomy, array( $this->post_type ), $def );
+
 			// @codeCoverageIgnoreStart
 		} catch ( \Throwable $th ) {
 			Logger::error(
@@ -94,12 +94,16 @@ class TaxonomyReg implements TaxonomyRegInt {
 		}
 
 		if ( ! $this->exist() || is_wp_error( $result ) ) {
+
 			// @codeCoverageIgnoreStart
 			$message = 'Failed to add taxonomy ' . $this->taxonomy;
 			if ( is_wp_error( $result ) ) {
+				/**
+				 * @var \WP_Error $result
+				 */
 				$message = $this->get_wp_error_message( $result );
 			}
-			throw new PluginException( esc_html( $message ) );
+			throw new PluginException( wp_kses( $message, allowed_html() ) );
 			// @codeCoverageIgnoreEnd
 		}
 	}
@@ -108,8 +112,7 @@ class TaxonomyReg implements TaxonomyRegInt {
 	 * Remove taxonomy.
 	 *
 	 * @return void
-	 * @throws PluginException Thow exception if not exist.
-
+	 * @throws PluginException Throw exception if not exist.
 	 * @since 1.0.0
 	 */
 	public function remove(): void {
@@ -119,8 +122,10 @@ class TaxonomyReg implements TaxonomyRegInt {
 			return;
 		}
 
+		$result = false;
 		try {
 			$result = unregister_taxonomy( $this->taxonomy );
+
 			// @codeCoverageIgnoreStart
 		} catch ( \Throwable $th ) {
 			Logger::error(
@@ -136,23 +141,37 @@ class TaxonomyReg implements TaxonomyRegInt {
 			// @codeCoverageIgnoreStart
 			$message = 'Failed to remove taxonomy : ' . $this->taxonomy;
 			if ( is_wp_error( $result ) ) {
+
+				/**
+				 * @var \WP_Error $result
+				 */
 				$message = $this->get_wp_error_message( $result );
 			}
-			Logger::error( array( $this, $message ) );
-			throw new PluginException( esc_html( $message ) );
+			throw new PluginException( wp_kses( $message, allowed_html() ) );
 			// @codeCoverageIgnoreEnd
 		}
+	}
+
+
+	/**
+	 * Get taxonomy name.
+	 *
+	 * @return string
+	 * @since 1.0.0
+	 */
+	public function get_name(): string {
+		return $this->taxonomy;
 	}
 
 	/**
 	 * Check if taxonomy exist.
 	 *
 	 * @return boolean
-	 *
 	 * @since 1.0.0
 	 */
 	public function exist(): bool {
-		return taxonomy_exists( $this->taxonomy );
+		$result = taxonomy_exists( $this->taxonomy );
+		return $result;
 	}
 
 	/**

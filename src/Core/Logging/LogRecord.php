@@ -162,6 +162,7 @@ class LogRecord {
 	 *
 	 * @param mixed $context Log context.
 	 * @return string Converted context.
+	 * @since 1.0.0
 	 */
 	private function fix_context( mixed $context ): string {
 		$result = '';
@@ -174,7 +175,10 @@ class LogRecord {
 			 */
 			$result .= 'WP ERROR : ' . $context->get_error_message() . "\n";
 		} elseif ( is_array( $context ) || is_object( $context ) ) {
+
+			// phpcs:disable
 			$result = print_r( $context, true );
+			// phpcs:enable
 		} elseif ( is_string( $context ) ) {
 			$result .= $context;
 		}

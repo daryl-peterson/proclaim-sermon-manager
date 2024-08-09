@@ -11,11 +11,6 @@
 
 namespace DRPPSM\Constants;
 
-// @codeCoverageIgnoreStart
-defined( 'ABSPATH' ) || exit;
-// @codeCoverageIgnoreEnd
-
-
 /**
  * Post type constants.
  *
@@ -27,5 +22,6 @@ defined( 'ABSPATH' ) || exit;
  */
 class PT {
 
-	public const SERMON = 'drpsermon';
+	public const SERMON  = 'drppsm_sermon';
+	public const SERMONS = 'drppsm_sermons';
 }

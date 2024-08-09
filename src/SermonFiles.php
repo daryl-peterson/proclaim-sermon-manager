@@ -11,14 +11,8 @@
 
 namespace DRPPSM;
 
-// @codeCoverageIgnoreStart
-defined( 'ABSPATH' ) || exit;
-// @codeCoverageIgnoreEnd
-
 use DRPPSM\Constants\Meta;
 use DRPPSM\Constants\PT;
-
-
 
 /**
  * Sermon files meta boxes.
@@ -62,8 +56,8 @@ class SermonFiles {
 		$cmb->add_field(
 			array(
 				'name' => esc_html__( 'MP3 Duration', 'drppsm' ),
-				// translators: %s see msgid "hh:mm:ss", effectively <code>hh:mm:ss</code>.
 				'desc' => wp_sprintf(
+					// translators: %s see msgid "hh:mm:ss", effectively <code>hh:mm:ss</code>.
 					esc_html__( 'Length in %s format (fill out only for remote files, local files will get data calculated by default)', 'drppsm' ),
 					'<code>' . esc_html__( 'hh:mm:ss', 'drppsm' ) . '</code>'
 				),

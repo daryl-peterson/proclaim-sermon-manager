@@ -5,7 +5,6 @@
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
- *
  * @since       1.0.0
  */
 
@@ -29,7 +28,6 @@ use function DRPPSM\app_get;
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
- *
  * @since       1.0.0
  */
 class AppTest extends BaseTest {
@@ -40,7 +38,7 @@ class AppTest extends BaseTest {
 		$this->obj = App::init();
 	}
 
-	public function testGetInstance() {
+	public function test_get_instance() {
 		$this->assertNotNull( $this->obj );
 		$result = $this->app->get( NoticeInt::class );
 		$this->assertNotNull( $result );
@@ -53,7 +51,9 @@ class AppTest extends BaseTest {
 	public function test_app() {
 		$obj = app();
 		$this->assertInstanceOf( App::class, $obj );
+	}
 
+	public function test_app_get() {
 		$this->expectException( NotfoundException::class );
 		app_get( 'blah' );
 	}
@@ -74,11 +74,6 @@ class AppTest extends BaseTest {
 
 		$result = $this->app->has( 'blah' );
 		$this->assertFalse( $result );
-	}
-
-	public function test_get_exception() {
-		$this->expectException( NotfoundException::class );
-		$result = $this->app->get( 'blah' );
 	}
 
 	public function test_set() {

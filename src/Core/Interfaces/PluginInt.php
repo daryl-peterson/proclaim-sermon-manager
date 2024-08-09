@@ -6,7 +6,6 @@
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
- *
  * @since       1.0.0
  */
 
@@ -15,6 +14,10 @@ namespace DRPPSM\Interfaces;
 /**
  * Plugin interface.
  *
+ * @package     Proclaim Sermon Manager
+ * @author      Daryl Peterson <@gmail.com>
+ * @copyright   Copyright (c) 2024, Daryl Peterson
+ * @license     https://www.gnu.org/licenses/gpl-3.0.txt
  * @since       1.0.0
  */
 interface PluginInt {
@@ -22,44 +25,41 @@ interface PluginInt {
 	/**
 	 * Initialize hooks.
 	 *
+	 * @return bool True if hooks were registered.
 	 * @since 1.0.0
 	 */
-	public function register(): void;
+	public function register(): bool;
 
 
 	/**
 	 * Activation.
 	 *
-	 * @return void
-	 *
+	 * @return bool Return true if activated with no errors. If errors false.
 	 * @since 1.0.0
 	 */
-	public function activate(): void;
+	public function activate(): bool;
 
 	/**
 	 * Deactivation.
 	 *
-	 * @return void
-	 *
+	 * @return bool Return true if no errors. If errors false.
 	 * @since 1.0.0
 	 */
-	public function deactivate(): void;
+	public function deactivate(): bool;
 
 	/**
-	 * Display admin notice.
+	 * Display notice if it exist.
 	 *
-	 * @return void
-	 *
+	 * @return string|null Notice strig if exist.
 	 * @since 1.0.0
 	 */
-	public function show_notice(): void;
+	public function show_notice(): ?string;
 
 	/**
-	 * Plugin cleanup.
+	 * Shut down cleanup.
 	 *
-	 * @return void
-	 *
+	 * @return bool Return true if successfull.
 	 * @since 1.0.0
 	 */
-	public function shutdown(): void;
+	public function shutdown(): bool;
 }

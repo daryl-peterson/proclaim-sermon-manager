@@ -11,11 +11,6 @@
 
 namespace DRPPSM;
 
-// @codeCoverageIgnoreStart
-defined( 'ABSPATH' ) || exit;
-// @codeCoverageIgnoreEnd
-
-
 use DRPPSM\Exceptions\PluginException;
 use DRPPSM\Helper;
 use DRPPSM\Interfaces\PostTypeRegInt;
@@ -66,6 +61,8 @@ class PostTypeReg implements PostTypeRegInt {
 	 * @since 1.0.0
 	 */
 	public function add(): void {
+		global $wp_post_types;
+
 		$exist = $this->exist();
 
 		if ( ! is_blog_installed() || $exist ) {
@@ -73,13 +70,17 @@ class PostTypeReg implements PostTypeRegInt {
 		}
 
 		try {
-			$def = Helper::get_config( $this->config_file );
-			Logger::debug( array( $this->pt, $this->config_file, $def ) );
+			$def    = Helper::get_config( $this->config_file );
 			$result = register_post_type( $this->pt, $def );
-			Logger::debug( array( 'RESULT' => $result ) );
+
 			// @codeCoverageIgnoreStart
 		} catch ( \Throwable $th ) {
-			throw new PluginException( $th->getMessage(), $th->getCode(), $th );
+			Logger::error(
+				array(
+					'MESSAGE' => $th->getMessage(),
+					'TRACE'   => $th->getTrace(),
+				)
+			);
 			// @codeCoverageIgnoreEnd
 		}
 
@@ -89,7 +90,7 @@ class PostTypeReg implements PostTypeRegInt {
 			if ( is_wp_error( $result ) ) {
 				$message = $result->get_error_message();
 			}
-			throw new PluginException( $message );
+			throw new PluginException( wp_kses( $message, allowed_html() ) );
 			// @codeCoverageIgnoreEnd
 		}
 	}
@@ -127,7 +128,8 @@ class PostTypeReg implements PostTypeRegInt {
 			if ( is_wp_error( $result ) ) {
 				$message = $result->get_error_message();
 			}
-			throw new PluginException( $message );
+
+			throw new PluginException( wp_kses_data( $message ) );
 			// @codeCoverageIgnoreEnd
 		}
 	}
