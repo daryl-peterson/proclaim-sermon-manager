@@ -11,6 +11,8 @@
 
 namespace DRPPSM;
 
+defined( 'ABSPATH' ) || exit;
+
 use DRPPSM\Interfaces\NoticeInt;
 use DRPPSM\Interfaces\OptionsInt;
 use DRPPSM\Traits\SingletonTrait;
@@ -47,7 +49,7 @@ class Notice implements NoticeInt {
 	 */
 	protected function __construct() {
 		// @codeCoverageIgnoreStart
-		$this->options = App::init()->get( OptionsInt::class );
+		$this->options = get_options_int();
 		// @codeCoverageIgnoreEnd
 	}
 
@@ -55,6 +57,7 @@ class Notice implements NoticeInt {
 	 * Initialize object.
 	 *
 	 * @return NoticeInt Notice interface.
+	 * @since 1.0.0
 	 */
 	public static function init(): NoticeInt {
 		return self::get_instance();
@@ -63,8 +66,8 @@ class Notice implements NoticeInt {
 	/**
 	 * Display notice if it exist.
 	 *
+	 * @return string|null Notice string if exist.
 	 * @since 1.0.0
-	 * @return string|null Notice strig if exist.
 	 */
 	public function show_notice(): ?string {
 		$option = $this->options->get( $this->option_name, null );
@@ -78,7 +81,8 @@ class Notice implements NoticeInt {
 		$message      = isset( $option['message'] ) ? $option['message'] : false;
 		$notice_level = ! empty( $option['notice-level'] ) ? $option['notice-level'] : 'notice-error';
 		if ( $message ) {
-			$html = <<<HTML
+			$html  = "\n";
+			$html .= <<<HTML
 				<div class="notice $notice_level is-dismissible">
 				<h2>$title</h2>
 				<p>$message</p>

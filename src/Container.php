@@ -11,6 +11,8 @@
 
 namespace DRPPSM;
 
+defined( 'ABSPATH' ) || exit;
+
 use DRPPSM\Exceptions\NotfoundException;
 use Psr\Container\ContainerInterface;
 use ReflectionClass;

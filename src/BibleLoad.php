@@ -11,6 +11,8 @@
 
 namespace DRPPSM;
 
+defined( 'ABSPATH' ) || exit;
+
 use DRPPSM\Constants\Bible;
 use DRPPSM\Constants\Tax;
 use DRPPSM\Interfaces\Initable;

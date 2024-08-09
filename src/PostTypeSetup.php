@@ -13,6 +13,8 @@
 
 namespace DRPPSM;
 
+defined( 'ABSPATH' ) || exit;
+
 use DRPPSM\PostTypeReg;
 use DRPPSM\Constants\Filters;
 use DRPPSM\Constants\PT;
