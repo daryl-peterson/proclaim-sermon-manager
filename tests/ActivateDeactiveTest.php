@@ -1,6 +1,6 @@
 <?php
 /**
- * Test sermon files.
+ * Deactivator test.
  *
  * @package     Proclaim Sermon Manager
  * @author      Daryl Peterson <@gmail.com>
@@ -11,10 +11,11 @@
 
 namespace DRPPSM\Tests;
 
-use DRPPSM\SermonFiles;
+use DRPPSM\Activator;
+use DRPPSM\Deactivator;
 
 /**
- * Test sermon files.
+ * Deactivator test.
  *
  * @package     Proclaim Sermon Manager
  * @author      Daryl Peterson <@gmail.com>
@@ -22,21 +23,13 @@ use DRPPSM\SermonFiles;
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
  * @since       1.0.0
  */
-class SermonFilesTest extends BaseTest {
+class ActivateDeactiveTest extends BaseTest {
 
-	private SermonFiles $obj;
+	public function test_run() {
+		$result = Deactivator::run();
+		$this->assertTrue( $result );
 
-	public function setup(): void {
-		$this->obj = $this->app->get( SermonFiles::class );
-	}
-
-	public function test_get() {
-		$this->assertNotNull( $this->obj );
-		$this->assertInstanceOf( SermonFiles::class, $this->obj );
-	}
-
-	public function test_show() {
-		$result = $this->obj->show();
+		$result = Activator::run();
 		$this->assertTrue( $result );
 	}
 }

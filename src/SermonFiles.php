@@ -27,8 +27,11 @@ class SermonFiles {
 
 	/**
 	 * Show meta box.
+	 *
+	 * @return bool Return true.
+	 * @since 1.0.0
 	 */
-	public function show(): void {
+	public function show(): bool {
 
 		$post_type = PT::SERMON;
 
@@ -110,5 +113,7 @@ class SermonFiles {
 				),
 			)
 		);
+
+		return true;
 	}
 }

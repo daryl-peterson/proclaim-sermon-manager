@@ -47,9 +47,10 @@ class SermonDetail {
 	/**
 	 * Show sermon detail controls.
 	 *
+	 * @return bool Return true.
 	 * @since 1.0.0
 	 */
-	public function show(): void {
+	public function show(): bool {
 		$options = $this->options;
 
 		// @codeCoverageIgnoreStart
@@ -169,5 +170,6 @@ class SermonDetail {
 				),
 			)
 		);
+		return true;
 	}
 }

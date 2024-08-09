@@ -13,6 +13,7 @@ namespace DRPPSM;
 
 use DRPPSM\Constants\Caps;
 use DRPPSM\Interfaces\RolesInt;
+use DRPPSM\Logging\Logger;
 
 /**
  * Add custom capabilities to roles.
@@ -67,18 +68,23 @@ class Roles implements RolesInt {
 		$status = array();
 		foreach ( $this->role_list as $role_name ) {
 			$role = get_role( $role_name );
+
+			// @codeCoverageIgnoreStart
 			if ( ! $this->is_valid_role( $role ) ) {
 				continue;
 			}
+			// @codeCoverageIgnoreEnd
+
 			$status[ $role_name ]['status'] = 'valid';
 
 			foreach ( $this->caps as $capability ) {
-
-				if ( ! in_array( $capability, $this->privileges ) ) {
+				$role->remove_cap( $capability );
+				if ( ! key_exists( $capability, $this->privileges ) ) {
 					$role->add_cap( $capability );
 					$status[ $role_name ]['cap'][] = $capability;
 					continue;
 				}
+
 				if ( in_array( $role_name, $this->privileges[ $capability ] ) ) {
 					$role->add_cap( $capability );
 					$status[ $role_name ]['cap'][] = $capability;

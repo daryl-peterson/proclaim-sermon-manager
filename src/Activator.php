@@ -24,30 +24,23 @@ use DRPPSM\Logging\Logger;
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
  * @since       1.0.0
  */
-class Activator implements Initable, Runable {
+class Activator {
 
-	/**
-	 * Get initialize object.
-	 *
-	 * @return Activator
-	 *
-	 * @since 1.0.0
-	 */
-	public static function init(): Activator {
-		return new self();
-	}
 
 	/**
 	 * Run activation.
 	 *
+	 * @return bool True if successfull.
 	 * @since 1.0.0
 	 */
-	public function run(): void {
+	public static function run(): bool {
+		$result = false;
 		try {
 			inc_admin_plugin();
 
-			if ( ( is_admin() && current_user_can( 'activate_plugins' ) ) || defined( 'PHPUNIT_TESTING' ) ) {
+			if ( is_admin() || defined( 'PHPUNIT_TESTING' ) ) {
 				activate_plugin( plugin_basename( FILE ) );
+
 				// phpcs:disable
 				if ( isset( $_GET['activate'] ) ) {
 					// @codeCoverageIgnoreStart
@@ -55,7 +48,10 @@ class Activator implements Initable, Runable {
 					// @codeCoverageIgnoreEnd
 				}
 				// phpcs:enable
+
+				$result = true;
 			}
+
 			// @codeCoverageIgnoreStart
 		} catch ( \Throwable $th ) {
 			Logger::error(
@@ -66,5 +62,6 @@ class Activator implements Initable, Runable {
 			);
 			// @codeCoverageIgnoreEnd
 		}
+		return $result;
 	}
 }

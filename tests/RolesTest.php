@@ -46,6 +46,7 @@ class RolesTest extends BaseTest {
 	public function test_add() {
 		$result = $this->obj->add();
 		$this->assertIsArray( $result );
+		Logger::debug( $result );
 	}
 
 	/**
@@ -54,9 +55,10 @@ class RolesTest extends BaseTest {
 	 * @return void
 	 */
 	public function test_remove() {
-		$result = $result = $this->obj->remove();
+		$result = $this->obj->remove();
 		$this->assertIsArray( $result );
 		$this->obj->add();
+		Logger::debug( $result );
 	}
 
 	/**
@@ -106,8 +108,12 @@ class RolesTest extends BaseTest {
 				}
 			}
 		}
+		$result = $this->obj->add();
+		$this->assertIsArray( $result );
+		Logger::debug( $result );
+
 		$result = $this->obj->get_role_caps();
 		$this->assertIsArray( $result );
-		$this->obj->add();
+		Logger::debug( $result );
 	}
 }

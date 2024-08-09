@@ -15,13 +15,12 @@ use const DRPPSM\FILE;
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
- *
  * @since       1.0.0
  */
 class XTest extends BaseTest {
 
 	public function testMisc() {
-		Activator::init()->run();
+		Activator::run();
 
 		$result = Helper::is_plugin_active( plugin_basename( FILE ) );
 		$this->assertTrue( $result );
