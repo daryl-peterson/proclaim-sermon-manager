@@ -85,6 +85,7 @@ class Plugin implements PluginInt {
 			SermonComments::init()->register();
 			TaxonomyListTable::init()->register();
 			ImageSizes::init()->register();
+			AdminMenu::init()->register();
 
 			do_action( $hook );
 

@@ -67,7 +67,10 @@ class HooksUtils implements Initable {
 	public function remove_object_filter( string $hook_name, $static_callback, $priority = null ): bool {
 		if ( is_string( $static_callback ) ) {
 			// '\Space\My_Class::my_method' or '\Space\My_Class'
+
+			// @codeCoverageIgnoreStart
 			$static_callback = explode( '::', $static_callback ) + array( '', '' );
+			// @codeCoverageIgnoreEnd
 		}
 
 		$found = $this->find_hook_callback_instances( $hook_name, $static_callback, $priority );
@@ -148,9 +151,11 @@ class HooksUtils implements Initable {
 		/** @var \WP_Hook $wp_hook WP hooks. */
 		$wp_hook = $wp_filter[ $hook_name ] ?? null;
 
+		// @codeCoverageIgnoreStart
 		if ( empty( $wp_hook->callbacks ) ) {
 			return array();
 		}
+		// @codeCoverageIgnoreEnd
 
 		$find_class_name  = ltrim( $static_callback[0], '\\' ); // > \Space\My_Class >>> Space\My_Class
 		$find_method_name = $static_callback[1] ?? '';
@@ -158,8 +163,9 @@ class HooksUtils implements Initable {
 		$found = array();
 		foreach ( $wp_hook->callbacks as $the_priority => $hooks_data ) {
 			foreach ( $hooks_data as $hook_data ) {
+
 				$real_callback = $hook_data['function'] ?? null;
-				if ( ! is_array( $real_callback ) ) {
+				if ( ! isset( $real_callback ) || ! is_array( $real_callback ) ) {
 					continue;
 				}
 

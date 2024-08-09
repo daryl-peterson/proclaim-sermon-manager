@@ -63,15 +63,13 @@ class Requirements implements RequirementsInt {
 	 */
 	public function register(): ?bool {
 		try {
-			$hook = Helper::get_key_name( 'REQUIREMENTS_INIT' );
-
-			if ( did_action( $hook ) && ! defined( 'PHPUNIT_TESTING' ) ) {
-				// @codeCoverageIgnoreStart
+			// @codeCoverageIgnoreStart
+			if ( ! is_admin() && ! defined( 'PHPUNIT_TESTING' ) ) {
 				return false;
-				// @codeCoverageIgnoreEnd
 			}
+			// @codeCoverageIgnoreEnd
+
 			add_action( 'admin_init', array( $this, 'is_compatible' ) );
-			do_action( $hook );
 
 			return true;
 
