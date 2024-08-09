@@ -45,15 +45,15 @@ class QueueScripts implements Initable, Registrable {
 	/**
 	 * Register callbacks.
 	 *
-	 * @return void
+	 * @return null|bool Return true as default.
 	 * @since 1.0.0
 	 */
-	public function register(): void {
+	public function register(): ?bool {
 
 		$hook = Helper::get_key_name( Helper::get_short_name( $this ) . '_' . __FUNCTION__ );
 		if ( did_action( $hook ) && ! defined( 'PHPUNIT_TESTING' ) ) {
 			// @codeCoverageIgnoreStart
-			return;
+			return true;
 			// @codeCoverageIgnoreEnd
 		}
 
@@ -63,6 +63,7 @@ class QueueScripts implements Initable, Registrable {
 			add_action( 'admin_footer', array( $this, 'footer' ) );
 		}
 		do_action( $hook );
+		return true;
 	}
 
 	/**

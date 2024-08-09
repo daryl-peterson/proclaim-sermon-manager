@@ -74,12 +74,12 @@ class SermonEdit implements Initable, Registrable {
 	/**
 	 * Register callbacks.
 	 *
-	 * @return void
+	 * @return null|bool Returns true as default.
 	 * @since 1.0.0
 	 */
-	public function register(): void {
+	public function register(): ?bool {
 		if ( ! is_admin() && ! defined( 'PHPUNIT_TESTING' ) ) {
-			return;
+			return false;
 		}
 
 		add_action( 'pre_get_posts', array( $this, 'fix_ordering' ), 90 );
@@ -87,6 +87,7 @@ class SermonEdit implements Initable, Registrable {
 		add_action( 'cmb2_admin_init', array( $this, 'show_meta_boxes' ) );
 		add_action( 'save_post_drppsm', array( $this, 'save_post' ), 40, 3 );
 		add_action( 'admin_menu', array( $this, 'remove_meta_boxes' ) );
+		return true;
 	}
 
 	/**

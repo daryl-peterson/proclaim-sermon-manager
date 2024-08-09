@@ -12,6 +12,7 @@
 
 namespace DRPPSM;
 
+use DRPPSM\Constants\PT;
 use DRPPSM\Constants\Tax;
 use DRPPSM\Interfaces\Initable;
 use DRPPSM\Interfaces\Registrable;
@@ -75,13 +76,13 @@ class TaxonomyListTable implements Initable, Registrable {
 	/**
 	 * Register callbacks.
 	 *
-	 * @return void
+	 * @return null|bool Return true is default.
 	 * @since 1.0.0
 	 */
-	public function register(): void {
+	public function register(): ?bool {
 
-		if ( ! is_admin() && ! defined( 'PHPUNIT_TESTING' ) ) {
-			return;
+		if ( ( ! post_type_exists( PT::SERMON ) || ! is_admin() ) && ! defined( 'PHPUNIT_TESTING' ) ) {
+			return false;
 		}
 		add_action( 'cmb2_admin_init', array( $this, 'cmb' ) );
 		add_filter( 'list_table_primary_column', array( $this, 'list_table_primary_column' ), 10, 2 );
@@ -92,6 +93,7 @@ class TaxonomyListTable implements Initable, Registrable {
 			add_filter( "manage_{$taxonomy}_custom_column", array( $this, 'set_column_content' ), 10, 3 );
 			add_filter( "manage_edit-{$taxonomy}_columns", array( $this, 'set_columns' ), 10, 1 );
 		}
+		return true;
 	}
 
 	/**

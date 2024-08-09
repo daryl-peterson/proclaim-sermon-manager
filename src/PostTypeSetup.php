@@ -21,7 +21,6 @@ use DRPPSM\Exceptions\PluginException;
 use DRPPSM\Interfaces\PostTypeRegInt;
 use DRPPSM\Interfaces\PostTypeSetupInt;
 use DRPPSM\Interfaces\TaxonomyRegInt;
-use DRPPSM\Logging\Logger;
 use DRPPSM\TaxonomyReg;
 
 /**
@@ -70,12 +69,13 @@ class PostTypeSetup implements PostTypeSetupInt {
 	/**
 	 * Register callbacks.
 	 *
-	 * @return void
+	 * @return null|bool Return true default.
 	 * @since 1.0.0
 	 */
-	public function register(): void {
+	public function register(): ?bool {
 		add_action( 'init', array( $this, 'add' ) );
 		add_action( Filters::FLUSH_REWRITE_RULES, array( $this, 'flush' ) );
+		return true;
 	}
 
 	/**
@@ -114,7 +114,7 @@ class PostTypeSetup implements PostTypeSetupInt {
 
 			flush_rewrite_rules( false );
 			do_action( Filters::AFTER_POST_SETUP );
-			Logger::error( $status );
+
 			return $status;
 
 			// @codeCoverageIgnoreStart

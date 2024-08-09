@@ -57,22 +57,23 @@ class Requirements implements RequirementsInt {
 	/**
 	 * Register callbacks.
 	 *
-	 * @return void
-	 *
+	 * @return null|bool Retruns true as default.
 	 * @since 1.0.0
 	 */
-	public function register(): void {
+	public function register(): ?bool {
 		try {
 			$hook = Helper::get_key_name( 'REQUIREMENTS_INIT' );
 
 			if ( did_action( $hook ) && ! defined( 'PHPUNIT_TESTING' ) ) {
 				// @codeCoverageIgnoreStart
-				return;
+				return false;
 				// @codeCoverageIgnoreEnd
 			}
 			add_action( 'admin_init', array( $this, 'is_compatible' ) );
 			Logger::debug( 'REQUIREMENTS HOOKS INITIALIZED' );
 			do_action( $hook );
+
+			return true;
 
 			// @codeCoverageIgnoreStart
 		} catch ( \Throwable $th ) {

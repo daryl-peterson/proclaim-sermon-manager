@@ -31,21 +31,22 @@ class TextDomain implements TextDomainInt {
 	/**
 	 * Register callbacks
 	 *
-	 * @return void
+	 * @return null|bool Return true is default.
 	 * @since 1.0.0
 	 */
-	public function register(): void {
+	public function register(): ?bool {
 		$hook = Helper::get_key_name( self::INIT_KEY );
 
 		if ( did_action( $hook ) && ! defined( 'PHPUNIT_TESTING' ) ) {
 			// @codeCoverageIgnoreStart
-			return;
+			return true;
 			// @codeCoverageIgnoreEnd
 		}
 
 		add_action( 'init', array( $this, 'load_domain' ) );
-		Logger::debug( 'PLUGIN HOOKS INITIALIZED' );
 		do_action( $hook );
+
+		return true;
 	}
 
 	/**

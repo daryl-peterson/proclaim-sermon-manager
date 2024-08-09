@@ -20,7 +20,6 @@ use DRPPSM\Constants\Tax;
 use DRPPSM\Interfaces\Initable;
 use DRPPSM\Interfaces\Registrable;
 use DRPPSM\Logging\Logger;
-use WP_Query;
 
 /**
  * Sermon list table.
@@ -81,13 +80,13 @@ class SermonListTable implements Initable, Registrable {
 	/**
 	 * Register callbacks.
 	 *
-	 * @return void
+	 * @return null|bool Returns true default.
 	 * @since 1.0.0
 	 */
-	public function register(): void {
+	public function register(): ?bool {
 		// @codeCoverageIgnoreStart
-		if ( ( ! post_type_exists( $this->pt ) || ! is_admin() ) && ! defined( 'PHPUNIT_TESTING' ) ) {
-			return;
+		if ( ! is_admin() && ! defined( 'PHPUNIT_TESTING' ) ) {
+			return false;
 		}
 		// @codeCoverageIgnoreEnd
 
@@ -99,6 +98,8 @@ class SermonListTable implements Initable, Registrable {
 		add_action( 'restrict_manage_posts', array( $this, 'restrict_manage_posts' ) );
 		add_filter( 'request', array( $this, 'request_query' ) );
 		add_filter( 'parse_query', array( $this, 'sermon_filters_query' ) );
+
+		return true;
 	}
 
 	/**
@@ -246,7 +247,7 @@ class SermonListTable implements Initable, Registrable {
 	/**
 	 * Filter the sermons on service type.
 	 *
-	 * @param WP_Query $query The query.
+	 * @param \WP_Query $query The query.
 	 * @since 1.0.0
 	 */
 	public function sermon_filters_query( \WP_Query $query ) {
@@ -262,11 +263,18 @@ class SermonListTable implements Initable, Registrable {
 							'terms'    => $query->query_vars[ Tax::SERVICE_TYPE ],
 						),
 					);
-					Logger::error( $query );
+					Logger::error( $query->query_vars[ Tax::SERVICE_TYPE ] );
 				}
 			}
+			// @codeCoverageIgnoreStart
 		} catch ( \Throwable $th ) {
-			// FatalError::set( $th->getMessage(), $th );
+			Logger::error(
+				array(
+					'MESSAGE' => $th->getMessage(),
+					'TRACE'   => $th->getTrace(),
+				)
+			);
+			// @codeCoverageIgnoreEnd
 		}
 	}
 
@@ -277,7 +285,7 @@ class SermonListTable implements Initable, Registrable {
 	 * @return array
 	 * @since 1.0.0
 	 */
-	public function request_query( $vars ) {
+	public function request_query( array $vars ) {
 
 		try {
 			if ( ! $this->post_type_match() ) {
