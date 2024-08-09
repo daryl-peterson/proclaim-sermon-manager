@@ -11,6 +11,8 @@
 
 namespace DRPPSM;
 
+defined( 'ABSPATH' ) || exit;
+
 use DRPPSM\Constants\PT;
 use DRPPSM\Interfaces\Initable;
 use DRPPSM\Interfaces\OptionsInt;

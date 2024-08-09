@@ -12,6 +12,8 @@
 
 namespace DRPPSM;
 
+defined( 'ABSPATH' ) || exit;
+
 use DRPPSM\Interfaces\TextDomainInt;
 use DRPPSM\Logging\Logger;
 

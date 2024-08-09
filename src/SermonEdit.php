@@ -11,6 +11,8 @@
 
 namespace DRPPSM;
 
+defined( 'ABSPATH' ) || exit;
+
 use DRPPSM\App;
 use DRPPSM\Constants\PT;
 use DRPPSM\Constants\Tax;
