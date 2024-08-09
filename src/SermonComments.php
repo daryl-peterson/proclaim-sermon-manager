@@ -27,8 +27,18 @@ use DRPPSM\Interfaces\Registrable;
  */
 class SermonComments implements Initable, Registrable {
 
+	/**
+	 * Options interface.
+	 *
+	 * @var OptionsInt
+	 */
 	private OptionsInt $options;
 
+	/**
+	 * Initialize object properties.
+	 *
+	 * @since 1.0.0
+	 */
 	protected function __construct() {
 		$this->options = get_options_int();
 	}
@@ -58,12 +68,17 @@ class SermonComments implements Initable, Registrable {
 	 *
 	 * @param array $data Data to insert.
 	 * @return array
+	 * @since 1.0.0
 	 */
 	public function default_comments_off( array $data ): array {
 
 		$comments = $this->options->get( 'comments_off', true );
 
-		if ( $data['post_type'] == PT::SERMON && $comments ) {
+		if ( ! $comments ) {
+			return $data;
+		}
+
+		if ( PT::SERMON === $data['post_type'] ) {
 			$data['comment_status'] = 0;
 		}
 

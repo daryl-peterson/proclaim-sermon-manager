@@ -84,7 +84,7 @@ class Roles implements RolesInt {
 					continue;
 				}
 
-				if ( in_array( $role_name, $this->privileges[ $capability ] ) ) {
+				if ( in_array( $role_name, $this->privileges[ $capability ], true ) ) {
 					$role->add_cap( $capability );
 					$status[ $role_name ]['cap'][] = $capability;
 				}

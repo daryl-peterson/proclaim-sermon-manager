@@ -3,7 +3,7 @@
  * Taxonomy list table.
  * - Adds images to specific taxonomy.
  *
- * @package     DRPPSM
+ * @package     Proclaim Sermon Manager
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
@@ -22,7 +22,7 @@ use DRPPSM\Logging\Logger;
  * Taxonomy list table.
  * - Adds images to specific taxonomy.
  *
- * @package     DRPPSM
+ * @package     Proclaim Sermon Manager
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
@@ -81,7 +81,7 @@ class TaxonomyListTable implements Initable, Registrable {
 	 */
 	public function register(): ?bool {
 
-		if ( ( ! post_type_exists( PT::SERMON ) || ! is_admin() ) && ! defined( 'PHPUNIT_TESTING' ) ) {
+		if ( ! is_admin() && ! defined( 'PHPUNIT_TESTING' ) ) {
 			return false;
 		}
 		add_action( 'cmb2_admin_init', array( $this, 'cmb' ) );

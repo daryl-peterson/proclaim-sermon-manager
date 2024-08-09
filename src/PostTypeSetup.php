@@ -82,6 +82,7 @@ class PostTypeSetup implements PostTypeSetupInt {
 	 * Add post types and taxonomy.
 	 *
 	 * @return array
+	 * @throws PluginException If error ooccures add post type or taxonomy.
 	 * @since 1.0.0
 	 */
 	public function add(): array {
@@ -119,7 +120,7 @@ class PostTypeSetup implements PostTypeSetupInt {
 
 			// @codeCoverageIgnoreStart
 		} catch ( \Throwable $th ) {
-			throw new PluginException( $th->getMessage(), $th->getCode(), $th );
+			throw new PluginException( wp_kses( $th->getMessage(), allowed_html() ) );
 			// @codeCoverageIgnoreEnd
 		}
 	}
@@ -128,6 +129,7 @@ class PostTypeSetup implements PostTypeSetupInt {
 	 * Remove post types and taxonomy.
 	 *
 	 * @return array
+	 * @throws PluginException If error ooccures remove post type or taxonomy.
 	 * @since 1.0.0
 	 */
 	public function remove(): array {
@@ -141,8 +143,8 @@ class PostTypeSetup implements PostTypeSetupInt {
 				 *
 				 * @var PostTypeRegInt $obj
 				 */
+				$obj = $this->get_post_type( $post_type );
 
-				$obj        = $this->get_post_type( $post_type );
 				$taxonomies = (array) $this->get_post_type_taxonomies( $post_type );
 				$obj->remove();
 				$status[ $post_type ]['status'] = $obj->exist();
@@ -156,15 +158,12 @@ class PostTypeSetup implements PostTypeSetupInt {
 					$taxonomy->remove();
 					$status[ $post_type ]['taxonomies'][ $taxonomy->get_name() ] = $taxonomy->exist();
 				}
-
-				// $status[ $post_type ]['status'] = $obj->exist();
-
 			}
 
 			return $status;
 			// @codeCoverageIgnoreStart
 		} catch ( \Throwable $th ) {
-			throw new PluginException( $th->getMessage(), $th->getCode(), $th );
+			throw new PluginException( wp_kses( $th->getMessage(), allowed_html() ) );
 			// @codeCoverageIgnoreEnd
 		}
 	}

@@ -44,7 +44,6 @@ class ImageSizes implements Initable, Registrable {
 	 */
 	public function register(): ?bool {
 		add_action( 'after_setup_theme', array( $this, 'add_image_sizes' ) );
-		// add_filter( 'attachment_fields_to_edit', array( $this, 'sermon_image_plugin_modal_button' ), 20, 2 );
 		return true;
 	}
 

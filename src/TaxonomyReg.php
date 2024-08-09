@@ -99,7 +99,9 @@ class TaxonomyReg implements TaxonomyRegInt {
 			$message = 'Failed to add taxonomy ' . $this->taxonomy;
 			if ( is_wp_error( $result ) ) {
 				/**
-				 * @var \WP_Error $result
+				 * WordPress error.
+				 *
+				 * @var \WP_Error $result WordPress error.
 				 */
 				$message = $this->get_wp_error_message( $result );
 			}
@@ -143,7 +145,9 @@ class TaxonomyReg implements TaxonomyRegInt {
 			if ( is_wp_error( $result ) ) {
 
 				/**
-				 * @var \WP_Error $result
+				 * WordPress error.
+				 *
+				 * @var \WP_Error $result WordPress error.
 				 */
 				$message = $this->get_wp_error_message( $result );
 			}

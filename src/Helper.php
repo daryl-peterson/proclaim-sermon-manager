@@ -153,8 +153,6 @@ class Helper {
 	 * @since 1.0.0
 	 */
 	public static function gmt_to_local( string $date ) {
-		// $mdate = date( 'Y-m-d H:i:s', strtotime( $date ) );
-
 		$mdate = gmdate( 'Y-m-d H:i:s', strtotime( $date ) );
 
 		$tz = new \DateTimeZone( 'GMT' );

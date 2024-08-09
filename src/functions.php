@@ -40,7 +40,7 @@ function app_get( string $item ): mixed {
 /**
  * Get options interface.
  *
- * @return void
+ * @return OptionsInt Options inteface.
  * @since 1.0.0
  */
 function get_options_int(): OptionsInt {

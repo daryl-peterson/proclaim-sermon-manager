@@ -4,7 +4,6 @@
  * Sermon list table.
  *
  * @package     Proclaim Sermon Manager
- *
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
@@ -13,6 +12,7 @@
 
 namespace DRPPSM;
 
+use DRPPSM\Constants\Filters;
 use DRPPSM\Constants\Meta;
 use DRPPSM\Constants\PT;
 use DRPPSM\Constants\Tax;
@@ -24,7 +24,6 @@ use DRPPSM\Logging\Logger;
  * Sermon list table.
  *
  * @package     Proclaim Sermon Manager
- *
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
@@ -96,8 +95,8 @@ class SermonListTable implements Initable, Registrable {
 		add_filter( 'post_row_actions', array( $this, 'row_actions' ), 100, 2 );
 		add_action( 'restrict_manage_posts', array( $this, 'restrict_manage_posts' ) );
 
-		add_filter( 'request', array( $this, 'request_query' ) );
-		add_filter( 'parse_query', array( $this, 'sermon_filters_query' ) );
+		// add_filter( 'request', array( $this, 'request_query' ), 10, 1 ); .
+		add_filter( 'parse_query', array( $this, 'sermon_filters_query' ), 10, 1 );
 
 		return true;
 	}
@@ -105,6 +104,7 @@ class SermonListTable implements Initable, Registrable {
 	/**
 	 * Render columns.
 	 *
+	 * @param string $column Column name.
 	 * @return void
 	 * @since 1.0.0
 	 */
@@ -153,8 +153,8 @@ class SermonListTable implements Initable, Registrable {
 		} catch ( \Throwable $th ) {
 			Logger::error(
 				array(
-					'MESSAGE' => $th->getMessage(),
-					'TRACE'   => $th->getTrace(),
+					'MESSAGE' => wp_kses( $th->getMessage(), allowed_html() ),
+					'TRACE'   => (array) $th->getTrace(),
 				)
 			);
 			$data = __( 'Error' );
@@ -203,16 +203,17 @@ class SermonListTable implements Initable, Registrable {
 	 * Set list table primary column
 	 * Support for WordPress 4.3.
 	 *
-	 * @param string $default   Existing primary column.
+	 * @param string $existing  Existing primary column.
 	 * @param string $screen_id Current screen ID.
 	 * @return string
+	 * @since 1.0.0
 	 */
-	public function set_table_primary_column( string $default, string $screen_id ): string {
+	public function set_table_primary_column( string $existing, string $screen_id ): string {
 		if ( "edit-{$this->pt}" === $screen_id ) {
 			return 'title';
 		}
 
-		return $default;
+		return $existing;
 	}
 
 	/**
@@ -263,6 +264,7 @@ class SermonListTable implements Initable, Registrable {
 					array(
 						'taxonomy' => Tax::SERVICE_TYPE,
 						'field'    => 'slug',
+						// 'field'    => 'term_id',
 						'terms'    => $query->query_vars[ Tax::SERVICE_TYPE ],
 					),
 				);
@@ -279,7 +281,6 @@ class SermonListTable implements Initable, Registrable {
 			);
 			// @codeCoverageIgnoreEnd
 		}
-		return;
 	}
 
 	/**
@@ -328,7 +329,6 @@ class SermonListTable implements Initable, Registrable {
 			if ( isset( $vars[ $this->pt ] ) && trim( $vars[ $this->pt ] ) === '' ) {
 				unset( $vars[ $this->pt ] );
 			}
-			return $vars;
 
 			// @codeCoverageIgnoreStart
 		} catch ( \Throwable $th ) {
@@ -340,6 +340,7 @@ class SermonListTable implements Initable, Registrable {
 			);
 			// @codeCoverageIgnoreEnd
 		}
+		Logger::debug( $vars );
 		return $vars;
 	}
 
@@ -354,7 +355,11 @@ class SermonListTable implements Initable, Registrable {
 
 		$service_type = Tax::SERVICE_TYPE;
 
+		$terms = TaxUtils::get_term_options( Tax::SERVICE_TYPE );
+		asort( $terms );
+
 		// Type filtering.
+
 		$terms = get_terms(
 			array(
 				'taxonomy'   => $service_type,
@@ -362,7 +367,8 @@ class SermonListTable implements Initable, Registrable {
 			)
 		);
 
-		$field   = TaxUtils::get_taxonomy_field( $service_type, 'singular_name' );
+		$field = TaxUtils::get_taxonomy_field( $service_type, 'singular_name' );
+		/* translators: %s: Filter by service type. */
 		$label   = wp_sprintf( __( 'Filter by %s', 'drppsm' ), $field );
 		$options = "<option value=\"\">$label</option>";
 
@@ -384,8 +390,7 @@ class SermonListTable implements Initable, Registrable {
 				$options
 			</select>
 		EOT;
-		// echo apply_filters( Filters::SERMON_FILTER, $output );
-		echo $output;
+		echo apply_filters( Filters::SERMON_FILTER, $output );
 	}
 
 	/**
