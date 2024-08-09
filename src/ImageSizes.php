@@ -1,6 +1,6 @@
 <?php
 /**
- * Sermon images.
+ * Image sizes.
  *
  * @package     Proclaim Sermon Manager
  * @author      Daryl Peterson <@gmail.com>
@@ -17,7 +17,7 @@ use DRPPSM\Interfaces\Initable;
 use DRPPSM\Interfaces\Registrable;
 
 /**
- * Sermon images.
+ * Image sizes.
  *
  * @package     Proclaim Sermon Manager
  * @author      Daryl Peterson <@gmail.com>
@@ -90,7 +90,7 @@ class ImageSizes implements Initable, Registrable {
 	/**
 	 * Add image sizes.
 	 *
-	 * @return bool True if successfull, otherwise false.
+	 * @return bool True on success, otherwise false.
 	 * @since 1.0.0
 	 */
 	public function add_image_sizes(): bool {
@@ -117,5 +117,15 @@ class ImageSizes implements Initable, Registrable {
 		}
 
 		return $result;
+	}
+
+	/**
+	 * Get sizes to define.
+	 *
+	 * @return array
+	 * @since 1.0.0
+	 */
+	public function get_sizes(): array {
+		return $this->sizes;
 	}
 }

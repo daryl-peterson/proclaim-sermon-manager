@@ -96,9 +96,12 @@ class BibleLoad implements Initable {
 						)
 					)
 				);
+
+				// @codeCoverageIgnoreStart
 				if ( ! term_exists( $book, $tax ) ) {
 					wp_insert_term( $book, $tax, array( 'slug' => $slug ) );
 				}
+				// @codeCoverageIgnoreEnd
 			}
 			// @codeCoverageIgnoreStart
 		} catch ( \Throwable $th ) {

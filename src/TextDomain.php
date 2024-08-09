@@ -62,14 +62,15 @@ class TextDomain implements TextDomainInt {
 	/**
 	 * Switch to site language.
 	 *
-	 * @return void
-	 * @since 1.0
+	 * @return bool True on success, otherwise false.
+	 * @since 1.0.0
 	 */
-	public function switch_to_site_locale(): void {
+	public function switch_to_site_locale(): bool {
+		$result = false;
 		try {
 			if ( ! function_exists( 'switch_to_locale' ) ) {
 				// @codeCoverageIgnoreStart
-				return;
+				return false;
 				// @codeCoverageIgnoreEnd
 			}
 			switch_to_locale( get_locale() );
@@ -80,6 +81,8 @@ class TextDomain implements TextDomainInt {
 			// Init Sermon Manager locale.
 			$this->load_domain();
 
+			$result = true;
+
 			// @codeCoverageIgnoreStart
 		} catch ( \Throwable $th ) {
 			Logger::error(
@@ -88,21 +91,24 @@ class TextDomain implements TextDomainInt {
 					'TRACE'   => $th->getTrace(),
 				)
 			);
+			$result = false;
 			// @codeCoverageIgnoreEnd
 		}
+		return $result;
 	}
 
 	/**
 	 * Restore language to original.
 	 *
-	 * @return void
+	 * @return bool True on success, otherwise false.
 	 * @since 1.0.0
 	 */
-	public function restore_locale(): void {
+	public function restore_locale(): bool {
+		$result = false;
 		try {
 			if ( ! function_exists( 'restore_previous_locale' ) ) {
 				// @codeCoverageIgnoreStart
-				return;
+				return false;
 				// @codeCoverageIgnoreEnd
 			}
 			restore_previous_locale();
@@ -113,6 +119,8 @@ class TextDomain implements TextDomainInt {
 			// Init Sermon Manager locale.
 			$this->load_domain();
 
+			$result = true;
+
 			// @codeCoverageIgnoreStart
 		} catch ( \Throwable $th ) {
 			Logger::error(
@@ -121,7 +129,12 @@ class TextDomain implements TextDomainInt {
 					'TRACE'   => $th->getTrace(),
 				)
 			);
+			$result = false;
 			// @codeCoverageIgnoreEnd
 		}
+		if ( ! $result ) {
+			return false;
+		}
+		return true;
 	}
 }

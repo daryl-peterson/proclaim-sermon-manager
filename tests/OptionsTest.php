@@ -13,11 +13,18 @@ use DRPPSM\Options;
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
+ * @since       1.0.0
  */
 class OptionsTest extends BaseTest {
 
 	public Options $obj;
 
+	/**
+	 * This method is called before each test.
+	 *
+	 * @return void
+	 * @since 1.0.0
+	 */
 	public function setup(): void {
 		$this->obj = $this->app->get( OptionsInt::class );
 	}

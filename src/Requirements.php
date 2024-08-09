@@ -14,7 +14,6 @@ namespace DRPPSM;
 use DRPPSM\Interfaces\NoticeInt;
 use DRPPSM\Interfaces\RequirementCheckInt;
 use DRPPSM\Interfaces\RequirementsInt;
-use DRPPSM\Logging\Logger;
 
 /**
  * Register requirement checks to be run.
@@ -95,15 +94,20 @@ class Requirements implements RequirementsInt {
 	/**
 	 * Check if plugin is compatible.
 	 *
+	 * @return bool True if without error.
 	 * @since 1.0.0
 	 */
-	public function is_compatible(): void {
+	public function is_compatible(): bool {
+		$result = false;
 		try {
 			$this->checks->run();
+			$result = true;
+
 			// @codeCoverageIgnoreStart
 		} catch ( \Throwable $th ) {
 			FatalError::set( $th->getMessage(), $th );
 			// @codeCoverageIgnoreEnd
 		}
+		return $result;
 	}
 }

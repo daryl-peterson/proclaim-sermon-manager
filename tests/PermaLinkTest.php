@@ -22,6 +22,12 @@ class PermaLinkTest extends BaseTest {
 
 	public PermaLinkInt $obj;
 
+	/**
+	 * This method is called before each test.
+	 *
+	 * @return void
+	 * @since 1.0.0
+	 */
 	public function setup(): void {
 		$this->obj = App::init()->get( PermaLinkInt::class );
 	}

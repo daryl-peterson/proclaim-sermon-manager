@@ -25,14 +25,16 @@ interface TextDomainInt extends Registrable {
 	/**
 	 * Switch to site language.
 	 *
-	 * @since 1.0
+	 * @return bool True on success, otherwise false.
+	 * @since 1.0.0
 	 */
-	public function switch_to_site_locale(): void;
+	public function switch_to_site_locale(): bool;
 
 	/**
 	 * Restore language to original.
 	 *
-	 * @since 1.0
+	 * @return bool True on success, otherwise false.
+	 * @since 1.0.0
 	 */
-	public function restore_locale(): void;
+	public function restore_locale(): bool;
 }

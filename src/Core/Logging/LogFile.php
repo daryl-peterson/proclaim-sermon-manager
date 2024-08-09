@@ -45,31 +45,33 @@ class LogFile {
 	 * Check the file size.
 	 *
 	 * @param string $file
-	 * @return void
+	 * @return bool True on success, otherwise false.
 	 * @since 1.0.0
 	 */
-	public function check_file_size( string $file ): void {
+	public function check_file_size( string $file ): bool {
+		$result = false;
 		try {
 
 			$fs = wp_filesize( $file );
 			if ( ! $fs || ( $fs > 5000000 ) ) {
 				$this->truncate( $file );
-
-				return;
 			}
+			$result = true;
 
 			// @codeCoverageIgnoreStart
 		} catch ( \Throwable $th ) {
 			error_log( print_r( $th, true ) );
+			$result = false;
 			// @codeCoverageIgnoreEnd
 		}
+		return $result;
 	}
 
 	/**
 	 * Get the log file.
 	 *
 	 * @param string $level Log level.
-	 * @return string|null If successfull return string, if not null.
+	 * @return string|null String on success, otherwise null.
 	 * @since 1.0.0
 	 */
 	public function get_log_file( string $level ): ?string {

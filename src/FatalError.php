@@ -11,6 +11,8 @@
 
 namespace DRPPSM;
 
+defined( 'ABSPATH' ) || exit;
+
 use DRPPSM\Interfaces\OptionsInt;
 use DRPPSM\Logging\Logger;
 
@@ -54,7 +56,12 @@ class FatalError {
 
 		$opts->delete( 'fatal_error' );
 		Deactivator::run();
-		wp_die( wp_kses( $message, allowed_html() ), wp_kses_data( NAME ) );
+
+		// @codeCoverageIgnoreStart
+		if ( ! defined( 'PHPUNIT_TESTING' ) ) {
+			wp_die( wp_kses( $message, allowed_html() ), wp_kses_data( NAME ) );
+		}
+		// @codeCoverageIgnoreEnd
 	}
 
 	/**
@@ -76,8 +83,8 @@ class FatalError {
 
 		Logger::error(
 			array(
-				'MESSAGE' => $th->getMessage(),
-				'TRACE'   => $th->getTrace(),
+				'MESSAGE' => wp_kses( $th->getMessage(), allowed_html() ),
+				'TRACE'   => (array) $th->getTrace(),
 			)
 		);
 	}

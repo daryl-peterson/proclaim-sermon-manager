@@ -26,6 +26,12 @@ class SermonDetailsTest extends BaseTest {
 
 	private SermonDetail $obj;
 
+	/**
+	 * This method is called before each test.
+	 *
+	 * @return void
+	 * @since 1.0.0
+	 */
 	public function setup(): void {
 		$this->obj = $this->app->get( SermonDetail::class );
 	}

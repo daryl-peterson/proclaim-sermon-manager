@@ -24,12 +24,16 @@ interface RequirementsInt extends Registrable {
 
 	/**
 	 * Check if plugin is compatible.
+	 *
+	 * @return bool True if no errors.
+	 * @since 1.0.0
 	 */
-	public function is_compatible(): void;
+	public function is_compatible(): bool;
 
 	/**
 	 * Get notice interface.
 	 *
+	 * @return NoticeInt
 	 * @since 1.0.0
 	 */
 	public function notice(): NoticeInt;

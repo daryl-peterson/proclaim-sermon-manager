@@ -14,6 +14,7 @@ namespace DRPPSM;
 defined( 'ABSPATH' ) || exit;
 
 use Closure;
+use DRPPSM\Interfaces\Initable;
 
 /**
  * Hook utilities.
@@ -24,8 +25,17 @@ use Closure;
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
  * @since       1.0.0
  */
-class HooksUtils {
+class HooksUtils implements Initable {
 
+	/**
+	 * Get initialize object.
+	 *
+	 * @return HooksUtils
+	 * @since 1.0.0
+	 */
+	public static function init(): HooksUtils {
+		return new self();
+	}
 
 	/**
 	 * Remove Class Action Without Access to Class Object
