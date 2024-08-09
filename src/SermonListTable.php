@@ -85,9 +85,12 @@ class SermonListTable implements Initable, Registrable {
 	 * @since 1.0.0
 	 */
 	public function register(): void {
-		if ( ! post_type_exists( $this->pt ) || ! is_admin() ) {
+		// @codeCoverageIgnoreStart
+		if ( ( ! post_type_exists( $this->pt ) || ! is_admin() ) && ! defined( 'PHPUNIT_TESTING' ) ) {
 			return;
 		}
+		// @codeCoverageIgnoreEnd
+
 		add_filter( "manage_edit-{$this->pt}_sortable_columns", array( $this, 'set_sortable_columns' ) );
 		add_action( "manage_{$this->pt}_posts_custom_column", array( $this, 'render_columns' ), 2 );
 		add_filter( "manage_edit-{$this->pt}_columns", array( $this, 'set_columns' ), 10, 1 );

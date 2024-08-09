@@ -116,4 +116,14 @@ class RolesTest extends BaseTest {
 		$this->assertIsArray( $result );
 		Logger::debug( $result );
 	}
+
+	/**
+	 * Test is valid role.
+	 *
+	 * @return void
+	 */
+	public function test_is_valid_role() {
+		$result = $this->obj->is_valid_role( 'blah' );
+		$this->assertFalse( $result );
+	}
 }

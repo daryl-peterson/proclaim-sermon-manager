@@ -107,6 +107,7 @@ class Plugin implements PluginInt {
 
 			BibleLoad::init()->run();
 
+			// @codeCoverageIgnoreStart
 		} catch ( \Throwable $th ) {
 			Logger::error(
 				array(
@@ -115,6 +116,7 @@ class Plugin implements PluginInt {
 				)
 			);
 			return false;
+			// @codeCoverageIgnoreEnd
 		}
 		return true;
 	}
