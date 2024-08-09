@@ -36,7 +36,7 @@ class ImageSizesTest extends BaseTest {
 	}
 
 	public function test_add_image_sizes() {
-		$this->obj->add_image_sizes();
-		$this->assertNull( null );
+		$result = $this->obj->add_image_sizes();
+		$this->assertTrue( $result );
 	}
 }

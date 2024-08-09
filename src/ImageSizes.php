@@ -11,6 +11,8 @@
 
 namespace DRPPSM;
 
+defined( 'ABSPATH' ) || exit;
+
 use DRPPSM\Interfaces\Initable;
 use DRPPSM\Interfaces\Registrable;
 
@@ -25,6 +27,44 @@ use DRPPSM\Interfaces\Registrable;
  */
 class ImageSizes implements Initable, Registrable {
 
+	/**
+	 * Set size constants.
+	 */
+	public const SERMON_SMALL  = 'sermon_small';
+	public const SERMON_MEDIUM = 'sermon_medium';
+	public const SERMON_WIDE   = 'sermon_wide';
+
+	/**
+	 * Size arrarrys.
+	 *
+	 * @var array
+	 */
+	protected array $sizes;
+
+	/**
+	 * Initialize object properties.
+	 *
+	 * @since 1.0.0
+	 */
+	protected function __construct() {
+		$this->sizes = array(
+			self::SERMON_SMALL  => array(
+				75,
+				75,
+				true,
+			),
+			self::SERMON_MEDIUM => array(
+				300,
+				200,
+				true,
+			),
+			self::SERMON_WIDE   => array(
+				940,
+				350,
+				true,
+			),
+		);
+	}
 
 	/**
 	 * Get initalize object.
@@ -50,14 +90,32 @@ class ImageSizes implements Initable, Registrable {
 	/**
 	 * Add image sizes.
 	 *
-	 * @return void
+	 * @return bool True if successfull, otherwise false.
 	 * @since 1.0.0
 	 */
-	public function add_image_sizes() {
-		if ( function_exists( 'add_image_size' ) ) {
-			add_image_size( 'sermon_small2', 75, 75, true );
-			add_image_size( 'sermon_medium2', 300, 200, true );
-			add_image_size( 'sermon_wide2', 940, 350, true );
+	public function add_image_sizes(): bool {
+		$result = true;
+
+		// @codeCoverageIgnoreStart
+		if ( ! function_exists( '\add_image_size' ) ) {
+			return false;
 		}
+		// @codeCoverageIgnoreEnd
+
+		foreach ( $this->sizes as $name => $settings ) {
+			add_image_size( $name, ...$settings );
+		}
+
+		foreach ( $this->sizes as $name => $settings ) {
+			$result = has_image_size( $name );
+
+			// @codeCoverageIgnoreStart
+			if ( ! $result ) {
+				break;
+			}
+			// @codeCoverageIgnoreEnd
+		}
+
+		return $result;
 	}
 }

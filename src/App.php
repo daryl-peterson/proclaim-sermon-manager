@@ -11,6 +11,8 @@
 
 namespace DRPPSM;
 
+defined( 'ABSPATH' ) || exit;
+
 use DRPPSM\Interfaces\Initable;
 use DRPPSM\Interfaces\PluginInt;
 use DRPPSM\Traits\SingletonTrait;

@@ -11,8 +11,8 @@
 
 namespace DRPPSM;
 
-use DRPPSM\Interfaces\Initable;
-use DRPPSM\Interfaces\Runable;
+defined( 'ABSPATH' ) || exit;
+
 use DRPPSM\Logging\Logger;
 
 /**
