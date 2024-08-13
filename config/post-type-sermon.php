@@ -22,6 +22,7 @@ $capabilities = array(
 	Caps::MANAGE_SETTINGS   => Caps::MANAGE_SETTINGS,
 	Caps::MANAGE_CATAGORIES => Caps::MANAGE_CATAGORIES,
 );
+$menu_icon    = app()->get_setting( 'menu_icon' );
 
 return array(
 	'labels'              => array(
@@ -57,7 +58,7 @@ return array(
 	'publicly_queryable'  => true,
 	'exclude_from_search' => false,
 	'show_in_menu'        => true,
-	'menu_icon'           => 'dashicons-drppsm-holy-spirit',
+	'menu_icon'           => $menu_icon,
 	'hierarchical'        => false,
 	'rewrite'             => array(
 		'slug'       => $permalinks[ PT::SERMON ],

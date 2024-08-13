@@ -20,6 +20,7 @@ use DRPPSM\Interfaces\PostTypeSetupInt;
 use DRPPSM\Interfaces\RequirementsInt;
 use DRPPSM\Interfaces\TextDomainInt;
 use DRPPSM\BibleLoad;
+use DRPPSM\Constants\Actions;
 use DRPPSM\Constants\Filters;
 use DRPPSM\Logging\Logger;
 
@@ -41,6 +42,9 @@ class Plugin implements PluginInt {
 	 */
 	private NoticeInt $notice;
 
+	private string $cmb2_version;
+
+
 	/**
 	 * Set object properties.
 	 *
@@ -49,7 +53,8 @@ class Plugin implements PluginInt {
 	 * @since 1.0.0
 	 */
 	public function __construct( NoticeInt $notice ) {
-		$this->notice = $notice;
+		$this->notice       = $notice;
+		$this->cmb2_version = '?.?.?';
 	}
 
 	/**
@@ -61,7 +66,7 @@ class Plugin implements PluginInt {
 	public function register(): bool {
 		try {
 			FatalError::check();
-			$hook = Filters::AFTER_PLUGIN_LOAD;
+			$hook = Actions::AFTER_PLUGIN_LOAD;
 
 			if ( did_action( $hook ) && ! defined( 'PHPUNIT_TESTING' ) ) {
 				// @codeCoverageIgnoreStart
@@ -72,6 +77,7 @@ class Plugin implements PluginInt {
 			register_deactivation_hook( FILE, array( $this, 'deactivate' ) );
 			add_action( 'shutdown', array( $this, 'shutdown' ) );
 			add_action( 'admin_notices', array( $this, 'show_notice' ) );
+			add_action( 'cmb2_init', array( $this, 'cmb2_init' ) );
 
 			// Load other classes.
 			$app = app();
@@ -86,6 +92,7 @@ class Plugin implements PluginInt {
 			TaxonomyListTable::init()->register();
 			ImageSizes::init()->register();
 			AdminMenu::init()->register();
+			AdminSettings::init()->register();
 
 			do_action( $hook );
 
@@ -153,5 +160,14 @@ class Plugin implements PluginInt {
 	 */
 	public function shutdown(): bool {
 		return true;
+	}
+
+	public function cmb2_init() {
+		$ver = '?????';
+		if ( defined( 'CMB2_VERSION' ) ) {
+			$ver = CMB2_VERSION;
+		}
+
+		Logger::debug( array( 'CMB2 VERSION' => $ver ) );
 	}
 }

@@ -39,11 +39,11 @@ class Container implements ContainerInterface {
 	 * Finds an entry of the container by its identifier and returns it.
 	 *
 	 * @param string $id Identifier of the entry to look for.
-	 *
+	 * @param bool   $resolve Resolve to an object. If false just return the key.
 	 * @throws NotFoundExceptionInterface  No entry was found for **this** identifier.
 	 * @throws ContainerExceptionInterface Error while retrieving the entry.
-	 *
 	 * @return mixed Entry.
+	 * @since 1.0.0
 	 */
 	public function get( $id ) {
 		$item = $this->resolve( $id );
@@ -62,8 +62,8 @@ class Container implements ContainerInterface {
 	 * It does however mean that `get($id)` will not throw a `NotFoundExceptionInterface`.
 	 *
 	 * @param string $id Identifier of the entry to look for.
-	 *
 	 * @return bool
+	 * @since 1.0.0
 	 */
 	public function has( $id ): bool {
 		try {
@@ -85,7 +85,6 @@ class Container implements ContainerInterface {
 	 * @param string $key   Container key name.
 	 * @param mixed  $value  Value to user.
 	 * @return Container
-	 *
 	 * @since 1.0.0
 	 */
 	public function set( string $key, mixed $value ): Container {
@@ -93,13 +92,13 @@ class Container implements ContainerInterface {
 		return $this;
 	}
 
+
 	/**
 	 * Get item from container.
 	 *
 	 * @param string $id Item name to resovle.
 	 * @return mixed null|object|ReflectionClass
 	 * @throws NotFoundException If not found.
-	 *
 	 * @since 1.0.0
 	 */
 	private function resolve( string $id ): mixed {
@@ -134,7 +133,6 @@ class Container implements ContainerInterface {
 	 *
 	 * @param ReflectionClass $item Reflectionclass with the name of the object to initiate.
 	 * @return mixed
-	 *
 	 * @since 1.0.0
 	 */
 	private function get_instance( ReflectionClass $item ): mixed {

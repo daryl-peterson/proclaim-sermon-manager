@@ -18,6 +18,7 @@ use DRPPSM\Constants\Caps;
 use DRPPSM\Constants\PT;
 use DRPPSM\Interfaces\Initable;
 use DRPPSM\Interfaces\Registrable;
+use DRPPSM\Logging\Logger;
 
 /**
  * Admin menu.
@@ -55,34 +56,8 @@ class AdminMenu implements Initable, Registrable {
 		}
 		// @codeCoverageIgnoreEnd
 
-		add_action( 'admin_menu', array( $this, 'settings_menu' ), 60 );
 		add_action( 'admin_menu', array( $this, 'fix_title' ), 100 );
 		return true;
-	}
-
-
-
-	/**
-	 * Add menu item.
-	 *
-	 * @return void
-	 * @since 1.0.0
-	 */
-	public function settings_menu(): void {
-
-		add_submenu_page(
-			'edit.php?post_type=' . PT::SERMON,
-			__( 'Sermon Manager Settings', 'drppsm' ),
-			__( 'Settings', 'drppsm' ),
-			Caps::MANAGE_SETTINGS,
-			'drppsm-settings',
-			array(
-				$this,
-				'settings_page',
-			)
-		);
-	}
-	public function settings_page() {
 	}
 
 	/**

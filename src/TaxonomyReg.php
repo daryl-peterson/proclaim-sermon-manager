@@ -76,9 +76,11 @@ class TaxonomyReg implements TaxonomyRegInt {
 		$exist  = $this->exist();
 		$result = false;
 
+		// @codeCoverageIgnoreStart
 		if ( ! is_blog_installed() || $exist ) {
 			return;
 		}
+		// @codeCoverageIgnoreEnd
 
 		try {
 			$def    = Helper::get_config( $this->config_file );

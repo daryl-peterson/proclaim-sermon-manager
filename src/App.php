@@ -37,6 +37,12 @@ class App implements Initable {
 	 */
 	private Container $container;
 
+	/**
+	 * Settings array.
+	 *
+	 * @var array
+	 */
+	private array $settings;
 
 	/**
 	 * Initialize object.
@@ -46,6 +52,7 @@ class App implements Initable {
 	protected function __construct() {
 		// @codeCoverageIgnoreStart
 		$this->container = new Container();
+		$this->settings  = array();
 
 		$config = Helper::get_config( 'app-config.php' );
 
@@ -115,15 +122,37 @@ class App implements Initable {
 	 * Get plugin interface.
 	 *
 	 * @return PluginInt
+	 * @since 1.0.0
 	 */
 	public function plugin(): PluginInt {
 		return $this->get( PluginInt::class );
 	}
 
 	/**
-	 * Get admin page.
+	 * Set settings.
+	 *
+	 * @param array $settings Key value pairs.
+	 * @return void
+	 * @since 1.0.0
 	 */
-	public static function getAdminPage(): AdminPage {
-		return new AdminPage();
+	public function set_setting( array $settings ): void {
+		foreach ( $settings as $key => $value ) {
+			$this->settings[ $key ] = $value;
+		}
+	}
+
+	/**
+	 * Get setting.
+	 *
+	 * @param string $key Setting name.
+	 * @param mixed  $default_value Default to return if it doesn't exist.
+	 * @return mixed
+	 * @since 1.0.0
+	 */
+	public function get_setting( string $key, mixed $default_value = null ): mixed {
+		if ( ! isset( $this->settings[ $key ] ) ) {
+			return $default_value;
+		}
+		return $this->settings[ $key ];
 	}
 }

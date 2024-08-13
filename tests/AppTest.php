@@ -83,11 +83,6 @@ class AppTest extends BaseTest {
 		$this->assertInstanceOf( NoticeInt::class, $result );
 	}
 
-	public function test_get_admin_page() {
-		$result = $this->obj->getAdminPage();
-		$this->assertInstanceOf( AdminPage::class, $result );
-	}
-
 	public function test_allowed_html() {
 		$result = allowed_html();
 		$this->assertIsArray( $result );

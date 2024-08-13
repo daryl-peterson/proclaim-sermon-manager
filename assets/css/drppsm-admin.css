@@ -40,6 +40,59 @@
 
 }
 
+#drppsm .settings-main {
+	display: flex;
+	margin-top: 5px;
+}
+
+#drppsm .wrap-heading {
+	font-size: 24px;
+	padding-bottom: 10px;
+	display: inline-block;
+	vertical-align: middle;
+}
+
+#drppsm .settings-content {
+	width: 100%;
+	background: white;
+	border: 1px solid #c3c4c7;
+	box-shadow: 0 1px 1px rgba(0, 0, 0, .04);
+}
+
+#drppsm .settings-side {
+	width: 30%;
+	max-width: 300px;
+	margin-left: 1rem;
+
+}
+
+#drppsm .settings-content .nav-tab-wrapper {
+	background: white;
+	padding: 0;
+	border-bottom: 1px solid #e8e8e8;
+}
+
+#drppsm .settings-content .nav-tab-wrapper .nav-tab {
+	float: none;
+	border: none;
+	margin: 0;
+	padding: 20px 20px;
+	display: inline-block;
+	background: none;
+}
+
+#drppsm .settings-content .nav-tab-wrapper .nav-tab-active,
+#drppsm .settings-content .nav-tab-wrapper .nav-tab-active:focus,
+#drppsm .settings-content .nav-tab-wrapper .nav-tab-active:focus:active,
+#drppsm .settings-content .nav-tab-wrapper .nav-tab-active:hover {
+	border-bottom: 2px solid #4abcf0;
+	font-weight: bold;
+}
+
+#drppsm .settings-content .inside {
+	padding: .2rem 1rem .01rem 1rem;
+}
+
 .drppsm-tax-thumb {
 
 	border: 1px solid #6e6e6e;
@@ -86,6 +139,11 @@
 	.column-drppsm-description {
 		display: none !important;
 	}
+
+	#drppsm .settings-side {
+		display: none;
+	}
+
 }
 
 @media (max-height:450px) and (orientation: landscape) {
@@ -104,4 +162,9 @@
 	.column-drppsm-description {
 		display: none !important;
 	}
+
+	#drppsm .settings-side {
+		display: none;
+	}
+
 }

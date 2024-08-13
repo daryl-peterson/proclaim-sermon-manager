@@ -67,6 +67,41 @@ function get_roles_int(): RolesInt {
 }
 
 /**
+ * Get setting.
+ *
+ * @param string $key Setting name.
+ * @param mixed  $default_value Value to use if it doesn't exist.
+ * @return mixed
+ * @since 1.0.0
+ */
+function get_setting( string $key, mixed $default_value = null ): mixed {
+	return app()->get_setting( $key, $default_value );
+}
+
+/**
+ * Create a key for options ect.. with the KEY_PREFIX.
+ *
+ * @param string $name Name of key to create.
+ * @param string $delimiter Delimiter to use for key.
+ * @return string Key name.
+ * @since 1.0.0
+ */
+function get_key_name( string $name, string $delimiter = '_' ): string {
+	$prefix = KEY_PREFIX;
+
+	$name = trim( trim( $name, '-_' ) );
+
+	$len = strlen( $prefix . $delimiter );
+	if ( strlen( $name ) > $len ) {
+		if ( substr( $name, 0, $len ) === $prefix . $delimiter ) {
+			return $name;
+		}
+	}
+
+	return strtolower( $prefix . $delimiter . $name );
+}
+
+/**
  * Include is plugin action functions.
  * - wp-admin/includes/plugin.php
  *

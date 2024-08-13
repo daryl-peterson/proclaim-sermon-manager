@@ -15,6 +15,7 @@ namespace DRPPSM;
 
 defined( 'ABSPATH' ) || exit;
 
+use DRPPSM\Constants\Actions;
 use DRPPSM\PostTypeReg;
 use DRPPSM\Constants\Filters;
 use DRPPSM\Constants\PT;
@@ -116,7 +117,7 @@ class PostTypeSetup implements PostTypeSetupInt {
 			}
 
 			flush_rewrite_rules( false );
-			do_action( Filters::AFTER_POST_SETUP );
+			do_action( Actions::AFTER_POST_SETUP );
 
 			return $status;
 

@@ -49,7 +49,7 @@ if ( file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
  */
 require_once __DIR__ . '/vendor/cmb2/cmb2/init.php';
 
-const NAME           = 'Sermon Manager';
+const NAME           = 'Proclaim Sermon Manager';
 const FILE           = __FILE__;
 const KEY_PREFIX     = 'drppsm';
 const DOMAIN         = 'drppsm';
@@ -60,6 +60,7 @@ const PLUGIN_MIN_WP  = '6.4.0';
 
 try {
 	App::init()->plugin()->register();
+
 } catch ( \Throwable $th ) {
 	Logger::debug(
 		array(
