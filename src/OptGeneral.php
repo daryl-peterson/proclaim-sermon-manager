@@ -11,10 +11,12 @@
 
 namespace DRPPSM;
 
+use CMB2;
 use DRPPSM\Constants\Actions;
 use DRPPSM\Constants\Filters;
 use DRPPSM\Interfaces\Initable;
 use DRPPSM\Interfaces\Registrable;
+use DRPPSM\Logging\Logger;
 
 /**
  * General settings.
@@ -35,6 +37,7 @@ class OptGeneral implements Initable, Registrable {
 		Settings::FIELD_SERMON_COUNT     => Settings::DEFAULT_SERMON_COUNT,
 		Settings::FIELD_ARCHIVE_SLUG     => Settings::DEFAULT_ARCHIVE_SLUG,
 		Settings::FIELD_COMMON_BASE_SLUG => Settings::DEFAULT_COMMON_BASE_SLUG,
+		Settings::FIELD_PREACHER         => Settings::DEFAULT_PREACHER,
 	);
 
 	/**
@@ -67,6 +70,10 @@ class OptGeneral implements Initable, Registrable {
 		add_action( Actions::REGISTER_SETTINGS_FORM, array( $this, 'register_metaboxes' ) );
 		add_filter( Filters::OPTIONS_MAIN_MENU, array( $this, 'set_menu' ) );
 
+		$object_type = 'options-page';
+		$id          = self::OPTION_KEY;
+		add_action( "cmb2_{$object_type}_process_fields_{$id}", array( $this, 'pre_proccess' ), 10, 2 );
+
 		return true;
 	}
 
@@ -79,6 +86,16 @@ class OptGeneral implements Initable, Registrable {
 	 */
 	public function set_menu( string $menu ): string {
 		return self::OPTION_KEY;
+	}
+
+
+	public function pre_proccess( mixed $obj, mixed $object_id ) {
+		Logger::debug(
+			array(
+				'OBJ'    => $obj,
+				'OBJ ID' => $object_id,
+			)
+		);
 	}
 
 	public function register_metaboxes( callable $display_cb ) {
@@ -153,7 +170,7 @@ class OptGeneral implements Initable, Registrable {
 		);
 		$cmb->add_field(
 			array(
-				'id'         => Settings::DEFAULT_SERMON_COUNT,
+				'id'         => Settings::FIELD_SERMON_COUNT,
 				'name'       => __( 'Sermons Per Page', 'drppsm' ),
 				'desc'       => __( 'Affects only the default number', 'drppsm' ),
 				'type'       => 'text',
@@ -165,19 +182,7 @@ class OptGeneral implements Initable, Registrable {
 			)
 		);
 
-		$cmb->add_field(
-			array(
-				'id'      => Settings::FIELD_ARCHIVE_SLUG,
-				'name'    => __( 'Archive Page Slug', 'drppsm' ),
-				'desc'    => '
-							This controls the page where sermons will be located, which includes single sermons.
-							For example, by default, all sermons would be located under /sermons, and a single sermon with slug “god” would be under /sermons/god.
-							Does not apply if "pretty permalinks" are not turned on.',
-
-				'type'    => 'text',
-				'default' => Settings::DEFAULT_ARCHIVE_SLUG,
-			)
-		);
+		$this->add_archive( $cmb );
 
 		$cmb->add_field(
 			array(
@@ -192,33 +197,8 @@ class OptGeneral implements Initable, Registrable {
 			)
 		);
 
-		$desc = __(
-			'Put the label in singular form.
-			It will change the default Preacher to anything you wish.
-			("Pastor", for example). Note: it will also change the slugs.
-			For example, /preacher/mark would become /pastor/mark.',
-			'drppsm'
-		);
-
-		$cmb->add_field(
-			array(
-				'id'      => Settings::FIELD_PREACHER_LABEL,
-				'name'    => __( 'Preacher Label', 'drppsm' ),
-				'desc'    => $desc,
-				'type'    => 'text',
-				'default' => Settings::DEFAULT_PREACHER_LABEL,
-			)
-		);
-
-		$cmb->add_field(
-			array(
-				'id'      => Settings::FIELD_SERVICE_TYPE_LABEL,
-				'name'    => __( 'Service Type Label', 'drppsm' ),
-				'desc'    => '',
-				'type'    => 'text',
-				'default' => Settings::DEFAULT_SERVICE_TYPE_LABEL,
-			)
-		);
+		$this->add_preacher( $cmb );
+		$this->add_service_type( $cmb );
 	}
 
 	/**
@@ -246,6 +226,112 @@ class OptGeneral implements Initable, Registrable {
 		$option_int->set( self::OPTION_KEY, $options );
 		set_transient( $transient_key, true );
 		return true;
+	}
+
+	/**
+	 * Add archive field
+	 *
+	 * @param CMB2 $cmb
+	 * @return void
+	 * @since 1.0.0
+	 */
+	private function add_archive( CMB2 $cmb ): void {
+		$s1 = '<code>' . __( '/sermons', 'drppsm' ) . '</code>';
+		$s2 = '<code>' . __( '/sermons/jesus', 'drppsm' ) . '</code>';
+
+		$desc = __( 'This controls the page where sermons will be located, which includes single sermons.', 'drppsm' );
+
+		$desc .= wp_sprintf(
+			// translators: %1$s Default archive path, effectively <code>/sermons</code>.
+			// translators: %2$s Example single sermon path, effectively <code>/sermons/jesus</code>.
+			__(
+				'By default all sermons would be located under %1$s, and a single sermon with slug “jesus” would be under %2$s.',
+				'drppsm'
+			),
+			$s1,
+			$s2
+		);
+
+		$desc .= __( 'Does not apply if "pretty permalinks" are not turned on.', 'drppsm' );
+
+		$cmb->add_field(
+			array(
+				'id'      => Settings::FIELD_ARCHIVE_SLUG,
+				'name'    => __( 'Archive Page Slug', 'drppsm' ),
+				'desc'    => $desc,
+				'type'    => 'text',
+				'default' => Settings::DEFAULT_ARCHIVE_SLUG,
+			)
+		);
+	}
+
+	/**
+	 * Add preacher field.
+	 *
+	 * @param CMB2 $cmb
+	 * @return void
+	 * @since 1.0.0
+	 */
+	private function add_preacher( CMB2 $cmb ): void {
+		$s1    = '<code>' . __( '/preacher/mark', 'drppsm' ) . '</code>';
+		$s2    = '<code>' . __( '/reverend/mark', 'drppsm' ) . '</code>';
+		$desc  = __( 'Label in singular form. You change the default Preacher to anything you like.', 'drppsm' );
+		$desc .= __( '"Reverend", for example). Note: This also change the slugs.', 'drppsm' );
+
+		$desc .= wp_sprintf(
+			// translators: %1$s Default preacher slug/path. Effectively <code>/preacher/mark</code>.
+			// translators: %2$s Example reverend slug/path. Effectively <code>/speaker/mark</code>.
+			__( 'For example, %1$s would become %2$s.', 'drppsm' ),
+			$s1,
+			$s2
+		);
+
+		/**
+		 * Preacher label.
+		 */
+		$cmb->add_field(
+			array(
+				'id'      => Settings::FIELD_PREACHER,
+				'name'    => __( 'Preacher Label', 'drppsm' ),
+				'desc'    => $desc,
+				'type'    => 'text',
+				'default' => Settings::DEFAULT_PREACHER,
+			)
+		);
+	}
+
+	/**
+	 * Add service type.
+	 *
+	 * @param CMB2 $cmb
+	 * @return void
+	 * @since 1.0.0
+	 */
+	private function add_service_type( CMB2 $cmb ): void {
+		$desc  = __( 'Put the label in singular form. ', 'drppsm' );
+		$desc .= __( 'You change the default Service Type label to anything you wish.', 'drppsm' );
+		$desc .= __( '("Congregation", for example).	Note: it will also change the slugs.', 'drppsm' );
+
+		$s1 = '<code>' . __( '/service-type/morning', 'drppsm' ) . '</code>';
+		$s2 = '<code>' . __( '/congregation/monring', 'drppsm' ) . '</code>';
+
+		$desc .= wp_sprintf(
+				// translators: %1$s Default slug/path. Effectively <code>/service-type/morning</code>.
+				// translators: %2$s Example changed slug/path. Effectively <code>/congregation/morning</code>.
+			__( 'Note: it will also change the slugs. For example, %1$s would become %2$s.', 'drppsm' ),
+			$s1,
+			$s2
+		);
+
+		$cmb->add_field(
+			array(
+				'id'      => Settings::FIELD_SERVICE_TYPE,
+				'name'    => __( 'Service Type Label', 'drppsm' ),
+				'desc'    => $desc,
+				'type'    => 'text',
+				'default' => Settings::DEFAULT_SERVICE_TYPE,
+			)
+		);
 	}
 
 	/**

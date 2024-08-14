@@ -1,0 +1,374 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-08-14T02:18:07+00:00\n"
+"PO-Revision-Date: 2024-08-13 21:41-0500\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 3.0.1\n"
+"X-Domain: drppsm\n"
+
+#: AdminMenu.php:78
+msgid "All Sermons"
+msgstr ""
+
+#: AdminSettings.php:89 OptGeneral.php:104
+msgid "Sermon Manager Settings"
+msgstr ""
+
+#: OptAdvance.php:71 OptGeneral.php:103
+msgid "Settings"
+msgstr ""
+
+#: OptGeneral.php:131 OptGeneral.php:158
+msgid "Menu Icon"
+msgstr ""
+
+#: OptGeneral.php:136
+msgid "Bible"
+msgstr ""
+
+#: OptGeneral.php:137
+msgid "Bible Alt"
+msgstr ""
+
+#: OptGeneral.php:138 OptGeneral.php:139
+msgid "Church"
+msgstr ""
+
+#: OptGeneral.php:140
+msgid "Cross"
+msgstr ""
+
+#: OptGeneral.php:141
+msgid "Cross Alt"
+msgstr ""
+
+#: OptGeneral.php:142
+msgid "Fish"
+msgstr ""
+
+#: OptGeneral.php:143
+msgid "Fish Alt"
+msgstr ""
+
+#: OptGeneral.php:144
+msgid "Megaphone"
+msgstr ""
+
+#: OptGeneral.php:145
+msgid "Pulpit"
+msgstr ""
+
+#: OptGeneral.php:146
+msgid "Pulpit Alt"
+msgstr ""
+
+#: OptGeneral.php:147
+msgid "Sermon"
+msgstr ""
+
+#: OptGeneral.php:148
+msgid "Sermon Alt"
+msgstr ""
+
+#: OptGeneral.php:149
+msgid "Holy Spirit"
+msgstr ""
+
+#: OptGeneral.php:174
+msgid "Sermons Per Page"
+msgstr ""
+
+#: OptGeneral.php:175
+msgid "Affects only the default number"
+msgstr ""
+
+#: OptGeneral.php:190
+msgid "Common Base Slug"
+msgstr ""
+
+#: OptGeneral.php:239
+msgid "/sermons"
+msgstr ""
+
+#: OptGeneral.php:240
+msgid "/sermons/god"
+msgstr ""
+
+#: OptGeneral.php:242
+msgid ""
+"This controls the page where sermons will be located, which includes single "
+"sermons."
+msgstr ""
+
+#: OptGeneral.php:245
+msgid ""
+"By default all sermons would be located under %1$s, and a single sermon with "
+"slug “god” would be under %2$s."
+msgstr ""
+
+#: OptGeneral.php:253
+msgid "Does not apply if \"pretty permalinks\" are not turned on."
+msgstr ""
+
+#: OptGeneral.php:258
+msgid "Archive Page Slug"
+msgstr ""
+
+#: OptGeneral.php:267
+msgid "/preacher/mark"
+msgstr ""
+
+#: OptGeneral.php:268
+msgid "/reverend/mark"
+msgstr ""
+
+#: OptGeneral.php:269
+msgid ""
+"Label in singular form. You change the default Preacher to anything you like."
+msgstr ""
+
+#: OptGeneral.php:270
+msgid "\"Reverend\", for example). Note: This also change the slugs."
+msgstr ""
+
+#: OptGeneral.php:275
+msgid "For example, %1$s would become %2$s."
+msgstr ""
+
+#: OptGeneral.php:286
+msgid "Preacher Label"
+msgstr ""
+
+#: OptGeneral.php:302
+msgid "Put the label in singular form. "
+msgstr ""
+
+#: OptGeneral.php:303
+msgid "You change the default Service Type label to anything you wish."
+msgstr ""
+
+#: OptGeneral.php:304
+msgid "(\"Congregation\", for example).\tNote: it will also change the slugs."
+msgstr ""
+
+#: OptGeneral.php:306
+msgid "/service-type/mark"
+msgstr ""
+
+#: OptGeneral.php:307
+msgid "/congregation/mark"
+msgstr ""
+
+#: OptGeneral.php:310
+msgid ""
+"Note: it will also change the slugs. For example, %1$s would become %2$s."
+msgstr ""
+
+#: OptGeneral.php:318
+msgid "Service Type Label"
+msgstr ""
+
+#: PermaLinks.php:103
+msgctxt "slug"
+msgid "preacher"
+msgstr ""
+
+#: PermaLinks.php:114
+msgctxt "slug"
+msgid "service-type"
+msgstr ""
+
+#: PermaLinks.php:122 PermaLinks.php:143
+msgctxt "slug"
+msgid "sermons"
+msgstr ""
+
+#: PermaLinks.php:134
+msgctxt "slug"
+msgid "series"
+msgstr ""
+
+#: PermaLinks.php:137
+msgctxt "slug"
+msgid "topics"
+msgstr ""
+
+#: PermaLinks.php:140
+msgctxt "slug"
+msgid "book"
+msgstr ""
+
+#: PostTypeReg.php:93
+msgid "Failed to add post type : "
+msgstr ""
+
+#: PostTypeReg.php:131
+msgid "Failed to remove post type : "
+msgstr ""
+
+#: RequirementCheck.php:71
+msgid "This Plugin requires PHP : "
+msgstr ""
+
+#: RequirementCheck.php:94
+msgid "Requiment Not Met"
+msgstr ""
+
+#: RequirementCheck.php:95
+msgid "This Plugin requires WP : "
+msgstr ""
+
+#: SermonDetail.php:91
+msgid "Sermon Details"
+msgstr ""
+
+#: SermonDetail.php:104
+msgid "Date Preached"
+msgstr ""
+
+#. translators: %1 Date preached.
+#: SermonDetail.php:106
+msgid "format: %s"
+msgstr ""
+
+#. translators: %3$s <a href="edit-tags.php?taxonomy=drppsm_service_type&post_type=drppsm" target="_blank">here</a>.
+#: SermonDetail.php:124
+msgid "Select the %1$s. Modify the %2$s %3$s."
+msgstr ""
+
+#. translators: %2$s The plural label. Bible books.
+#: SermonDetail.php:141
+msgid ""
+"Enter the Bible passage with the full book names, e.g. %1$s Or multiple "
+"books like %2$s"
+msgstr ""
+
+#: SermonDetail.php:142
+msgid "John 3:16-18"
+msgstr ""
+
+#: SermonDetail.php:144
+msgid "John 3:16-18, Luke 2:1-3"
+msgstr ""
+
+#: SermonDetail.php:149
+msgid "Main Bible Passage"
+msgstr ""
+
+#: SermonDetail.php:162
+msgid "Description"
+msgstr ""
+
+#: SermonDetail.php:163
+msgid ""
+"Type a brief description about this sermon, an outline, or a full manuscript"
+msgstr ""
+
+#: SermonFiles.php:43
+msgid "Sermon Files"
+msgstr ""
+
+#: SermonFiles.php:52
+msgid "Location of MP3"
+msgstr ""
+
+#: SermonFiles.php:53
+msgid "Upload an audio file or enter an URL."
+msgstr ""
+
+#: SermonFiles.php:63
+msgid "MP3 Duration"
+msgstr ""
+
+#. translators: %s see msgid "hh:mm:ss", effectively <code>hh:mm:ss</code>.
+#: SermonFiles.php:66
+msgid ""
+"Length in %s format (fill out only for remote files, local files will get "
+"data calculated by default)"
+msgstr ""
+
+#: SermonFiles.php:67
+msgid "hh:mm:ss"
+msgstr ""
+
+#: SermonFiles.php:75
+msgid "Video Embed Code"
+msgstr ""
+
+#: SermonFiles.php:76
+msgid ""
+"Paste your embed code for Vimeo, Youtube, Facebook, or direct video file here"
+msgstr ""
+
+#: SermonFiles.php:83
+msgid "Video Link"
+msgstr ""
+
+#: SermonFiles.php:84
+msgid "Paste your link for Vimeo, Youtube, Facebook, or direct video file here"
+msgstr ""
+
+#: SermonFiles.php:92
+msgid "Sermon Notes"
+msgstr ""
+
+#: SermonFiles.php:93
+msgid "Upload  pdf files."
+msgstr ""
+
+#: SermonFiles.php:97 SermonFiles.php:113
+msgid "Add File"
+msgstr ""
+
+#: SermonFiles.php:108
+msgid "Bulletin"
+msgstr ""
+
+#: SermonFiles.php:109
+msgid "Upload pdf files."
+msgstr ""
+
+#: SermonListTable.php:58
+msgid "Sermon Title"
+msgstr ""
+
+#: SermonListTable.php:60
+msgid "Sermon Series"
+msgstr ""
+
+#: SermonListTable.php:61
+msgid "Topics"
+msgstr ""
+
+#: SermonListTable.php:62
+msgid "Views"
+msgstr ""
+
+#: SermonListTable.php:63
+msgid "Comments"
+msgstr ""
+
+#: SermonListTable.php:64
+msgid "Preached"
+msgstr ""
+
+#. translators: %s: Filter by service type.
+#: SermonListTable.php:374
+msgid "Filter by %s"
+msgstr ""
+
+#: TaxonomyListTable.php:157
+msgid "Category Metabox"
+msgstr ""
+
+#: TaxonomyListTable.php:165
+msgid "Image"
+msgstr ""

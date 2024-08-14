@@ -93,6 +93,10 @@
 	padding: .2rem 1rem .01rem 1rem;
 }
 
+#drppsm p.cmb2-metabox-description {
+	max-width: 550px;
+}
+
 .drppsm-tax-thumb {
 
 	border: 1px solid #6e6e6e;

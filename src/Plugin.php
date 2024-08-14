@@ -21,7 +21,6 @@ use DRPPSM\Interfaces\RequirementsInt;
 use DRPPSM\Interfaces\TextDomainInt;
 use DRPPSM\BibleLoad;
 use DRPPSM\Constants\Actions;
-use DRPPSM\Constants\Filters;
 use DRPPSM\Logging\Logger;
 
 /**
@@ -85,6 +84,9 @@ class Plugin implements PluginInt {
 			$app->get( TextDomainInt::class )->register();
 			$app->get( PostTypeSetupInt::class )->register();
 
+			get_textdomain_int()->register();
+
+			TextDomain::init()->register();
 			QueueScripts::init()->register();
 			SermonEdit::init()->register();
 			SermonListTable::init()->register();
@@ -95,6 +97,10 @@ class Plugin implements PluginInt {
 			AdminSettings::init()->register();
 
 			do_action( $hook );
+
+			if ( did_action( 'admin_init' ) ) {
+				do_action( Actions::AFTER_ADMIN_INIT );
+			}
 
 			return true;
 

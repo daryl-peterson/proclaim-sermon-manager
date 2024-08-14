@@ -4,8 +4,6 @@ namespace DRPPSM\Tests;
 
 use DRPPSM\App;
 use DRPPSM\Interfaces\PermaLinkInt;
-use DRPPSM\Logging\Logger;
-use DRPPSM\PermaLinks;
 
 /**
  * Class description.
@@ -15,7 +13,6 @@ use DRPPSM\PermaLinks;
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
- *
  * @since       1.0.0
  */
 class PermaLinkTest extends BaseTest {

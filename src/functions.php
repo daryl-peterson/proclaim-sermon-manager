@@ -14,6 +14,7 @@ namespace DRPPSM;
 use DRPPSM\Interfaces\NoticeInt;
 use DRPPSM\Interfaces\OptionsInt;
 use DRPPSM\Interfaces\RolesInt;
+use DRPPSM\Interfaces\TextDomainInt;
 use DRPPSM\Logging\Logger;
 
 /**
@@ -67,6 +68,16 @@ function get_roles_int(): RolesInt {
 }
 
 /**
+ * Get text domain interface.
+ *
+ * @return TextDomainInt
+ * @since 1.0.0
+ */
+function get_textdomain_int(): TextDomainInt {
+	return app()->get( TextDomainInt::class );
+}
+
+/**
  * Get setting.
  *
  * @param string $key Setting name.
@@ -99,6 +110,30 @@ function get_key_name( string $name, string $delimiter = '_' ): string {
 	}
 
 	return strtolower( $prefix . $delimiter . $name );
+}
+
+
+/**
+ * Fix slug. Sanitize and trime.
+ *
+ * @param string $slug Name of slug.
+ * @return string Sanitized string.
+ * @since 1.0.0
+ */
+function fix_slug( string $slug ): string {
+	return trim( sanitize_title( $slug ) );
+}
+
+/**
+ * Get slug from settings and remove any trailing slashes.
+ *
+ * @param string $slug Name of slug.
+ * @param string $default_value Default value if not found.
+ * @return string
+ * @since 1.0.0
+ */
+function get_slug( string $slug, string $default_value = '' ): string {
+	return untrailingslashit( fix_slug( get_setting( $slug, $default_value ) ) );
 }
 
 /**

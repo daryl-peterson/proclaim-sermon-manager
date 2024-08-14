@@ -12,6 +12,8 @@
 
 namespace DRPPSM;
 
+use DRPPSM\Constants\Tax;
+
 /**
  * Settings constants.
  *
@@ -38,10 +40,10 @@ class Settings {
 	public const FIELD_COMMON_BASE_SLUG   = 'common_base_slug';
 	public const DEFAULT_COMMON_BASE_SLUG = false;
 
-	public const FIELD_PREACHER_LABEL   = 'preacher_label';
-	public const DEFAULT_PREACHER_LABEL = 'Preacher';
+	public const FIELD_PREACHER   = Tax::PREACHER;
+	public const DEFAULT_PREACHER = 'Preacher';
 
 
-	public const FIELD_SERVICE_TYPE_LABEL   = 'service_type_label';
-	public const DEFAULT_SERVICE_TYPE_LABEL = 'Service Type';
+	public const FIELD_SERVICE_TYPE   = Tax::SERVICE_TYPE;
+	public const DEFAULT_SERVICE_TYPE = 'Service Type';
 }

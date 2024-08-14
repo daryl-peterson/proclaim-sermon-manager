@@ -14,6 +14,7 @@ namespace DRPPSM;
 
 defined( 'ABSPATH' ) || exit;
 
+use DRPPSM\Constants\Actions;
 use DRPPSM\Interfaces\TextDomainInt;
 use DRPPSM\Logging\Logger;
 
@@ -30,6 +31,10 @@ class TextDomain implements TextDomainInt {
 
 	public const INIT_KEY = 'TEXT_DOMAIN_INIT';
 
+	public static function init(): TextDomainInt {
+		return new self();
+	}
+
 	/**
 	 * Register callbacks
 	 *
@@ -37,28 +42,38 @@ class TextDomain implements TextDomainInt {
 	 * @since 1.0.0
 	 */
 	public function register(): ?bool {
-		$hook = Helper::get_key_name( self::INIT_KEY );
-
-		if ( did_action( $hook ) && ! defined( 'PHPUNIT_TESTING' ) ) {
-			// @codeCoverageIgnoreStart
-			return true;
-			// @codeCoverageIgnoreEnd
-		}
-
-		add_action( 'init', array( $this, 'load_domain' ) );
-		do_action( $hook );
+		add_action( 'plugins_loaded', array( $this, 'load_domain' ) );
+		// add_action( Actions::AFTER_ADMIN_INIT, array( $this, 'switch_to_site_locale' ) );
 
 		return true;
 	}
 
+
 	/**
 	 * Load domain locales
 	 *
-	 * @return void
+	 * @return bool
 	 * @since 1.0.0
 	 */
-	public function load_domain(): void {
-		load_plugin_textdomain( DOMAIN, false, basename( dirname( FILE ) ) . '/languages/' );
+	public function load_domain(): bool {
+		if ( did_action( Actions::TEXT_DOMAIN_LOADED ) ) {
+			return false;
+		}
+		$locale = apply_filters( 'plugin_locale', determine_locale(), 'drppsm' );
+		$path   = dirname( plugin_basename( FILE ) ) . '/languages/';
+		$mofile = 'drppsm' . '-' . $locale . '.mo';
+
+		$result = load_plugin_textdomain( DOMAIN, false, $path );
+		did_action( Actions::TEXT_DOMAIN_LOADED );
+		Logger::debug(
+			array(
+				'PATH'   => $path,
+				'RESULT' => $result,
+				'LOCALE' => $locale,
+				'MOFILE' => $mofile,
+			)
+		);
+		return $result;
 	}
 
 	/**
@@ -69,6 +84,8 @@ class TextDomain implements TextDomainInt {
 	 */
 	public function switch_to_site_locale(): bool {
 		$result = false;
+
+		Logger::debug( 'SWITCHING LOCALE' );
 		try {
 			if ( ! function_exists( 'switch_to_locale' ) ) {
 				// @codeCoverageIgnoreStart
