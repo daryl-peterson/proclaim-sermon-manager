@@ -46,4 +46,7 @@ class Settings {
 
 	public const FIELD_SERVICE_TYPE   = Tax::SERVICE_TYPE;
 	public const DEFAULT_SERVICE_TYPE = 'Service Type';
+
+	public const FIELD_COMMENTS   = 'comments';
+	public const DEFAULT_COMMENTS = false;
 }

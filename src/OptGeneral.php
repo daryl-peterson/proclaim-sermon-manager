@@ -132,6 +132,7 @@ class OptGeneral implements Initable, Registrable {
 		$cmb = new_cmb2_box( $args );
 
 		$this->add_menu_icon( $cmb );
+		$this->add_sermon_comments( $cmb );
 		$this->add_date_format( $cmb );
 		$this->add_sermon_count( $cmb );
 		$this->add_archive( $cmb );
@@ -227,6 +228,24 @@ class OptGeneral implements Initable, Registrable {
 				),
 				'default'          => Settings::DEFAULT_DATE_FORMAT,
 				'after_row'        => $this->description( $desc ),
+			)
+		);
+	}
+
+	/**
+	 * Add sermon comments field.
+	 *
+	 * @param CMB2 $cmb
+	 * @return void
+	 * @since 1.0.0
+	 */
+	private function add_sermon_comments( CMB2 $cmb ): void {
+		$cmb->add_field(
+			array(
+				'id'      => Settings::FIELD_COMMENTS,
+				'name'    => __( 'Allow Comments', 'drppsm' ),
+				'type'    => 'checkbox',
+				'default' => Settings::DEFAULT_COMMENTS,
 			)
 		);
 	}

@@ -47,7 +47,7 @@ class SermonFiles implements Initable, Registrable {
 	 * @since 1.0.0
 	 */
 	public function register(): ?bool {
-		if ( ! is_admin() && ! defined( 'PHPUNIT_TESTING' ) ) {
+		if ( ! is_admin() || has_action( Actions::SERMON_EDIT_FORM, array( $this, 'show' ) ) ) {
 			return false;
 		}
 		add_action( Actions::SERMON_EDIT_FORM, array( $this, 'show' ) );

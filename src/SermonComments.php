@@ -14,8 +14,7 @@ namespace DRPPSM;
 defined( 'ABSPATH' ) || exit;
 
 use DRPPSM\Constants\PT;
-use DRPPSM\Interfaces\Initable;
-use DRPPSM\Interfaces\OptionsInt;
+use DRPPSM\Interfaces\Executable;
 use DRPPSM\Interfaces\Registrable;
 
 /**
@@ -27,31 +26,18 @@ use DRPPSM\Interfaces\Registrable;
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
  * @since       1.0.0
  */
-class SermonComments implements Initable, Registrable {
+class SermonComments implements Registrable, Executable {
 
 	/**
-	 * Options interface.
-	 *
-	 * @var OptionsInt
-	 */
-	private OptionsInt $options;
-
-	/**
-	 * Initialize object properties.
-	 *
-	 * @since 1.0.0
-	 */
-	protected function __construct() {
-		$this->options = options();
-	}
-
-	/**
-	 * Get initalized object.
+	 * Initialize and register.
 	 *
 	 * @return SermonComments
+	 * @since 1.0.0
 	 */
-	public static function init(): SermonComments {
-		return new self();
+	public static function exec(): SermonComments {
+		$obj = new self();
+		$obj->register();
+		return $obj;
 	}
 
 	/**
@@ -61,6 +47,10 @@ class SermonComments implements Initable, Registrable {
 	 * @since 1.0.0
 	 */
 	public function register(): ?bool {
+		$comments = get_setting( Settings::FIELD_COMMENTS );
+		if ( $comments || has_filter( 'wp_insert_post_data', array( $this, 'default_comments_off' ) ) ) {
+			return false;
+		}
 		add_filter( 'wp_insert_post_data', array( $this, 'default_comments_off' ) );
 		return true;
 	}
@@ -74,9 +64,9 @@ class SermonComments implements Initable, Registrable {
 	 */
 	public function default_comments_off( array $data ): array {
 
-		$comments = $this->options->get( 'comments_off', true );
+		$comments = get_setting( 'comments' );
 
-		if ( ! $comments ) {
+		if ( $comments ) {
 			return $data;
 		}
 

@@ -91,11 +91,11 @@ class Plugin implements PluginInt {
 			QueueScripts::init()->register();
 			SermonEdit::init()->register();
 			SermonListTable::init()->register();
-			SermonComments::init()->register();
 			TaxonomyListTable::init()->register();
 
 			AdminMenu::init()->register();
 			AdminSettings::init()->register();
+			SermonComments::exec();
 
 			do_action( $hook );
 

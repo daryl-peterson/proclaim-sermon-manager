@@ -34,7 +34,7 @@ class SermonCommentsTest extends BaseTest {
 	 * @since 1.0.0
 	 */
 	public function setup(): void {
-		$this->obj = SermonComments::init();
+		$this->obj = SermonComments::exec();
 	}
 
 	public function test_init() {

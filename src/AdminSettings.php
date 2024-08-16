@@ -30,7 +30,6 @@ use DRPPSM\Interfaces\Registrable;
  */
 class AdminSettings implements Initable, Registrable {
 
-
 	/**
 	 * Menu slug.
 	 */
@@ -40,7 +39,6 @@ class AdminSettings implements Initable, Registrable {
 	 * Tab group.
 	 */
 	const TAB_GROUP = KEY_PREFIX . '_options';
-
 
 	/**
 	 * Get initialize object

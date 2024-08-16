@@ -38,16 +38,13 @@ class Activator {
 		try {
 			include_admin_plugin();
 
+			if ( is_plugin_active( plugin_basename( FILE ) ) ) {
+				return true;
+			}
+
 			if ( is_admin() || defined( 'PHPUNIT_TESTING' ) ) {
 				activate_plugin( plugin_basename( FILE ) );
-
-				// phpcs:disable
-				if ( isset( $_GET['activate'] ) ) {
-					// @codeCoverageIgnoreStart
-					unset( $_GET['activate'] );
-					// @codeCoverageIgnoreEnd
-				}
-				// phpcs:enable
+				self::unset();
 
 				$result = true;
 			}
@@ -63,5 +60,15 @@ class Activator {
 			// @codeCoverageIgnoreEnd
 		}
 		return $result;
+	}
+
+	private static function unset() {
+		// phpcs:disable
+		if ( isset( $_GET['activate'] ) ) {
+			// @codeCoverageIgnoreStart
+			unset( $_GET['activate'] );
+			// @codeCoverageIgnoreEnd
+		}
+		// phpcs:enable
 	}
 }

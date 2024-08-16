@@ -19,11 +19,9 @@ use DRPPSM\Constants\Meta;
 use DRPPSM\Constants\PT;
 use DRPPSM\Constants\Tax;
 use DRPPSM\Interfaces\Initable;
-use DRPPSM\Interfaces\OptionsInt;
 use DRPPSM\Interfaces\Registrable;
 use DRPPSM\Logging\Logger;
 use WP_Error;
-use WP_Term;
 
 /**
  * Show sermon deail meta box.
@@ -35,7 +33,6 @@ use WP_Term;
  * @since       1.0.0
  */
 class SermonDetail implements Initable, Registrable {
-
 
 	/**
 	 * Post type.
@@ -50,7 +47,6 @@ class SermonDetail implements Initable, Registrable {
 	 * @var string
 	 */
 	private string $cmb_id;
-
 
 	/**
 	 * Initialize object properties.
@@ -75,14 +71,16 @@ class SermonDetail implements Initable, Registrable {
 	/**
 	 * Register callbacks.
 	 *
-	 * @return boolean|null Returns true.
+	 * @return boolean|null Returns true callbacks were registered.
 	 * @since 1.0.0
 	 */
 	public function register(): ?bool {
-		add_action( Actions::SERMON_EDIT_FORM, array( $this, 'show' ) );
-
+		if ( ! is_admin() || has_action( Actions::SERMON_EDIT_FORM, array( $this, 'show' ) ) ) {
+			return false;
+		}
 		$pt = 'post';
-		// add_action( 'cmb2_init', array( $this, 'cmb_init' ) );
+
+		add_action( Actions::SERMON_EDIT_FORM, array( $this, 'show' ) );
 		add_action( "cmb2_save_{$pt}_fields_{$this->cmb_id}", array( $this, 'save' ), 10, 3 );
 		return true;
 	}
@@ -115,7 +113,6 @@ class SermonDetail implements Initable, Registrable {
 		$this->add_description( $cmb );
 		return true;
 	}
-
 
 	/**
 	 * Fires after save. Used to seto object terms.
