@@ -5,8 +5,12 @@ namespace DRPPSM\Tests;
 use DRPPSM\App;
 use DRPPSM\Logging\LogFormatter;
 use DRPPSM\Logging\Logger;
-use DRPPSM\Requirements;
 
+/**
+ * Logger test.
+ *
+ * @since 1.0.0
+ */
 class LoggerTest extends BaseTest {
 
 	public function testLogger() {

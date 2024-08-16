@@ -29,9 +29,9 @@ interface Runable {
 	/**
 	 * Run checks / services.
 	 *
+	 * @return bool True on success false on failure.
 	 * @since 1.0.0
-	 *
 	 * @throws PluginException Throws exception if failed to run.
 	 */
-	public function run(): void;
+	public function run(): bool;
 }

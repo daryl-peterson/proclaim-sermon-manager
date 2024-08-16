@@ -12,7 +12,7 @@
 namespace DRPPSM\Tests;
 
 use DRPPSM\Logging\Logger;
-use function DRPPSM\get_notice_int;
+use function DRPPSM\notice;
 
 
 
@@ -31,7 +31,7 @@ class NoticeTest extends BaseTest {
 		$title   = 'This is the tile';
 		$message = 'This is the message';
 
-		$obj = get_notice_int();
+		$obj = notice();
 		$obj->set_success( $title, $message );
 		$obj->set_warning( $title, $message );
 		$obj->set_info( $title, $message );

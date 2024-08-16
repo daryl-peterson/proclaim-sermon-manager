@@ -36,7 +36,7 @@ class Activator {
 	public static function run(): bool {
 		$result = false;
 		try {
-			inc_admin_plugin();
+			include_admin_plugin();
 
 			if ( is_admin() || defined( 'PHPUNIT_TESTING' ) ) {
 				activate_plugin( plugin_basename( FILE ) );

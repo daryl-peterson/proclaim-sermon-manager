@@ -14,6 +14,7 @@ namespace DRPPSM;
 defined( 'ABSPATH' ) || exit;
 
 use DRPPSM\App;
+use DRPPSM\Constants\Actions;
 use DRPPSM\Constants\PT;
 use DRPPSM\Constants\Tax;
 use DRPPSM\Interfaces\Initable;
@@ -88,8 +89,10 @@ class SermonEdit implements Initable, Registrable {
 		// add_action( 'pre_get_posts', array( $this, 'fix_ordering' ), 90 );
 		add_filter( 'use_block_editor_for_post_type', array( $this, 'disable_gutenberg' ), 10, 2 );
 		add_action( 'cmb2_admin_init', array( $this, 'show_meta_boxes' ) );
-		add_action( 'save_post_drppsm', array( $this, 'save_post' ), 40, 3 );
 		add_action( 'admin_menu', array( $this, 'remove_meta_boxes' ) );
+
+		SermonDetail::init()->register();
+		SermonFiles::init()->register();
 		return true;
 	}
 
@@ -159,8 +162,7 @@ class SermonEdit implements Initable, Registrable {
 	 * @return void
 	 */
 	public function show_meta_boxes(): void {
-		App::init()->get( SermonDetail::class )->show();
-		App::init()->get( SermonFiles::class )->show();
+		do_action( Actions::SERMON_EDIT_FORM );
 	}
 
 	/**
@@ -217,7 +219,7 @@ class SermonEdit implements Initable, Registrable {
 	 * @since 1.0.0
 	 */
 	public function remove_meta_boxes(): void {
-		inc_remove_meta_box();
+		include_admin_template();
 		remove_meta_box( 'postcustom', $this->post_type, 'normal' );
 		remove_meta_box( 'tagsdiv-' . Tax::SERVICE_TYPE, $this->post_type, 'high' );
 		remove_meta_box( 'commentsdiv', $this->post_type, 'normal' );

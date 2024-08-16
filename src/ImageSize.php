@@ -13,8 +13,7 @@ namespace DRPPSM;
 
 defined( 'ABSPATH' ) || exit;
 
-use DRPPSM\Interfaces\Initable;
-use DRPPSM\Interfaces\Registrable;
+use DRPPSM\Interfaces\ImageSizeInt;
 
 /**
  * Image sizes.
@@ -25,7 +24,7 @@ use DRPPSM\Interfaces\Registrable;
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
  * @since       1.0.0
  */
-class ImageSizes implements Initable, Registrable {
+class ImageSize implements ImageSizeInt {
 
 	/**
 	 * Set size constants.
@@ -67,13 +66,15 @@ class ImageSizes implements Initable, Registrable {
 	}
 
 	/**
-	 * Get initalize object.
+	 * Initialize and register callbacks.
 	 *
-	 * @return ImageSizes
+	 * @return ImageSizeInt
 	 * @since 1.0.0
 	 */
-	public static function init(): ImageSizes {
-		return new self();
+	public static function exec(): ImageSizeInt {
+		$obj = new self();
+		$obj->register();
+		return $obj;
 	}
 
 	/**
@@ -83,7 +84,10 @@ class ImageSizes implements Initable, Registrable {
 	 * @since 1.0.0
 	 */
 	public function register(): ?bool {
-		add_action( 'after_setup_theme', array( $this, 'add_image_sizes' ) );
+		if ( has_action( 'after_setup_theme', array( $this, 'run' ) ) ) {
+			return false;
+		}
+		add_action( 'after_setup_theme', array( $this, 'run' ) );
 		return true;
 	}
 
@@ -93,7 +97,7 @@ class ImageSizes implements Initable, Registrable {
 	 * @return bool True on success, otherwise false.
 	 * @since 1.0.0
 	 */
-	public function add_image_sizes(): bool {
+	public function run(): bool {
 		$result = true;
 
 		// @codeCoverageIgnoreStart

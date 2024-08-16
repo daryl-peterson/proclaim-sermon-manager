@@ -1,6 +1,6 @@
 <?php
 /**
- * Register requirement checks to be run.
+ * Run check to see if plugin can be activated / installed.
  *
  * @package     Proclaim Sermon Manager
  * @author      Daryl Peterson <@gmail.com>
@@ -13,101 +13,122 @@ namespace DRPPSM;
 
 defined( 'ABSPATH' ) || exit;
 
+use DRPPSM\Exceptions\PluginException;
 use DRPPSM\Interfaces\NoticeInt;
-use DRPPSM\Interfaces\RequirementCheckInt;
 use DRPPSM\Interfaces\RequirementsInt;
 
 /**
- * Register requirement checks to be run.
+ * Run check to see if plugin can be activated / installed.
  *
  * @package     Proclaim Sermon Manager
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
- * @since       1.0.0
+ * @since 1.0.0
  */
 class Requirements implements RequirementsInt {
 
 	/**
-	 * Notice interface.
+	 * Notice interface
 	 *
 	 * @var NoticeInt
 	 */
 	private NoticeInt $notice;
 
 	/**
-	 * Requirements check.
-	 *
-	 * @var RequirementCheck
+	 * Initialize object.
 	 */
-	private RequirementCheck $checks;
+	protected function __construct() {
 
-	/**
-	 * Set object properties.
-	 *
-	 * @param NoticeInt           $notice Notice interface.
-	 * @param RequirementCheckInt $checks Requirement check interface.
-	 *
-	 * @since 1.0.0
-	 */
-	public function __construct( NoticeInt $notice, RequirementCheckInt $checks ) {
-		$this->notice = $notice;
-		$this->checks = $checks;
+		$this->notice = notice();
 	}
 
 	/**
 	 * Register callbacks.
 	 *
-	 * @return null|bool Retruns true as default.
+	 * @return boolean|null Always true.
 	 * @since 1.0.0
 	 */
 	public function register(): ?bool {
-		try {
-			// @codeCoverageIgnoreStart
-			if ( ! is_admin() && ! defined( 'PHPUNIT_TESTING' ) ) {
-				return false;
-			}
-			// @codeCoverageIgnoreEnd
 
-			add_action( 'admin_init', array( $this, 'is_compatible' ) );
-
-			return true;
-
-			// @codeCoverageIgnoreStart
-		} catch ( \Throwable $th ) {
-			FatalError::set( $th->getMessage(), $th );
-			// @codeCoverageIgnoreEnd
+		if ( ! is_admin() || has_action( 'admin_init', array( $this, 'run' ) ) ) {
+			return false;
 		}
+
+		add_action( 'admin_init', array( $this, 'run' ) );
+		return true;
 	}
 
 	/**
-	 * Get notice interface.
+	 * Initialize and register.
 	 *
-	 * @return NoticeInt Notice interface.
-	 *
+	 * @return RequirementsInt
 	 * @since 1.0.0
 	 */
-	public function notice(): NoticeInt {
-		return $this->notice;
+	public static function exec(): RequirementsInt {
+
+		$obj = new self();
+		$obj->register();
+
+		return $obj;
 	}
 
 	/**
-	 * Check if plugin is compatible.
+	 * Run checks.
 	 *
-	 * @return bool True if without error.
+	 * @return bool Always true.
 	 * @since 1.0.0
 	 */
-	public function is_compatible(): bool {
-		$result = false;
+	public function run(): bool {
 		try {
-			$this->checks->run();
-			$result = true;
-
-			// @codeCoverageIgnoreStart
+			$this->check_php_ver();
+			$this->check_wp_ver();
 		} catch ( \Throwable $th ) {
 			FatalError::set( $th->getMessage(), $th );
-			// @codeCoverageIgnoreEnd
 		}
-		return $result;
+		return true;
+	}
+
+	/**
+	 * Check PHP version
+	 *
+	 * @param string $version Required PHP version.
+	 * @return void
+	 * @throws PluginException Throws exception if requirements are not met.
+	 */
+	public function check_php_ver( string $version = '' ): void {
+		if ( empty( $version ) ) {
+			$version = PLUGIN_MIN_PHP;
+		}
+		$message = __( 'This Plugin requires PHP : ', 'drppsm' ) . $version;
+		if ( version_compare( PHP_VERSION, $version ) >= 0 ) {
+			return;
+		}
+		$this->notice->set_error( '- Requirement Not Met', esc_html( $message ) );
+		throw new PluginException( esc_html( $message ) );
+	}
+
+	/**
+	 * Check WordPress verson
+	 *
+	 * @param string $version Required WordPress version.
+	 * @return void
+	 *
+	 * @throws PluginException Throws exception if requirements are not met.
+	 * @since 1.0.0
+	 */
+	public function check_wp_ver( string $version = '' ): void {
+		global $wp_version;
+
+		if ( empty( $version ) ) {
+			$version = PLUGIN_MIN_WP;
+		}
+		$title   = __( 'Requiment Not Met', 'drppsm' );
+		$message = __( 'This Plugin requires WP : ', 'drppsm' ) . $version;
+		if ( version_compare( $wp_version, $version ) >= 0 ) {
+			return;
+		}
+		$this->notice->set_error( esc_html( $title ), esc_html( $message ) );
+		throw new PluginException( esc_html( $message ) );
 	}
 }

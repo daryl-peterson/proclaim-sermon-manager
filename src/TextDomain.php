@@ -31,23 +31,31 @@ class TextDomain implements TextDomainInt {
 
 	public const INIT_KEY = 'TEXT_DOMAIN_INIT';
 
-	public static function init(): TextDomainInt {
-		return new self();
+	/**
+	 * Initialize and register callbacks.
+	 *
+	 * @return TextDomainInt
+	 * @since 1.0.0
+	 */
+	public static function exec(): TextDomainInt {
+		$obj = new self();
+		$obj->register();
+		return $obj;
 	}
 
 	/**
 	 * Register callbacks
 	 *
-	 * @return null|bool Return true is default.
+	 * @return null|bool Return true if hooks were initialized.
 	 * @since 1.0.0
 	 */
 	public function register(): ?bool {
+		if ( has_action( 'plugins_loaded', array( $this, 'load_domain' ) ) ) {
+			return false;
+		}
 		add_action( 'plugins_loaded', array( $this, 'load_domain' ) );
-		// add_action( Actions::AFTER_ADMIN_INIT, array( $this, 'switch_to_site_locale' ) );
-
 		return true;
 	}
-
 
 	/**
 	 * Load domain locales
@@ -65,14 +73,7 @@ class TextDomain implements TextDomainInt {
 
 		$result = load_plugin_textdomain( DOMAIN, false, $path );
 		did_action( Actions::TEXT_DOMAIN_LOADED );
-		Logger::debug(
-			array(
-				'PATH'   => $path,
-				'RESULT' => $result,
-				'LOCALE' => $locale,
-				'MOFILE' => $mofile,
-			)
-		);
+
 		return $result;
 	}
 

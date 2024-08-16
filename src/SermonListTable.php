@@ -53,16 +53,18 @@ class SermonListTable implements Initable, Registrable {
 	 * @since 1.0.0
 	 */
 	protected function __construct() {
-		$this->pt                       = PT::SERMON;
-		$this->columns['cb']            = '<input type="checkbox" />';
-		$this->columns['title']         = __( 'Sermon Title', 'drppsm' );
-		$this->columns[ Tax::PREACHER ] = TaxUtils::get_taxonomy_field( Tax::PREACHER, 'singular_name' );
-		$this->columns[ Tax::SERIES ]   = __( 'Sermon Series', 'drppsm' );
-		$this->columns[ Tax::TOPICS ]   = __( 'Topics', 'drppsm' );
-		$this->columns['views']         = __( 'Views', 'drppsm' );
-		$this->columns['comments']      = __( 'Comments', 'drppsm' );
-		$this->columns['preached']      = __( 'Preached', 'drppsm' );
-		$this->columns['date']          = __( 'Published' );
+		$preacher = get_setting( Tax::PREACHER, __( 'Preacher', 'drppsm' ) );
+
+		$this->pt                         = PT::SERMON;
+		$this->columns['cb']              = '<input type="checkbox" />';
+		$this->columns['title']           = __( 'Sermon Title', 'drppsm' );
+		$this->columns[ Tax::PREACHER ]   = $preacher;
+		$this->columns[ Tax::SERIES ]     = __( 'Sermon Series', 'drppsm' );
+		$this->columns[ Tax::TOPICS ]     = __( 'Topics', 'drppsm' );
+		$this->columns['drppsm_views']    = __( 'Views', 'drppsm' );
+		$this->columns['comments']        = __( 'Comments', 'drppsm' );
+		$this->columns['drppsm_preached'] = __( 'Preached', 'drppsm' );
+		$this->columns['date']            = __( 'Published' );
 	}
 
 	/**
@@ -96,11 +98,31 @@ class SermonListTable implements Initable, Registrable {
 		add_filter( 'list_table_primary_column', array( $this, 'set_table_primary_column' ), 10, 2 );
 		add_filter( 'post_row_actions', array( $this, 'row_actions' ), 100, 2 );
 		add_action( 'restrict_manage_posts', array( $this, 'restrict_manage_posts' ) );
-
-		// add_filter( 'request', array( $this, 'request_query' ), 10, 1 ); .
 		add_filter( 'parse_query', array( $this, 'sermon_filters_query' ), 10, 1 );
 
+		add_action( 'manage_posts_extra_tablenav', array( $this, 'extra_nav' ), 10, 1 );
 		return true;
+	}
+
+	public function extra_nav( $which ) {
+
+		if ( ! $this->post_type_match() || 'top' !== $which ) {
+			return;
+		}
+
+		$url = get_admin_url() . 'edit.php?post_type=' . $this->pt;
+
+		$filters = $this->sermon_filters();
+		$html    = <<<EOT
+			<input id="drppsm-custom-filters" name="drppsm-custom-filters" type="button" class="button toggle" value="More" data-item="#drppsm-filter">
+			<input id="drppsm-filter-reset" name="drppsm-filter-reset" type="button" class="button" value="Reset" data-url="$url">
+			<div id="drppsm-filter" class="drppsm-wrap display-none">
+				<div id="drppsm-content" class="drppsm-content">
+					$filters
+				</div>
+			</div>
+		EOT;
+		echo $html;
 	}
 
 	/**
@@ -128,10 +150,10 @@ class SermonListTable implements Initable, Registrable {
 				case Tax::TOPICS:
 					$data = get_the_term_list( $post->ID, Tax::TOPICS, '', ', ', '' );
 					break;
-				case 'views':
+				case 'drppsm_views':
 					$data = PostTypeUtils::get_view_count( array( 'post_id' => $post->ID ) );
 					break;
-				case 'preached':
+				case 'drppsm_preached':
 					$unix_preached = DateUtils::get( 'U' );
 
 					if ( time() - $unix_preached < DAY_IN_SECONDS ) {
@@ -192,10 +214,11 @@ class SermonListTable implements Initable, Registrable {
 	public function set_sortable_columns( array $columns ): array {
 
 		$custom = array(
-			'title'     => 'title',
-			Tax::SERIES => Tax::SERIES,
-			Meta::DATE  => Meta::DATE,
-			'views'     => 'views',
+			'title'        => 'title',
+			Tax::SERIES    => Tax::SERIES,
+			Tax::PREACHER  => Tax::PREACHER,
+			Meta::DATE     => Meta::DATE,
+			'drppsm_views' => 'views',
 		);
 
 		return wp_parse_args( $custom, $columns );
@@ -243,8 +266,7 @@ class SermonListTable implements Initable, Registrable {
 		if ( ! $this->post_type_match() ) {
 			return;
 		}
-
-		$this->sermon_filters();
+		// $this->sermon_filters();
 	}
 
 	/**
@@ -261,17 +283,17 @@ class SermonListTable implements Initable, Registrable {
 				return;
 			}
 
-			if ( isset( $query->query_vars[ Tax::SERVICE_TYPE ] ) ) {
-				$query->query_vars['tax_query'] = array(
-					array(
-						'taxonomy' => Tax::SERVICE_TYPE,
-						'field'    => 'slug',
-						// 'field'    => 'term_id',
-						'terms'    => $query->query_vars[ Tax::SERVICE_TYPE ],
-					),
-				);
-				Logger::debug( $query );
+			if ( ! isset( $query->query_vars[ Tax::SERVICE_TYPE ] ) || empty( $query->query_vars[ Tax::SERVICE_TYPE ] ) ) {
+				return;
 			}
+			$query->query_vars['tax_query'] = array(
+				array(
+					'taxonomy' => Tax::SERVICE_TYPE,
+					'field'    => 'slug',
+					// 'field'    => 'term_id',
+					'terms'    => $query->query_vars[ Tax::SERVICE_TYPE ],
+				),
+			);
 
 			// @codeCoverageIgnoreStart
 		} catch ( \Throwable $th ) {
@@ -296,7 +318,6 @@ class SermonListTable implements Initable, Registrable {
 
 		try {
 			if ( ! $this->post_type_match() ) {
-				Logger::debug( 'NOT POST TYPE MATCH' );
 				return $vars;
 			}
 
@@ -342,57 +363,64 @@ class SermonListTable implements Initable, Registrable {
 			);
 			// @codeCoverageIgnoreEnd
 		}
-		Logger::debug( $vars );
 		return $vars;
 	}
 
 	/**
 	 * Create sermon filters.
 	 *
-	 * @return void
+	 * @return string
 	 * @since 1.0.0
 	 */
-	public function sermon_filters(): void {
+	public function sermon_filters(): string {
+
+		$output  = $this->select_filter( Tax::SERVICE_TYPE );
+		$output .= $this->select_filter( Tax::PREACHER );
+		$output .= $this->select_filter( Tax::SERIES );
+
+		return apply_filters( Filters::SERMON_FILTER, $output );
+	}
+
+	/**
+	 * Create tax dropdown.
+	 *
+	 * @param string $tax Taxonomy name.
+	 * @return string
+	 */
+	private function select_filter( string $tax ): string {
 		global $wp_query;
-
-		$service_type = Tax::SERVICE_TYPE;
-
-		$terms = TaxUtils::get_term_options( Tax::SERVICE_TYPE );
-		asort( $terms );
-
-		// Type filtering.
 
 		$terms = get_terms(
 			array(
-				'taxonomy'   => $service_type,
+				'taxonomy'   => $tax,
 				'hide_empty' => false,
 			)
 		);
 
-		$field = TaxUtils::get_taxonomy_field( $service_type, 'singular_name' );
+		$field = TaxUtils::get_taxonomy_field( $tax, 'singular_name' );
+
 		/* translators: %s: Filter by service type. */
 		$label   = wp_sprintf( __( 'Filter by %s', 'drppsm' ), $field );
 		$options = "<option value=\"\">$label</option>";
 
 		foreach ( $terms as $term ) {
-			$value  = trim( $term->slug );
-			$option = "<option value=\"$value\" ";
+			$value = trim( $term->slug );
 
-			if ( isset( $wp_query->query[ $service_type ] ) ) {
-				$option = selected( $term->slug, $wp_query->query[ $service_type ], false );
+			$selected = '';
+			if ( isset( $wp_query->query[ $tax ] ) ) {
+				$selected = selected( $term->slug, $wp_query->query[ $tax ], false );
 			}
-			$option  .= '>';
-			$option  .= ucfirst( $term->name );
-			$option  .= '</option>';
+
+			$option   = wp_sprintf( '<option value="%s"%s>%s</option>', $value, $selected, ucfirst( $term->name ) );
 			$options .= $option;
 		}
 
 		$output = <<<EOT
-			<select name="$service_type" id="dropdown_$service_type">
+			<select name="$tax" id="dropdown_$tax">
 				$options
 			</select>
 		EOT;
-		echo apply_filters( Filters::SERMON_FILTER, $output );
+		return $output;
 	}
 
 	/**

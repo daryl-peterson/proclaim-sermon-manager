@@ -9,7 +9,7 @@
  * @since       1.0.0
  */
 
-use function DRPPSM\inc_admin_plugin;
+use function DRPPSM\include_admin_plugin;
 
 /**
  * Load WordPress core.
@@ -27,7 +27,7 @@ require_once __DIR__ . '/../vendor/autoload.php';
 /**
  * Include wp-admin/includes/plugin.php
  */
-inc_admin_plugin();
+include_admin_plugin();
 
 
 $dir      = dirname( __DIR__, 1 );

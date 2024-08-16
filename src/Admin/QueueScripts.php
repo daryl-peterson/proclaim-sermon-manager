@@ -14,6 +14,7 @@ namespace DRPPSM\Admin;
 use DRPPSM\Helper;
 use DRPPSM\Interfaces\Initable;
 use DRPPSM\Interfaces\Registrable;
+use DRPPSM\Logging\Logger;
 
 /**
  * Queue scritps / styles.
@@ -28,9 +29,15 @@ class QueueScripts implements Initable, Registrable {
 
 
 	/**
-	 * VERSION.
+	 * Version
+	 *
+	 * @var string
 	 */
-	const VER = '1.0.0';
+	private string $ver;
+
+	protected function __construct() {
+		$this->ver = rand( 1, 999 );
+	}
 
 	/**
 	 * Get initialize object.
@@ -66,6 +73,8 @@ class QueueScripts implements Initable, Registrable {
 		return true;
 	}
 
+
+
 	/**
 	 * Register styles / scripts
 	 *
@@ -73,15 +82,34 @@ class QueueScripts implements Initable, Registrable {
 	 * @since 1.0.0
 	 */
 	public function init_script_styles() {
+		$url = Helper::get_url() . 'assets';
+
 		// @codeCoverageIgnoreStart
-		$file = Helper::get_url() . 'assets/css/drppsm-admin.css';
-		wp_register_style( 'drppsm-admin-style', $file, array(), self::VER );
+		$file = $url . '/css/drppsm-admin.css';
+		wp_register_style(
+			'drppsm-admin-style',
+			$file,
+			array(),
+			$this->ver
+		);
 
-		$file = Helper::get_url() . 'assets/css/drppsm-icons.css';
-		wp_register_style( 'drppsm-admin-icons', $file, array(), self::VER );
+		$file = $url . '/css/drppsm-icons.css';
+		wp_register_style(
+			'drppsm-admin-icons',
+			$file,
+			array(),
+			$this->ver
+		);
 
-		$file = Helper::get_url() . 'assets/js/admin.js';
-		wp_register_script( 'drppsm-admin-script', $file, array(), self::VER, true );
+		$file = $url . '/js/admin.js';
+		wp_register_script(
+			'drppsm-admin-script',
+			$file,
+			array(),
+			$this->ver,
+			true
+		);
+
 		// @codeCoverageIgnoreEnd
 	}
 

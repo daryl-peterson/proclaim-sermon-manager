@@ -45,5 +45,21 @@ class Actions {
 	 * @param callable $display_cb Display callback.
 	 * @since 1.0.0
 	 */
-	public const REGISTER_SETTINGS_FORM = 'drpsm_register_settings_form';
+	public const REGISTER_SETTINGS_FORM = 'drppsm_register_settings_form';
+
+
+	/**
+	 * Fires when the form is ready to be displayed.
+	 *
+	 * ```php
+	 * # Use
+	 * add_action(SERMON_EDIT_FORM, array($this,'your_function') );
+	 *
+	 * # Called
+	 * do_action(REGISTER_SETTINGS_FORM);
+	 * ```
+	 *
+	 * @return void
+	 */
+	public const SERMON_EDIT_FORM = 'drppsm_sermon_edit_form';
 }

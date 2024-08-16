@@ -42,7 +42,7 @@ class SermonComments implements Initable, Registrable {
 	 * @since 1.0.0
 	 */
 	protected function __construct() {
-		$this->options = get_options_int();
+		$this->options = options();
 	}
 
 	/**

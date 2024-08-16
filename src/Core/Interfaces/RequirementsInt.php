@@ -1,6 +1,6 @@
 <?php
 /**
- * Requirments interface.
+ * Requirements check interface.
  *
  * @package     Proclaim Sermon Manager
  * @author      Daryl Peterson <@gmail.com>
@@ -12,7 +12,7 @@
 namespace DRPPSM\Interfaces;
 
 /**
- * Requirments interface.
+ * Requirements check interface.
  *
  * @package     Proclaim Sermon Manager
  * @author      Daryl Peterson <@gmail.com>
@@ -20,21 +20,25 @@ namespace DRPPSM\Interfaces;
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
  * @since       1.0.0
  */
-interface RequirementsInt extends Registrable {
+interface RequirementsInt extends BaseInt, Registrable {
 
 	/**
-	 * Check if plugin is compatible.
+	 * Check PHP version
 	 *
-	 * @return bool True if no errors.
-	 * @since 1.0.0
+	 * @param string $version Required PHP version.
+	 * @return void
+	 * @throws PluginException Throws exception if requirements are not met.
 	 */
-	public function is_compatible(): bool;
+	public function check_php_ver( string $version = '' ): void;
 
 	/**
-	 * Get notice interface.
+	 * Check WordPress verson
 	 *
-	 * @return NoticeInt
+	 * @param string $version Required WordPress version.
+	 * @return void
+	 *
+	 * @throws PluginException Throws exception if requirements are not met.
 	 * @since 1.0.0
 	 */
-	public function notice(): NoticeInt;
+	public function check_wp_ver( string $version = '' ): void;
 }

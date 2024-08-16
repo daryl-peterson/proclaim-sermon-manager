@@ -13,11 +13,12 @@ namespace DRPPSM;
 
 defined( 'ABSPATH' ) || exit;
 
+use DRPPSM\Constants\Actions;
 use DRPPSM\Constants\Bible;
 use DRPPSM\Constants\Tax;
-use DRPPSM\Interfaces\Initable;
-use DRPPSM\Interfaces\OptionsInt;
+use DRPPSM\Interfaces\BibleLoadInt;
 use DRPPSM\Logging\Logger;
+use WP_Error;
 
 /**
  * Loads bible books taxomony data.
@@ -28,83 +29,99 @@ use DRPPSM\Logging\Logger;
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
  * @since       1.0.0
  */
-class BibleLoad implements Initable {
+class BibleLoad implements BibleLoadInt {
 
 	/**
-	 * Options interface.
+	 * Register callbacks.
 	 *
-	 * @var OptionsInt
-	 *
+	 * @return boolean|null
 	 * @since 1.0.0
 	 */
-	public OptionsInt $options;
-
-	/**
-	 * Initialize object properties.
-	 *
-	 * @since 1.0.0
-	 */
-	protected function __construct() {
-		$this->options = get_options_int();
+	public function register(): ?bool {
+		if ( has_action( Actions::AFTER_POST_SETUP, array( $this, 'run' ) ) ) {
+			return false;
+		}
+		return add_action( Actions::AFTER_POST_SETUP, array( $this, 'run' ) );
 	}
 
 	/**
-	 * Get intialize object.
+	 * Initailize and register callbacks.
 	 *
-	 * @return BibleLoad
+	 * @return BibleLoadInt
 	 * @since 1.0.0
 	 */
-	public static function init(): BibleLoad {
-		return new static();
+	public static function exec(): BibleLoadInt {
+		$obj = new self();
+		$obj->register();
+		return $obj;
 	}
 
 	/**
 	 * Check if Bible books have been loaded.
 	 * - Call function to load them.
 	 *
-	 * @return void
+	 * @return bool
 	 * @since 1.0.0
 	 */
-	public function run(): void {
+	public function run(): bool {
 
-		$ran = $this->options->get( 'bible_books_loaded', false );
+		$hook    = Tax::BIBLE_BOOK . '_loaded';
+		$options = options();
+		$ran     = $options->get( $hook, false );
+
 		if ( $ran && ! defined( 'PHPUNIT_TESTING' ) ) {
 			// @codeCoverageIgnoreStart
-			return;
+			return false;
 			// @codeCoverageIgnoreEnd
 		}
 
-		$this->load();
-		$this->options->set( 'bible_books_loaded', true );
+		$result = $this->load();
+		if ( $result ) {
+			$options->set( $hook, true );
+		}
+		return $result;
 	}
 
 	/**
-	 * Load Bible books
+	 * Load Bible books.
 	 *
-	 * @return void
+	 * @return bool True if the books were loaded, false otherwise.
+	 * @since 1.0.0
 	 */
-	private function load(): void {
+	private function load(): bool {
 		$books = Bible::BOOKS;
 		$tax   = Tax::BIBLE_BOOK;
 
 		try {
+			$result = false;
 			foreach ( $books as $book ) {
-				$slug = trim(
-					strtolower(
-						str_replace(
-							array( ' ', '_' ),
-							array( '-', '-' ),
-							$book
-						)
+				$slug   = sanitize_title( $book );
+				$result = term_exists( $slug, $tax );
+
+				Logger::debug( array( $result ) );
+
+				if ( isset( $result ) ) {
+					continue;
+				}
+
+				$result = wp_insert_term(
+					$book,
+					$tax,
+					array(
+						'slug' => $slug,
 					)
 				);
 
-				// @codeCoverageIgnoreStart
-				if ( ! term_exists( $book, $tax ) ) {
-					wp_insert_term( $book, $tax, array( 'slug' => $slug ) );
+				if ( $result instanceof WP_Error ) {
+					$result = false;
+					break;
 				}
-				// @codeCoverageIgnoreEnd
 			}
+			if ( $result ) {
+				return true;
+			}
+
+			return false;
 			// @codeCoverageIgnoreStart
 		} catch ( \Throwable $th ) {
 			Logger::error(
@@ -113,6 +130,7 @@ class BibleLoad implements Initable {
 					'TRACE'   => $th->getTrace(),
 				)
 			);
+			return false;
 			// @codeCoverageIgnoreEnd
 		}
 	}

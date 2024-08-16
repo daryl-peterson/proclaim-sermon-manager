@@ -17,9 +17,6 @@ use DRPPSM\Admin\QueueScripts;
 use DRPPSM\Interfaces\NoticeInt;
 use DRPPSM\Interfaces\PluginInt;
 use DRPPSM\Interfaces\PostTypeSetupInt;
-use DRPPSM\Interfaces\RequirementsInt;
-use DRPPSM\Interfaces\TextDomainInt;
-use DRPPSM\BibleLoad;
 use DRPPSM\Constants\Actions;
 use DRPPSM\Logging\Logger;
 
@@ -80,19 +77,23 @@ class Plugin implements PluginInt {
 
 			// Load other classes.
 			$app = app();
-			$app->get( RequirementsInt::class )->register();
-			$app->get( TextDomainInt::class )->register();
+
 			$app->get( PostTypeSetupInt::class )->register();
 
-			get_textdomain_int()->register();
+			textdomain()->register();
 
-			TextDomain::init()->register();
+			requirements();
+			roles();
+			textdomain();
+			imagesize();
+			bibleload();
+
 			QueueScripts::init()->register();
 			SermonEdit::init()->register();
 			SermonListTable::init()->register();
 			SermonComments::init()->register();
 			TaxonomyListTable::init()->register();
-			ImageSizes::init()->register();
+
 			AdminMenu::init()->register();
 			AdminSettings::init()->register();
 
@@ -119,11 +120,7 @@ class Plugin implements PluginInt {
 	 */
 	public function activate(): bool {
 		try {
-			$obj = get_roles_int();
-			$obj->add();
-
-			BibleLoad::init()->run();
-
+			options()->set( 'activated', time() );
 			// @codeCoverageIgnoreStart
 		} catch ( \Throwable $th ) {
 			Logger::error(
@@ -145,6 +142,7 @@ class Plugin implements PluginInt {
 	 * @since 1.0.0
 	 */
 	public function deactivate(): bool {
+		options()->delete( 'activated' );
 		return true;
 	}
 
@@ -173,7 +171,8 @@ class Plugin implements PluginInt {
 		if ( defined( 'CMB2_VERSION' ) ) {
 			$ver = CMB2_VERSION;
 		}
+		$this->cmb2_version = $ver;
 
-		Logger::debug( array( 'CMB2 VERSION' => $ver ) );
+		// Logger::debug( array( 'CMB2 VERSION' => $ver ) );
 	}
 }

@@ -53,10 +53,39 @@ class Roles implements RolesInt {
 	 *
 	 * @since 1.0.0
 	 */
-	public function __construct() {
+	protected function __construct() {
 		$this->role_list  = Caps::ROLES;
 		$this->caps       = Caps::LIST;
 		$this->privileges = Caps::PRIVILEGES;
+	}
+
+	/**
+	 * Register callback functions.
+	 *
+	 * @return boolean|null Returns true if hooks were set, otherwise false.
+	 * @since 1.0.0
+	 */
+	public function register(): ?bool {
+		$activated = options()->get( 'activated', false );
+		$file      = plugin_basename( FILE );
+
+		if ( ! is_admin() || $activated || has_action( 'activate_' . $file, array( $this, 'add' ) ) ) {
+			return false;
+		}
+		register_activation_hook( FILE, array( $this, 'add' ) );
+		return true;
+	}
+
+	/**
+	 * Initalize and register callbacks.
+	 *
+	 * @return RolesInt
+	 * @since 1.0.0
+	 */
+	public static function exec(): RolesInt {
+		$obj = new self();
+		$obj->register();
+		return $obj;
 	}
 
 	/**

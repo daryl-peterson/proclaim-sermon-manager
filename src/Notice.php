@@ -49,7 +49,7 @@ class Notice implements NoticeInt {
 	 */
 	protected function __construct() {
 		// @codeCoverageIgnoreStart
-		$this->options = get_options_int();
+		$this->options = options();
 		// @codeCoverageIgnoreEnd
 	}
 

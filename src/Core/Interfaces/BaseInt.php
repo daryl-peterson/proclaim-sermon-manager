@@ -1,6 +1,6 @@
 <?php
 /**
- * Test requirements.
+ * Base interface.
  *
  * @package     Proclaim Sermon Manager
  * @author      Daryl Peterson <@gmail.com>
@@ -9,10 +9,10 @@
  * @since       1.0.0
  */
 
-namespace DRPPSM\Tests;
+namespace DRPPSM\Interfaces;
 
 /**
- * Test requirements.
+ * Base interface.
  *
  * @package     Proclaim Sermon Manager
  * @author      Daryl Peterson <@gmail.com>
@@ -20,7 +20,6 @@ namespace DRPPSM\Tests;
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
  * @since       1.0.0
  */
-class RequirementsTest extends BaseTest {
-
+interface BaseInt extends Executable, Runable {
 
 }

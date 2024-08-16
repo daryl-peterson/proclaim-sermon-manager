@@ -17,14 +17,13 @@ use DRPPSM\Exceptions\NotfoundException;
 use DRPPSM\Interfaces\NoticeInt;
 use DRPPSM\Interfaces\OptionsInt;
 use DRPPSM\Interfaces\PluginInt;
-use DRPPSM\Logging\Logger;
 use stdClass;
 
 use function DRPPSM\allowed_html;
 use function DRPPSM\app;
 use function DRPPSM\app_get;
-use function DRPPSM\get_notice_int;
-use function DRPPSM\get_options_int;
+use function DRPPSM\notice;
+use function DRPPSM\options;
 
 /**
  * App test.
@@ -50,11 +49,8 @@ class AppTest extends BaseTest {
 
 	public function test_get_instance() {
 		$this->assertNotNull( $this->obj );
-		$result = $this->app->get( NoticeInt::class );
-		$this->assertNotNull( $result );
 
-		$obj = $this->app->get( BibleLoad::class );
-		Logger::debug( $obj );
+		$obj = BibleLoad::exec();
 		$this->assertInstanceOf( BibleLoad::class, $obj );
 	}
 
@@ -74,12 +70,12 @@ class AppTest extends BaseTest {
 	}
 
 	public function test_get_options_int() {
-		$result = get_options_int();
+		$result = options();
 		$this->assertInstanceOf( OptionsInt::class, $result );
 	}
 
 	public function test_get_notice_int() {
-		$result = get_notice_int();
+		$result = notice();
 		$this->assertInstanceOf( NoticeInt::class, $result );
 	}
 
@@ -89,9 +85,6 @@ class AppTest extends BaseTest {
 	}
 
 	public function test_has() {
-		$result = $this->app->has( NoticeInt::class );
-		$this->assertTrue( $result );
-
 		$result = $this->app->has( 'blah' );
 		$this->assertFalse( $result );
 	}

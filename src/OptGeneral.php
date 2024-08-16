@@ -16,7 +16,6 @@ use DRPPSM\Constants\Actions;
 use DRPPSM\Constants\Filters;
 use DRPPSM\Interfaces\Initable;
 use DRPPSM\Interfaces\Registrable;
-use DRPPSM\Logging\Logger;
 
 /**
  * General settings.
@@ -88,17 +87,24 @@ class OptGeneral implements Initable, Registrable {
 		return self::OPTION_KEY;
 	}
 
-
+	/**
+	 * Not used yet.
+	 *
+	 * @param mixed $obj
+	 * @param mixed $object_id
+	 * @return void
+	 */
 	public function pre_proccess( mixed $obj, mixed $object_id ) {
-		Logger::debug(
-			array(
-				'OBJ'    => $obj,
-				'OBJ ID' => $object_id,
-			)
-		);
 	}
 
-	public function register_metaboxes( callable $display_cb ) {
+	/**
+	 * Register metaboxes.
+	 *
+	 * @param callable $display_cb
+	 * @return void
+	 * @since 1.0.0
+	 */
+	public function register_metaboxes( callable $display_cb ): void {
 
 		$menu_title = __( 'Settings', 'drppsm' );
 		$title      = 'Proclaim ' . __( 'Sermon Manager Settings', 'drppsm' );
@@ -125,11 +131,55 @@ class OptGeneral implements Initable, Registrable {
 
 		$cmb = new_cmb2_box( $args );
 
+		$this->add_menu_icon( $cmb );
+		$this->add_date_format( $cmb );
+		$this->add_sermon_count( $cmb );
+		$this->add_archive( $cmb );
+		$this->add_common_base_slug( $cmb );
+		$this->add_preacher( $cmb );
+		$this->add_service_type( $cmb );
+	}
+
+	/**
+	 * Set defaults.
+	 *
+	 * @return bool True if defaults were set, otherwise false.
+	 * @since 1.0.0
+	 */
+	public function set_defaults(): bool {
+		$transient_key = get_key_name( self::OPTION_KEY . '_init' );
+		$transient     = get_transient( $transient_key );
+
+		if ( ! empty( $transient ) || ( $transient ) ) {
+			return false;
+		}
+
+		$option_int = options();
+		$options    = (array) $option_int->get( self::OPTION_KEY, array() );
+
+		foreach ( self::DEFAULTS as $key => $value ) {
+			if ( ! key_exists( $key, $options ) ) {
+				$options[ $key ] = $value;
+			}
+		}
+		$option_int->set( self::OPTION_KEY, $options );
+		set_transient( $transient_key, true );
+		return true;
+	}
+
+	/**
+	 * Add menu icon.
+	 *
+	 * @param CMB2 $cmb
+	 * @return void
+	 * @since 1.0.0
+	 */
+	private function add_menu_icon( CMB2 $cmb ): void {
+		$desc = __( 'Allows for change the admin menu icon', 'drppsm' );
 		$cmb->add_field(
 			array(
 				'id'               => Settings::FIELD_MENU_ICON,
 				'name'             => __( 'Menu Icon', 'drppsm' ),
-				'desc'             => '',
 				'type'             => 'select',
 				'show_option_none' => true,
 				'options'          => array(
@@ -149,14 +199,24 @@ class OptGeneral implements Initable, Registrable {
 					'dashicons-drppsm-holy-spirit' => __( 'Holy Spirit', 'drppsm' ),
 				),
 				'default'          => Settings::DEFAULT_MENU_ICON,
+				'after_row'        => $this->description( $desc ),
 			)
 		);
+	}
 
+	/**
+	 * Add date format field.
+	 *
+	 * @param CMB2 $cmb
+	 * @return void
+	 * @since 1.0.0
+	 */
+	private function add_date_format( CMB2 $cmb ): void {
+		$desc = __( 'Used only in admin area, when creating a new Sermon', 'drppsm' );
 		$cmb->add_field(
 			array(
 				'id'               => Settings::FIELD_DATE_FORMAT,
-				'name'             => __( 'Menu Icon', 'drppsm' ),
-				'desc'             => '',
+				'name'             => __( 'Sermon Date Format', 'drppsm' ),
 				'type'             => 'select',
 				'show_option_none' => true,
 				'options'          => array(
@@ -166,66 +226,33 @@ class OptGeneral implements Initable, Registrable {
 					'YY/dd/mm' => 'YY/dd/mm',
 				),
 				'default'          => Settings::DEFAULT_DATE_FORMAT,
+				'after_row'        => $this->description( $desc ),
 			)
 		);
+	}
+
+	/**
+	 * Add sermon count field.
+	 *
+	 * @param CMB2 $cmb
+	 * @return void
+	 * @since 1.0.0
+	 */
+	private function add_sermon_count( CMB2 $cmb ): void {
+		$desc = __( 'Affects only the default number, other settings will override it', 'drppsm' );
 		$cmb->add_field(
 			array(
 				'id'         => Settings::FIELD_SERMON_COUNT,
 				'name'       => __( 'Sermons Per Page', 'drppsm' ),
-				'desc'       => __( 'Affects only the default number', 'drppsm' ),
 				'type'       => 'text',
 				'attributes' => array(
 					'type'    => 'number',
 					'pattern' => '\d*',
 				),
 				'default'    => Settings::DEFAULT_SERMON_COUNT,
+				'after_row'  => $this->description( $desc ),
 			)
 		);
-
-		$this->add_archive( $cmb );
-
-		$cmb->add_field(
-			array(
-				'id'      => Settings::FIELD_COMMON_BASE_SLUG,
-				'name'    => __( 'Common Base Slug', 'drppsm' ),
-				'desc'    => '
-					If this option is checked, the taxonomies would also be under the slug set above.
-					For example, by default, series named “James” would be under /sermons/series/james,
-					preacher “Paul” would be under /sermons/preacher/paul, and so on.',
-				'type'    => 'checkbox',
-				'default' => Settings::DEFAULT_COMMON_BASE_SLUG,
-			)
-		);
-
-		$this->add_preacher( $cmb );
-		$this->add_service_type( $cmb );
-	}
-
-	/**
-	 * Set defaults.
-	 *
-	 * @return bool True if defaults were set, otherwise false.
-	 * @since 1.0.0
-	 */
-	public function set_defaults(): bool {
-		$transient_key = get_key_name( self::OPTION_KEY . '_init' );
-		$transient     = get_transient( $transient_key );
-
-		if ( ! empty( $transient ) || ( $transient ) ) {
-			return false;
-		}
-
-		$option_int = get_options_int();
-		$options    = (array) $option_int->get( self::OPTION_KEY, array() );
-
-		foreach ( self::DEFAULTS as $key => $value ) {
-			if ( ! key_exists( $key, $options ) ) {
-				$options[ $key ] = $value;
-			}
-		}
-		$option_int->set( self::OPTION_KEY, $options );
-		set_transient( $transient_key, true );
-		return true;
 	}
 
 	/**
@@ -239,28 +266,61 @@ class OptGeneral implements Initable, Registrable {
 		$s1 = '<code>' . __( '/sermons', 'drppsm' ) . '</code>';
 		$s2 = '<code>' . __( '/sermons/jesus', 'drppsm' ) . '</code>';
 
-		$desc = __( 'This controls the page where sermons will be located, which includes single sermons.', 'drppsm' );
+		$desc  = __( 'This setting determines the page where sermons will be found, including each sermon.', 'drppsm' );
+		$desc .= $this->dot();
 
 		$desc .= wp_sprintf(
 			// translators: %1$s Default archive path, effectively <code>/sermons</code>.
 			// translators: %2$s Example single sermon path, effectively <code>/sermons/jesus</code>.
 			__(
-				'By default all sermons would be located under %1$s, and a single sermon with slug “jesus” would be under %2$s.',
+				'By default, all sermons will be under %1$s, and a single sermon with slug of “jesus” will be under %2$s.',
 				'drppsm'
 			),
 			$s1,
 			$s2
 		);
-
-		$desc .= __( 'Does not apply if "pretty permalinks" are not turned on.', 'drppsm' );
+		$desc .= $this->dot() . __( 'However, this does not apply if "pretty permalinks" are not enabled.', 'drppsm' );
 
 		$cmb->add_field(
 			array(
-				'id'      => Settings::FIELD_ARCHIVE_SLUG,
-				'name'    => __( 'Archive Page Slug', 'drppsm' ),
-				'desc'    => $desc,
-				'type'    => 'text',
-				'default' => Settings::DEFAULT_ARCHIVE_SLUG,
+				'id'        => Settings::FIELD_ARCHIVE_SLUG,
+				'name'      => __( 'Archive Page Slug', 'drppsm' ),
+				'type'      => 'text',
+				'default'   => Settings::DEFAULT_ARCHIVE_SLUG,
+				'after_row' => $this->description( $desc ),
+			)
+		);
+	}
+
+	/**
+	 * Add common base slug.
+	 *
+	 * @param CMB2 $cmb
+	 * @return void
+	 * @since 1.0.0
+	 */
+	private function add_common_base_slug( CMB2 $cmb ): void {
+
+		$desc  = __( 'If this option is checked, the taxonomies would also be under the slug set above.', 'drppsm' );
+		$desc .= $this->dot();
+		$s1    = '<code>' . __( '/sermons/series/jesus', 'drppsm' ) . '</code>';
+		$s2    = '<code>' . __( '/sermons/preacher/mark', 'drppsm' ) . '</code>';
+
+		$desc .= wp_sprintf(
+			// translators: %1$s Example series path, effectively <code>/sermons/series/jesus</code>.
+			// translators: %2$s Example preacher path, effectively <code>/sermons/preacher/mark</code>.
+			__( 'For example, by default, series named “Jesus” would be under %1$s, preacher “Mark” would be under %2$s, and so on.', 'drppsm' ),
+			$s1,
+			$s2
+		);
+
+		$cmb->add_field(
+			array(
+				'id'        => Settings::FIELD_COMMON_BASE_SLUG,
+				'name'      => __( 'Common Base Slug', 'drppsm' ),
+				'type'      => 'checkbox',
+				'default'   => Settings::DEFAULT_COMMON_BASE_SLUG,
+				'after_row' => $this->description( $desc ),
 			)
 		);
 	}
@@ -275,27 +335,29 @@ class OptGeneral implements Initable, Registrable {
 	private function add_preacher( CMB2 $cmb ): void {
 		$s1    = '<code>' . __( '/preacher/mark', 'drppsm' ) . '</code>';
 		$s2    = '<code>' . __( '/reverend/mark', 'drppsm' ) . '</code>';
-		$desc  = __( 'Label in singular form. You change the default Preacher to anything you like.', 'drppsm' );
-		$desc .= __( '"Reverend", for example). Note: This also change the slugs.', 'drppsm' );
+		$desc  = __( 'The label should be in the singular form.', 'drppsm' );
+		$desc .= $this->dot() . __( 'You have the option to change the default value of "Preacher" to anything you prefer.' );
+		$desc .= $this->dot();
 
 		$desc .= wp_sprintf(
 			// translators: %1$s Default preacher slug/path. Effectively <code>/preacher/mark</code>.
-			// translators: %2$s Example reverend slug/path. Effectively <code>/speaker/mark</code>.
-			__( 'For example, %1$s would become %2$s.', 'drppsm' ),
+			// translators: %2$s Example reverend slug/path. Effectively <code>/reverend/mark</code>.
+			__( 'Changing "Preacher" to "Reverend" would result in %1$s becoming %2$s.', 'drppsm' ),
 			$s1,
 			$s2
 		);
+		$desc .= $this->dot() . __( 'Note: This also changes the slugs.' );
 
 		/**
 		 * Preacher label.
 		 */
 		$cmb->add_field(
 			array(
-				'id'      => Settings::FIELD_PREACHER,
-				'name'    => __( 'Preacher Label', 'drppsm' ),
-				'desc'    => $desc,
-				'type'    => 'text',
-				'default' => Settings::DEFAULT_PREACHER,
+				'id'        => Settings::FIELD_PREACHER,
+				'name'      => __( 'Preacher Label', 'drppsm' ),
+				'type'      => 'text',
+				'default'   => Settings::DEFAULT_PREACHER,
+				'after_row' => $this->description( $desc ),
 			)
 		);
 	}
@@ -308,9 +370,9 @@ class OptGeneral implements Initable, Registrable {
 	 * @since 1.0.0
 	 */
 	private function add_service_type( CMB2 $cmb ): void {
-		$desc  = __( 'Put the label in singular form. ', 'drppsm' );
-		$desc .= __( 'You change the default Service Type label to anything you wish.', 'drppsm' );
-		$desc .= __( '("Congregation", for example).	Note: it will also change the slugs.', 'drppsm' );
+		$desc  = __( 'The label should be in singular form.', 'drppsm' );
+		$desc .= $this->dot() . __( 'You can change the default value of "Service Type" to anything you prefer.', 'drppsm' );
+		$desc .= $this->dot();
 
 		$s1 = '<code>' . __( '/service-type/morning', 'drppsm' ) . '</code>';
 		$s2 = '<code>' . __( '/congregation/monring', 'drppsm' ) . '</code>';
@@ -318,20 +380,42 @@ class OptGeneral implements Initable, Registrable {
 		$desc .= wp_sprintf(
 				// translators: %1$s Default slug/path. Effectively <code>/service-type/morning</code>.
 				// translators: %2$s Example changed slug/path. Effectively <code>/congregation/morning</code>.
-			__( 'Note: it will also change the slugs. For example, %1$s would become %2$s.', 'drppsm' ),
+			__( 'Changing "Service Type" to "Congregation" would result in %1$s becomimg %2$s.', 'drppsm' ),
 			$s1,
 			$s2
 		);
+		$desc .= $this->dot() . __( 'Note that this also changes the slugs.', 'drppsm' );
 
 		$cmb->add_field(
 			array(
-				'id'      => Settings::FIELD_SERVICE_TYPE,
-				'name'    => __( 'Service Type Label', 'drppsm' ),
-				'desc'    => $desc,
-				'type'    => 'text',
-				'default' => Settings::DEFAULT_SERVICE_TYPE,
+				'id'        => Settings::FIELD_SERVICE_TYPE,
+				'name'      => __( 'Service Type Label', 'drppsm' ),
+				'type'      => 'text',
+				'default'   => Settings::DEFAULT_SERVICE_TYPE,
+				'after_row' => $this->description( $desc ),
 			)
 		);
+	}
+
+	/**
+	 * Move description to a new line.
+	 *
+	 * @param string $desc Description.
+	 * @return string
+	 * @since 1.0.0
+	 */
+	private function description( string $desc ): string {
+		return '<div class="description">' . $desc . '</div>';
+	}
+
+	/**
+	 * Create spacing between new lines.
+	 *
+	 * @return string
+	 * @since 1.0.0
+	 */
+	private function dot(): string {
+		return '<span class="spacer"></span>';
 	}
 
 	/**
@@ -341,7 +425,7 @@ class OptGeneral implements Initable, Registrable {
 	 * @since 1.0.0
 	 */
 	private function app_settings() {
-		$option_int = get_options_int();
+		$option_int = options();
 		$options    = (array) $option_int->get( self::OPTION_KEY, array() );
 
 		app()->set_setting( $options );

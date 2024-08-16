@@ -33,7 +33,7 @@ class SermonDetailsTest extends BaseTest {
 	 * @since 1.0.0
 	 */
 	public function setup(): void {
-		$this->obj = $this->app->get( SermonDetail::class );
+		$this->obj = SermonDetail::init();
 	}
 
 	public function test_get() {

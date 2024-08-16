@@ -13,8 +13,11 @@ namespace DRPPSM;
 
 defined( 'ABSPATH' ) || exit;
 
+use DRPPSM\Constants\Actions;
 use DRPPSM\Constants\Meta;
 use DRPPSM\Constants\PT;
+use DRPPSM\Interfaces\Initable;
+use DRPPSM\Interfaces\Registrable;
 
 /**
  * Sermon files meta boxes.
@@ -25,7 +28,31 @@ use DRPPSM\Constants\PT;
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
  * @since       1.0.0
  */
-class SermonFiles {
+class SermonFiles implements Initable, Registrable {
+
+	/**
+	 * Get initialized object.
+	 *
+	 * @return SermonFiles
+	 * @since 1.0.0
+	 */
+	public static function init(): SermonFiles {
+		return new self();
+	}
+
+	/**
+	 * Register callbacks.
+	 *
+	 * @return boolean|null Returns true if callbacks were registered.
+	 * @since 1.0.0
+	 */
+	public function register(): ?bool {
+		if ( ! is_admin() && ! defined( 'PHPUNIT_TESTING' ) ) {
+			return false;
+		}
+		add_action( Actions::SERMON_EDIT_FORM, array( $this, 'show' ) );
+		return true;
+	}
 
 	/**
 	 * Show meta box.
