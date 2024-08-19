@@ -80,7 +80,7 @@ class SermonEdit implements Initable, Registrable {
 	 * @since 1.0.0
 	 */
 	public function register(): ?bool {
-		if ( ! is_admin() && ! defined( 'PHPUNIT_TESTING' ) ) {
+		if ( ! is_admin() || has_action( 'admin_menu', array( $this, 'remove_meta_boxes' ) ) ) {
 			return false;
 		}
 
