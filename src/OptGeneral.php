@@ -66,6 +66,11 @@ class OptGeneral implements Initable, Registrable {
 	 * @since 1.0.0
 	 */
 	public function register(): ?bool {
+
+		if ( ! is_admin() || has_action( Actions::REGISTER_SETTINGS_FORM, array( $this, 'register_metaboxes' ) ) ) {
+			return false;
+		}
+
 		add_action( Actions::REGISTER_SETTINGS_FORM, array( $this, 'register_metaboxes' ) );
 		add_filter( Filters::OPTIONS_MAIN_MENU, array( $this, 'set_menu' ) );
 
@@ -176,7 +181,7 @@ class OptGeneral implements Initable, Registrable {
 	 * @since 1.0.0
 	 */
 	private function add_menu_icon( CMB2 $cmb ): void {
-		$desc = __( 'Allows for change the admin menu icon', 'drppsm' );
+		$desc = __( 'Allows for changing the admin menu icon.', 'drppsm' );
 		$cmb->add_field(
 			array(
 				'id'               => Settings::FIELD_MENU_ICON,

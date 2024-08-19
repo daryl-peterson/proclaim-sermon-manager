@@ -13,7 +13,7 @@ namespace DRPPSM;
 
 defined( 'ABSPATH' ) || exit;
 
-use DRPPSM\Admin\QueueScripts;
+
 use DRPPSM\Interfaces\NoticeInt;
 use DRPPSM\Interfaces\PluginInt;
 use DRPPSM\Interfaces\PostTypeSetupInt;
@@ -88,8 +88,8 @@ class Plugin implements PluginInt {
 			imagesize();
 			bibleload();
 
-			QueueScripts::init()->register();
 			SermonEdit::init()->register();
+			QueueScripts::exec();
 			SermonImage::exec();
 			SermonComments::exec();
 			TaxonomyImage::exec();

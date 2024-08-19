@@ -9,12 +9,13 @@
  * @since       1.0.0
  */
 
-namespace DRPPSM\Admin;
+namespace DRPPSM;
+
+defined( 'ABSPATH' ) || exit;
 
 use DRPPSM\Helper;
-use DRPPSM\Interfaces\Initable;
+use DRPPSM\Interfaces\Executable;
 use DRPPSM\Interfaces\Registrable;
-use DRPPSM\Logging\Logger;
 
 /**
  * Queue scritps / styles.
@@ -25,8 +26,7 @@ use DRPPSM\Logging\Logger;
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
  * @since       1.0.0
  */
-class QueueScripts implements Initable, Registrable {
-
+class QueueScripts implements Registrable, Executable {
 
 	/**
 	 * Version
@@ -35,18 +35,25 @@ class QueueScripts implements Initable, Registrable {
 	 */
 	private string $ver;
 
+	/**
+	 * Initialize object properties.
+	 *
+	 * @since 1.0.0
+	 */
 	protected function __construct() {
 		$this->ver = rand( 1, 999 );
 	}
 
 	/**
-	 * Get initialize object.
+	 * Initialize and register callbacks.
 	 *
 	 * @return QueueScripts
 	 * @since 1.0.0
 	 */
-	public static function init(): QueueScripts {
-		return new self();
+	public static function exec(): QueueScripts {
+		$obj = new static();
+		$obj->register();
+		return $obj;
 	}
 
 	/**
@@ -57,23 +64,14 @@ class QueueScripts implements Initable, Registrable {
 	 */
 	public function register(): ?bool {
 
-		$hook = Helper::get_key_name( Helper::get_short_name( $this ) . '_' . __FUNCTION__ );
-		if ( did_action( $hook ) && ! defined( 'PHPUNIT_TESTING' ) ) {
-			// @codeCoverageIgnoreStart
-			return true;
-			// @codeCoverageIgnoreEnd
-		}
-
-		if ( is_admin() ) {
+		if ( is_admin() && ! has_action( 'admin_init', array( $this, 'init_script_styles' ) ) ) {
 			add_action( 'admin_init', array( $this, 'init_script_styles' ) );
 			add_action( 'admin_enqueue_scripts', array( $this, 'load' ) );
 			add_action( 'admin_footer', array( $this, 'footer' ) );
 		}
-		do_action( $hook );
+
 		return true;
 	}
-
-
 
 	/**
 	 * Register styles / scripts
@@ -84,7 +82,6 @@ class QueueScripts implements Initable, Registrable {
 	public function init_script_styles() {
 		$url = Helper::get_url() . 'assets';
 
-		// @codeCoverageIgnoreStart
 		$file = $url . '/css/drppsm-admin.css';
 		wp_register_style(
 			'drppsm-admin-style',
@@ -109,8 +106,6 @@ class QueueScripts implements Initable, Registrable {
 			$this->ver,
 			true
 		);
-
-		// @codeCoverageIgnoreEnd
 	}
 
 	/**
