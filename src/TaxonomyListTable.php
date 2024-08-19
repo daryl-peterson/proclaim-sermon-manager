@@ -19,6 +19,8 @@ use DRPPSM\Constants\Tax;
 use DRPPSM\Interfaces\Initable;
 use DRPPSM\Interfaces\Registrable;
 use DRPPSM\Logging\Logger;
+use WP_Post;
+use WP_Term;
 
 /**
  * Taxonomy list table.
@@ -46,6 +48,10 @@ class TaxonomyListTable implements Initable, Registrable {
 	 */
 	private array $tax;
 
+
+
+	private array $fields;
+
 	/**
 	 * Initialize object.
 	 */
@@ -63,6 +69,11 @@ class TaxonomyListTable implements Initable, Registrable {
 			Tax::SERIES,
 			Tax::TOPICS,
 		);
+
+		foreach ( $this->tax as $taxonomy ) {
+
+			$this->fields[ $taxonomy ] = array( $taxonomy . '_image_id', $taxonomy . '_image' );
+		}
 	}
 
 	/**
@@ -107,6 +118,7 @@ class TaxonomyListTable implements Initable, Registrable {
 	public function cmb(): void {
 		foreach ( $this->tax as $taxonomy ) {
 			$this->add_image_field( $taxonomy );
+
 		}
 	}
 
@@ -147,6 +159,7 @@ class TaxonomyListTable implements Initable, Registrable {
 	 */
 	public function add_image_field( string $taxonomy ): void {
 		$prefix = $taxonomy . '_';
+		$cmb_id = $prefix . 'edit';
 
 		/**
 		 * Metabox to add fields to categories and tags
@@ -280,11 +293,12 @@ class TaxonomyListTable implements Initable, Registrable {
 	 * @param integer $term_id Term ID.
 	 * @return string|null
 	 * @since 1.0.0
+	 *
+	 * @todo Fix so if image size is not right return null.
 	 */
 	private function get_image_url( int $term_id ): ?string {
 
 		$temp = wp_get_registered_image_subsizes();
-		Logger::debug( $temp );
 
 		$name     = $this->get_tax_name();
 		$image_id = get_term_meta( $term_id, $name . '_image_id', true );

@@ -128,6 +128,7 @@ class SermonDetail implements Initable, Registrable {
 		if ( PT::SERMON !== get_post_type() ) {
 			return;
 		}
+		Logger::debug( $cmb->data_to_save );
 
 		$result = $this->save_service_type( $post_ID, $cmb->data_to_save );
 	}

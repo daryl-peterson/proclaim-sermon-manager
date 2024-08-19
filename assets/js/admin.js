@@ -5,6 +5,7 @@
  *
  * @since 1.0.0
  *
+ *
  */
 
 (function ($) {
@@ -52,7 +53,6 @@
 					if ($(ctrl).val() === '') {
 						$(ctrl).prop('disabled', true);
 					}
-
 
 					if ($('input[name="post_status"]').val() === 'all') {
 						$('input[name="post_status"]').prop('disabled', true);

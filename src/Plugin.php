@@ -90,12 +90,15 @@ class Plugin implements PluginInt {
 
 			QueueScripts::init()->register();
 			SermonEdit::init()->register();
+			SermonImage::exec();
+			SermonComments::exec();
+			TaxonomyImage::exec();
+
 			SermonListTable::init()->register();
 			TaxonomyListTable::init()->register();
 
 			AdminMenu::init()->register();
 			AdminSettings::init()->register();
-			SermonComments::exec();
 
 			do_action( $hook );
 

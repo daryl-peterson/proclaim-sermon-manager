@@ -21,7 +21,6 @@ use DRPPSM\Interfaces\Initable;
 use DRPPSM\Interfaces\OptionsInt;
 use DRPPSM\Interfaces\Registrable;
 use DRPPSM\Logging\Logger;
-use DRPPSM\PostTypeUtils;
 use DRPPSM\SermonDetail;
 use DRPPSM\SermonFiles;
 use DRPPSM\TaxUtils;
@@ -94,37 +93,6 @@ class SermonEdit implements Initable, Registrable {
 		SermonDetail::init()->register();
 		SermonFiles::init()->register();
 		return true;
-	}
-
-	/**
-	 * Save post
-	 *
-	 * @param integer  $post_id Post ID.
-	 * @param \WP_Post $post WordPress post.
-	 * @param boolean  $update Not currently used.
-	 * @return integer
-	 */
-	public function save_post( int $post_id, \WP_Post $post, bool $update ): int {
-		try {
-			if ( ! PostTypeUtils::is_savable( $post_id, $post ) ) {
-				return $post_id;
-			}
-
-			// @todo Call a save function.
-
-			return $post_id;
-			// @codeCoverageIgnoreStart
-		} catch ( \Throwable $th ) {
-			Logger::error(
-				array(
-					'MESSAGE' => $th->getMessage(),
-					'TRACE'   => $th->getTrace(),
-				)
-			);
-			// @codeCoverageIgnoreEnd
-		}
-
-		return $post_id;
 	}
 
 	/**
