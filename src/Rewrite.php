@@ -54,23 +54,24 @@ class Rewrite implements Executable, Registrable {
 	 * @since 1.0.0
 	 */
 	public function register(): ?bool {
-		if ( has_action( 'set_current_user', array( $this, 'find_conflicts' ) ) ) {
+		if ( has_action( 'init', array( $this, 'find_conflicts' ) ) ) {
 			return false;
 		}
-		add_action( 'set_current_user', array( $this, 'find_conflicts' ) );
-		add_action( 'activate_plugin', array( $this, 'activate' ), 10, 2 );
+		add_action( 'init', array( $this, 'find_conflicts' ) );
+		add_action( 'activate_plugin', array( $this, 'delete_transient' ), 10, 2 );
+		add_action( 'deactivate_plugin', array( $this, 'delete_transient' ), 10, 2 );
 		return true;
 	}
 
 	/**
-	 * A plugin has been activated force check.
+	 * A plugin has been activated/deactivated force check.
 	 *
 	 * @param string  $plugin Plugin name.
 	 * @param boolean $network_wide Network flag.
 	 * @return void
 	 * @since 1.0.0
 	 */
-	public function activate( string $plugin, bool $network_wide ) {
+	public function delete_transient( string $plugin, bool $network_wide ) {
 		delete_transient( self::TRANS_NAME );
 	}
 
@@ -78,6 +79,7 @@ class Rewrite implements Executable, Registrable {
 	 * Check if any conflicts exist.
 	 *
 	 * @return void
+	 * @since 1.0.0
 	 */
 	public function find_conflicts() {
 		$trans = get_transient( self::TRANS_NAME );
@@ -104,6 +106,7 @@ class Rewrite implements Executable, Registrable {
 			array(
 				'conflict' => $conflict,
 				'rewrite'  => $rewrite,
+				'time'     => time(),
 			),
 			self::TRANS_TIMEOUT
 		);
@@ -136,7 +139,7 @@ class Rewrite implements Executable, Registrable {
 	 * @since 1.0.0
 	 */
 	private function get_post_type_slugs( array &$rewrite ): void {
-		global $wp_post_types, $wp_taxonomies;
+		global $wp_post_types;
 		foreach ( $wp_post_types as $type => $settings ) {
 			if ( isset( $settings->rewrite ) && ! empty( $settings->rewrite ) ) {
 				if ( ! is_array( $settings->rewrite ) ) {
@@ -158,7 +161,7 @@ class Rewrite implements Executable, Registrable {
 	 * @since 1.0.0
 	 */
 	private function get_taxonmy_slugs( array &$rewrite ): void {
-		global $wp_post_types, $wp_taxonomies;
+		global $wp_taxonomies;
 		foreach ( $wp_taxonomies as $type => $settings ) {
 			if ( isset( $settings->rewrite ) && ! empty( $settings->rewrite ) ) {
 				if ( ! is_array( $settings->rewrite ) ) {
@@ -182,7 +185,7 @@ class Rewrite implements Executable, Registrable {
 	private function has_conflicts( array $rewrite ): bool {
 		$conflict = false;
 		foreach ( $rewrite as $types ) {
-			if ( count( $types ) > 0 ) {
+			if ( count( $types ) > 1 ) {
 				$conflict = true;
 				break;
 			}
