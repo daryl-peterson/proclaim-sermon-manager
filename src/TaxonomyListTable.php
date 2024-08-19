@@ -14,12 +14,10 @@ namespace DRPPSM;
 
 defined( 'ABSPATH' ) || exit;
 
-use DRPPSM\Constants\PT;
 use DRPPSM\Constants\Tax;
 use DRPPSM\Interfaces\Initable;
 use DRPPSM\Interfaces\Registrable;
 use DRPPSM\Logging\Logger;
-use WP_Post;
 use WP_Term;
 
 /**
@@ -48,12 +46,10 @@ class TaxonomyListTable implements Initable, Registrable {
 	 */
 	private array $tax;
 
-
-
-	private array $fields;
-
 	/**
-	 * Initialize object.
+	 * Initialize object properties.
+	 *
+	 * @since 1.0.0
 	 */
 	protected function __construct() {
 		$this->columns = array(
@@ -69,11 +65,6 @@ class TaxonomyListTable implements Initable, Registrable {
 			Tax::SERIES,
 			Tax::TOPICS,
 		);
-
-		foreach ( $this->tax as $taxonomy ) {
-
-			$this->fields[ $taxonomy ] = array( $taxonomy . '_image_id', $taxonomy . '_image' );
-		}
 	}
 
 	/**
@@ -159,7 +150,6 @@ class TaxonomyListTable implements Initable, Registrable {
 	 */
 	public function add_image_field( string $taxonomy ): void {
 		$prefix = $taxonomy . '_';
-		$cmb_id = $prefix . 'edit';
 
 		/**
 		 * Metabox to add fields to categories and tags
@@ -236,11 +226,11 @@ class TaxonomyListTable implements Initable, Registrable {
 	/**
 	 * Remove view from row actions.
 	 *
-	 * @param array    $actions Existing actions.
-	 * @param \WP_Term $tag Term.
+	 * @param array   $actions Existing actions.
+	 * @param WP_Term $tag Term.
 	 * @return array
 	 */
-	public function row_actions( array $actions, \WP_Term $tag ): array {
+	public function row_actions( array $actions, WP_Term $tag ): array {
 		if ( isset( $actions['view'] ) ) {
 			unset( $actions['view'] );
 		}
@@ -257,7 +247,7 @@ class TaxonomyListTable implements Initable, Registrable {
 	private function get_term_count( int $term_id ): int {
 		$tax  = $this->get_tax_name();
 		$term = get_term( $term_id, $tax );
-		if ( ! $term instanceof \WP_Term ) {
+		if ( ! $term instanceof WP_Term ) {
 			return 0;
 		}
 		return (int) $term->count;
