@@ -58,7 +58,9 @@ return array(
 	'publicly_queryable'  => true,
 	'exclude_from_search' => false,
 	'show_in_menu'        => true,
+	// 'show_in_menu'        => false,
 	'menu_icon'           => $menu_icon,
+	'menu_position'       => 5,
 	'hierarchical'        => false,
 	'rewrite'             => array(
 		'slug'       => $permalinks[ PT::SERMON ],

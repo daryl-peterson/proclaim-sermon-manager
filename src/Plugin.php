@@ -75,6 +75,8 @@ class Plugin implements PluginInt {
 			add_action( 'admin_notices', array( $this, 'show_notice' ) );
 			add_action( 'cmb2_init', array( $this, 'cmb2_init' ) );
 
+			AdminMenu::init()->register();
+
 			// Load other classes.
 			$app = app();
 
@@ -93,11 +95,13 @@ class Plugin implements PluginInt {
 			SermonImage::exec();
 			SermonComments::exec();
 			TaxonomyImage::exec();
+			Templates::exec();
+			QueryVars::exec();
+			Rewrite::exec();
 
 			SermonListTable::init()->register();
 			TaxonomyListTable::init()->register();
 
-			AdminMenu::init()->register();
 			AdminSettings::init()->register();
 
 			do_action( $hook );

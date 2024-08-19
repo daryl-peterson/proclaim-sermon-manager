@@ -27,4 +27,12 @@ class Tax {
 	public const SERVICE_TYPE = 'drppsm_stype';
 	public const SERIES       = 'drppsm_series';
 	public const TOPICS       = 'drppsm_topics';
+
+	public const LIST = array(
+		self::BIBLE_BOOK,
+		self::PREACHER,
+		self::SERVICE_TYPE,
+		self::SERIES,
+		self::TOPICS,
+	);
 }
