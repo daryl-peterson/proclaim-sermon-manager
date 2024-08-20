@@ -3,7 +3,6 @@
 namespace DRPPSM\Tests;
 
 use DRPPSM\App;
-use DRPPSM\Logging\LogFormatter;
 use DRPPSM\Logging\Logger;
 
 /**
@@ -24,8 +23,5 @@ class LoggerTest extends BaseTest {
 
 		$result = Logger::debug( 'DEBUG TEST' );
 		$this->assertTrue( $result );
-
-		$result = new LogFormatter();
-		$this->assertNotNull( $result );
 	}
 }

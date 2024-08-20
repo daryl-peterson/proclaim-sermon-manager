@@ -1,6 +1,6 @@
 <?php
 /**
- * Fix Log size.
+ * Write log to file.
  *
  * @package     Proclaim Sermon Manager
  * @author      Daryl Peterson <@gmail.com>
@@ -11,10 +11,12 @@
 
 namespace DRPPSM\Logging;
 
+defined( 'ABSPATH' ) || exit;
+
 use const DRPPSM\LOG_FILE;
 
 /**
- * Fix Log size.
+ * Write log to file.
  *
  * @package     Proclaim Sermon Manager
  * @author      Daryl Peterson <@gmail.com>
@@ -22,23 +24,36 @@ use const DRPPSM\LOG_FILE;
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
  * @since       1.0.0
  */
-class LogFile {
+class LogFile extends LogWritterAbs implements LogWritterInt {
 
 	/**
-	 * Get log file name.
+	 * Max file size in MB.
 	 *
-	 * @param string $level Log leve to use for file.
-	 * @return string|null If successfull return string, if not null.
+	 * @var integer
+	 */
+	public int $size;
+
+	public function __construct() {
+		$this->size = 5;
+	}
+
+	/**
+	 * Write log record.
+	 *
+	 * @param LogRecord $record
+	 * @return boolean
 	 * @since 1.0.0
 	 */
-	public static function get( string $level ): ?string {
-		$obj = new static();
-		$log = $obj->get_log_file( $level );
-		if ( isset( $log ) ) {
-			$obj->check_file_size( $log );
-		}
+	public function write( LogRecord $record ): bool {
 
-		return $log;
+		$data = $this->format( $record );
+		$file = $this->get_log_file( $record->level );
+		$this->check_file_size( $file );
+		if ( 'error' === $record->level ) {
+			error_log( $data );
+		}
+		file_put_contents( $file, $data, FILE_APPEND );
+		return true;
 	}
 
 	/**
@@ -48,13 +63,14 @@ class LogFile {
 	 * @return bool True on success, otherwise false.
 	 * @since 1.0.0
 	 */
-	public function check_file_size( string $file ): bool {
+	private function check_file_size( string $file ): bool {
 		$result = false;
 		try {
 
-			$fs = wp_filesize( $file );
-			if ( ! $fs || ( $fs > 5000000 ) ) {
-				// $this->truncate( $file );
+			$fs    = wp_filesize( $file );
+			$limit = $this->size * ( 1024 * 1024 );
+			if ( ! $fs || ( $fs > $limit ) ) {
+				$this->truncate( $file );
 			}
 			$result = true;
 
@@ -74,7 +90,7 @@ class LogFile {
 	 * @return string|null String on success, otherwise null.
 	 * @since 1.0.0
 	 */
-	public function get_log_file( string $level ): ?string {
+	private function get_log_file( string $level ): ?string {
 		// @codeCoverageIgnoreStart
 
 		$log_file = LOG_FILE;
@@ -93,7 +109,7 @@ class LogFile {
 	 * @return void
 	 * @since 1.0.0
 	 */
-	public function truncate( string $file ): void {
+	private function truncate( string $file ): void {
 		// @codeCoverageIgnoreStart
 		try {
 			$fh = fopen( $file, 'w' );
@@ -106,5 +122,34 @@ class LogFile {
 			unset( $th );
 		}
 		// @codeCoverageIgnoreEnd
+	}
+
+	/**
+	 * Format the log record.
+	 *
+	 * @param LogRecord $record Record for log.
+	 * @return string Formatted string.
+	 * @since 1.0.0
+	 */
+	private function format( LogRecord $record ): string {
+		$log = '';
+
+		$log .= str_repeat( '*', 80 ) . "\n";
+		foreach ( $record as $key => $value ) {
+			$log .= $this->str_pad( $key ) . $value . "\n";
+		}
+
+		return $log;
+	}
+
+	/**
+	 * Pad a string for log output.
+	 *
+	 * @param string $name Header string, class, function, file ect..
+	 * @return string String with padding.
+	 * @since 1.0.0
+	 */
+	private function str_pad( string $name ): string {
+		return substr( strtoupper( $name ) . str_pad( ' ', 10 ), 0, 10 ) . ': ';
 	}
 }

@@ -6,14 +6,15 @@
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
- *
  * @since       1.0.0
  */
 
 namespace DRPPSM\Logging;
 
-use DRPPSM\Interfaces\LoggerInt;
+defined( 'ABSPATH' ) || exit;
+
 use DRPPSM\Traits\SingletonTrait;
+use function DRPPSM\logwritter;
 
 /**
  * Logging
@@ -22,12 +23,32 @@ use DRPPSM\Traits\SingletonTrait;
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
- *
  * @since       1.0.0
  */
 class Logger implements LoggerInt {
 
 	use SingletonTrait;
+
+	const LEVEL_DEBUG   = 'DEBUG';
+	const LEVEL_ERROR   = 'ERROR';
+	const LEVEL_INFO    = 'INFO';
+	const LEVEL_WARNING = 'WARNING';
+
+	/**
+	 * Log writter interface.
+	 *
+	 * @var LogWritterInt
+	 */
+	private LogWritterInt $writter;
+
+	/**
+	 * Initialize object properties.
+	 *
+	 * @since 1.0.0
+	 */
+	protected function __construct() {
+		$this->writter = logwritter();
+	}
 
 	/**
 	 * Write debug log.
@@ -37,7 +58,8 @@ class Logger implements LoggerInt {
 	 * @since 1.0.0
 	 */
 	public static function debug( mixed $context ): bool {
-		return self::log( $context, 'debug' );
+		$obj = self::get_instance();
+		return $obj->log( $context, self::LEVEL_DEBUG );
 	}
 
 	/**
@@ -48,7 +70,8 @@ class Logger implements LoggerInt {
 	 * @since 1.0.0
 	 */
 	public static function error( mixed $context ): bool {
-		return self::log( $context, 'error' );
+		$obj = self::get_instance();
+		return $obj->log( $context, self::LEVEL_ERROR );
 	}
 
 	/**
@@ -59,7 +82,8 @@ class Logger implements LoggerInt {
 	 * @since 1.0.0
 	 */
 	public static function info( mixed $context ): bool {
-		return self::log( $context, 'info' );
+		$obj = self::get_instance();
+		return $obj->log( $context, self::LEVEL_INFO );
 	}
 
 	/**
@@ -68,22 +92,30 @@ class Logger implements LoggerInt {
 	 * @param mixed  $context Context for logging.
 	 * @param string $level Logging level.
 	 * @return boolean
+	 * @since 1.0.0
 	 */
-	private static function log( mixed $context, string $level ): bool {
+	public function log( mixed $context, string $level ): bool {
+
 		try {
-			$record    = new LogRecord( $context, $level, debug_backtrace( 0, 8 ) );
-			$formatter = new LogFormatter();
-			$data      = $formatter->format( $record );
+			$result = false;
+			$record = new LogRecord( $context, $level, debug_backtrace( 0, 8 ) );
 
-			// Add to ensure error log is written
-			$file = LogFile::get( $level );
-
-			if ( 'error' === $level ) {
-				error_log( $data );
+			if ( ! defined( 'WP_DEBUG' ) ) {
+				$result = true;
+			} elseif ( isset( $this->writter ) ) {
+				$result = $this->writter->write( $record );
 			}
 
-			return file_put_contents( $file, $data, FILE_APPEND );
-			// @codeCoverageIgnoreStart
+			if ( self::LEVEL_ERROR === $record->level ) {
+				error_log(
+					print_r(
+						$record,
+						true
+					)
+				);
+			}
+
+				// @codeCoverageIgnoreStart
 		} catch ( \Throwable $th ) {
 			error_log(
 				print_r(
@@ -95,8 +127,10 @@ class Logger implements LoggerInt {
 				)
 			);
 
-			return false;
+			$result = false;
+
 			// @codeCoverageIgnoreEnd
 		}
+		return $result;
 	}
 }

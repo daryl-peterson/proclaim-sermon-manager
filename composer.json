@@ -15,7 +15,8 @@
 		"files": [
 			"src/Core/Functions/misc.php",
 			"src/Core/Functions/include.php",
-			"src/Core/Functions/interfaces.php"
+			"src/Core/Functions/interfaces.php",
+			"src/Core/Functions/database.php"
 		]
 	},
 	"authors": [

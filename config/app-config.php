@@ -23,6 +23,8 @@ use DRPPSM\Interfaces\RequirementsInt;
 use DRPPSM\Interfaces\RolesInt;
 use DRPPSM\Interfaces\TextDomainInt;
 use DRPPSM\Interfaces\ImageSizeInt;
+use DRPPSM\Logging\LogDatabase;
+use DRPPSM\Logging\LogWritterInt;
 
 return array(
 	NoticeInt::class        => function (): NoticeInt {
@@ -51,6 +53,9 @@ return array(
 
 	BibleLoadInt::class     => function (): BibleLoadInt {
 		return BibleLoad::exec();
+	},
+	LogWritterInt::class    => function (): LogWritterInt {
+		return new LogDatabase();
 	},
 
 	PermaLinkInt::class     => PermaLinks::class,

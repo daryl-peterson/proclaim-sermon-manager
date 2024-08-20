@@ -18,6 +18,7 @@ use DRPPSM\Interfaces\RequirementsInt;
 use DRPPSM\Interfaces\RolesInt;
 use DRPPSM\Interfaces\TextDomainInt;
 use DRPPSM\Interfaces\ImageSizeInt;
+use DRPPSM\Logging\LogWritterInt;
 
 /**
  * Get requirements interface.
@@ -87,4 +88,14 @@ function imagesize(): ImageSizeInt {
  */
 function bibleload(): BibleLoadInt {
 	return app()->get( BibleLoadInt::class );
+}
+
+/**
+ * Get log writter interface.
+ *
+ * @return LogWritterInt
+ * @since 1.0.0
+ */
+function logwritter(): LogWritterInt {
+	return app()->get( LogWritterInt::class );
 }

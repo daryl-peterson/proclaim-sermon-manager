@@ -84,6 +84,10 @@ class Db implements DbInt {
 			$result = false;
 		}
 
+		if ( $result ) {
+			$this->options->set( 'plugin_ver', PLUGIN_VER );
+		}
+
 		return $result;
 	}
 

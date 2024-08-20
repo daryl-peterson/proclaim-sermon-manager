@@ -1,38 +1,33 @@
 <?php
 /**
- * Log formatter interface.
+ * Log writter interface.
  *
  * @package     Proclaim Sermon Manager
- *
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
- *
  * @since       1.0.0
  */
 
-namespace DRPPSM\Interfaces;
-
-use DRPPSM\Logging\LogRecord;
+namespace DRPPSM\Logging;
 
 /**
- * Log formatter interface.
+ * Log writter interface.
  *
+ * @package     Proclaim Sermon Manager
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
- *
  * @since       1.0.0
  */
-interface LogFormatterInt {
+interface LogWritterInt {
 
 	/**
-	 * Format the log record.
+	 * Write log record.
 	 *
-	 * @param LogRecord $record Record for log.
-	 * @return string Formatted string.
-	 *
+	 * @param LogRecord $record
+	 * @return boolean
 	 * @since 1.0.0
 	 */
-	public function format( LogRecord $record ): string;
+	public function write( LogRecord $record ): bool;
 }
