@@ -14,7 +14,6 @@ namespace DRPPSM;
 defined( 'ABSPATH' ) || exit;
 
 use DRPPSM\Exceptions\PluginException;
-use DRPPSM\Logging\Logger;
 use ReflectionClass;
 
 /**

@@ -20,7 +20,6 @@ use DRPPSM\Constants\Tax;
 use DRPPSM\Interfaces\Initable;
 use DRPPSM\Interfaces\OptionsInt;
 use DRPPSM\Interfaces\Registrable;
-use DRPPSM\Logging\Logger;
 use DRPPSM\SermonDetail;
 use DRPPSM\SermonFiles;
 use DRPPSM\TaxUtils;

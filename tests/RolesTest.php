@@ -14,7 +14,7 @@ namespace DRPPSM\Tests;
 use DRPPSM\Constants\Caps;
 use DRPPSM\Constants\PT;
 use DRPPSM\Interfaces\RolesInt;
-use DRPPSM\Logging\Logger;
+use DRPPSM\Logger;
 
 /**
  * Test role capabilities.

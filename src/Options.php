@@ -20,7 +20,6 @@ namespace DRPPSM;
 defined( 'ABSPATH' ) || exit;
 
 use DRPPSM\Interfaces\OptionsInt;
-use DRPPSM\Logging\Logger;
 use DRPPSM\Traits\SingletonTrait;
 
 /**

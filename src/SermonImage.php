@@ -16,7 +16,6 @@ use DRPPSM\Constants\PT;
 use DRPPSM\Constants\Tax;
 use DRPPSM\Interfaces\Executable;
 use DRPPSM\Interfaces\Registrable;
-use DRPPSM\Logging\Logger;
 use WP_Error;
 use WP_Post;
 use WP_Term;

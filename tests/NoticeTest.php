@@ -11,7 +11,7 @@
 
 namespace DRPPSM\Tests;
 
-use DRPPSM\Logging\Logger;
+use DRPPSM\Logger;
 use function DRPPSM\notice;
 
 

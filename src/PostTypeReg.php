@@ -16,7 +16,6 @@ defined( 'ABSPATH' ) || exit;
 use DRPPSM\Exceptions\PluginException;
 use DRPPSM\Helper;
 use DRPPSM\Interfaces\PostTypeRegInt;
-use DRPPSM\Logging\Logger;
 
 /**
  * Post type registration.

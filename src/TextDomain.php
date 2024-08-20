@@ -16,7 +16,6 @@ defined( 'ABSPATH' ) || exit;
 
 use DRPPSM\Constants\Actions;
 use DRPPSM\Interfaces\TextDomainInt;
-use DRPPSM\Logging\Logger;
 
 /**
  * Language locales.

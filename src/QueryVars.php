@@ -13,7 +13,6 @@ namespace DRPPSM;
 
 use DRPPSM\Interfaces\Executable;
 use DRPPSM\Interfaces\Registrable;
-use DRPPSM\Logging\Logger;
 
 /**
  * Overwrite query vars if conflicts exist.

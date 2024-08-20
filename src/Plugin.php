@@ -19,7 +19,6 @@ use DRPPSM\Interfaces\PluginInt;
 use DRPPSM\Interfaces\PostTypeSetupInt;
 use DRPPSM\Constants\Actions;
 use DRPPSM\DB\Db;
-use DRPPSM\Logging\Logger;
 
 /**
  * Plugin main class.

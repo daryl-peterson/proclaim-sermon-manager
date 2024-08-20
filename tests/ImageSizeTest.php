@@ -13,7 +13,7 @@ namespace DRPPSM\Tests;
 
 use DRPPSM\HooksUtils;
 use DRPPSM\ImageSize;
-use DRPPSM\Logging\Logger;
+use DRPPSM\Logger;
 
 use function DRPPSM\imagesize;
 

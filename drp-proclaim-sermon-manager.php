@@ -32,8 +32,6 @@
 
 namespace DRPPSM;
 
-use DRPPSM\Logging\Logger;
-
 defined( 'ABSPATH' ) || exit;
 
 if ( ! defined( 'WPINC' ) ) {

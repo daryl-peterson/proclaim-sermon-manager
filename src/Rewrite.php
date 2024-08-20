@@ -15,7 +15,6 @@ use DRPPSM\Constants\PT;
 use DRPPSM\Constants\Tax;
 use DRPPSM\Interfaces\Executable;
 use DRPPSM\Interfaces\Registrable;
-use DRPPSM\Logging\Logger;
 
 /**
  * Check if any rewrite conflicts exist.

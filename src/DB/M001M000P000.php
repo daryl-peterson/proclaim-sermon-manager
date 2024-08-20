@@ -3,10 +3,9 @@
 namespace DRPPSM\DB;
 
 use DRPPSM\Exceptions\PluginException;
-use DRPPSM\Interfaces\Executable;
 use DRPPSM\Interfaces\Initable;
 use DRPPSM\Interfaces\Runable;
-use DRPPSM\Logging\Logger;
+use DRPPSM\Logger;
 use stdClass;
 
 use function DRPPSM\get_key_name;

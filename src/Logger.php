@@ -9,11 +9,15 @@
  * @since       1.0.0
  */
 
-namespace DRPPSM\Logging;
+namespace DRPPSM;
 
 defined( 'ABSPATH' ) || exit;
 
 use DRPPSM\Traits\SingletonTrait;
+use DRPPSM\Logging\LoggerInt;
+use DRPPSM\Logging\LogRecord;
+use DRPPSM\Logging\LogWritterInt;
+
 use function DRPPSM\logwritter;
 
 /**

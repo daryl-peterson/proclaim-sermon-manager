@@ -17,7 +17,6 @@ defined( 'ABSPATH' ) || exit;
 use DRPPSM\Constants\Tax;
 use DRPPSM\Interfaces\Initable;
 use DRPPSM\Interfaces\Registrable;
-use DRPPSM\Logging\Logger;
 use WP_Term;
 
 /**

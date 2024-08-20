@@ -24,7 +24,6 @@ use DRPPSM\Exceptions\PluginException;
 use DRPPSM\Interfaces\PostTypeRegInt;
 use DRPPSM\Interfaces\PostTypeSetupInt;
 use DRPPSM\Interfaces\TaxonomyRegInt;
-use DRPPSM\Logging\Logger;
 use DRPPSM\TaxonomyReg;
 
 /**

@@ -3,7 +3,7 @@
 namespace DRPPSM\Tests;
 
 use DRPPSM\App;
-use DRPPSM\Logging\Logger;
+use DRPPSM\Logger;
 
 /**
  * Logger test.
