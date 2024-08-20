@@ -33,7 +33,7 @@ class Rewrite implements Executable, Registrable {
 	 */
 	const TRANS_NAME = 'drppsm_rewrite_conflicts';
 
-	const TRANS_TIMEOUT = 28800;
+	const TRANS_TIMEOUT = DAY_IN_SECONDS;
 
 	/**
 	 * Initialize object and register callbacks.

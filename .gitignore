@@ -1,4 +1,3 @@
 .misc/
-vendor/
 .phpcsignore
 phpcs-report.txt

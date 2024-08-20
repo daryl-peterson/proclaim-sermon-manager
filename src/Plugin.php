@@ -18,6 +18,7 @@ use DRPPSM\Interfaces\NoticeInt;
 use DRPPSM\Interfaces\PluginInt;
 use DRPPSM\Interfaces\PostTypeSetupInt;
 use DRPPSM\Constants\Actions;
+use DRPPSM\DB\Db;
 use DRPPSM\Logging\Logger;
 
 /**
@@ -91,6 +92,7 @@ class Plugin implements PluginInt {
 			bibleload();
 
 			SermonEdit::init()->register();
+			Db::exec();
 			QueueScripts::exec();
 			SermonImage::exec();
 			SermonComments::exec();

@@ -26,7 +26,7 @@ $menu_icon    = app()->get_setting( 'menu_icon' );
 
 return array(
 	'labels'              => array(
-		'name'                  => __( 'Sermons', 'drppsm' ),
+		'name'                  => __( 'Proclaim Sermons', 'drppsm' ),
 		'singular_name'         => __( 'Sermon', 'drppsm' ),
 		'all_items'             => __( 'Sermons', 'drppsm' ),
 		'menu_name'             => _x( 'Sermons', 'menu', 'drppsm' ),
@@ -60,7 +60,6 @@ return array(
 	'show_in_menu'        => true,
 	// 'show_in_menu'        => false,
 	'menu_icon'           => $menu_icon,
-	'menu_position'       => 5,
 	'hierarchical'        => false,
 	'rewrite'             => array(
 		'slug'       => $permalinks[ PT::SERMON ],

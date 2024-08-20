@@ -133,6 +133,11 @@
 	width: 75px;
 }
 
+.cmb2-wrap input.cmb2-text-small,
+.cmb2-wrap input.cmb2-timepicker {
+	width: 150px !important;
+}
+
 @media (max-width: 450px) {
 
 	.cmb-td,

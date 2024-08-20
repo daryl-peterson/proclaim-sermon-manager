@@ -1,0 +1,41 @@
+<?php return array(
+    'root' => array(
+        'name' => 'dpeterson/wp-sermon-manager',
+        'pretty_version' => 'dev-main',
+        'version' => 'dev-main',
+        'reference' => 'c2071446f4f9d7dc9cfe15c6befc119bdb1d0b3e',
+        'type' => 'project',
+        'install_path' => __DIR__ . '/../../',
+        'aliases' => array(),
+        'dev' => true,
+    ),
+    'versions' => array(
+        'cmb2/cmb2' => array(
+            'pretty_version' => 'v2.11.0',
+            'version' => '2.11.0.0',
+            'reference' => '2847828b5cce1b48d09427ee13e6f7c752704468',
+            'type' => 'wordpress-plugin',
+            'install_path' => __DIR__ . '/../cmb2/cmb2',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'dpeterson/wp-sermon-manager' => array(
+            'pretty_version' => 'dev-main',
+            'version' => 'dev-main',
+            'reference' => 'c2071446f4f9d7dc9cfe15c6befc119bdb1d0b3e',
+            'type' => 'project',
+            'install_path' => __DIR__ . '/../../',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'psr/container' => array(
+            'pretty_version' => '2.0.2',
+            'version' => '2.0.2.0',
+            'reference' => 'c71ecc56dfe541dbd90c5360474fbc405f8d5963',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../psr/container',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+    ),
+);

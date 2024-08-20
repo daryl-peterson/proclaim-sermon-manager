@@ -1,2 +1,2 @@
-./vendor/bin/phpcs -p . --standard=WordPress --ignore=**/vendor/*,.misc/*,**/tests/* --report-file=phpcs-report.txt --exclude=WordPress.Files.FileName
+/usr/bin/phpcs -p . --standard=WordPress --ignore=**/vendor/*,.misc/*,**/tests/* --report-file=phpcs-report.txt --exclude=WordPress.Files.FileName
 

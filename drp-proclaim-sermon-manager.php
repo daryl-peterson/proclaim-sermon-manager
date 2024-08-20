@@ -57,6 +57,7 @@ const NS             = __NAMESPACE__;
 const LOG_FILE       = 'drppsm';
 const PLUGIN_MIN_PHP = '8.1.0';
 const PLUGIN_MIN_WP  = '6.4.0';
+const PLUGIN_VER     = '1.0.0';
 
 try {
 	App::init()->plugin()->register();
