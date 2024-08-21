@@ -78,7 +78,7 @@ class AdminSettings implements Initable, Registrable {
 	/**
 	 * Display
 	 *
-	 * @param CMB2_Options_Hookup $cmb_options
+	 * @param CMB2_Options_Hookup $cmb_options CMB2 Options hookup.
 	 * @return void
 	 * @since 1.0.0
 	 */
@@ -149,7 +149,7 @@ class AdminSettings implements Initable, Registrable {
 	/**
 	 * Remove submenus for settings menu and change selected menu.
 	 *
-	 * @param ?string $submenu_file
+	 * @param ?string $submenu_file Sub menu to remove.
 	 * @return ?string
 	 * @since 1.0.0
 	 */

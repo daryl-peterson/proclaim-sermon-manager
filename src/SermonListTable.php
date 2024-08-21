@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Sermon list table.
  *
@@ -103,7 +102,14 @@ class SermonListTable implements Initable, Registrable {
 		return true;
 	}
 
-	public function extra_nav( $which ) {
+	/**
+	 * Add extra filters.
+	 *
+	 * @param string $which Top or bottom.
+	 * @return void
+	 * @since 1.0.0
+	 */
+	public function extra_nav( string $which ): void {
 
 		if ( ! $this->post_type_match() || 'top' !== $which ) {
 			return;

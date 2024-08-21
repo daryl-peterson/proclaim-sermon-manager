@@ -33,6 +33,11 @@ class LogFile extends LogWritterAbs implements LogWritterInt {
 	 */
 	public int $size;
 
+	/**
+	 * Initialize object properties.
+	 *
+	 * @since 1.0.0
+	 */
 	public function __construct() {
 		$this->size = 5;
 	}
@@ -40,8 +45,8 @@ class LogFile extends LogWritterAbs implements LogWritterInt {
 	/**
 	 * Write log record.
 	 *
-	 * @param LogRecord $record
-	 * @return boolean
+	 * @param LogRecord $record Log record object.
+	 * @return boolean Returns true if log was written, otherwise false.
 	 * @since 1.0.0
 	 */
 	public function write( LogRecord $record ): bool {
@@ -49,17 +54,19 @@ class LogFile extends LogWritterAbs implements LogWritterInt {
 		$data = $this->format( $record );
 		$file = $this->get_log_file( $record->level );
 		$this->check_file_size( $file );
+		// phpcs:disable
 		if ( 'error' === $record->level ) {
 			error_log( $data );
 		}
 		file_put_contents( $file, $data, FILE_APPEND );
+		// phpcs:enable
 		return true;
 	}
 
 	/**
 	 * Check the file size.
 	 *
-	 * @param string $file
+	 * @param string $file File name to check.
 	 * @return bool True on success, otherwise false.
 	 * @since 1.0.0
 	 */
@@ -76,7 +83,9 @@ class LogFile extends LogWritterAbs implements LogWritterInt {
 
 			// @codeCoverageIgnoreStart
 		} catch ( \Throwable $th ) {
+			// phpcs:disable
 			error_log( print_r( $th, true ) );
+			// phpcs:enable
 			$result = false;
 			// @codeCoverageIgnoreEnd
 		}
@@ -112,12 +121,12 @@ class LogFile extends LogWritterAbs implements LogWritterInt {
 	private function truncate( string $file ): void {
 		// @codeCoverageIgnoreStart
 		try {
+			// phpcs:disable
 			$fh = fopen( $file, 'w' );
 			if ( $fh ) {
 				fclose( $fh );
 			}
-
-			// Nothing to do here.
+			// phpcs:enable
 		} catch ( \Throwable $th ) {
 			unset( $th );
 		}

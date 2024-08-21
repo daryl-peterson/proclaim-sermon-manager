@@ -23,7 +23,6 @@ return array(
     'DRPPSM\\Container' => $baseDir . '/src/Container.php',
     'DRPPSM\\DB\\Db' => $baseDir . '/src/DB/Db.php',
     'DRPPSM\\DB\\M001M000P000' => $baseDir . '/src/DB/M001M000P000.php',
-    'DRPPSM\\DB\\Tables' => $baseDir . '/src/DB/Tables.php',
     'DRPPSM\\DateUtils' => $baseDir . '/src/DateUtils.php',
     'DRPPSM\\Deactivator' => $baseDir . '/src/Deactivator.php',
     'DRPPSM\\Exceptions\\NotfoundException' => $baseDir . '/src/Core/Exceptions/NotfoundException.php',

@@ -39,7 +39,6 @@ class Container implements ContainerInterface {
 	 * Finds an entry of the container by its identifier and returns it.
 	 *
 	 * @param string $id Identifier of the entry to look for.
-	 * @param bool   $resolve Resolve to an object. If false just return the key.
 	 * @throws NotFoundExceptionInterface  No entry was found for **this** identifier.
 	 * @throws ContainerExceptionInterface Error while retrieving the entry.
 	 * @return mixed Entry.

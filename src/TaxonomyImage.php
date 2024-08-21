@@ -103,6 +103,8 @@ class TaxonomyImage implements Executable, Registrable {
 	 *
 	 * @return boolean|null True if hooks were registered, otherwise false.
 	 * @since 1.0.0
+	 *
+	 * @see https://developer.wordpress.org/reference/hooks/get_meta_type_metadata/
 	 */
 	public function register(): ?bool {
 		$meta_type = 'term';
@@ -119,18 +121,25 @@ class TaxonomyImage implements Executable, Registrable {
 	/**
 	 * Get meta data.
 	 *
-	 * @param mixed   $value
-	 * @param integer $term_id Term ID;
+	 * @param mixed   $value The value to return, either a single metadata value or an array of values
+	 *                depending on the value of $single.
+	 * @param integer $term_id Term ID.
 	 * @param string  $meta_key Meta key.
 	 * @param boolean $single Get single value.
 	 * @param string  $meta_type Expected term.
 	 * @return mixed
 	 * @since 1.0.0
 	 */
-	public function get_metadata( mixed $value, int $term_id, string $meta_key, bool $single, string $meta_type ): mixed {
+	public function get_metadata(
+		mixed $value,
+		int $term_id,
+		string $meta_key,
+		bool $single,
+		string $meta_type
+	): mixed {
 
 		// If it's not what were looking for return orginal value.
-		if ( ! isset( $meta_key ) || empty( $meta_key ) || ! in_array( $meta_key, $this->image_ids ) ) {
+		if ( ! isset( $meta_key ) || empty( $meta_key ) || ! in_array( $meta_key, $this->image_ids, true ) ) {
 			return $value;
 		}
 
@@ -249,7 +258,7 @@ class TaxonomyImage implements Executable, Registrable {
 		$result = false;
 
 		/**
-		 * @var WP_Post $sermon
+		 * @var WP_Post $sermon Sermon post object.
 		 */
 		foreach ( $sermons as $sermon ) {
 			$result = $this->sermon_image->attach_image( $attachment, $sermon );
@@ -322,12 +331,12 @@ class TaxonomyImage implements Executable, Registrable {
 	 * Get taxonomy from meta key.
 	 *
 	 * @param string $meta_key Meta key.
-	 * @return string|null
+	 * @return string|null String if taxonomy is found, otherwise null.
 	 * @since 1.0.0
 	 */
 	private function get_taxonomy( string $meta_key ): ?string {
 
-		if ( ! isset( $meta_key ) || empty( $meta_key ) || ! in_array( $meta_key, $this->image_ids ) ) {
+		if ( ! isset( $meta_key ) || empty( $meta_key ) || ! in_array( $meta_key, $this->image_ids, true ) ) {
 			return null;
 		}
 

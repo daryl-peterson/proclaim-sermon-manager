@@ -41,7 +41,8 @@ class QueueScripts implements Registrable, Executable {
 	 * @since 1.0.0
 	 */
 	protected function __construct() {
-		$this->ver = rand( 1, 999 );
+		include_pluggable();
+		$this->ver = \wp_rand( 1, 999 );
 	}
 
 	/**
@@ -82,7 +83,7 @@ class QueueScripts implements Registrable, Executable {
 	public function init_script_styles() {
 		$url = Helper::get_url() . 'assets';
 
-		$file = $url . '/css/drppsm-admin.css';
+		$file = $url . '/css/drppsm-admin.min.css';
 		wp_register_style(
 			'drppsm-admin-style',
 			$file,
@@ -119,6 +120,7 @@ class QueueScripts implements Registrable, Executable {
 			// @codeCoverageIgnoreStart
 			wp_enqueue_style( 'drppsm-admin-style' );
 			wp_enqueue_style( 'drppsm-admin-icons' );
+
 			wp_enqueue_media();
 			// @codeCoverageIgnoreEnd
 		}

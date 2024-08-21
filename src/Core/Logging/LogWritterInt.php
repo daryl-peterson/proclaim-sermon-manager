@@ -25,8 +25,8 @@ interface LogWritterInt {
 	/**
 	 * Write log record.
 	 *
-	 * @param LogRecord $record
-	 * @return boolean
+	 * @param LogRecord $record Log record object.
+	 * @return boolean Return true if log was written, otherwise false.
 	 * @since 1.0.0
 	 */
 	public function write( LogRecord $record ): bool;

@@ -92,7 +92,17 @@ function get_slug( string $slug, string $default_value = '' ): string {
 	return untrailingslashit( fix_slug( get_setting( $slug, $default_value ) ) );
 }
 
-function get_date( string $format, int|float|null $timestamp = null, null|DateTimeZone $timezone = null ) {
+/**
+ * Get date formated with microseconds.
+ * - Change from wp_date, it will not format microseconds.
+ *
+ * @param string                  $format Date format string.
+ * @param integer|float|null|null $timestamp Time stamp to use.
+ * @param null|DateTimeZone       $timezone Timezone to use.
+ * @return string Get formated dated string.
+ * @since 1.0.0
+ */
+function get_date( string $format, int|float|null $timestamp = null, null|DateTimeZone $timezone = null ): string {
 	global $wp_locale;
 
 	if ( null === $timestamp ) {

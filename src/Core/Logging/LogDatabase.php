@@ -28,9 +28,29 @@ use function DRPPSM\table_exist;
  */
 class LogDatabase extends LogWritterAbs implements LogWritterInt {
 
+	/**
+	 * Table name.
+	 *
+	 * @var string
+	 */
 	private string $table_name;
+
+
+	/**
+	 * Prefixed key name. Used in transients.
+	 *
+	 * @var string
+	 */
 	private string $key_name;
 
+
+	/**
+	 * Write log record.
+	 *
+	 * @param LogRecord $record Log record object.
+	 * @return bool
+	 * @since 1.0.0
+	 */
 	public function write( LogRecord $record ): bool {
 		$result = false;
 		try {
@@ -44,6 +64,7 @@ class LogDatabase extends LogWritterAbs implements LogWritterInt {
 				return false;
 			}
 
+			// phpcs:disable
 			$wpdb->insert(
 				$this->table_name,
 				array(
@@ -57,8 +78,10 @@ class LogDatabase extends LogWritterAbs implements LogWritterInt {
 					'context'  => $record->context,
 				)
 			);
+			// phpcs:enable
 			$result = true;
 		} catch ( \Throwable $th ) {
+			// phpcs:disable
 			error_log(
 				print_r(
 					array(
@@ -68,12 +91,19 @@ class LogDatabase extends LogWritterAbs implements LogWritterInt {
 					true
 				)
 			);
+			// phpcs:enable
 		}
 
 		return $result;
 	}
 
-	private function ready() {
+	/**
+	 * Check if the database is ready for logging.
+	 *
+	 * @return bool Return true if we are ready for logging, otherwise false.
+	 * @since 1.0.0
+	 */
+	private function ready(): bool {
 
 		$result = get_transient( $this->key_name );
 		if ( $result ) {
@@ -86,10 +116,5 @@ class LogDatabase extends LogWritterAbs implements LogWritterInt {
 			return true;
 		}
 		return false;
-	}
-
-	private function microtime() {
-		// return wp_date( 'Y-m-d H:i:s.U', time() );
-		return date( 'Y-m-d H:i:s.U', microtime( true ) );
 	}
 }

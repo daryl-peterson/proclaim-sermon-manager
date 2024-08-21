@@ -1,6 +1,6 @@
 <?php
 /**
- * Logging
+ * Logging.
  *
  * @package     Proclaim Sermon Manager
  * @author      Daryl Peterson <@gmail.com>
@@ -21,7 +21,7 @@ use DRPPSM\Logging\LogWritterInt;
 use function DRPPSM\logwritter;
 
 /**
- * Logging
+ * Logging.
  *
  * @package     Proclaim Sermon Manager
  * @author      Daryl Peterson <@gmail.com>
@@ -43,7 +43,7 @@ class Logger implements LoggerInt {
 	 *
 	 * @var LogWritterInt
 	 */
-	private LogWritterInt $writter;
+	public LogWritterInt $writter;
 
 	/**
 	 * Initialize object properties.
@@ -91,6 +91,18 @@ class Logger implements LoggerInt {
 	}
 
 	/**
+	 * Set log write interface.
+	 *
+	 * @param LogWritterInt $writter Log writter interface.
+	 * @return void
+	 * @since 1.0.0
+	 */
+	public static function set_writter( LogWritterInt $writter ): void {
+		$obj          = self::get_instance();
+		$obj->writter = $writter;
+	}
+
+	/**
 	 * Write log to file.
 	 *
 	 * @param mixed  $context Context for logging.
@@ -101,8 +113,11 @@ class Logger implements LoggerInt {
 	public function log( mixed $context, string $level ): bool {
 
 		try {
+
 			$result = false;
+			// phpcs:disable
 			$record = new LogRecord( $context, $level, debug_backtrace( 0, 8 ) );
+			// phpcs:enable
 
 			if ( ! defined( 'WP_DEBUG' ) ) {
 				$result = true;
@@ -110,6 +125,7 @@ class Logger implements LoggerInt {
 				$result = $this->writter->write( $record );
 			}
 
+			// phpcs:disable
 			if ( self::LEVEL_ERROR === $record->level ) {
 				error_log(
 					print_r(
@@ -118,9 +134,11 @@ class Logger implements LoggerInt {
 					)
 				);
 			}
+			// phpcs:enable
 
-				// @codeCoverageIgnoreStart
+			// @codeCoverageIgnoreStart
 		} catch ( \Throwable $th ) {
+			// phpcs:disable
 			error_log(
 				print_r(
 					array(
@@ -130,7 +148,7 @@ class Logger implements LoggerInt {
 					true
 				)
 			);
-
+			// phpcs:enable
 			$result = false;
 
 			// @codeCoverageIgnoreEnd

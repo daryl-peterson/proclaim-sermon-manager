@@ -84,14 +84,14 @@ class TaxonomyListTable implements Initable, Registrable {
 	 */
 	public function register(): ?bool {
 
-		if ( ! is_admin() && ! defined( 'PHPUNIT_TESTING' ) ) {
+		if ( ! is_admin() || has_action( 'cmb2_admin_init', array( $this, 'cmb' ) ) ) {
 			return false;
 		}
+
 		add_action( 'cmb2_admin_init', array( $this, 'cmb' ) );
 		add_filter( 'list_table_primary_column', array( $this, 'list_table_primary_column' ), 10, 2 );
 
 		foreach ( $this->tax as $taxonomy ) {
-			// add_filter( "{$taxonomy}_row_actions", array( $this, 'row_actions' ), 100, 2 );
 			add_filter( "manage_edit-{$taxonomy}_sortable_columns", array( $this, 'set_sortable_columns' ) );
 			add_filter( "manage_{$taxonomy}_custom_column", array( $this, 'set_column_content' ), 10, 3 );
 			add_filter( "manage_edit-{$taxonomy}_columns", array( $this, 'set_columns' ), 10, 1 );

@@ -16,6 +16,12 @@ use DRPPSM\Interfaces\OptionsInt;
 use DRPPSM\Logger;
 
 use const DRPPSM\PLUGIN_VER;
+
+/**
+ * Get options interface.
+ *
+ * @package     Proclaim Sermon Manager
+ */
 use function DRPPSM\options;
 
 /**
@@ -29,6 +35,11 @@ use function DRPPSM\options;
  */
 class Db implements DbInt {
 
+	/**
+	 * Options interface.
+	 *
+	 * @var OptionsInt
+	 */
 	private OptionsInt $options;
 
 	/**

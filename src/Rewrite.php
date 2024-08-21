@@ -11,6 +11,8 @@
 
 namespace DRPPSM;
 
+defined( 'ABSPATH' ) || exit;
+
 use DRPPSM\Constants\PT;
 use DRPPSM\Constants\Tax;
 use DRPPSM\Interfaces\RewriteInt;
@@ -31,6 +33,9 @@ class Rewrite implements RewriteInt {
 	 */
 	const TRANS_NAME = 'drppsm_rewrite_conflicts';
 
+	/**
+	 * Tansient timeout.
+	 */
 	const TRANS_TIMEOUT = DAY_IN_SECONDS;
 
 	/**
@@ -132,7 +137,7 @@ class Rewrite implements RewriteInt {
 	/**
 	 * Get slugs used by other post types.
 	 *
-	 * @param array $rewrite
+	 * @param array $rewrite Array of slugs.
 	 * @return void
 	 * @since 1.0.0
 	 */
@@ -144,7 +149,7 @@ class Rewrite implements RewriteInt {
 					continue;
 				}
 				$slug = $settings->rewrite['slug'];
-				if ( key_exists( $slug, $rewrite ) && ! in_array( $type, $rewrite[ $slug ] ) ) {
+				if ( key_exists( $slug, $rewrite ) && ! in_array( $type, $rewrite[ $slug ], true ) ) {
 					$rewrite[ $slug ][] = $type;
 				}
 			}
@@ -154,7 +159,7 @@ class Rewrite implements RewriteInt {
 	/**
 	 * Get slugs used by other taxonomy.
 	 *
-	 * @param array $rewrite
+	 * @param array $rewrite Array of slugs.
 	 * @return void
 	 * @since 1.0.0
 	 */
@@ -166,7 +171,7 @@ class Rewrite implements RewriteInt {
 					continue;
 				}
 				$slug = $settings->rewrite['slug'];
-				if ( key_exists( $slug, $rewrite ) && ! in_array( $type, $rewrite[ $slug ] ) ) {
+				if ( key_exists( $slug, $rewrite ) && ! in_array( $type, $rewrite[ $slug ], true ) ) {
 					$rewrite[ $slug ][] = $type;
 				}
 			}

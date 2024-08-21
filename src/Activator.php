@@ -13,8 +13,6 @@ namespace DRPPSM;
 
 defined( 'ABSPATH' ) || exit;
 
-use DRPPSM\Logging\Logger;
-
 /**
  * Activate plugin.
  *
@@ -25,7 +23,6 @@ use DRPPSM\Logging\Logger;
  * @since       1.0.0
  */
 class Activator {
-
 
 	/**
 	 * Run activation.
@@ -62,6 +59,12 @@ class Activator {
 		return $result;
 	}
 
+	/**
+	 * Unset get variable if set.
+	 *
+	 * @return void
+	 * @since 1.0.0
+	 */
 	private static function unset() {
 		// phpcs:disable
 		if ( isset( $_GET['activate'] ) ) {

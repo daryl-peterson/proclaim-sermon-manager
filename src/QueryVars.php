@@ -54,11 +54,11 @@ class QueryVars implements Executable, Registrable {
 	/**
 	 * Overwrite query vars if needed.
 	 *
-	 * @param array $query
-	 * @return void
+	 * @param array $query Query array.
+	 * @return array
 	 * @since 1.0.0
 	 */
-	public function overwrite_query_vars( array $query ) {
+	public function overwrite_query_vars( array $query ): array {
 		global $wpdb;
 
 		$conflict = $this->get_conflict();
@@ -76,13 +76,17 @@ class QueryVars implements Executable, Registrable {
 
 		$found = false;
 		if ( isset( $query['name'] ) && ! $found ) {
-			$name    = $query['name'];
-			$results = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}posts WHERE post_name = \"$name\" LIMIT 1" );
+			$name = $query['name'];
+
+			// phpcs:disable
+			$sql = $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}posts WHERE post_name = %s LIMIT 1", array( $name ) );
+			$results = $wpdb->get_results( $sql );
 			if ( is_array( $results ) && isset( $results ) ) {
 				$results            = $results[0];
 				$query['post_type'] = $results->post_type;
 				$found              = true;
 			}
+			// phpcs:enable
 		}
 
 		if ( ! $found ) {
@@ -111,9 +115,10 @@ class QueryVars implements Executable, Registrable {
 	/**
 	 * Get transient to see if conflicts have been detected.
 	 *
-	 * @return void
+	 * @return bool Return true if conflict exsit.
+	 * @since 1.0.0
 	 */
-	private function get_conflict() {
+	private function get_conflict(): bool {
 		$trans    = get_transient( Rewrite::TRANS_NAME );
 		$conflict = true;
 

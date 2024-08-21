@@ -2,7 +2,7 @@
 /**
  * General settings.
  *
- * @package
+ * @package     Proclaim Sermon Manager
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
@@ -20,7 +20,7 @@ use DRPPSM\Interfaces\Registrable;
 /**
  * General settings.
  *
- * @package
+ * @package     Proclaim Sermon Manager
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
@@ -95,9 +95,10 @@ class OptGeneral implements Initable, Registrable {
 	/**
 	 * Not used yet.
 	 *
-	 * @param mixed $obj
-	 * @param mixed $object_id
+	 * @param mixed $obj Some variable.
+	 * @param mixed $object_id Some object id.
 	 * @return void
+	 * @todo impliment this.
 	 */
 	public function pre_proccess( mixed $obj, mixed $object_id ) {
 	}
@@ -105,7 +106,7 @@ class OptGeneral implements Initable, Registrable {
 	/**
 	 * Register metaboxes.
 	 *
-	 * @param callable $display_cb
+	 * @param callable $display_cb Callback to display on form.
 	 * @return void
 	 * @since 1.0.0
 	 */
@@ -176,7 +177,7 @@ class OptGeneral implements Initable, Registrable {
 	/**
 	 * Add menu icon.
 	 *
-	 * @param CMB2 $cmb
+	 * @param CMB2 $cmb CMB2 Object.
 	 * @return void
 	 * @since 1.0.0
 	 */
@@ -213,7 +214,7 @@ class OptGeneral implements Initable, Registrable {
 	/**
 	 * Add date format field.
 	 *
-	 * @param CMB2 $cmb
+	 * @param CMB2 $cmb CMB2 Object.
 	 * @return void
 	 * @since 1.0.0
 	 */
@@ -240,7 +241,7 @@ class OptGeneral implements Initable, Registrable {
 	/**
 	 * Add sermon comments field.
 	 *
-	 * @param CMB2 $cmb
+	 * @param CMB2 $cmb  CMB2 Object.
 	 * @return void
 	 * @since 1.0.0
 	 */
@@ -258,7 +259,7 @@ class OptGeneral implements Initable, Registrable {
 	/**
 	 * Add sermon count field.
 	 *
-	 * @param CMB2 $cmb
+	 * @param CMB2 $cmb CMB2 Object.
 	 * @return void
 	 * @since 1.0.0
 	 */
@@ -282,7 +283,7 @@ class OptGeneral implements Initable, Registrable {
 	/**
 	 * Add archive field
 	 *
-	 * @param CMB2 $cmb
+	 * @param CMB2 $cmb CMB2 Object.
 	 * @return void
 	 * @since 1.0.0
 	 */
@@ -319,7 +320,7 @@ class OptGeneral implements Initable, Registrable {
 	/**
 	 * Add common base slug.
 	 *
-	 * @param CMB2 $cmb
+	 * @param CMB2 $cmb CMB2 Object.
 	 * @return void
 	 * @since 1.0.0
 	 */
@@ -352,7 +353,7 @@ class OptGeneral implements Initable, Registrable {
 	/**
 	 * Add preacher field.
 	 *
-	 * @param CMB2 $cmb
+	 * @param CMB2 $cmb CMB2 Object.
 	 * @return void
 	 * @since 1.0.0
 	 */
@@ -389,7 +390,7 @@ class OptGeneral implements Initable, Registrable {
 	/**
 	 * Add service type.
 	 *
-	 * @param CMB2 $cmb
+	 * @param CMB2 $cmb CMB2 Object.
 	 * @return void
 	 * @since 1.0.0
 	 */

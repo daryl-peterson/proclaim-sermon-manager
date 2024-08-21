@@ -1,6 +1,18 @@
 <?php
+/**
+ * Advanced options.
+ *
+ * @package     Proclaim Sermon Manager
+ * @author      Daryl Peterson <@gmail.com>
+ * @copyright   Copyright (c) 2024, Daryl Peterson
+ * @license     https://www.gnu.org/licenses/gpl-3.0.txt
+ * @since       1.0.0
+ * @todo Impliment this.
+ */
 
 namespace DRPPSM;
+
+defined( 'ABSPATH' ) || exit;
 
 use DRPPSM\Constants\Actions;
 use DRPPSM\Constants\Filters;
@@ -8,14 +20,14 @@ use DRPPSM\Interfaces\Initable;
 use DRPPSM\Interfaces\Registrable;
 
 /**
- * Class description
+ * Advanced options.
  *
- * @package
- * @category
+ * @package     Proclaim Sermon Manager
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
  * @since       1.0.0
+ * @todo Impliment this.
  */
 class OptAdvance implements Initable, Registrable {
 
@@ -67,6 +79,13 @@ class OptAdvance implements Initable, Registrable {
 
 
 
+	/**
+	 * Register metaboxes.
+	 *
+	 * @param callable $display_cb Display callback.
+	 * @return void
+	 * @since 1.0.0
+	 */
 	public function register_metaboxes( callable $display_cb ) {
 		$title = __( 'Settings', 'drppsm' );
 

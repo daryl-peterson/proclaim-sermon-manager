@@ -38,6 +38,12 @@ class Plugin implements PluginInt {
 	 */
 	private NoticeInt $notice;
 
+	/**
+	 * String for CMB version.
+	 *
+	 * @todo Fix this.
+	 * @var string
+	 */
 	private string $cmb2_version;
 
 
@@ -175,13 +181,16 @@ class Plugin implements PluginInt {
 		return true;
 	}
 
+	/**
+	 * Attempt to CMB2 version.
+	 *
+	 * @return void
+	 */
 	public function cmb2_init() {
 		$ver = '?????';
 		if ( defined( 'CMB2_VERSION' ) ) {
 			$ver = CMB2_VERSION;
 		}
 		$this->cmb2_version = $ver;
-
-		// Logger::debug( array( 'CMB2 VERSION' => $ver ) );
 	}
 }

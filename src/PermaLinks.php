@@ -47,10 +47,23 @@ class PermaLinks implements PermaLinkInt {
 	 */
 	private TextDomain $text;
 
+	/**
+	 * Get initialize object instance.
+	 *
+	 * @return PermaLinkInt
+	 * @since 1.0.0
+	 */
 	public static function init(): PermaLinkInt {
 		return self::get_instance();
 	}
 
+	/**
+	 * Register callbacks.
+	 *
+	 * @todo Impliment.
+	 * @return boolean
+	 * @since 1.0.0
+	 */
 	public function register(): ?bool {
 
 		return true;

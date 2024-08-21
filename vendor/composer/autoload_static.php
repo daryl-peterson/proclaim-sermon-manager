@@ -88,7 +88,6 @@ class ComposerStaticInitf5da42b7feb65ba592bc9e68a42f25f4
         'DRPPSM\\Container' => __DIR__ . '/../..' . '/src/Container.php',
         'DRPPSM\\DB\\Db' => __DIR__ . '/../..' . '/src/DB/Db.php',
         'DRPPSM\\DB\\M001M000P000' => __DIR__ . '/../..' . '/src/DB/M001M000P000.php',
-        'DRPPSM\\DB\\Tables' => __DIR__ . '/../..' . '/src/DB/Tables.php',
         'DRPPSM\\DateUtils' => __DIR__ . '/../..' . '/src/DateUtils.php',
         'DRPPSM\\Deactivator' => __DIR__ . '/../..' . '/src/Deactivator.php',
         'DRPPSM\\Exceptions\\NotfoundException' => __DIR__ . '/../..' . '/src/Core/Exceptions/NotfoundException.php',

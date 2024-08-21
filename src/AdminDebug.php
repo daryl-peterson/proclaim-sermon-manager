@@ -29,36 +29,97 @@ use wpdb;
  */
 class AdminDebug implements Executable, Registrable {
 
+	/**
+	 * Total records.
+	 *
+	 * @var integer
+	 */
 	private int $total_items;
-	private int $total_pages;
-	private int $per_page;
-	private int $limit;
-	private int $page;
-	private mixed $links;
-	private string $table;
-	private string $parent;
 
+	/**
+	 * Total pages.
+	 *
+	 * @var integer
+	 */
+	private int $total_pages;
+
+	/**
+	 * Records per page.
+	 *
+	 * @var integer
+	 */
+	private int $per_page;
+
+	/**
+	 * Used for sql.
+	 *
+	 * @var integer
+	 */
+	private int $limit;
+
+	/**
+	 * Current page
+	 *
+	 * @var integer
+	 */
+	private int $page;
+
+	/**
+	 * Pagination links.
+	 *
+	 * @var mixed
+	 */
+	private mixed $links;
+
+	/**
+	 * Table name.
+	 *
+	 * @var string
+	 */
+	private string $table;
+
+	/**
+	 * Database.
+	 *
+	 * @var wpdb
+	 */
 	private wpdb $db;
 
 
+	/**
+	 * Initialize object properties.
+	 *
+	 * @since 1.0.0
+	 */
 	protected function __construct() {
 		global $wpdb;
 		$this->db          = $wpdb;
-		$this->per_page    = 5;
+		$this->per_page    = 20;
 		$this->limit       = $this->per_page;
 		$this->page        = 1;
 		$this->total_items = 0;
 		$this->total_pages = 1;
-		$this->table       = Tables::get_table_name( Tables::LOGS );
-		$this->parent      = 'edit.php?post_type=' . PT::SERMON;
+		$this->table       = get_table_name( 'logs' );
 	}
 
+	/**
+	 * Initialize and register callbacks.
+	 *
+	 * @return AdminDebug
+	 * @since 1.0.0
+	 */
 	public static function exec(): AdminDebug {
 		$obj = new self();
 		$obj->register();
 		return $obj;
 	}
 
+	/**
+	 * Register callbacks.
+	 *
+	 * @return boolean|null True if hooks were registered, otherwise false.
+	 * @since 1.0.0
+	 */
 	public function register(): ?bool {
 		if ( has_action( 'admin_menu', array( $this, 'add_menu' ) ) ) {
 			return false;
@@ -69,6 +130,11 @@ class AdminDebug implements Executable, Registrable {
 		return true;
 	}
 
+	/**
+	 * Add sub menu for debug.
+	 *
+	 * @return void
+	 */
 	public function add_menu() {
 
 		add_submenu_page(
@@ -82,9 +148,10 @@ class AdminDebug implements Executable, Registrable {
 	}
 
 	/**
-	 * Show debug log
+	 * Display debug log.
 	 *
 	 * @return void
+	 * @since 1.0.0
 	 */
 	public function show_debug() {
 		$this->purge();
@@ -95,35 +162,30 @@ class AdminDebug implements Executable, Registrable {
 		$url                  = set_url_scheme( 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] );
 		$url                  = remove_query_arg( $removable_query_args, $url );
 		$purge                = esc_url( add_query_arg( 'purge', true, $url ) );
+		$html                 = <<<EOT
 
-		$html = <<<EOT
-
-
-			<div id="drppsm" class="wrap">
+		<div class="wrap">
+			<div id="drppsm">
 
 				<h3>
 					Debugging
 				</h3>
 				<div class="tablenav top">
-
 					<div class="alignleft">
 						<a class="button" href="$purge">Purge</a>
 					</div>
 
-
 					$this->links
 				</div>
-				<div class="content">
-
+				<section class="bg-debug">
 					$data
+				</section>
 
-				</div>
 				<div class="tablenav bottom">
 					$this->links
 				</div>
 			</div>
-
-
+		</div>
 		EOT;
 
 		echo $html;
@@ -144,6 +206,11 @@ class AdminDebug implements Executable, Registrable {
 		}
 	}
 
+	/**
+	 * Set total for items/pages.
+	 *
+	 * @since 1.0.0
+	 */
 	private function set_totals() {
 		$page              = filter_input( INPUT_GET, 'paged', FILTER_SANITIZE_NUMBER_INT );
 		$result            = $this->db->get_var( "SELECT COUNT(id) FROM $this->table" );
@@ -154,7 +221,16 @@ class AdminDebug implements Executable, Registrable {
 		$this->links = $this->pagination( $this->total_items, $this->total_pages, $this->page );
 	}
 
-	private function pagination( $total_items, $total_pages, $current ) {
+	/**
+	 * Get pagination links
+	 *
+	 * @param integer $total_items Total records.
+	 * @param integer $total_pages Total pages.
+	 * @param integer $current Current page.
+	 * @return string
+	 * @static
+	 */
+	private function pagination( int $total_items, int $total_pages, int $current ): string {
 
 		$output = '<span class="displaying-num">' . sprintf(
 			/* translators: %s: Number of items. */
@@ -281,11 +357,12 @@ class AdminDebug implements Executable, Registrable {
 	}
 
 	/**
-	 * Get debug log
+	 * Get debug log.
 	 *
-	 * @return void
+	 * @return string HTML markup for debug log.
+	 * @since 1.0.0
 	 */
-	private function get_data() {
+	private function get_data(): string {
 		$offset  = $this->page - 1;
 		$blog_id = get_current_blog_id();
 		$sql     = $this->db->prepare(
@@ -300,7 +377,7 @@ class AdminDebug implements Executable, Registrable {
 		foreach ( $results as $key => $value ) {
 			$context = "\n" . trim( $value->context );
 			$html   .= <<<EOT
-				<div class="grid separator">
+				<article class="row">
 					<div class="col-12">
 						<span class="label">Date</span>
 						$value->dt
@@ -335,8 +412,7 @@ class AdminDebug implements Executable, Registrable {
 							$context
 						</div>
 					</div>
-				</div>
-
+				</article>
 			EOT;
 		}
 

@@ -125,7 +125,7 @@ class SermonImage implements Executable, Registrable {
 	/**
 	 * Attach series image.
 	 *
-	 * @param WP_Post $post Post.
+	 * @param WP_Post $sermon Post.
 	 * @return bool True if images was attached, otherwise false.
 	 * @since 1.0.0
 	 */
@@ -191,6 +191,14 @@ class SermonImage implements Executable, Registrable {
 		return false;
 	}
 
+	/**
+	 * Detach image from post.
+	 *
+	 * @param WP_Post $attachment Attachement post object.
+	 * @param WP_Post $sermon Sermon post object.
+	 * @return boolean
+	 * @since 1.0.0
+	 */
 	public function detach_image( WP_Post $attachment, WP_Post $sermon ): bool {
 		if ( PT::ATTACHEMENT !== $attachment->post_type || PT::SERMON !== $sermon->post_type || defined( 'DRPSM_ATTACHING_IMAGE' ) ) {
 			return false;

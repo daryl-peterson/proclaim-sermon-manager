@@ -1,4 +1,13 @@
 <?php
+/**
+ * Database update Major 1 Minior 0 Patch 0.
+ *
+ * @package     Proclaim Sermon Manager
+ * @author      Daryl Peterson <@gmail.com>
+ * @copyright   Copyright (c) 2024, Daryl Peterson
+ * @license     https://www.gnu.org/licenses/gpl-3.0.txt
+ * @since       1.0.0
+ */
 
 namespace DRPPSM\DB;
 
@@ -8,10 +17,8 @@ use DRPPSM\Interfaces\Runable;
 use DRPPSM\Logger;
 use stdClass;
 
-use function DRPPSM\get_key_name;
+use function DRPPSM\get_table_name;
 use function DRPPSM\table_exist;
-
-use const DRPPSM\KEY_PREFIX;
 
 /**
  * Database update Major 1 Minior 0 Patch 0.
@@ -24,12 +31,22 @@ use const DRPPSM\KEY_PREFIX;
  */
 class M001M000P000 implements Initable, Runable {
 
+	/**
+	 * Get initialized object.
+	 *
+	 * @return M001M000P000
+	 */
 	public static function init(): M001M000P000 {
 		return new self();
 	}
 
+	/**
+	 * Run functions to create table.
+	 *
+	 * @return boolean True if table was created, otherwise false.
+	 * @since 1.0.0
+	 */
 	public function run(): bool {
-		global $wpdb;
 
 		$result = false;
 		try {
@@ -47,7 +64,15 @@ class M001M000P000 implements Initable, Runable {
 		return $result;
 	}
 
-	private function get_table( $table ): object {
+	/**
+	 * Get table definition.
+	 *
+	 * @param string $table Unprefixed table name.
+	 * @return object
+	 * @throws PluginException Throws exception if definition not found.
+	 * @since 1.0.0
+	 */
+	private function get_table( string $table ): object {
 		global $wpdb;
 
 		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
@@ -55,7 +80,7 @@ class M001M000P000 implements Initable, Runable {
 		switch ( $table ) {
 			case 'logs':
 				$obj             = new stdClass();
-				$table           = $wpdb->base_prefix . get_key_name( 'logs' );
+				$table           = get_table_name( 'logs' );
 				$charset_collate = $wpdb->get_charset_collate();
 
 				$def        = <<<EOT
@@ -89,7 +114,6 @@ class M001M000P000 implements Initable, Runable {
 		return $obj;
 	}
 }
-
 
 $obj = M001M000P000::init();
 return $obj->run();

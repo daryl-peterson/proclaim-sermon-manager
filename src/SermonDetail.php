@@ -135,9 +135,9 @@ class SermonDetail implements Initable, Registrable {
 	/**
 	 * Save service type.
 	 *
-	 * @param integer $post_ID Post ID
-	 * @param array   $data Data array
-	 * @return bool
+	 * @param integer $post_ID Post ID.
+	 * @param array   $data Data array.
+	 * @return bool Returns true if service type was saved, otherwise false.
 	 * @since 1.0.0
 	 */
 	private function save_service_type( int $post_ID, array $data ): bool {
@@ -158,14 +158,13 @@ class SermonDetail implements Initable, Registrable {
 			return false;
 		}
 
-		// wp_remove_object_terms()
 		return true;
 	}
 
 	/**
 	 * Add date preached field.
 	 *
-	 * @param CMB2 $cmb
+	 * @param CMB2 $cmb CMB object.
 	 * @return void
 	 * @since 1.0.0
 	 */
@@ -214,7 +213,7 @@ class SermonDetail implements Initable, Registrable {
 	/**
 	 * Add service type field.
 	 *
-	 * @param CMB2 $cmb
+	 * @param CMB2 $cmb CMB object.
 	 * @return void
 	 * @since 1.0.0
 	 */
@@ -245,7 +244,7 @@ class SermonDetail implements Initable, Registrable {
 	/**
 	 * Add bible passage field.
 	 *
-	 * @param CMB2 $cmb
+	 * @param CMB2 $cmb CMB object.
 	 * @return void
 	 * @since 1.0.0
 	 */
@@ -274,7 +273,7 @@ class SermonDetail implements Initable, Registrable {
 	/**
 	 * Add description field
 	 *
-	 * @param CMB2 $cmb
+	 * @param CMB2 $cmb CMB object.
 	 * @return void
 	 * @since 1.0.0
 	 */

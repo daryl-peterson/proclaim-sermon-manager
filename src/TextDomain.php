@@ -68,7 +68,10 @@ class TextDomain implements TextDomainInt {
 		}
 		$locale = apply_filters( 'plugin_locale', determine_locale(), 'drppsm' );
 		$path   = dirname( plugin_basename( FILE ) ) . '/languages/';
+
+		// phpcs:disable
 		$mofile = 'drppsm' . '-' . $locale . '.mo';
+		// phpcs:enable
 
 		$result = load_plugin_textdomain( DOMAIN, false, $path );
 		did_action( Actions::TEXT_DOMAIN_LOADED );

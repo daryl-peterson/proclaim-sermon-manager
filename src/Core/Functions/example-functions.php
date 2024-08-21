@@ -1,4 +1,6 @@
 <?php
+// phpcs:ignoreFile
+
 /**
  * Include and setup custom metaboxes and fields. (make sure you copy this file to outside the CMB2 directory)
  *
@@ -9,6 +11,7 @@
  * @package  Demo_CMB2
  * @license  http://www.opensource.org/licenses/gpl-license.php GPL v2.0 (or later)
  * @link     https://github.com/CMB2/CMB2
+ *
  */
 
 /**

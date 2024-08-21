@@ -48,4 +48,13 @@ interface LoggerInt {
 	 * @since 1.0.0
 	 */
 	public static function info( mixed $context ): bool;
+
+	/**
+	 * Set log write interface.
+	 *
+	 * @param LogWritterInt $writter Log writter object.
+	 * @return void
+	 * @since 1.0.0
+	 */
+	public static function set_writter( LogWritterInt $writter ): void;
 }

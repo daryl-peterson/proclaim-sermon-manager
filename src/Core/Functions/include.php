@@ -43,3 +43,18 @@ function include_admin_template() {
 	}
 	// @codeCoverageIgnoreEnd
 }
+
+/**
+ * Include plugable file if wp_rand function not loaded.
+ *
+ * @return void
+ * @since 1.0.0
+ */
+function include_pluggable(): void {
+	// @codeCoverageIgnoreStart
+	if ( ! function_exists( '\wp_rand' ) ) {
+		$file = ABSPATH . 'wp-includes/pluggable.php';
+		require_once $file;
+	}
+	// @codeCoverageIgnoreEnd
+}
