@@ -18,6 +18,7 @@ use DRPPSM\Interfaces\RequirementsInt;
 use DRPPSM\Interfaces\RolesInt;
 use DRPPSM\Interfaces\TextDomainInt;
 use DRPPSM\Interfaces\ImageSizeInt;
+use DRPPSM\Interfaces\RewriteInt;
 use DRPPSM\Logging\LogWritterInt;
 
 /**

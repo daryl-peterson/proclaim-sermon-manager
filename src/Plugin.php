@@ -99,6 +99,7 @@ class Plugin implements PluginInt {
 			Templates::exec();
 			QueryVars::exec();
 			Rewrite::exec();
+			AdminDebug::exec();
 
 			SermonListTable::init()->register();
 			TaxonomyListTable::init()->register();

@@ -23,6 +23,7 @@ use DRPPSM\Interfaces\RequirementsInt;
 use DRPPSM\Interfaces\RolesInt;
 use DRPPSM\Interfaces\TextDomainInt;
 use DRPPSM\Interfaces\ImageSizeInt;
+use DRPPSM\Interfaces\RewriteInt;
 use DRPPSM\Logging\LogDatabase;
 use DRPPSM\Logging\LogWritterInt;
 
@@ -56,6 +57,9 @@ return array(
 	},
 	LogWritterInt::class    => function (): LogWritterInt {
 		return new LogDatabase();
+	},
+	RewriteInt::class       => function (): RewriteInt {
+		return Rewrite::exec();
 	},
 
 	PermaLinkInt::class     => PermaLinks::class,

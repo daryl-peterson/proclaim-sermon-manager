@@ -13,7 +13,7 @@ namespace DRPPSM\DB;
 
 use DRPPSM\Interfaces\DbInt;
 use DRPPSM\Interfaces\OptionsInt;
-use DRPPSM\Logging\Logger;
+use DRPPSM\Logger;
 
 use const DRPPSM\PLUGIN_VER;
 use function DRPPSM\options;

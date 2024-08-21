@@ -56,6 +56,7 @@ class QueryVars implements Executable, Registrable {
 	 *
 	 * @param array $query
 	 * @return void
+	 * @since 1.0.0
 	 */
 	public function overwrite_query_vars( array $query ) {
 		global $wpdb;
@@ -67,7 +68,11 @@ class QueryVars implements Executable, Registrable {
 			return $query;
 		}
 
-		Logger::debug( $query );
+		if ( isset( $query['favicon'] ) ) {
+			return $query;
+		}
+
+		$query_org = $query;
 
 		$found = false;
 		if ( isset( $query['name'] ) && ! $found ) {
@@ -93,7 +98,12 @@ class QueryVars implements Executable, Registrable {
 				$query = array( $terms->taxonomy => $terms->slug );
 			}
 		}
-		Logger::debug( $query );
+		Logger::debug(
+			array(
+				'QUERY ORG' => $query_org,
+				'QUERY'     => $query,
+			)
+		);
 
 		return $query;
 	}

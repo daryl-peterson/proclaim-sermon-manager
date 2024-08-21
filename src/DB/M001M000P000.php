@@ -62,7 +62,7 @@ class M001M000P000 implements Initable, Runable {
 				CREATE TABLE $table (
 					id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
 					blog_id bigint(20) unsigned DEFAULT 1,
-					dt datetime DEFAULT NULL,
+					dt DATETIME(6),
 					level varchar(20) DEFAULT NULL,
 					class varchar(100) DEFAULT NULL,
 					function varchar(100) DEFAULT NULL,

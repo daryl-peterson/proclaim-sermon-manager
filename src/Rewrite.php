@@ -13,8 +13,7 @@ namespace DRPPSM;
 
 use DRPPSM\Constants\PT;
 use DRPPSM\Constants\Tax;
-use DRPPSM\Interfaces\Executable;
-use DRPPSM\Interfaces\Registrable;
+use DRPPSM\Interfaces\RewriteInt;
 
 /**
  * Check if any rewrite conflicts exist.
@@ -25,7 +24,7 @@ use DRPPSM\Interfaces\Registrable;
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
  * @since       1.0.0
  */
-class Rewrite implements Executable, Registrable {
+class Rewrite implements RewriteInt {
 
 	/**
 	 * Transient name.
@@ -57,8 +56,8 @@ class Rewrite implements Executable, Registrable {
 			return false;
 		}
 		add_action( 'init', array( $this, 'find_conflicts' ) );
-		add_action( 'activate_plugin', array( $this, 'delete_transient' ), 10, 2 );
-		add_action( 'deactivate_plugin', array( $this, 'delete_transient' ), 10, 2 );
+		add_action( 'activate_plugin', array( $this, 'reset' ), 10, 2 );
+		add_action( 'deactivate_plugin', array( $this, 'reset' ), 10, 2 );
 		return true;
 	}
 
@@ -70,7 +69,7 @@ class Rewrite implements Executable, Registrable {
 	 * @return void
 	 * @since 1.0.0
 	 */
-	public function delete_transient( string $plugin, bool $network_wide ) {
+	public function reset( string $plugin, bool $network_wide ) {
 		delete_transient( self::TRANS_NAME );
 	}
 

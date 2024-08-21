@@ -72,6 +72,131 @@
 	margin-bottom: 10px;
 }
 
+#drppsm .content {
+	width: 100%;
+	background: white;
+	border: 1px solid #c3c4c7;
+	box-shadow: 0 1px 1px rgba(0, 0, 0, .04);
+	border-radius: 5px;
+	min-height: 100px;
+}
+
+/******************************************************************************
+* GRID CSS
+******************************************************************************/
+#drppsm .grid {
+	display: grid;
+	grid-template-columns: repeat(12, 1fr);
+	grid-gap: 2px;
+	counter-reset: div;
+	margin: 20px;
+}
+
+#drppsm .grid div:before {
+	counter-increment: div;
+}
+
+#drppsm .grid div[class]:after {
+	display: block;
+}
+
+#drppsm .grid .label {
+	min-width: 150px;
+	display: inline-block;
+	font-weight: bold;
+}
+
+#drppsm .grid .label::after {
+	content: ":";
+}
+
+#drppsm .m-auto {
+	margin: auto;
+}
+
+/* spanning cols */
+#drppsm .col-1 {
+	grid-column: auto/span 1;
+}
+
+#drppsm .col-2 {
+	grid-column: auto/span 2;
+}
+
+#drppsm .col-3 {
+	grid-column: auto/span 3;
+}
+
+#drppsm .col-4 {
+	grid-column: auto/span 4;
+}
+
+#drppsm .col-5 {
+	grid-column: auto/span 5;
+}
+
+#drppsm .col-6 {
+	grid-column: auto/span 6;
+}
+
+#drppsm .col-7 {
+	grid-column: auto/span 7;
+}
+
+#drppsm .col-8 {
+	grid-column: auto/span 8;
+}
+
+#drppsm .col-9 {
+	grid-column: auto/span 9;
+}
+
+#drppsm .col-10 {
+	grid-column: auto/span 10;
+}
+
+#drppsm .col-11 {
+	grid-column: auto/span 11;
+}
+
+#drppsm .col-12 {
+	grid-column: auto/span 12;
+}
+
+/* spanning rows */
+#drppsm .row-2 {
+	grid-row: auto/span 2;
+}
+
+#drppsm .code {
+	unicode-bidi: embed;
+	font-family: monospace;
+	font-size: 12px !important;
+	font-weight: 600;
+	white-space: pre-wrap;
+	white-space-collapse: break-spaces;
+	margin-top: -30px;
+}
+
+.clearfix::after {
+	content: "";
+	clear: both;
+	display: table;
+}
+
+#drppsm .separator {
+	padding: 0;
+	border-bottom: 1px solid #d3d3d3;
+}
+
+#drppsm .separator:last-child {
+	border-bottom: none;
+}
+
+/******************************************************************************
+*
+******************************************************************************/
+
 .drppsm-wrap {
 	width: 100%;
 	margin: 20px 0px 5px 0px;

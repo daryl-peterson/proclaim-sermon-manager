@@ -13,6 +13,7 @@ namespace DRPPSM\Logging;
 
 defined( 'ABSPATH' ) || exit;
 
+use function DRPPSM\get_date;
 use function DRPPSM\get_key_name;
 use function DRPPSM\table_exist;
 
@@ -43,12 +44,11 @@ class LogDatabase extends LogWritterAbs implements LogWritterInt {
 				return false;
 			}
 
-			$date = gmdate( 'Y-m-d H:i:s', time() );
 			$wpdb->insert(
 				$this->table_name,
 				array(
 					'blog_id'  => $blog_id,
-					'dt'       => $date,
+					'dt'       => get_date( 'Y-m-d H:i:s.u', microtime( true ) ),
 					'level'    => $record->level,
 					'class'    => $record->class,
 					'function' => $record->function,
@@ -86,5 +86,10 @@ class LogDatabase extends LogWritterAbs implements LogWritterInt {
 			return true;
 		}
 		return false;
+	}
+
+	private function microtime() {
+		// return wp_date( 'Y-m-d H:i:s.U', time() );
+		return date( 'Y-m-d H:i:s.U', microtime( true ) );
 	}
 }

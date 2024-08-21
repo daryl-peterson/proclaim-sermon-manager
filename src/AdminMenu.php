@@ -19,7 +19,6 @@ use DRPPSM\Constants\PT;
 use DRPPSM\Constants\Tax;
 use DRPPSM\Interfaces\Initable;
 use DRPPSM\Interfaces\Registrable;
-use DRPPSM\Logging\Logger;
 
 /**
  * Admin menu.

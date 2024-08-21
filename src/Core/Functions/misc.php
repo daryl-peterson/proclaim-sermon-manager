@@ -11,6 +11,8 @@
 
 namespace DRPPSM;
 
+use DateTimeZone;
+
 /**
  * Get app instance.
  *
@@ -88,6 +90,73 @@ function fix_slug( string $slug ): string {
  */
 function get_slug( string $slug, string $default_value = '' ): string {
 	return untrailingslashit( fix_slug( get_setting( $slug, $default_value ) ) );
+}
+
+function get_date( string $format, int|float|null $timestamp = null, null|DateTimeZone $timezone = null ) {
+	global $wp_locale;
+
+	if ( null === $timestamp ) {
+		$timestamp = time();
+	} elseif ( ! is_numeric( $timestamp ) && ! is_float( $timestamp ) ) {
+		return false;
+	}
+
+	if ( ! $timezone ) {
+		$timezone = wp_timezone();
+	}
+
+	$datetime = date_create( '@' . $timestamp );
+	$datetime->setTimezone( $timezone );
+
+	if ( empty( $wp_locale->month ) || empty( $wp_locale->weekday ) ) {
+		$date = $datetime->format( $format );
+	} else {
+		// We need to unpack shorthand `r` format because it has parts that might be localized.
+		$format = preg_replace( '/(?<!\\\\)r/', DATE_RFC2822, $format );
+
+		$new_format    = '';
+		$format_length = strlen( $format );
+		$month         = $wp_locale->get_month( $datetime->format( 'm' ) );
+		$weekday       = $wp_locale->get_weekday( $datetime->format( 'w' ) );
+
+		for ( $i = 0; $i < $format_length; $i++ ) {
+			switch ( $format[ $i ] ) {
+				case 'D':
+					$new_format .= addcslashes( $wp_locale->get_weekday_abbrev( $weekday ), '\\A..Za..z' );
+					break;
+				case 'F':
+					$new_format .= addcslashes( $month, '\\A..Za..z' );
+					break;
+				case 'l':
+					$new_format .= addcslashes( $weekday, '\\A..Za..z' );
+					break;
+				case 'M':
+					$new_format .= addcslashes( $wp_locale->get_month_abbrev( $month ), '\\A..Za..z' );
+					break;
+				case 'a':
+					$new_format .= addcslashes( $wp_locale->get_meridiem( $datetime->format( 'a' ) ), '\\A..Za..z' );
+					break;
+				case 'A':
+					$new_format .= addcslashes( $wp_locale->get_meridiem( $datetime->format( 'A' ) ), '\\A..Za..z' );
+					break;
+				case '\\':
+					$new_format .= $format[ $i ];
+
+					// If character follows a slash, we add it without translating.
+					if ( $i < $format_length ) {
+						$new_format .= $format[ ++$i ];
+					}
+					break;
+				default:
+					$new_format .= $format[ $i ];
+					break;
+			}
+		}
+
+		$date = $datetime->format( $new_format );
+		$date = wp_maybe_decline_date( $date, $format );
+	}
+	return $date;
 }
 
 /**
