@@ -17,7 +17,7 @@ use DRPPSM\Constants\Actions;
 use DRPPSM\Constants\Bible;
 use DRPPSM\Constants\Tax;
 use DRPPSM\Interfaces\BibleLoadInt;
-use DRPPSM\Logging\Logger;
+use DRPPSM\Logger;
 use WP_Error;
 
 /**

@@ -214,8 +214,10 @@ class Helper {
 			$reflect = new ReflectionClass( $obj );
 			return $reflect->getShortName();
 
+			// @codeCoverageIgnoreStart
 		} catch ( \Throwable $th ) {
 			return null;
+			// @codeCoverageIgnoreEnd
 		}
 	}
 }

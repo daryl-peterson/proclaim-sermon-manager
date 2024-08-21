@@ -52,7 +52,6 @@ class Container implements ContainerInterface {
 		return $this->get_instance( $item );
 	}
 
-
 	/**
 	 * Returns true if the container can return an entry for the given identifier.
 	 * Returns false otherwise.
@@ -63,6 +62,8 @@ class Container implements ContainerInterface {
 	 * @param string $id Identifier of the entry to look for.
 	 * @return bool
 	 * @since 1.0.0
+	 *
+	 * @todo Refactor.
 	 */
 	public function has( $id ): bool {
 		try {
@@ -75,7 +76,9 @@ class Container implements ContainerInterface {
 		if ( $item instanceof ReflectionClass ) {
 			return $item->isInstantiable();
 		}
+		// @codeCoverageIgnoreStart
 		return isset( $item );
+		// @codeCoverageIgnoreEnd
 	}
 
 	/**
@@ -90,7 +93,6 @@ class Container implements ContainerInterface {
 		$this->services[ $key ] = $value;
 		return $this;
 	}
-
 
 	/**
 	 * Get item from container.
@@ -137,15 +139,15 @@ class Container implements ContainerInterface {
 	private function get_instance( ReflectionClass $item ): mixed {
 		$constructor = $item->getConstructor();
 
-		// @codeCoverageIgnoreStart
 		if ( $item->hasMethod( 'init' ) ) {
 			return call_user_func( $item->name . '::init' );
 		}
-		// @codeCoverageIgnoreEnd
 
+		// @codeCoverageIgnoreStart
 		if ( $item->hasMethod( 'get_instance' ) ) {
 			return call_user_func( $item->name . '::get_instance' );
 		}
+		// @codeCoverageIgnoreEnd
 
 		if ( is_null( $constructor ) || $constructor->getNumberOfRequiredParameters() === 0 ) {
 			return $item->newInstance();

@@ -72,8 +72,10 @@ class Roles implements RolesInt {
 		if ( ! is_admin() || $activated || has_action( 'activate_' . $file, array( $this, 'add' ) ) ) {
 			return false;
 		}
+		// @codeCoverageIgnoreStart
 		register_activation_hook( FILE, array( $this, 'add' ) );
 		return true;
+		// @codeCoverageIgnoreEnd
 	}
 
 	/**

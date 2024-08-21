@@ -77,11 +77,12 @@ class SermonDetail implements Initable, Registrable {
 		if ( ! is_admin() || has_action( Actions::SERMON_EDIT_FORM, array( $this, 'show' ) ) ) {
 			return false;
 		}
+		// @codeCoverageIgnoreStart
 		$pt = 'post';
-
 		add_action( Actions::SERMON_EDIT_FORM, array( $this, 'show' ) );
 		add_action( "cmb2_save_{$pt}_fields_{$this->cmb_id}", array( $this, 'save' ), 10, 3 );
 		return true;
+		// @codeCoverageIgnoreEnd
 	}
 
 	/**

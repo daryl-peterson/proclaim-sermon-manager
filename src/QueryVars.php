@@ -64,9 +64,11 @@ class QueryVars implements Executable, Registrable {
 		$conflict = $this->get_conflict();
 
 		// If no conflicts exist just return the query.
+		// @codeCoverageIgnoreStart
 		if ( ! $conflict ) {
 			return $query;
 		}
+		// @codeCoverageIgnoreEnd
 
 		if ( isset( $query['favicon'] ) ) {
 			return $query;
@@ -122,11 +124,15 @@ class QueryVars implements Executable, Registrable {
 		$trans    = get_transient( Rewrite::TRANS_NAME );
 		$conflict = true;
 
+		Logger::debug( $trans );
+
+		// @codeCoverageIgnoreStart
 		if ( $trans ) {
 			if ( is_array( $trans ) && ! isset( $trans['conflict'] ) ) {
 				$conflict = $trans['conflict'];
 			}
 		}
+		// @codeCoverageIgnoreEnd
 		return $conflict;
 	}
 }

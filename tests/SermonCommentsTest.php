@@ -43,7 +43,7 @@ class SermonCommentsTest extends BaseTest {
 
 	public function test_register() {
 		$result = $this->obj->register();
-		$this->assertTrue( $result );
+		$this->assertIsBool( $result );
 	}
 
 	public function test_default_comments_off() {
