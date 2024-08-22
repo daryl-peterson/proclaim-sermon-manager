@@ -79,7 +79,7 @@ class Roles implements RolesInt {
 	}
 
 	/**
-	 * Initalize and register callbacks.
+	 * Initalize and register hooks.
 	 *
 	 * @return RolesInt
 	 * @since 1.0.0

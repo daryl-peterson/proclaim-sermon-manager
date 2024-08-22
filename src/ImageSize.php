@@ -66,7 +66,7 @@ class ImageSize implements ImageSizeInt {
 	}
 
 	/**
-	 * Initialize and register callbacks.
+	 * Initialize and register hooks.
 	 *
 	 * @return ImageSizeInt
 	 * @since 1.0.0
@@ -78,7 +78,7 @@ class ImageSize implements ImageSizeInt {
 	}
 
 	/**
-	 * Register callbacks.
+	 * Register hooks.
 	 *
 	 * @return null|bool Return true default.
 	 * @since 1.0.0

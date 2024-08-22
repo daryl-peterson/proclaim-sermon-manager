@@ -31,7 +31,7 @@ class TextDomain implements TextDomainInt {
 	public const INIT_KEY = 'TEXT_DOMAIN_INIT';
 
 	/**
-	 * Initialize and register callbacks.
+	 * Initialize and register hooks.
 	 *
 	 * @return TextDomainInt
 	 * @since 1.0.0
@@ -43,7 +43,7 @@ class TextDomain implements TextDomainInt {
 	}
 
 	/**
-	 * Register callbacks
+	 * Register hooks
 	 *
 	 * @return null|bool Return true if hooks were initialized.
 	 * @since 1.0.0

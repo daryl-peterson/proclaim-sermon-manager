@@ -207,8 +207,8 @@ class CMB2 extends CMB2_Base {
 			wp_die( esc_html__( 'Metabox configuration is required to have an ID parameter.', 'cmb2' ) );
 		}
 
-		$this->cmb_id = $config['id'];
-		$this->meta_box = wp_parse_args( $config, $this->mb_defaults );
+		$this->cmb_id             = $config['id'];
+		$this->meta_box           = wp_parse_args( $config, $this->mb_defaults );
 		$this->meta_box['fields'] = array();
 
 		// Ensures object_types is an array.
@@ -283,7 +283,7 @@ class CMB2 extends CMB2_Base {
 	 */
 	public function render_form_open( $object_id = 0, $object_type = '' ) {
 		$object_type = $this->object_type( $object_type );
-		$object_id = $this->object_id( $object_id );
+		$object_id   = $this->object_id( $object_id );
 
 		echo "\n<!-- Begin CMB2 Fields -->\n";
 
@@ -334,12 +334,12 @@ class CMB2 extends CMB2_Base {
 		// Use the callback to fetch classes.
 		if ( $added_classes = $this->get_param_callback_result( 'classes_cb' ) ) {
 			$added_classes = is_array( $added_classes ) ? $added_classes : array( $added_classes );
-			$classes = array_merge( $classes, $added_classes );
+			$classes       = array_merge( $classes, $added_classes );
 		}
 
 		if ( $added_classes = $this->prop( 'classes' ) ) {
 			$added_classes = is_array( $added_classes ) ? $added_classes : array( $added_classes );
-			$classes = array_merge( $classes, $added_classes );
+			$classes       = array_merge( $classes, $added_classes );
 		}
 
 		/**
@@ -406,7 +406,7 @@ class CMB2 extends CMB2_Base {
 	 */
 	public function render_form_close( $object_id = 0, $object_type = '' ) {
 		$object_type = $this->object_type( $object_type );
-		$object_id = $this->object_id( $object_id );
+		$object_id   = $this->object_id( $object_id );
 
 		echo '</div></div>';
 
@@ -542,7 +542,7 @@ class CMB2 extends CMB2_Base {
 		if ( ! empty( $group_val ) ) {
 			foreach ( $group_val as $group_key => $field_id ) {
 				$this->render_group_row( $field_group );
-				$field_group->index++;
+				++$field_group->index;
 			}
 		} else {
 			$this->render_group_row( $field_group );
@@ -567,7 +567,7 @@ class CMB2 extends CMB2_Base {
 	 * @return string                  The attributes string.
 	 */
 	public function group_wrap_attributes( $field_group ) {
-		$classes = 'cmb-nested cmb-field-list cmb-repeatable-group';
+		$classes  = 'cmb-nested cmb-field-list cmb-repeatable-group';
 		$classes .= $field_group->options( 'sortable' ) ? ' sortable' : ' non-sortable';
 		$classes .= $field_group->args( 'repeatable' ) ? ' repeatable' : ' non-repeatable';
 
@@ -623,7 +623,7 @@ class CMB2 extends CMB2_Base {
 		}
 
 			echo '
-			<div class="cmbhandle" title="' , esc_attr__( 'Click to toggle', 'cmb2' ), '"><br></div>
+			<div class="cmbhandle" title="', esc_attr__( 'Click to toggle', 'cmb2' ), '"><br></div>
 			<h3 class="cmb-group-title cmbhandle-title"><span>', $field_group->replace_hash( $field_group->options( 'group_title' ) ), '</span></h3>
 
 			<div class="inside cmb-td cmb-nested cmb-field-list">';
@@ -759,8 +759,8 @@ class CMB2 extends CMB2_Base {
 
 		// Fall-back to $_POST data.
 		$this->data_to_save = ! empty( $data_to_save ) ? $data_to_save : $_POST;
-		$object_id = $this->object_id( $object_id );
-		$object_type = $this->object_type( $object_type );
+		$object_id          = $this->object_id( $object_id );
+		$object_type        = $this->object_type( $object_type );
 
 		$this->process_fields();
 
@@ -940,7 +940,7 @@ class CMB2 extends CMB2_Base {
 		$group_vals = $field_group->sanitization_cb( $this->data_to_save[ $base_id ] );
 		$saved      = array();
 
-		$field_group->index = 0;
+		$field_group->index        = 0;
 		$field_group->data_to_save = $this->data_to_save;
 
 		foreach ( array_values( $field_group->fields() ) as $field_args ) {
@@ -1152,7 +1152,7 @@ class CMB2 extends CMB2_Base {
 
 		if ( in_array( 'term', $box_types, true ) ) {
 			$taxonomies = CMB2_Utils::ensure_array( $this->prop( 'taxonomies' ) );
-			$box_types = array_merge( $box_types, $taxonomies );
+			$box_types  = array_merge( $box_types, $taxonomies );
 		}
 
 		$found = array_intersect( $object_types, $box_types );
@@ -1172,7 +1172,7 @@ class CMB2 extends CMB2_Base {
 		$types = $this->box_types();
 
 		if ( empty( $keys ) ) {
-			$keys = '';
+			$keys  = '';
 			$types = $this->deinit_options_mb( $types );
 		} else {
 
@@ -1250,7 +1250,7 @@ class CMB2 extends CMB2_Base {
 	 */
 	public function doing_options_page() {
 		$found_key = false;
-		$keys = $this->options_page_keys();
+		$keys      = $this->options_page_keys();
 
 		if ( empty( $keys ) ) {
 			return $found_key;
@@ -1406,7 +1406,7 @@ class CMB2 extends CMB2_Base {
 		$field_id = is_string( $field ) ? $field : $field['id'];
 
 		$parent_field_id = ! empty( $field_group ) ? $field_group->id() : '';
-		$ids = $this->get_field_ids( $field_id, $parent_field_id );
+		$ids             = $this->get_field_ids( $field_id, $parent_field_id );
 
 		if ( ! $ids ) {
 			return false;
@@ -1597,10 +1597,13 @@ class CMB2 extends CMB2_Base {
 
 		$column = is_array( $field['column'] ) ? $field['column'] : array();
 
-		$field['column'] = wp_parse_args( $column, array(
-			'name'     => isset( $field['name'] ) ? $field['name'] : '',
-			'position' => false,
-		) );
+		$field['column'] = wp_parse_args(
+			$column,
+			array(
+				'name'     => isset( $field['name'] ) ? $field['name'] : '',
+				'position' => false,
+			)
+		);
 
 		return $field;
 	}
@@ -1730,13 +1733,13 @@ class CMB2 extends CMB2_Base {
 	 * @return mixed            Field index or false.
 	 */
 	public function search_old_school_array( $field_id, $fields ) {
-		$ids = wp_list_pluck( $fields, 'id' );
+		$ids   = wp_list_pluck( $fields, 'id' );
 		$index = array_search( $field_id, $ids );
 		return false !== $index ? $index : false;
 	}
 
 	/**
-	 * Handles metabox property callbacks, and passes this $cmb object as property.
+	 * Handles metabox property hooks, and passes this $cmb object as property.
 	 *
 	 * @since 2.2.3
 	 * @param  callable $cb                The callback method/function/closure.
@@ -1821,5 +1824,4 @@ class CMB2 extends CMB2_Base {
 				return parent::__get( $property );
 		}
 	}
-
 }

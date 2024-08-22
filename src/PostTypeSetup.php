@@ -2,7 +2,7 @@
 /**
  * Register post types and taxonomies.
  * - Stub - calls other object methods.
- * - Used so other object don't have to register callbacks.
+ * - Used so other object don't have to register hooks.
  *
  * @package     Proclaim Sermon Manager
  * @author      Daryl Peterson <@gmail.com>
@@ -29,7 +29,7 @@ use DRPPSM\TaxonomyReg;
 /**
  * Register post types and taxonomies.
  * - Stub - calls other object methods.
- * - Used so other object don't have to register callbacks.
+ * - Used so other object don't have to register hooks.
  *
  * @package     Proclaim Sermon Manager
  * @author      Daryl Peterson <@gmail.com>
@@ -70,7 +70,7 @@ class PostTypeSetup implements PostTypeSetupInt {
 
 
 	/**
-	 * Register callbacks.
+	 * Register hooks.
 	 *
 	 * @return null|bool Return true default.
 	 * @since 1.0.0

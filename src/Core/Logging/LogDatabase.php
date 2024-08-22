@@ -11,9 +11,11 @@
 
 namespace DRPPSM\Logging;
 
+use stdClass;
+use wpdb;
+
 defined( 'ABSPATH' ) || exit;
 
-use function DRPPSM\get_date;
 use function DRPPSM\get_key_name;
 use function DRPPSM\table_exist;
 
@@ -33,16 +35,42 @@ class LogDatabase extends LogWritterAbs implements LogWritterInt {
 	 *
 	 * @var string
 	 */
-	private string $table_name;
-
+	public string $table;
 
 	/**
 	 * Prefixed key name. Used in transients.
 	 *
 	 * @var string
 	 */
-	private string $key_name;
+	public string $key_name;
 
+	/**
+	 * Database.
+	 *
+	 * @var wpdb
+	 */
+	public wpdb $db;
+
+	/**
+	 * Initialize object properties.
+	 */
+	public function __construct() {
+		global $wpdb;
+		$this->db       = $wpdb;
+		$this->key_name = get_key_name( 'logs' );
+		$this->table    = $wpdb->prefix . $this->key_name;
+	}
+
+	/**
+	 * Truncate data.
+	 *
+	 * @return void
+	 * @since 1.0.0
+	 */
+	public function truncate(): void {
+		$this->db->get_results( "DELETE FROM $this->table" );
+		$this->db->query( 'ALTER TABLE ' . $this->table . ' AUTO_INCREMENT=1' );
+	}
 
 	/**
 	 * Write log record.
@@ -54,22 +82,18 @@ class LogDatabase extends LogWritterAbs implements LogWritterInt {
 	public function write( LogRecord $record ): bool {
 		$result = false;
 		try {
-			global $wpdb;
-
-			$blog_id          = get_current_blog_id();
-			$this->key_name   = get_key_name( 'logs' );
-			$this->table_name = $wpdb->prefix . $this->key_name;
+			$blog_id = get_current_blog_id();
 
 			if ( ! $this->ready() ) {
 				return false;
 			}
 
 			// phpcs:disable
-			$wpdb->insert(
-				$this->table_name,
+			$this->db->insert(
+				$this->table,
 				array(
 					'blog_id'  => $blog_id,
-					'dt'       => get_date( 'Y-m-d H:i:s.u', microtime( true ) ),
+					'dt'       => wp_date( 'Y-m-d H:i:s.u', microtime( true ) ),
 					'level'    => $record->level,
 					'class'    => $record->class,
 					'function' => $record->function,
@@ -110,7 +134,7 @@ class LogDatabase extends LogWritterAbs implements LogWritterInt {
 			return true;
 		}
 
-		$table = table_exist( $this->table_name );
+		$table = table_exist( $this->table );
 		if ( $table ) {
 			set_transient( $this->key_name, true );
 			return true;

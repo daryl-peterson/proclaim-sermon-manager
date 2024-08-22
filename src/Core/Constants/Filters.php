@@ -28,31 +28,50 @@ class Filters {
 
 	/**
 	 * Get main settings menu.
-	 *
-	 * ```php
-	 * # Used.
-	 * add_filter(OPTIONS_MAIN_MENU,[$this,'set_menu',10,1]);
-	 *
-	 * # Called - Get the main settings menu.
-	 * $menu = apply_filters(OPTIONS_MAIN_MENU,$menu);
-	 * ```
+	 * - Fires to allow another menu item can be selected.
 	 *
 	 * @param string $settings_menu Setting menu name.
 	 * @return string
 	 * @since 1.0.0
+	 *
+	 * ```php
+	 * # Example
+	 * add_filter(SETTINGS_MAIN_MENU,[$this,'set_menu',10,1]);
+	 *
+	 * ```
 	 */
-	public const OPTIONS_MAIN_MENU = 'drppsm_options_main_menu';
+	public const SETTINGS_MAIN_MENU = 'drppsm_settings_main_menu';
 
 	/**
 	 * Get hidden setting menu names.
+	 * - Fires before before sub menuS are displayed.
+	 *
+	 * @param array $submenus Sub menus to hide.
+	 * @return array
+	 * @since 1.0.0
 	 *
 	 * ```php
-	 * # Use - Add your hook
-	 * add_action(Filters::OPTIONS_HIDDEN_MENUS,[$this,'some_function',10,1]);
-	 *
-	 * # Called - Get the list of hidden settings menus.
-	 * $hidden = apply_filters(OPTIONS_HIDDEN_MENUS,array $hidden);
+	 * # Example
+	 * add_filter(SETTINGS_REMOVE_SUBMENUS,[$this,'set_menu',10,1]);
 	 * ```
 	 */
-	public const OPTIONS_HIDDEN_MENUS = 'drppsm_optins_hidden_menu';
+	public const SETTINGS_REMOVE_SUBMENUS = 'drppsm_settings_hidden_menu';
+
+
+	/**
+	 * Get pagination links
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param integer $items Total records.
+	 * @param integer $limit Per page.
+	 * @param integer $page Page number.
+	 * @return string
+	 *
+	 * ```php
+	 * # Example
+	 * apply_filters(PAGINATION_GET,$items,$limit,$page]);
+	 * ```
+	 */
+	public const PAGINATION_GET = 'drppsm_pagination_get';
 }

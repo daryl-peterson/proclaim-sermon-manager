@@ -78,7 +78,7 @@ class SermonListTable implements Initable, Registrable {
 	}
 
 	/**
-	 * Register callbacks.
+	 * Register hooks.
 	 *
 	 * @return null|bool Returns true default.
 	 * @since 1.0.0
@@ -95,7 +95,6 @@ class SermonListTable implements Initable, Registrable {
 		add_filter( "manage_edit-{$this->pt}_columns", array( $this, 'set_columns' ), 10, 1 );
 		add_filter( 'list_table_primary_column', array( $this, 'set_table_primary_column' ), 10, 2 );
 		add_filter( 'post_row_actions', array( $this, 'row_actions' ), 100, 2 );
-		add_action( 'restrict_manage_posts', array( $this, 'restrict_manage_posts' ) );
 		add_filter( 'parse_query', array( $this, 'sermon_filters_query' ), 10, 1 );
 
 		add_action( 'manage_posts_extra_tablenav', array( $this, 'extra_nav' ), 10, 1 );
@@ -127,7 +126,7 @@ class SermonListTable implements Initable, Registrable {
 				</div>
 			</div>
 		EOT;
-		echo $html;
+		echo $html; // phpcs:ignore
 	}
 
 	/**
@@ -163,12 +162,12 @@ class SermonListTable implements Initable, Registrable {
 
 					if ( time() - $unix_preached < DAY_IN_SECONDS ) {
 						// translators: %s: The time. Such as "12 hours".
-						$data = sprintf( __( '%s ago' ), human_time_diff( $unix_preached ) );
+						$date = sprintf( __( '%s ago' ), human_time_diff( $unix_preached ) );
 					} else {
-						$data = date( 'Y/m/d', $unix_preached );
+						$date = gmdate( 'Y/m/d', $unix_preached );
 					}
 
-					$data = '<abbr title="' . date( 'Y/m/d g:i:s a', $unix_preached ) . '">' . $data . '</abbr>';
+					$data = '<abbr title="' . gmdate( 'Y/m/d g:i:s a', $unix_preached ) . '">' . $date . '</abbr>';
 
 					break;
 				default:
@@ -189,7 +188,7 @@ class SermonListTable implements Initable, Registrable {
 			$data = __( 'Error' );
 		}
 
-		echo $data;
+		echo $data; // phpcs:ignore
 	}
 
 	/**
@@ -262,43 +261,35 @@ class SermonListTable implements Initable, Registrable {
 	}
 
 	/**
-	 * Create filters for service type.
-	 *
-	 * @return void
-	 * @since 1.0.0
-	 */
-	public function restrict_manage_posts(): void {
-		if ( ! $this->post_type_match() ) {
-			return;
-		}
-		// $this->sermon_filters();
-	}
-
-	/**
 	 * Filter the sermons on service type.
 	 *
 	 * @param \WP_Query $query The query.
 	 * @return void
 	 * @since 1.0.0
 	 */
-	public function sermon_filters_query( \WP_Query $query ): void {
+	public function sermon_filters_query( \WP_Query &$query ): void {
 
 		try {
+
+			$qv = &$query->query_vars;
+
 			if ( ! $this->post_type_match() ) {
 				return;
 			}
 
-			if ( ! isset( $query->query_vars[ Tax::SERVICE_TYPE ] ) || empty( $query->query_vars[ Tax::SERVICE_TYPE ] ) ) {
+			if ( ! isset( $qv[ Tax::SERVICE_TYPE ] ) || empty( $qv[ Tax::SERVICE_TYPE ] ) ) {
 				return;
 			}
-			$query->query_vars['tax_query'] = array(
+
+			// phpcs:disable
+			$qv['tax_query'] = array(
 				array(
 					'taxonomy' => Tax::SERVICE_TYPE,
 					'field'    => 'slug',
-					// 'field'    => 'term_id',
 					'terms'    => $query->query_vars[ Tax::SERVICE_TYPE ],
 				),
 			);
+			// phpcs:enable
 
 			// @codeCoverageIgnoreStart
 		} catch ( \Throwable $th ) {
@@ -331,6 +322,7 @@ class SermonListTable implements Initable, Registrable {
 				// Sorting.
 				switch ( $vars['orderby'] ) {
 					case 'preached':
+						// phpcs:disable
 						$vars = array_merge(
 							$vars,
 							array(
@@ -340,9 +332,11 @@ class SermonListTable implements Initable, Registrable {
 								'meta_compare'   => '<=',
 							)
 						);
+						// phpcs:enable
 						break;
 
 					case 'views':
+						// phpcs:disable
 						$vars = array_merge(
 							$vars,
 							array(
@@ -350,6 +344,7 @@ class SermonListTable implements Initable, Registrable {
 								'orderby'  => 'meta_value_num',
 							)
 						);
+						// phpcs:enable
 						break;
 				}
 			}

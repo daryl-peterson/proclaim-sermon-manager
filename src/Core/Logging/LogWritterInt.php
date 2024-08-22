@@ -30,4 +30,13 @@ interface LogWritterInt {
 	 * @since 1.0.0
 	 */
 	public function write( LogRecord $record ): bool;
+
+
+	/**
+	 * Truncate data.
+	 *
+	 * @return void
+	 * @since 1.0.0
+	 */
+	public function truncate(): void;
 }

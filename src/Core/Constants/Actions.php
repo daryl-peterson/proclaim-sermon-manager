@@ -45,7 +45,7 @@ class Actions {
 	 * add_action(REGISTER_SETTINGS_FORM,[$this,'regisiter_metaboxes',10,1]);
 	 * ```
 	 */
-	public const REGISTER_SETTINGS_FORM = 'drppsm_register_settings_form';
+	public const SETTINGS_REGISTER_FORM = 'drppsm_settings_register_form';
 
 
 	/**

@@ -11,6 +11,8 @@
 
 namespace DRPPSM;
 
+defined( 'ABSPATH' ) || exit;
+
 use CMB2_Boxes;
 use CMB2_Options_Hookup;
 use DRPPSM\Constants\Actions;
@@ -51,14 +53,20 @@ class AdminSettings implements Initable, Registrable {
 	}
 
 	/**
-	 * Register callbacks
+	 * Register hooks
 	 *
 	 * @return boolean|null Always true.
 	 * @since 1.0.0
 	 */
 	public function register(): ?bool {
+
+		if ( ! is_admin() || has_action( 'cmb2_admin_init', array( $this, 'register_metaboxes' ) ) ) {
+			return false;
+		}
+
 		add_action( 'cmb2_admin_init', array( $this, 'register_metaboxes' ) );
 		add_filter( 'submenu_file', array( $this, 'remove_submenus' ) );
+
 		OptGeneral::init()->register();
 		OptAdvance::init()->register();
 		return true;
@@ -71,8 +79,9 @@ class AdminSettings implements Initable, Registrable {
 	 * @since 1.0.0
 	 */
 	public function register_metaboxes() {
+
 		$cb = array( $this, 'display_with_tabs' );
-		do_action( Actions::REGISTER_SETTINGS_FORM, $cb );
+		do_action( Actions::SETTINGS_REGISTER_FORM, $cb );
 	}
 
 	/**
@@ -84,7 +93,7 @@ class AdminSettings implements Initable, Registrable {
 	 */
 	public function display_with_tabs( CMB2_Options_Hookup $cmb_options ) {
 
-		$title   = 'Proclaim ' . __( 'Sermon Manager Settings', 'drppsm' );
+		$title   = __( 'Proclaim Sermon Manager Settings', 'drppsm' );
 		$action  = esc_url( admin_url( 'admin-post.php' ), false );
 		$form_id = $cmb_options->cmb->cmb_id;
 		$enc     = 'multipart/form-data';
@@ -120,7 +129,7 @@ class AdminSettings implements Initable, Registrable {
 				</div>
 			</div>
 		EOT;
-		echo $html;
+		echo $html; //phpcs:ignore
 	}
 
 	/**
@@ -157,11 +166,11 @@ class AdminSettings implements Initable, Registrable {
 
 		global $plugin_page;
 
-		$hidden = apply_filters( Filters::OPTIONS_HIDDEN_MENUS, array() );
+		$hidden = apply_filters( Filters::SETTINGS_REMOVE_SUBMENUS, array() );
 
 		// Select another submenu item to highlight (optional).
 		if ( $plugin_page && isset( $hidden[ $plugin_page ] ) ) {
-			$submenu_file = (string) apply_filters( Filters::OPTIONS_MAIN_MENU, '' );
+			$submenu_file = (string) apply_filters( Filters::SETTINGS_MAIN_MENU, '' );
 		}
 
 		// Hide the submenus.
@@ -182,9 +191,17 @@ class AdminSettings implements Initable, Registrable {
 	private function get_nav( CMB2_Options_Hookup $cmb_options ): string {
 		$tabs = $this->get_options_page_tabs( $cmb_options );
 		$nav  = '';
+
 		foreach ( $tabs as $option_key => $tab_title ) {
 			$class = 'nav-tab';
-			if ( isset( $_GET['page'] ) && $option_key === $_GET['page'] ) {
+			$page  = '';
+			// phpcs:disable
+			if ( isset( $_REQUEST['page'] ) && ! empty( $_REQUEST['page'] ) ) {
+				$page = sanitize_text_field( wp_unslash( $_REQUEST['page'] ) );
+			}
+			// phpcs:enable
+
+			if ( $option_key === $page ) {
 				$class = 'nav-tab nav-tab-active';
 			}
 			$url       = menu_page_url( $option_key, false );

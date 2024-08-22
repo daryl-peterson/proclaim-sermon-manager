@@ -32,7 +32,7 @@ use WP_Error;
 class BibleLoad implements BibleLoadInt {
 
 	/**
-	 * Register callbacks.
+	 * Register hooks.
 	 *
 	 * @return boolean|null
 	 * @since 1.0.0
@@ -45,7 +45,7 @@ class BibleLoad implements BibleLoadInt {
 	}
 
 	/**
-	 * Initailize and register callbacks.
+	 * Initailize and register hooks.
 	 *
 	 * @return BibleLoadInt
 	 * @since 1.0.0

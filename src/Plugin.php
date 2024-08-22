@@ -18,7 +18,7 @@ use DRPPSM\Interfaces\NoticeInt;
 use DRPPSM\Interfaces\PluginInt;
 use DRPPSM\Interfaces\PostTypeSetupInt;
 use DRPPSM\Constants\Actions;
-use DRPPSM\DB\Db;
+use DRPPSM\DB\DbUpdates;
 
 /**
  * Plugin main class.
@@ -97,7 +97,7 @@ class Plugin implements PluginInt {
 			bibleload();
 
 			SermonEdit::init()->register();
-			Db::exec();
+			DbUpdates::exec();
 			QueueScripts::exec();
 			SermonImage::exec();
 			SermonComments::exec();
@@ -105,7 +105,8 @@ class Plugin implements PluginInt {
 			Templates::exec();
 			QueryVars::exec();
 			Rewrite::exec();
-			AdminDebug::exec();
+			Debug::exec();
+			Pagination::exec();
 
 			SermonListTable::init()->register();
 			TaxonomyListTable::init()->register();

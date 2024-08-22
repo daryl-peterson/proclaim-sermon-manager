@@ -39,7 +39,7 @@ class Rewrite implements RewriteInt {
 	const TRANS_TIMEOUT = DAY_IN_SECONDS;
 
 	/**
-	 * Initialize object and register callbacks.
+	 * Initialize object and register hooks.
 	 *
 	 * @return Rewrite
 	 * @since 1.0.0
@@ -51,9 +51,9 @@ class Rewrite implements RewriteInt {
 	}
 
 	/**
-	 * Register callbacks.
+	 * Register hooks.
 	 *
-	 * @return boolean|null True if callbacks were registered, otherwise false.
+	 * @return boolean|null True if hooks were registered, otherwise false.
 	 * @since 1.0.0
 	 */
 	public function register(): ?bool {

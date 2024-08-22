@@ -68,9 +68,9 @@ class SermonDetail implements Initable, Registrable {
 	}
 
 	/**
-	 * Register callbacks.
+	 * Register hooks.
 	 *
-	 * @return boolean|null Returns true callbacks were registered.
+	 * @return boolean|null Returns true hooks were registered.
 	 * @since 1.0.0
 	 */
 	public function register(): ?bool {

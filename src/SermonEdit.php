@@ -73,7 +73,7 @@ class SermonEdit implements Initable, Registrable {
 	}
 
 	/**
-	 * Register callbacks.
+	 * Register hooks.
 	 *
 	 * @return null|bool Returns true as default.
 	 * @since 1.0.0

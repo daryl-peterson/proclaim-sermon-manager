@@ -46,7 +46,7 @@ class QueueScripts implements Registrable, Executable {
 	}
 
 	/**
-	 * Initialize and register callbacks.
+	 * Initialize and register hooks.
 	 *
 	 * @return QueueScripts
 	 * @since 1.0.0
@@ -58,7 +58,7 @@ class QueueScripts implements Registrable, Executable {
 	}
 
 	/**
-	 * Register callbacks.
+	 * Register hooks.
 	 *
 	 * @return null|bool Return true as default.
 	 * @since 1.0.0
@@ -99,7 +99,7 @@ class QueueScripts implements Registrable, Executable {
 			$this->ver
 		);
 
-		$file = $url . '/js/admin.js';
+		$file = $url . '/js/admin.min.js';
 		wp_register_script(
 			'drppsm-admin-script',
 			$file,

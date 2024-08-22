@@ -23,7 +23,7 @@ namespace DRPPSM\Interfaces;
 interface Registrable {
 
 	/**
-	 * Register callbacks.
+	 * Register hooks.
 	 *
 	 * @return null|bool
 	 * @since 1.0.0

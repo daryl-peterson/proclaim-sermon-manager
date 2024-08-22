@@ -28,7 +28,7 @@ use DRPPSM\Interfaces\Registrable;
 class Templates implements Executable, Registrable {
 
 	/**
-	 * Initialize object and register callbacks.
+	 * Initialize object and register hooks.
 	 *
 	 * @return Templates
 	 * @since 1.0.0
@@ -40,7 +40,7 @@ class Templates implements Executable, Registrable {
 	}
 
 	/**
-	 * Register callbacks.
+	 * Register hooks.
 	 *
 	 * @return bool Returns true if hooks were registered, otherwise false.
 	 * @since 1.0.0

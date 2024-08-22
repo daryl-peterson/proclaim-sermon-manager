@@ -54,7 +54,7 @@ class CMB2_Hookup extends CMB2_Hookup_Base {
 	protected $options_hookup = null;
 
 	/**
-	 * A functionalized constructor, used for the hookup action callbacks.
+	 * A functionalized constructor, used for the hookup action hooks.
 	 *
 	 * @since  2.2.6
 	 *
@@ -311,18 +311,22 @@ class CMB2_Hookup extends CMB2_Hookup_Base {
 	 * @param string $hook Current hook for the admin page.
 	 */
 	public function do_scripts( $hook ) {
-		$should_pre_enqueue = in_array( $hook, array(
-			'post.php',
-			'post-new.php',
-			'page-new.php',
-			'page.php',
-			'comment.php',
-			'edit-tags.php',
-			'term.php',
-			'user-new.php',
-			'profile.php',
-			'user-edit.php',
-		), true );
+		$should_pre_enqueue = in_array(
+			$hook,
+			array(
+				'post.php',
+				'post-new.php',
+				'page-new.php',
+				'page.php',
+				'comment.php',
+				'edit-tags.php',
+				'term.php',
+				'user-new.php',
+				'profile.php',
+				'user-edit.php',
+			),
+			true
+		);
 
 		/**
 		 * Filter to determine if CMB2 should be pre-enqueued on the current page.
@@ -366,12 +370,12 @@ class CMB2_Hookup extends CMB2_Hookup_Base {
 			if ( false === $column['position'] ) {
 				$columns[ $field['id'] ] = $column['name'];
 			} else {
-				$before = array_slice( $columns, 0, absint( $column['position'] ) );
+				$before                 = array_slice( $columns, 0, absint( $column['position'] ) );
 				$before[ $field['id'] ] = $column['name'];
-				$columns = $before + $columns;
+				$columns                = $before + $columns;
 			}
 
-			$column['field'] = $field;
+			$column['field']               = $field;
 			$this->columns[ $field['id'] ] = $column;
 		}
 
@@ -388,12 +392,14 @@ class CMB2_Hookup extends CMB2_Hookup_Base {
 	 */
 	public function column_display( $column_name, $object_id ) {
 		if ( isset( $this->columns[ $column_name ] ) ) {
-			$field = new CMB2_Field( array(
-				'field_args'  => $this->columns[ $column_name ]['field'],
-				'object_type' => $this->object_type,
-				'object_id'   => $this->cmb->object_id( $object_id ),
-				'cmb_id'      => $this->cmb->cmb_id,
-			) );
+			$field = new CMB2_Field(
+				array(
+					'field_args'  => $this->columns[ $column_name ]['field'],
+					'object_type' => $this->object_type,
+					'object_id'   => $this->cmb->object_id( $object_id ),
+					'cmb_id'      => $this->cmb->cmb_id,
+				)
+			);
 
 			$this->cmb->get_field( $field )->render_column();
 		}
@@ -533,7 +539,7 @@ class CMB2_Hookup extends CMB2_Hookup_Base {
 		 * To output the fields 'naked' (without a postbox wrapper/style), then
 		 * add a `'remove_box_wrap' => true` to your metabox registration array.
 		 */
-		$add_wrap = ! empty( $title ) || ! $this->cmb->prop( 'remove_box_wrap' );
+		$add_wrap   = ! empty( $title ) || ! $this->cmb->prop( 'remove_box_wrap' );
 		$add_handle = $add_wrap && ! empty( $title );
 
 		// Open the context-box wrap.
@@ -663,7 +669,6 @@ class CMB2_Hookup extends CMB2_Hookup_Base {
 	 * Remove the specified default taxonomy metaboxes for a post-type.
 	 *
 	 * @since 2.2.3
-	 *
 	 */
 	public function remove_default_tax_metaboxes() {
 		$to_remove = array_filter( (array) $this->cmb->tax_metaboxes_to_remove, 'taxonomy_exists' );
@@ -1060,5 +1065,4 @@ class CMB2_Hookup extends CMB2_Hookup_Base {
 		self::register_js();
 		return true;
 	}
-
 }

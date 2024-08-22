@@ -240,7 +240,7 @@ abstract class CMB2_Base {
 	}
 
 	/**
-	 * Displays the results of the param callbacks.
+	 * Displays the results of the param hooks.
 	 *
 	 * @since 2.0.0
 	 * @param string $param Field parameter.
@@ -250,7 +250,7 @@ abstract class CMB2_Base {
 	}
 
 	/**
-	 * Store results of the param callbacks for continual access
+	 * Store results of the param hooks for continual access
 	 *
 	 * @since  2.0.0
 	 * @param  string $param Field parameter.
@@ -304,7 +304,7 @@ abstract class CMB2_Base {
 	}
 
 	/**
-	 * Handles the parameter callbacks, and passes this object as parameter.
+	 * Handles the parameter hooks, and passes this object as parameter.
 	 *
 	 * @since  2.2.3
 	 * @param  callable $cb                The callback method/function/closure.
@@ -391,7 +391,7 @@ abstract class CMB2_Base {
 		}
 
 		// Cast to bool.
-		return ! ! $val;
+		return (bool) $val;
 	}
 
 	/**
@@ -458,12 +458,10 @@ abstract class CMB2_Base {
 				} else {
 					trigger_error( sprintf( __( '%1$s was called with a parameter that is <strong>deprecated</strong> since version %2$s with no alternative available.', 'cmb2' ), $function, $version ) );
 				}
-			} else {
-				if ( ! is_null( $message ) ) {
+			} elseif ( ! is_null( $message ) ) {
 					trigger_error( sprintf( '%1$s was called with a parameter that is <strong>deprecated</strong> since version %2$s! %3$s', $function, $version, $message ) );
-				} else {
-					trigger_error( sprintf( '%1$s was called with a parameter that is <strong>deprecated</strong> since version %2$s with no alternative available.', $function, $version ) );
-				}
+			} else {
+				trigger_error( sprintf( '%1$s was called with a parameter that is <strong>deprecated</strong> since version %2$s with no alternative available.', $function, $version ) );
 			}
 		}
 	}
@@ -514,7 +512,7 @@ abstract class CMB2_Base {
 
 		/**
 		 * Allows overloading the object (CMB2 or CMB2_Field) with additional capabilities
-		 * by registering hook callbacks.
+		 * by registering hook hooks.
 		 *
 		 * The first dynamic portion of the hook name, $object_class, refers to the object class,
 		 * either cmb2 or cmb2_field.

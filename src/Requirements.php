@@ -44,7 +44,7 @@ class Requirements implements RequirementsInt {
 	}
 
 	/**
-	 * Register callbacks.
+	 * Register hooks.
 	 *
 	 * @return boolean|null Always true.
 	 * @since 1.0.0

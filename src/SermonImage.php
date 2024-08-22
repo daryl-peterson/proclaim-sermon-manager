@@ -32,7 +32,7 @@ use WP_Term;
 class SermonImage implements Executable, Registrable {
 
 	/**
-	 * Initialize and register callbacks.
+	 * Initialize and register hooks.
 	 *
 	 * @return SermonImage
 	 * @since 1.0.0
@@ -46,7 +46,7 @@ class SermonImage implements Executable, Registrable {
 	}
 
 	/**
-	 * Register callbacks.
+	 * Register hooks.
 	 *
 	 * @return boolean|null True if hooks were registered, otherwise false.
 	 * @since 1.0.0

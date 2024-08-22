@@ -18,6 +18,8 @@ use DRPPSM\Interfaces\OptionsInt;
 use DRPPSM\Interfaces\Registrable;
 use WP_Error;
 use WP_Post;
+use WP_Query;
+use WP_Tax_Query;
 
 /**
  * Taxonomy image attaching.
@@ -87,7 +89,7 @@ class TaxonomyImage implements Executable, Registrable {
 	}
 
 	/**
-	 * Initialize and register callbacks.
+	 * Initialize and register hooks.
 	 *
 	 * @return TaxonomyImage
 	 * @since 1.0.0
@@ -99,7 +101,7 @@ class TaxonomyImage implements Executable, Registrable {
 	}
 
 	/**
-	 * Register callbacks.
+	 * Register hooks.
 	 *
 	 * @return boolean|null True if hooks were registered, otherwise false.
 	 * @since 1.0.0
@@ -258,6 +260,8 @@ class TaxonomyImage implements Executable, Registrable {
 		$result = false;
 
 		/**
+		 * Sermon posts array.
+		 *
 		 * @var WP_Post $sermon Sermon post object.
 		 */
 		foreach ( $sermons as $sermon ) {
@@ -345,7 +349,7 @@ class TaxonomyImage implements Executable, Registrable {
 		}
 
 		$taxonomy = trim( str_replace( $this->image_suffix, '', $meta_key ) );
-		if ( ! in_array( $taxonomy, $this->tax ) ) {
+		if ( ! in_array( $taxonomy, $this->tax, true ) ) {
 			return null;
 		}
 
@@ -388,12 +392,17 @@ class TaxonomyImage implements Executable, Registrable {
 	 * @since 1.0.0
 	 */
 	private function get_sermons_by_term( string $taxonomy, int $term_id ): ?array {
-		$sermons = query_posts(
+
+		// phpcs:disable
+		$sermons = new WP_Query(
 			array(
 				'post_type'      => PT::SERMON,
 				'showposts'      => -1,
-				'posts_per_page' => 50,
-				// 'fields'         => 'ids',  // Return array of ids.
+				'posts_per_page' => 20,
+
+				/**
+				 * 'fields' => 'ids' Returns array of ids.
+				 */
 				'tax_query'      => array(
 					array(
 						'taxonomy' => $taxonomy,
@@ -405,6 +414,7 @@ class TaxonomyImage implements Executable, Registrable {
 				),
 			)
 		);
+		// phpcs:enable
 
 		if ( ! is_array( $sermons ) ) {
 			return null;
@@ -415,7 +425,7 @@ class TaxonomyImage implements Executable, Registrable {
 	/**
 	 * Get attachment.
 	 *
-	 * @param int $image_id Post ID
+	 * @param int $image_id Post ID.
 	 * @return ?WP_Post Post attachment.
 	 * @since 1.0.0
 	 */

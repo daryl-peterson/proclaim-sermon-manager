@@ -7,7 +7,6 @@
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
  * @since       1.0.0
- * @todo Impliment this.
  */
 
 namespace DRPPSM;
@@ -27,6 +26,7 @@ use DRPPSM\Interfaces\Registrable;
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
  * @since       1.0.0
+ *
  * @todo Impliment this.
  */
 class OptAdvance implements Initable, Registrable {
@@ -52,14 +52,14 @@ class OptAdvance implements Initable, Registrable {
 	}
 
 	/**
-	 * Register callbacks.
+	 * Register hooks.
 	 *
 	 * @return boolean|null Always true.
 	 * @since 1.0.0
 	 */
 	public function register(): ?bool {
-		add_action( Actions::REGISTER_SETTINGS_FORM, array( $this, 'register_metaboxes' ) );
-		add_filter( Filters::OPTIONS_HIDDEN_MENUS, array( $this, 'set_menu' ) );
+		add_action( Actions::SETTINGS_REGISTER_FORM, array( $this, 'register_metaboxes' ) );
+		add_filter( Filters::SETTINGS_REMOVE_SUBMENUS, array( $this, 'set_menu' ) );
 		return true;
 	}
 

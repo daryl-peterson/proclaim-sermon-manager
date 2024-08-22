@@ -60,19 +60,19 @@ class OptGeneral implements Initable, Registrable {
 	}
 
 	/**
-	 * Register callbacks.
+	 * Register hooks.
 	 *
 	 * @return boolean|null Always true.
 	 * @since 1.0.0
 	 */
 	public function register(): ?bool {
 
-		if ( ! is_admin() || has_action( Actions::REGISTER_SETTINGS_FORM, array( $this, 'register_metaboxes' ) ) ) {
+		if ( ! is_admin() || has_action( Actions::SETTINGS_REGISTER_FORM, array( $this, 'register_metaboxes' ) ) ) {
 			return false;
 		}
 
-		add_action( Actions::REGISTER_SETTINGS_FORM, array( $this, 'register_metaboxes' ) );
-		add_filter( Filters::OPTIONS_MAIN_MENU, array( $this, 'set_menu' ) );
+		add_action( Actions::SETTINGS_REGISTER_FORM, array( $this, 'register_metaboxes' ) );
+		add_filter( Filters::SETTINGS_MAIN_MENU, array( $this, 'set_menu' ) );
 
 		$object_type = 'options-page';
 		$id          = self::OPTION_KEY;

@@ -40,7 +40,7 @@ class HooksUtils implements Initable {
 	/**
 	 * Remove Class Action Without Access to Class Object
 	 *
-	 * This function allows you to remove filters with callbacks you don't have access to.
+	 * This function allows you to remove filters with hooks you don't have access to.
 	 *
 	 * @param string       $hook_name          Filter name to remove.
 	 * @param string|array $static_callback    Hook callback where instance represented as class name.
@@ -58,7 +58,7 @@ class HooksUtils implements Initable {
 	 *
 	 * To use remove_filter() function you need to have access to class instance,
 	 * or the filter should be added using static method as hook callback.
-	 * This function allows you to remove filters with callbacks you don't have access to.
+	 * This function allows you to remove filters with hooks you don't have access to.
 	 *
 	 * ```php
 	 * Callback example '\Space\My_Class::my_method' or '\Space\My_Class';

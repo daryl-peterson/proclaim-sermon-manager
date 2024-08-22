@@ -135,7 +135,7 @@ msgstr "Para ver ou modificar o valor do campo, os argumentos 'object_id' e 'obj
 
 #: includes/rest-api/CMB2_REST_Controller_Fields.php:30
 msgid "When the '_rendered' argument is passed, the renderable field attributes will be returned fully rendered. By default, the names of the callback handers for the renderable attributes will be returned."
-msgstr "Quando o argumento '_rendered' é passado, os atributos renderizáveis do campo serão retornado já completamente renderizados. Por padrão, os nomes dos callbacks para a renderização dos atributos são retornados."
+msgstr "Quando o argumento '_rendered' é passado, os atributos renderizáveis do campo serão retornado já completamente renderizados. Por padrão, os nomes dos hooks para a renderização dos atributos são retornados."
 
 #: includes/rest-api/CMB2_REST_Controller_Fields.php:27
 msgid "Includes the box object which the fields are registered to in the response."

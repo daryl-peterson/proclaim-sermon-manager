@@ -2,7 +2,10 @@
 
 namespace DRPPSM\Tests;
 
+use DRPPSM\Constants\Tax;
 use DRPPSM\SermonDetail;
+use ReflectionMethod;
+use ReflectionProperty;
 
 /**
  * Class description
@@ -27,5 +30,15 @@ class SermonDetailTest extends BaseTest {
 
 		$result = $this->obj->register();
 		$this->assertFalse( $result );
+	}
+
+	public function test_get() {
+		$this->assertNotNull( $this->obj );
+		$this->assertInstanceOf( SermonDetail::class, $this->obj );
+	}
+
+	public function test_show() {
+		$result = $this->obj->show();
+		$this->assertTrue( $result );
 	}
 }

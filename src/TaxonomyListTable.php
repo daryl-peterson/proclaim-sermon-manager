@@ -77,7 +77,7 @@ class TaxonomyListTable implements Initable, Registrable {
 	}
 
 	/**
-	 * Register callbacks.
+	 * Register hooks.
 	 *
 	 * @return null|bool Return true is default.
 	 * @since 1.0.0

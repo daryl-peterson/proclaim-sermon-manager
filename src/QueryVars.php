@@ -26,7 +26,7 @@ use DRPPSM\Interfaces\Registrable;
 class QueryVars implements Executable, Registrable {
 
 	/**
-	 * Initialize object and register callbacks.
+	 * Initialize object and register hooks.
 	 *
 	 * @return QueryVars
 	 * @since 1.0.0
@@ -38,9 +38,9 @@ class QueryVars implements Executable, Registrable {
 	}
 
 	/**
-	 * Register callbacks.
+	 * Register hooks.
 	 *
-	 * @return boolean|null True if callbacks were registered, otherwise false.
+	 * @return boolean|null True if hooks were registered, otherwise false.
 	 * @since 1.0.0
 	 */
 	public function register(): ?bool {
@@ -63,7 +63,6 @@ class QueryVars implements Executable, Registrable {
 
 		$conflict = $this->get_conflict();
 
-		// If no conflicts exist just return the query.
 		// @codeCoverageIgnoreStart
 		if ( ! $conflict ) {
 			return $query;
@@ -123,8 +122,6 @@ class QueryVars implements Executable, Registrable {
 	private function get_conflict(): bool {
 		$trans    = get_transient( Rewrite::TRANS_NAME );
 		$conflict = true;
-
-		Logger::debug( $trans );
 
 		// @codeCoverageIgnoreStart
 		if ( $trans ) {

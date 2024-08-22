@@ -41,7 +41,7 @@ class SermonComments implements Registrable, Executable {
 	}
 
 	/**
-	 * Register callbacks.
+	 * Register hooks.
 	 *
 	 * @return null|bool Return true default.
 	 * @since 1.0.0

@@ -51,7 +51,7 @@ class M001M000P000 implements Initable, Runable {
 		$result = false;
 		try {
 			$obj = $this->get_table( 'logs' );
-			maybe_create_table( $obj->table, $obj->def );
+			dbDelta( $obj->def );
 			$result = table_exist( $obj->table );
 		} catch ( \Throwable $th ) {
 			Logger::error(

@@ -41,9 +41,9 @@ class SermonFiles implements Initable, Registrable {
 	}
 
 	/**
-	 * Register callbacks.
+	 * Register hooks.
 	 *
-	 * @return boolean|null Returns true if callbacks were registered.
+	 * @return boolean|null Returns true if hooks were registered.
 	 * @since 1.0.0
 	 */
 	public function register(): ?bool {

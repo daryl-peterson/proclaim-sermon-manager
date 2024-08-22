@@ -32,7 +32,7 @@ abstract class CMB2_Hookup_Base {
 	protected $object_type = 'post';
 
 	/**
-	 * A functionalized constructor, used for the hookup action callbacks.
+	 * A functionalized constructor, used for the hookup action hooks.
 	 *
 	 * @since  2.2.6
 	 *
@@ -51,7 +51,7 @@ abstract class CMB2_Hookup_Base {
 	 * @param CMB2 $cmb The CMB2 object to hookup.
 	 */
 	public function __construct( CMB2 $cmb ) {
-		$this->cmb = $cmb;
+		$this->cmb         = $cmb;
 		$this->object_type = $this->cmb->mb_object_type();
 	}
 

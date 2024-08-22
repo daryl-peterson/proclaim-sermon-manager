@@ -58,7 +58,7 @@ class PermaLinks implements PermaLinkInt {
 	}
 
 	/**
-	 * Register callbacks.
+	 * Register hooks.
 	 *
 	 * @todo Impliment.
 	 * @return boolean
