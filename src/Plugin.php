@@ -94,7 +94,8 @@ class Plugin implements PluginInt {
 			roles();
 			textdomain();
 			imagesize();
-			bibleload();
+			bible_loader();
+			log_writter();
 
 			SermonEdit::init()->register();
 			DbUpdates::exec();
@@ -105,7 +106,7 @@ class Plugin implements PluginInt {
 			Templates::exec();
 			QueryVars::exec();
 			Rewrite::exec();
-			Debug::exec();
+
 			Pagination::exec();
 
 			SermonListTable::init()->register();

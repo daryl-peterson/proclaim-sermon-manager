@@ -11,6 +11,9 @@
 
 namespace DRPPSM\Logging;
 
+use DRPPSM\Interfaces\Executable;
+use DRPPSM\Interfaces\Registrable;
+
 /**
  * Log writter interface.
  *
@@ -20,7 +23,8 @@ namespace DRPPSM\Logging;
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
  * @since       1.0.0
  */
-interface LogWritterInt {
+interface LogWritterInt extends Executable, Registrable {
+
 
 	/**
 	 * Write log record.
@@ -39,4 +43,12 @@ interface LogWritterInt {
 	 * @since 1.0.0
 	 */
 	public function truncate(): void;
+
+		/**
+		 * Display debug log.
+		 *
+		 * @return void
+		 * @since 1.0.0
+		 */
+	public function show();
 }

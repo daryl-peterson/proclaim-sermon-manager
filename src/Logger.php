@@ -18,7 +18,7 @@ use DRPPSM\Logging\LoggerInt;
 use DRPPSM\Logging\LogRecord;
 use DRPPSM\Logging\LogWritterInt;
 
-use function DRPPSM\logwritter;
+use function DRPPSM\log_writter;
 
 /**
  * Logging.
@@ -51,7 +51,7 @@ class Logger implements LoggerInt {
 	 * @since 1.0.0
 	 */
 	protected function __construct() {
-		$this->writter = logwritter();
+		$this->writter = log_writter();
 	}
 
 	/**

@@ -10,9 +10,8 @@
 
 namespace DRPPSM\Tests;
 
-use DRPPSM\AdminPage;
 use DRPPSM\App;
-use DRPPSM\BibleLoad;
+use DRPPSM\BibleLoader;
 use DRPPSM\Exceptions\NotfoundException;
 use DRPPSM\Interfaces\NoticeInt;
 use DRPPSM\Interfaces\OptionsInt;
@@ -50,8 +49,8 @@ class AppTest extends BaseTest {
 	public function test_get_instance() {
 		$this->assertNotNull( $this->obj );
 
-		$obj = BibleLoad::exec();
-		$this->assertInstanceOf( BibleLoad::class, $obj );
+		$obj = BibleLoader::exec();
+		$this->assertInstanceOf( BibleLoader::class, $obj );
 	}
 
 	public function test_app() {

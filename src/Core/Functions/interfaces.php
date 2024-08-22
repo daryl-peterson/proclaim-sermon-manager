@@ -11,14 +11,13 @@
 
 namespace DRPPSM;
 
-use DRPPSM\Interfaces\BibleLoadInt;
+use DRPPSM\Interfaces\BibleLoaderInt;
 use DRPPSM\Interfaces\NoticeInt;
 use DRPPSM\Interfaces\OptionsInt;
 use DRPPSM\Interfaces\RequirementsInt;
 use DRPPSM\Interfaces\RolesInt;
 use DRPPSM\Interfaces\TextDomainInt;
 use DRPPSM\Interfaces\ImageSizeInt;
-use DRPPSM\Interfaces\RewriteInt;
 use DRPPSM\Logging\LogWritterInt;
 
 /**
@@ -84,11 +83,11 @@ function imagesize(): ImageSizeInt {
 /**
  * Get bible loader interface.
  *
- * @return BibleLoadInt
+ * @return BibleLoaderInt
  * @since 1.0.0
  */
-function bibleload(): BibleLoadInt {
-	return app()->get( BibleLoadInt::class );
+function bible_loader(): BibleLoaderInt {
+	return app()->get( BibleLoaderInt::class );
 }
 
 /**
@@ -97,6 +96,6 @@ function bibleload(): BibleLoadInt {
  * @return LogWritterInt
  * @since 1.0.0
  */
-function logwritter(): LogWritterInt {
+function log_writter(): LogWritterInt {
 	return app()->get( LogWritterInt::class );
 }

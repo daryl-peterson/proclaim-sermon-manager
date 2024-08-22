@@ -13,7 +13,7 @@ namespace DRPPSM;
 
 defined( 'ABSPATH' ) || exit;
 
-use DRPPSM\Interfaces\BibleLoadInt;
+use DRPPSM\Interfaces\BibleLoaderInt;
 use DRPPSM\Interfaces\NoticeInt;
 use DRPPSM\Interfaces\OptionsInt;
 use DRPPSM\Interfaces\PermaLinkInt;
@@ -52,11 +52,11 @@ return array(
 		return ImageSize::exec();
 	},
 
-	BibleLoadInt::class     => function (): BibleLoadInt {
-		return BibleLoad::exec();
+	BibleLoaderInt::class   => function (): BibleLoaderInt {
+		return BibleLoader::exec();
 	},
 	LogWritterInt::class    => function (): LogWritterInt {
-		return new LogDatabase();
+		return LogDatabase::exec();
 	},
 	RewriteInt::class       => function (): RewriteInt {
 		return Rewrite::exec();

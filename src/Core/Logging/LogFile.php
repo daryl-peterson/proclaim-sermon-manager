@@ -34,6 +34,13 @@ class LogFile extends LogWritterAbs implements LogWritterInt {
 	public int $size;
 
 	/**
+	 * File name.
+	 *
+	 * @var string
+	 */
+	public string $file;
+
+	/**
 	 * Initialize object properties.
 	 *
 	 * @since 1.0.0
@@ -41,6 +48,20 @@ class LogFile extends LogWritterAbs implements LogWritterInt {
 	public function __construct() {
 		$this->size = 5;
 	}
+
+
+	public static function exec(): LogWritterInt {
+		$obj = new self();
+		$obj->register();
+		return $obj;
+	}
+
+	public function register(): ?bool {
+		return true;
+	}
+
+
+	public function show() { }
 
 	/**
 	 * Write log record.
@@ -51,14 +72,14 @@ class LogFile extends LogWritterAbs implements LogWritterInt {
 	 */
 	public function write( LogRecord $record ): bool {
 
-		$data = $this->format( $record );
-		$file = $this->get_log_file( $record->level );
-		$this->check_file_size( $file );
+		$data       = $this->format( $record );
+		$this->file = $this->get_log_file( $record->level );
+		$this->check_file_size();
 		// phpcs:disable
 		if ( 'error' === $record->level ) {
 			error_log( $data );
 		}
-		file_put_contents( $file, $data, FILE_APPEND );
+		file_put_contents( $this->file, $data, FILE_APPEND );
 		// phpcs:enable
 		return true;
 	}
@@ -66,18 +87,18 @@ class LogFile extends LogWritterAbs implements LogWritterInt {
 	/**
 	 * Check the file size.
 	 *
-	 * @param string $file File name to check.
 	 * @return bool True on success, otherwise false.
 	 * @since 1.0.0
 	 */
-	private function check_file_size( string $file ): bool {
+	private function check_file_size(): bool {
 		$result = false;
 		try {
 
-			$fs    = wp_filesize( $file );
+			$fs = wp_filesize( $this->file );
+
 			$limit = $this->size * ( 1024 * 1024 );
 			if ( ! $fs || ( $fs > $limit ) ) {
-				$this->truncate( $file );
+				$this->truncate();
 			}
 			$result = true;
 
@@ -114,15 +135,14 @@ class LogFile extends LogWritterAbs implements LogWritterInt {
 	/**
 	 * Truncate the log file.
 	 *
-	 * @param string $file File name.
 	 * @return void
 	 * @since 1.0.0
 	 */
-	private function truncate( string $file ): void {
+	public function truncate(): void {
 		// @codeCoverageIgnoreStart
 		try {
 			// phpcs:disable
-			$fh = fopen( $file, 'w' );
+			$fh = fopen( $this->file, 'w' );
 			if ( $fh ) {
 				fclose( $fh );
 			}

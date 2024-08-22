@@ -20,6 +20,6 @@ namespace DRPPSM\Interfaces;
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
  * @since       1.0.0
  */
-interface BibleLoadInt extends BaseInt, Registrable {
+interface BibleLoaderInt extends BaseInt, Registrable {
 
 }
