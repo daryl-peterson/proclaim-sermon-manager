@@ -49,19 +49,11 @@ class LogFile extends LogWritterAbs implements LogWritterInt {
 		$this->size = 5;
 	}
 
-
-	public static function exec(): LogWritterInt {
-		$obj = new self();
-		$obj->register();
-		return $obj;
-	}
-
 	public function register(): ?bool {
 		return true;
 	}
 
-
-	public function show() { }
+	public function show(): void { }
 
 	/**
 	 * Write log record.

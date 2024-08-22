@@ -35,7 +35,6 @@ interface LogWritterInt extends Executable, Registrable {
 	 */
 	public function write( LogRecord $record ): bool;
 
-
 	/**
 	 * Truncate data.
 	 *
@@ -50,5 +49,5 @@ interface LogWritterInt extends Executable, Registrable {
 		 * @return void
 		 * @since 1.0.0
 		 */
-	public function show();
+	public function show(): void;
 }

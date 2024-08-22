@@ -90,18 +90,6 @@ class LogDatabase extends LogWritterAbs implements LogWritterInt {
 	}
 
 	/**
-	 * Initialize and register hooks.
-	 *
-	 * @return LogWritterInt
-	 * @since 1.0.0
-	 */
-	public static function exec(): LogWritterInt {
-		$obj = new self();
-		$obj->register();
-		return $obj;
-	}
-
-	/**
 	 * Register hooks.
 	 *
 	 * @return boolean|null True if hooks were registered, otherwise false.
@@ -122,7 +110,7 @@ class LogDatabase extends LogWritterAbs implements LogWritterInt {
 	 *
 	 * @return void
 	 */
-	public function add_menu() {
+	public function add_menu(): void {
 
 		add_submenu_page(
 			'edit.php?post_type=' . PT::SERMON,
@@ -200,7 +188,7 @@ class LogDatabase extends LogWritterAbs implements LogWritterInt {
 	 * @return void
 	 * @since 1.0.0
 	 */
-	public function show() {
+	public function show(): void {
 
 		$this->purge();
 		$this->set_totals();
