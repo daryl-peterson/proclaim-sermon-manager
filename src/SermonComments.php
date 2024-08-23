@@ -28,6 +28,7 @@ use DRPPSM\Interfaces\Registrable;
  */
 class SermonComments implements Registrable, Executable {
 
+
 	/**
 	 * Initialize and register.
 	 *
