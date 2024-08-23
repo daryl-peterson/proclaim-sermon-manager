@@ -26,6 +26,7 @@ use DRPPSM\Interfaces\ImageSizeInt;
 use DRPPSM\Interfaces\NoticeInt;
 use DRPPSM\Interfaces\RewriteInt;
 use DRPPSM\Logging\LogFile;
+use DRPPSM\Logging\LoggerInt;
 use DRPPSM\Logging\LogWritterInt;
 
 return array(
@@ -36,6 +37,7 @@ return array(
 	DbUpdates::class         => DbUpdates::class,
 	ImageSizeInt::class      => ImageSize::class,
 	LogWritterInt::class     => LogFile::class,
+	LoggerInt::class         => Logger::class,
 	NoticeInt::class         => Notice::class,
 	OptionsInt::class        => Options::class,
 	Pagination::class        => Pagination::class,

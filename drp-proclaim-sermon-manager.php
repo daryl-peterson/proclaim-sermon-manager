@@ -47,6 +47,12 @@ if ( file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
  */
 require_once __DIR__ . '/vendor/cmb2/cmb2/init.php';
 
+$ds = DIRECTORY_SEPARATOR;
+define( 'DRPSM_FILE', __FILE__ );
+define( 'DRPSM_PATH', dirname( DRPSM_FILE ) . $ds );
+define( 'DRPSM_BASENAME', plugin_basename( __FILE__ ) );
+define( 'DRPSM_URL', plugin_dir_url( __FILE__ ) );
+
 const NAME           = 'Proclaim Sermon Manager';
 const FILE           = __FILE__;
 const KEY_PREFIX     = 'drppsm';

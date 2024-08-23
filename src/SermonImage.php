@@ -136,11 +136,11 @@ class SermonImage implements Executable, Registrable {
 		}
 
 		$term = get_the_terms( $sermon, Tax::SERIES );
-		if ( ! is_array( $term ) || ! isset( $term[0] ) ) {
+		if ( ! is_array( $term ) ) {
 			return false;
 		}
 
-		$term = $term[0];
+		$term = array_shift( $term );
 		if ( ! $term instanceof WP_Term ) {
 			return false;
 		}

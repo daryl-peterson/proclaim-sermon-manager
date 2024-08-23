@@ -11,6 +11,10 @@
 
 namespace DRPPSM;
 
+defined( 'ABSPATH' ) || exit;
+
+use DRPPSM\Constants\PT;
+use DRPPSM\Constants\Tax;
 use DRPPSM\Interfaces\Executable;
 use DRPPSM\Interfaces\Registrable;
 
@@ -24,6 +28,38 @@ use DRPPSM\Interfaces\Registrable;
  * @since       1.0.0
  */
 class QueryVars implements Executable, Registrable {
+
+	/**
+	 * List of post types / taxonomies to look for.
+	 *
+	 * @var array
+	 */
+	private array $list;
+
+	/**
+	 * List of conflicts or null.
+	 *
+	 * @var array|null
+	 */
+	private ?array $conflict;
+
+	/**
+	 * The key from $list that matched.
+	 *
+	 * @var string
+	 */
+	private ?string $matched;
+
+	/**
+	 * Initialize object properties.
+	 *
+	 * @return void
+	 * @since 1.0.0
+	 */
+	protected function __construct() {
+		$this->list     = array_merge( Tax::LIST, array( PT::SERMON ) );
+		$this->conflict = $this->get_conflict();
+	}
 
 	/**
 	 * Initialize object and register hooks.
@@ -59,50 +95,34 @@ class QueryVars implements Executable, Registrable {
 	 * @since 1.0.0
 	 */
 	public function overwrite_query_vars( array $query ): array {
-		global $wpdb;
 
-		$conflict = $this->get_conflict();
-
-		// @codeCoverageIgnoreStart
-		if ( ! $conflict ) {
+		if ( ! isset( $this->conflict ) ) {
+			Logger::debug(
+				array(
+					'RESULT' => 'NO CONFLICTS',
+					'QUERY'  => $query,
+				)
+			);
 			return $query;
 		}
-		// @codeCoverageIgnoreEnd
 
-		if ( isset( $query['favicon'] ) ) {
+		if ( ! $this->should_modify( $query ) ) {
+			Logger::debug(
+				array(
+					'RESULT' => 'NOT OURS',
+					'QUERY'  => $query,
+				)
+			);
 			return $query;
 		}
 
 		$query_org = $query;
-
-		$found = false;
-		if ( isset( $query['name'] ) && ! $found ) {
-			$name = $query['name'];
-
-			// phpcs:disable
-			$sql = $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}posts WHERE post_name = %s LIMIT 1", array( $name ) );
-			$results = $wpdb->get_results( $sql );
-			if ( is_array( $results ) && isset( $results ) ) {
-				$results            = $results[0];
-				$query['post_type'] = $results->post_type;
-				$found              = true;
-			}
-			// phpcs:enable
+		if ( isset( $query['post_type'] ) ) {
+			$query = $this->post_query( $query );
+		} else {
+			$query = $this->tax_query( $query );
 		}
 
-		if ( ! $found ) {
-			$terms = get_terms(
-				array(
-					'slug'   => $query,
-					'number' => 1,
-				)
-			);
-			if ( is_array( $terms ) && isset( $terms[0] ) ) {
-				$terms = $terms[0];
-				$query = null;
-				$query = array( $terms->taxonomy => $terms->slug );
-			}
-		}
 		Logger::debug(
 			array(
 				'QUERY ORG' => $query_org,
@@ -119,17 +139,130 @@ class QueryVars implements Executable, Registrable {
 	 * @return bool Return true if conflict exsit.
 	 * @since 1.0.0
 	 */
-	private function get_conflict(): bool {
-		$trans    = get_transient( Rewrite::TRANS_NAME );
-		$conflict = true;
+	private function get_conflict(): ?array {
+		$trans = get_transient( Rewrite::TRANS_NAME );
 
-		// @codeCoverageIgnoreStart
-		if ( $trans ) {
-			if ( is_array( $trans ) && ! isset( $trans['conflict'] ) ) {
-				$conflict = $trans['conflict'];
+		if ( ! isset( $trans ) ) {
+			return null;
+		}
+		return $trans;
+	}
+
+	/**
+	 * Query posts.
+	 *
+	 * @param array $query Query vars.
+	 * @return array
+	 * @since 1.0.0
+	 */
+	private function post_query( array $query ): array {
+		global $wpdb;
+
+		$name = sanitize_text_field( $query['name'] );
+
+		$sql = <<<EOT
+			SELECT
+				*
+			FROM {$wpdb->prefix}posts
+			WHERE post_name = %s
+			LIMIT 1
+		EOT;
+
+		$sql = $wpdb->prepare(
+			$sql,
+			array(
+				sanitize_text_field( $name ),
+			)
+		);
+
+		$results = $wpdb->get_results( $sql );
+		if ( is_array( $results ) ) {
+			$results            = array_shift( $results );
+			$query['post_type'] = $results->post_type;
+		}
+
+		Logger::debug(
+			array(
+				'RESULTS' => $results,
+				'SQL'     => "\n$sql",
+			)
+		);
+
+		if ( isset( $this->matched ) ) {
+			unset( $query[ $this->matched ] );
+		}
+
+		return $query;
+	}
+
+	/**
+	 * Get taxonomy info.
+	 *
+	 * @param array $query Orignal from override.
+	 * @return array
+	 * @since 1.0.0
+	 */
+	private function tax_query( array $query ): array {
+		global $wpdb;
+		if ( ! isset( $this->conflict ) || ! is_array( $this->conflict ) ) {
+			return $query;
+		}
+
+		if ( ! isset( $this->matched ) ) {
+			return $query;
+		}
+
+		$slug = sanitize_text_field( current( $query ) );
+
+		$sql = <<<EOT
+			SELECT
+				*
+			FROM {$wpdb->prefix}terms t
+			LEFT JOIN {$wpdb->prefix}term_taxonomy tt
+				ON t.term_id = tt.term_id
+			WHERE t.slug = %s
+		EOT;
+
+		$sql = $wpdb->prepare(
+			$sql,
+			array(
+				sanitize_text_field( $slug ),
+			)
+		);
+
+		$results = $wpdb->get_results( $sql );
+		Logger::debug(
+			array(
+				'RESULTS' => $results,
+				'SQL'     => $sql,
+			)
+		);
+
+		if ( is_array( $results ) && isset( $results[0] ) ) {
+			$results = $results[0];
+			unset( $query );
+			$query[ $results->taxonomy ] = $results->slug;
+		}
+		return $query;
+	}
+
+	/**
+	 * Check if we should modify query.
+	 *
+	 * @param array $query Original query array.
+	 * @return boolean
+	 * @since 1.0.0
+	 */
+	private function should_modify( array $query ): bool {
+
+		$match = false;
+		foreach ( $this->list as $item ) {
+			if ( key_exists( $item, $query ) ) {
+				$match         = true;
+				$this->matched = $item;
+				break;
 			}
 		}
-		// @codeCoverageIgnoreEnd
-		return $conflict;
+		return $match;
 	}
 }

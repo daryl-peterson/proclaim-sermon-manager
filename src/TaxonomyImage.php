@@ -371,8 +371,8 @@ class TaxonomyImage implements Executable, Registrable {
 			return null;
 		}
 
-		if ( is_array( $sermon ) && isset( $sermon[0] ) ) {
-			$sermon = $sermon[0];
+		if ( is_array( $sermon ) ) {
+			$sermon = array_shift( $sermon );
 		}
 
 		if ( ( ! $sermon instanceof WP_Post ) || ( PT::SERMON !== $sermon->post_type ) ) {

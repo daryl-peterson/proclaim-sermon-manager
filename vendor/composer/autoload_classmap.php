@@ -87,6 +87,7 @@ return array(
     'DRPPSM\\TaxonomyListTable' => $baseDir . '/src/TaxonomyListTable.php',
     'DRPPSM\\TaxonomyReg' => $baseDir . '/src/TaxonomyReg.php',
     'DRPPSM\\Templates' => $baseDir . '/src/Templates.php',
+    'DRPPSM\\Test' => $baseDir . '/src/Test.php',
     'DRPPSM\\Tests\\ActivateDeactiveTest' => $baseDir . '/tests/ActivateDeactiveTest.php',
     'DRPPSM\\Tests\\AdminSermonTest' => $baseDir . '/tests/AdminSermonTest.php',
     'DRPPSM\\Tests\\AppTest' => $baseDir . '/tests/AppTest.php',

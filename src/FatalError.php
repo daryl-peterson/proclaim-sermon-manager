@@ -87,5 +87,7 @@ class FatalError {
 				'TRACE'   => (array) $th->getTrace(),
 			)
 		);
+
+		// wp_die( wp_kses_data( $th->getMessage() ) );
 	}
 }
