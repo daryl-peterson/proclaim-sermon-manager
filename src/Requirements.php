@@ -37,10 +37,12 @@ class Requirements implements RequirementsInt {
 
 	/**
 	 * Initialize object.
+	 *
+	 * @since 1.0.0
 	 */
 	protected function __construct() {
 
-		// $this->notice = Notice::init();
+		$this->notice = notice();
 	}
 
 	/**
@@ -104,7 +106,7 @@ class Requirements implements RequirementsInt {
 		if ( version_compare( PHP_VERSION, $version ) >= 0 ) {
 			return;
 		}
-		// $this->notice->set_error( '- Requirement Not Met', esc_html( $message ) );
+		$this->notice->set_error( '- Requirement Not Met', esc_html( $message ) );
 		throw new PluginException( esc_html( $message ) );
 	}
 

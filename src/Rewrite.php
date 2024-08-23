@@ -29,13 +29,9 @@ use DRPPSM\Interfaces\RewriteInt;
 class Rewrite implements RewriteInt {
 
 	/**
-	 * Transient name.
+	 * Transients.
 	 */
-	const TRANS_NAME = 'drppsm_rewrite_conflicts';
-
-	/**
-	 * Tansient timeout.
-	 */
+	const TRANS_NAME    = 'drppsm_rewrite_conflicts';
 	const TRANS_TIMEOUT = DAY_IN_SECONDS;
 
 	/**

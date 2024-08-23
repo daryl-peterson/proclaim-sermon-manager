@@ -32,6 +32,7 @@ class QueueScripts implements Registrable, Executable {
 	 * Version
 	 *
 	 * @var string
+	 * @since 1.0.0
 	 */
 	private string $ver;
 
