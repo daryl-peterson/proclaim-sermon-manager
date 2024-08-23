@@ -24,6 +24,7 @@ defined( 'ABSPATH' ) || exit;
  */
 class Activator {
 
+
 	/**
 	 * Run activation.
 	 *
