@@ -21,5 +21,4 @@ namespace DRPPSM\Interfaces;
  * @since       1.0.0
  */
 interface BibleLoaderInt extends BaseInt, Registrable {
-
 }

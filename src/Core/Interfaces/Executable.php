@@ -24,6 +24,7 @@ namespace DRPPSM\Interfaces;
  */
 interface Executable {
 
+
 	/**
 	 * Should preform init and register functions.
 	 *
