@@ -28,7 +28,6 @@ use DRPPSM\Interfaces\Registrable;
  */
 class AdminMenu implements Executable, Registrable {
 
-
 	/**
 	 * Initialize and register.
 	 *

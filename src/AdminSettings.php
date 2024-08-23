@@ -32,6 +32,7 @@ use DRPPSM\Interfaces\Registrable;
  */
 class AdminSettings implements Executable, Registrable {
 
+
 	/**
 	 * Menu slug.
 	 */
