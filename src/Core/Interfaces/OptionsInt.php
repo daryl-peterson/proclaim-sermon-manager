@@ -22,6 +22,7 @@ namespace DRPPSM\Interfaces;
  */
 interface OptionsInt extends Executable {
 
+
 	/**
 	 * Get option.
 	 *

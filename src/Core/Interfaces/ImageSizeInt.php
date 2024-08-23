@@ -24,5 +24,4 @@ use DRPPSM\Interfaces\Registrable;
  * @since       1.0.0
  */
 interface ImageSizeInt extends BaseInt, Registrable {
-
 }

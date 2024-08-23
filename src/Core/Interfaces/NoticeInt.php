@@ -13,6 +13,8 @@ namespace DRPPSM\Interfaces;
 
 /**
  * Notice interface.
+ *
+ * @since 1.0.0
  */
 interface NoticeInt extends Executable, Registrable {
 
@@ -30,7 +32,6 @@ interface NoticeInt extends Executable, Registrable {
 	 * @param string $title Notice title.
 	 * @param string $message Notice message.
 	 * @return boolean True on success, false on failure.
-	 *
 	 * @since 1.0.0
 	 */
 	public function set_error( string $title, string $message ): bool;
@@ -41,7 +42,6 @@ interface NoticeInt extends Executable, Registrable {
 	 * @param string $title Notice title.
 	 * @param string $message Notice message.
 	 * @return boolean True on success, false on failure.
-	 *
 	 * @since 1.0.0
 	 */
 	public function set_warning( string $title, string $message ): bool;
@@ -52,7 +52,6 @@ interface NoticeInt extends Executable, Registrable {
 	 * @param string $title Notice title.
 	 * @param string $message Notice message.
 	 * @return boolean True on success, false on failure.
-	 *
 	 * @since 1.0.0
 	 */
 	public function set_info( string $title, string $message ): bool;
@@ -63,7 +62,6 @@ interface NoticeInt extends Executable, Registrable {
 	 * @param string $title Notice title.
 	 * @param string $message Notice message.
 	 * @return boolean True on success, false on failure.
-	 *
 	 * @since 1.0.0
 	 */
 	public function set_success( string $title, string $message ): bool;
