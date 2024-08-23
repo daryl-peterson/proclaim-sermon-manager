@@ -39,9 +39,9 @@ function table_exist( string $table_name ): bool {
  * @param string $table Table name to prefix.
  * @return string Fullly prefixed table name.
  * @since 1.0.0
+ *
  */
 function get_table_name( string $table ): string {
-
 	global $wpdb;
 
 	return $wpdb->base_prefix . get_key_name( $table );
