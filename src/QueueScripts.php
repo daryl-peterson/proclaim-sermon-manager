@@ -65,12 +65,23 @@ class QueueScripts implements Registrable, Executable {
 	 */
 	public function register(): ?bool {
 
+<<<<<<< HEAD
 		if ( is_admin() && ! has_action( 'admin_init', array( $this, 'init_script_styles' ) ) ) {
 			add_action( 'admin_init', array( $this, 'init_script_styles' ) );
 			add_action( 'admin_enqueue_scripts', array( $this, 'load' ) );
 			add_action( 'admin_footer', array( $this, 'footer' ) );
 		}
 
+=======
+		if ( ! is_admin() || has_action( 'admin_init', array( $this, 'init_script_styles' ) ) ) {
+			return true;
+		}
+
+		add_action( 'admin_init', array( $this, 'init_script_styles' ) );
+		add_action( 'admin_enqueue_scripts', array( $this, 'load' ) );
+		add_action( 'admin_footer', array( $this, 'footer' ) );
+
+>>>>>>> 822b76c (Refactoring)
 		return true;
 	}
 

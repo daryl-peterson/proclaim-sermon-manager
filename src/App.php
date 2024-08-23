@@ -69,7 +69,12 @@ class App implements Initable {
 	 * @since 1.0.0
 	 */
 	public static function init(): App {
+<<<<<<< HEAD
 		return self::get_instance();
+=======
+		$obj = self::get_instance();
+		return $obj;
+>>>>>>> 822b76c (Refactoring)
 	}
 
 	/**
@@ -115,7 +120,11 @@ class App implements Initable {
 	 * @since 1.0.0
 	 */
 	public function permalinks(): array {
+<<<<<<< HEAD
 		return PermaLinks::get_instance()->get();
+=======
+		return PermaLinks::exec()->get();
+>>>>>>> 822b76c (Refactoring)
 	}
 
 	/**
@@ -129,6 +138,19 @@ class App implements Initable {
 	}
 
 	/**
+<<<<<<< HEAD
+=======
+	 * Get container interface.
+	 *
+	 * @return Container
+	 * @since 1.0.0
+	 */
+	public function container(): Container {
+		return $this->container;
+	}
+
+	/**
+>>>>>>> 822b76c (Refactoring)
 	 * Set settings.
 	 *
 	 * @param array $settings Key value pairs.

@@ -17,6 +17,10 @@ use DRPPSM\Constants\Filters;
 use DRPPSM\Constants\Meta;
 use DRPPSM\Constants\PT;
 use DRPPSM\Constants\Tax;
+<<<<<<< HEAD
+=======
+use DRPPSM\Interfaces\Executable;
+>>>>>>> 822b76c (Refactoring)
 use DRPPSM\Interfaces\Initable;
 use DRPPSM\Interfaces\Registrable;
 
@@ -29,7 +33,11 @@ use DRPPSM\Interfaces\Registrable;
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
  * @since       1.0.0
  */
+<<<<<<< HEAD
 class SermonListTable implements Initable, Registrable {
+=======
+class SermonListTable implements Executable, Registrable {
+>>>>>>> 822b76c (Refactoring)
 
 	/**
 	 * Post type
@@ -66,15 +74,26 @@ class SermonListTable implements Initable, Registrable {
 	}
 
 	/**
+<<<<<<< HEAD
 	 * Get initialized object.
+=======
+	 * Initialize and register.
+>>>>>>> 822b76c (Refactoring)
 	 *
 	 * @return SermonListTable
 	 * @since 1.0.0
 	 */
+<<<<<<< HEAD
 	public static function init(): SermonListTable {
 
 		$result = new self();
 		return $result;
+=======
+	public static function exec(): SermonListTable {
+		$obj = new self();
+		$obj->register();
+		return $obj;
+>>>>>>> 822b76c (Refactoring)
 	}
 
 	/**

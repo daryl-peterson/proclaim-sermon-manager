@@ -67,9 +67,17 @@ class OptGeneral implements Initable, Registrable {
 	 */
 	public function register(): ?bool {
 
+<<<<<<< HEAD
 		if ( ! is_admin() || has_action( Actions::SETTINGS_REGISTER_FORM, array( $this, 'register_metaboxes' ) ) ) {
 			return false;
 		}
+=======
+		/*
+		if ( ! is_admin() || has_action( Actions::SETTINGS_REGISTER_FORM, array( $this, 'register_metaboxes' ) ) ) {
+			return false;
+		}
+		*/
+>>>>>>> 822b76c (Refactoring)
 
 		add_action( Actions::SETTINGS_REGISTER_FORM, array( $this, 'register_metaboxes' ) );
 		add_filter( Filters::SETTINGS_MAIN_MENU, array( $this, 'set_menu' ) );

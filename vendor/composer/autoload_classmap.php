@@ -52,6 +52,10 @@ return array(
     'DRPPSM\\Interfaces\\Runable' => $baseDir . '/src/Core/Interfaces/Runable.php',
     'DRPPSM\\Interfaces\\TaxonomyRegInt' => $baseDir . '/src/Core/Interfaces/TaxonomyRegInt.php',
     'DRPPSM\\Interfaces\\TextDomainInt' => $baseDir . '/src/Core/Interfaces/TextDomainInt.php',
+<<<<<<< HEAD
+=======
+    'DRPPSM\\Loader' => $baseDir . '/src/Loader.php',
+>>>>>>> 822b76c (Refactoring)
     'DRPPSM\\Logger' => $baseDir . '/src/Logger.php',
     'DRPPSM\\Logging\\LogDatabase' => $baseDir . '/src/Core/Logging/LogDatabase.php',
     'DRPPSM\\Logging\\LogFile' => $baseDir . '/src/Core/Logging/LogFile.php',

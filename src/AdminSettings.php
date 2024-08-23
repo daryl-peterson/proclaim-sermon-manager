@@ -18,7 +18,11 @@ use CMB2_Options_Hookup;
 use DRPPSM\Constants\Actions;
 use DRPPSM\Constants\Filters;
 use DRPPSM\Constants\PT;
+<<<<<<< HEAD
 use DRPPSM\Interfaces\Initable;
+=======
+use DRPPSM\Interfaces\Executable;
+>>>>>>> 822b76c (Refactoring)
 use DRPPSM\Interfaces\Registrable;
 
 /**
@@ -30,7 +34,11 @@ use DRPPSM\Interfaces\Registrable;
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
  * @since       1.0.0
  */
+<<<<<<< HEAD
 class AdminSettings implements Initable, Registrable {
+=======
+class AdminSettings implements Executable, Registrable {
+>>>>>>> 822b76c (Refactoring)
 
 	/**
 	 * Menu slug.
@@ -43,13 +51,24 @@ class AdminSettings implements Initable, Registrable {
 	const TAB_GROUP = KEY_PREFIX . '_options';
 
 	/**
+<<<<<<< HEAD
 	 * Get initialize object
+=======
+	 * Initialize and register.
+>>>>>>> 822b76c (Refactoring)
 	 *
 	 * @return AdminSettings
 	 * @since 1.0.0
 	 */
+<<<<<<< HEAD
 	public static function init(): AdminSettings {
 		return new self();
+=======
+	public static function exec(): AdminSettings {
+		$obj = new self();
+		$obj->register();
+		return $obj;
+>>>>>>> 822b76c (Refactoring)
 	}
 
 	/**

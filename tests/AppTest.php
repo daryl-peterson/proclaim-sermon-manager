@@ -16,6 +16,10 @@ use DRPPSM\Exceptions\NotfoundException;
 use DRPPSM\Interfaces\NoticeInt;
 use DRPPSM\Interfaces\OptionsInt;
 use DRPPSM\Interfaces\PluginInt;
+<<<<<<< HEAD
+=======
+use DRPPSM\Notice;
+>>>>>>> 822b76c (Refactoring)
 use stdClass;
 
 use function DRPPSM\allowed_html;

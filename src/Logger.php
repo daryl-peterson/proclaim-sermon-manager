@@ -13,6 +13,10 @@ namespace DRPPSM;
 
 defined( 'ABSPATH' ) || exit;
 
+<<<<<<< HEAD
+=======
+use DRPPSM\Logging\LogFile;
+>>>>>>> 822b76c (Refactoring)
 use DRPPSM\Traits\SingletonTrait;
 use DRPPSM\Logging\LoggerInt;
 use DRPPSM\Logging\LogRecord;
@@ -51,7 +55,11 @@ class Logger implements LoggerInt {
 	 * @since 1.0.0
 	 */
 	protected function __construct() {
+<<<<<<< HEAD
 		$this->writter = log_writter();
+=======
+		$this->writter = LogFile::exec();
+>>>>>>> 822b76c (Refactoring)
 	}
 
 	/**
@@ -116,7 +124,11 @@ class Logger implements LoggerInt {
 
 			$result = false;
 			// phpcs:disable
+<<<<<<< HEAD
 			$record = new LogRecord( $context, $level, debug_backtrace( 0, 8 ) );
+=======
+			$record = new LogRecord( $context, $level, debug_backtrace( 1, 8 ) );
+>>>>>>> 822b76c (Refactoring)
 			// phpcs:enable
 
 			if ( ! defined( 'WP_DEBUG' ) ) {

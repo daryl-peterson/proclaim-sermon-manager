@@ -14,8 +14,12 @@ namespace DRPPSM;
 defined( 'ABSPATH' ) || exit;
 
 use DRPPSM\Constants\PT;
+<<<<<<< HEAD
 use DRPPSM\Constants\Tax;
 use DRPPSM\Interfaces\Initable;
+=======
+use DRPPSM\Interfaces\Executable;
+>>>>>>> 822b76c (Refactoring)
 use DRPPSM\Interfaces\Registrable;
 
 /**
@@ -27,16 +31,30 @@ use DRPPSM\Interfaces\Registrable;
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
  * @since       1.0.0
  */
+<<<<<<< HEAD
 class AdminMenu implements Initable, Registrable {
 
 	/**
 	 * Get initialize object.
+=======
+class AdminMenu implements Executable, Registrable {
+
+	/**
+	 * Initialize and register.
+>>>>>>> 822b76c (Refactoring)
 	 *
 	 * @return AdminMenu
 	 * @since 1.0.0
 	 */
+<<<<<<< HEAD
 	public static function init(): AdminMenu {
 		return new self();
+=======
+	public static function exec(): AdminMenu {
+		$obj = new self();
+		$obj->register();
+		return $obj;
+>>>>>>> 822b76c (Refactoring)
 	}
 
 	/**

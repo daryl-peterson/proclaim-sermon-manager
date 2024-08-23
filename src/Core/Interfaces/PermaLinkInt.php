@@ -23,7 +23,11 @@ namespace DRPPSM\Interfaces;
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
  * @since       1.0.0
  */
+<<<<<<< HEAD
 interface PermaLinkInt extends Initable, Registrable {
+=======
+interface PermaLinkInt extends Executable, Registrable {
+>>>>>>> 822b76c (Refactoring)
 
 	/**
 	 * Return permalink array.

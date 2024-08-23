@@ -13,12 +13,19 @@ namespace DRPPSM;
 
 defined( 'ABSPATH' ) || exit;
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 822b76c (Refactoring)
 use DRPPSM\Interfaces\NoticeInt;
 use DRPPSM\Interfaces\PluginInt;
 use DRPPSM\Interfaces\PostTypeSetupInt;
 use DRPPSM\Constants\Actions;
 use DRPPSM\DB\DbUpdates;
+<<<<<<< HEAD
+=======
+use DRPPSM\Interfaces\Executable;
+>>>>>>> 822b76c (Refactoring)
 
 /**
  * Plugin main class.
@@ -46,6 +53,7 @@ class Plugin implements PluginInt {
 	 */
 	private string $cmb2_version;
 
+<<<<<<< HEAD
 
 	/**
 	 * Set object properties.
@@ -59,6 +67,24 @@ class Plugin implements PluginInt {
 		$this->cmb2_version = '?.?.?';
 	}
 
+=======
+	/**
+	 * Set object properties.
+	 *
+	 * @since 1.0.0
+	 */
+	protected function __construct() {
+		$this->notice       = notice();
+		$this->cmb2_version = '?.?.?';
+	}
+
+	public static function exec(): PluginInt {
+		$obj = new self();
+		$obj->register();
+		return $obj;
+	}
+
+>>>>>>> 822b76c (Refactoring)
 	/**
 	 * Initialize plugin hooks.
 	 *
@@ -68,6 +94,7 @@ class Plugin implements PluginInt {
 	public function register(): bool {
 		try {
 			FatalError::check();
+<<<<<<< HEAD
 			$hook = Actions::AFTER_PLUGIN_LOAD;
 
 			if ( did_action( $hook ) && ! defined( 'PHPUNIT_TESTING' ) ) {
@@ -120,12 +147,29 @@ class Plugin implements PluginInt {
 				do_action( Actions::AFTER_ADMIN_INIT );
 			}
 
+=======
+
+			if ( has_action( 'shutdown', array( $this, 'shutdown' ) ) ) {
+				return true;
+			}
+
+			register_activation_hook( FILE, array( $this, 'activate' ) );
+			register_deactivation_hook( FILE, array( $this, 'deactivate' ) );
+			add_action( 'shutdown', array( $this, 'shutdown' ) );
+			add_action( 'cmb2_init', array( $this, 'cmb2_init' ) );
+
+			Loader::exec();
+>>>>>>> 822b76c (Refactoring)
 			return true;
 
 			// @codeCoverageIgnoreStart
 		} catch ( \Throwable $th ) {
 			FatalError::set( $th->getMessage(), $th );
 			// @codeCoverageIgnoreEnd
+<<<<<<< HEAD
+=======
+			return false;
+>>>>>>> 822b76c (Refactoring)
 		}
 	}
 
@@ -164,6 +208,7 @@ class Plugin implements PluginInt {
 	}
 
 	/**
+<<<<<<< HEAD
 	 * Display notice if it exist.
 	 *
 	 * @return string|null Notice strig if exist.
@@ -174,12 +219,23 @@ class Plugin implements PluginInt {
 	}
 
 	/**
+=======
+>>>>>>> 822b76c (Refactoring)
 	 * Shut down cleanup.
 	 *
 	 * @return bool Return true if successfull.
 	 * @since 1.0.0
 	 */
 	public function shutdown(): bool {
+<<<<<<< HEAD
+=======
+
+		$message  = "\n\n";
+		$message .= str_repeat( '-', 80 );
+		$message .= "\nSHUTTING DOWN\n";
+		$message .= "\n\n";
+		Logger::debug( $message );
+>>>>>>> 822b76c (Refactoring)
 		return true;
 	}
 

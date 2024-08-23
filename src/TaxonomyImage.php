@@ -105,14 +105,24 @@ class TaxonomyImage implements Executable, Registrable {
 	 *
 	 * @return boolean|null True if hooks were registered, otherwise false.
 	 * @since 1.0.0
+<<<<<<< HEAD
 	 *
 	 * @see https://developer.wordpress.org/reference/hooks/get_meta_type_metadata/
+=======
+>>>>>>> 822b76c (Refactoring)
 	 */
 	public function register(): ?bool {
 		$meta_type = 'term';
 		if ( ! is_admin() || has_action( "get_{$meta_type}_metadata", array( $this, 'get_metadata' ) ) ) {
+<<<<<<< HEAD
 			return false;
 		}
+=======
+			Logger::debug( 'HOOKS PREVIOUSLY REGISTERED ' . __CLASS__ );
+			return false;
+		}
+		Logger::debug( 'REGISTRING HOOKS ' . __CLASS__ );
+>>>>>>> 822b76c (Refactoring)
 		add_filter( "get_{$meta_type}_metadata", array( $this, 'get_metadata' ), 10, 5 );
 		add_action( "add_{$meta_type}_meta", array( $this, 'add_meta' ), 10, 3 );
 		add_action( "update_{$meta_type}_meta", array( $this, 'update_meta' ), 10, 4 );
@@ -242,6 +252,10 @@ class TaxonomyImage implements Executable, Registrable {
 	 * @since 1.0.0
 	 */
 	private function attach( int $term_id, string $meta_key, mixed $meta_value ): bool {
+<<<<<<< HEAD
+=======
+		Logger::debug( 'ATTACHING IMAGE ' . __CLASS__ );
+>>>>>>> 822b76c (Refactoring)
 		$taxonomy = $this->get_taxonomy( $meta_key );
 		if ( ! isset( $taxonomy ) ) {
 			return false;
