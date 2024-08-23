@@ -28,7 +28,6 @@ use ReflectionClass;
  */
 class Container implements ContainerInterface {
 
-
 	/**
 	 * Services array
 	 *
@@ -162,7 +161,6 @@ class Container implements ContainerInterface {
 		Logger::debug( 'NEW INSTANCE ARGS' );
 		return $item->newInstanceArgs( $params );
 	}
-
 
 	/**
 	 * Returns true if the container can return an entry for the given identifier.
