@@ -22,6 +22,9 @@ namespace DRPPSM\Constants;
  */
 class Meta {
 
+	/**
+	 * Add comments.
+	 */
 	public const AUDIO           = 'drppsm_audio';
 	public const AUDIO_ID        = 'drppsm_audio_id';
 	public const BIBLE_PASSAGE   = 'drppsm_bible_passage';

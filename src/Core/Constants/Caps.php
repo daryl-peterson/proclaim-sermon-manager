@@ -22,7 +22,6 @@ namespace DRPPSM\Constants;
  */
 class Caps {
 
-
 	public const ROLE_ADMIN  = 'administrator';
 	public const ROLE_EDITOR = 'editor';
 	public const ROLE_AUTHOR = 'author';

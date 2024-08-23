@@ -22,6 +22,9 @@ namespace DRPPSM\Constants;
  */
 class Filters {
 
+	/**
+	 * Add comments.
+	 */
 	public const FLUSH_REWRITE_RULES = 'drppsm_flush_rewrite_rules';
 	public const SERMON_FILTER       = 'drppsm_filters';
 	public const SERMON_DATES_GET    = 'drppsm_dates_get';

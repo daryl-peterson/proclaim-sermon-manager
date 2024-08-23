@@ -22,7 +22,6 @@ namespace DRPPSM\Constants;
  */
 class Bible {
 
-
 	public const BOOKS = array(
 		'Genesis',
 		'Exodus',
