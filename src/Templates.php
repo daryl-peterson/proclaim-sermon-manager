@@ -93,6 +93,13 @@ class Templates implements Executable, Registrable {
 		$pt = PT::SERMON;
 		$ds = DIRECTORY_SEPARATOR;
 
+		/*
+		ob_start();
+		var_dump( ini_get( 'output_buffering' ) );
+		$info = ob_get_clean();
+		Logger::debug( array( 'OUTPUT BUFFERING' => $info ) );
+		*/
+
 		if ( ! $this->should_modify() ) {
 			return $template;
 		}

@@ -152,7 +152,6 @@ class ComposerStaticInitf5da42b7feb65ba592bc9e68a42f25f4
         'DRPPSM\\TaxonomyListTable' => __DIR__ . '/../..' . '/src/TaxonomyListTable.php',
         'DRPPSM\\TaxonomyReg' => __DIR__ . '/../..' . '/src/TaxonomyReg.php',
         'DRPPSM\\Templates' => __DIR__ . '/../..' . '/src/Templates.php',
-        'DRPPSM\\Test' => __DIR__ . '/../..' . '/src/Test.php',
         'DRPPSM\\Tests\\ActivateDeactiveTest' => __DIR__ . '/../..' . '/tests/ActivateDeactiveTest.php',
         'DRPPSM\\Tests\\AdminSermonTest' => __DIR__ . '/../..' . '/tests/AdminSermonTest.php',
         'DRPPSM\\Tests\\AppTest' => __DIR__ . '/../..' . '/tests/AppTest.php',
