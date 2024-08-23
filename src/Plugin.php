@@ -56,6 +56,12 @@ class Plugin implements PluginInt {
 		$this->cmb2_version = '?.?.?';
 	}
 
+	/**
+	 * Initializale and register hooks.
+	 *
+	 * @return PluginInt
+	 * @since 1.0.0
+	 */
 	public static function exec(): PluginInt {
 		$obj = new self();
 		$obj->register();
