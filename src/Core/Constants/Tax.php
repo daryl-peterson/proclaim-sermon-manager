@@ -22,7 +22,6 @@ namespace DRPPSM\Constants;
  */
 class Tax {
 
-
 	public const BIBLE_BOOK   = 'drppsm_bible';
 	public const PREACHER     = 'drppsm_preacher';
 	public const SERVICE_TYPE = 'drppsm_stype';
