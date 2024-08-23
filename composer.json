@@ -1,6 +1,6 @@
 {
 	"name": "dpeterson/wp-sermon-manager",
-	"type": "project",
+	"type": "wordpress-plugin",
 	"autoload": {
 		"psr-4": {
 			"DRPPSM\\": "src/",
