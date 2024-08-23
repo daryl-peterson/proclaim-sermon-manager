@@ -142,7 +142,7 @@ class QueryVars implements Executable, Registrable {
 	private function get_conflict(): ?array {
 		$trans = get_transient( Rewrite::TRANS_NAME );
 
-		if ( ! isset( $trans ) ) {
+		if ( ! isset( $trans ) || ! $trans ) {
 			return null;
 		}
 		return $trans;
