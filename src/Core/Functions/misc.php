@@ -11,7 +11,7 @@
 
 namespace DRPPSM;
 
-use DateTimeZone;
+defined( 'ABSPATH' ) || exit;
 
 /**
  * Get app instance.

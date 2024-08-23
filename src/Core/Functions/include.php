@@ -11,8 +11,6 @@
 
 namespace DRPPSM;
 
-use DRPPSM\Logger;
-
 /**
  * Include plugin actions functions from wp-admin/includes/plugin.php.
  *

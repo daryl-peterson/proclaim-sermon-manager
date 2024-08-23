@@ -11,6 +11,8 @@
 
 namespace DRPPSM;
 
+defined( 'ABSPATH' ) || exit;
+
 use DRPPSM\Interfaces\BibleLoaderInt;
 use DRPPSM\Interfaces\OptionsInt;
 use DRPPSM\Interfaces\RequirementsInt;
