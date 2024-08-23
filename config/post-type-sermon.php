@@ -17,7 +17,6 @@ $permalinks = app()->permalinks();
 use DRPPSM\Constants\Caps;
 use DRPPSM\Constants\PT;
 
-
 $capabilities = array(
 	Caps::MANAGE_SETTINGS   => Caps::MANAGE_SETTINGS,
 	Caps::MANAGE_CATAGORIES => Caps::MANAGE_CATAGORIES,
