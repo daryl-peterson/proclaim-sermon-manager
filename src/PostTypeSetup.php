@@ -80,7 +80,6 @@ class PostTypeSetup implements PostTypeSetupInt {
 		return $obj;
 	}
 
-
 	/**
 	 * Register hooks.
 	 *
@@ -88,6 +87,7 @@ class PostTypeSetup implements PostTypeSetupInt {
 	 * @since 1.0.0
 	 */
 	public function register(): ?bool {
+
 		if ( has_action( 'init', array( $this, 'add' ) ) ) {
 			return false;
 		}

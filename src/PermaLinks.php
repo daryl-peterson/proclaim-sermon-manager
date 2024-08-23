@@ -13,7 +13,6 @@ namespace DRPPSM;
 
 defined( 'ABSPATH' ) || exit;
 
-use DRPPSM\Constants\Actions;
 use DRPPSM\Constants\PT;
 use DRPPSM\Constants\Tax;
 use DRPPSM\Interfaces\OptionsInt;

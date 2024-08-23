@@ -19,8 +19,6 @@ use DRPPSM\Logging\LoggerInt;
 use DRPPSM\Logging\LogRecord;
 use DRPPSM\Logging\LogWritterInt;
 
-use function DRPPSM\log_writter;
-
 /**
  * Logging.
  *

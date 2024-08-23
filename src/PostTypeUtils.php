@@ -35,6 +35,7 @@ class PostTypeUtils {
 	 * @since 1.0.0
 	 */
 	public static function is_savable( int $post_id, \WP_Post $post ) {
+
 		if ( ! defined( 'PHPUNIT_TESTING' ) ) {
 			// @codeCoverageIgnoreStart
 			$key = 'sermon-edit-' . $post_id;

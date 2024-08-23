@@ -15,7 +15,6 @@ namespace DRPPSM;
 
 defined( 'ABSPATH' ) || exit;
 
-use DRPPSM\Interfaces\Executable;
 use DRPPSM\Interfaces\OptionsInt;
 use DRPPSM\Traits\SingletonTrait;
 

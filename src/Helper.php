@@ -27,7 +27,6 @@ use ReflectionClass;
  */
 class Helper {
 
-
 	/**
 	 * Create a key for options ect.. with the KEY_PREFIX.
 	 *

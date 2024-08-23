@@ -71,6 +71,7 @@ class HooksUtils implements Initable {
 	 * @param int|null     $priority           (optional) Priority of the filter. If not set all hooks with any priority will be removed.
 	 *
 	 * @return bool Whether the hook is removed.
+	 * @since 1.0.0
 	 */
 	public function remove_object_filter( string $hook_name, $static_callback, $priority = null ): bool {
 		if ( is_string( $static_callback ) ) {

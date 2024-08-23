@@ -63,8 +63,7 @@ class Pagination implements Executable, Registrable {
 	public function pagination( int $items, int $limit, int $page, string $url ): string {
 
 		$page_cnt = ( ( $items % $limit ) === 0 ) ? $items / $limit : floor( $items / $limit ) + 1;
-
-		$output = '<span class="displaying-num">' . sprintf(
+		$output   = '<span class="displaying-num">' . sprintf(
 			/* translators: %s: Number of items. */
 			_n( '%s item', '%s items', $items ),
 			number_format_i18n( $items )

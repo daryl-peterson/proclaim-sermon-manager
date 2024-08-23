@@ -13,7 +13,6 @@ namespace DRPPSM;
 
 defined( 'ABSPATH' ) || exit;
 
-use DRPPSM\Interfaces\Executable;
 use DRPPSM\Interfaces\NoticeInt;
 use DRPPSM\Interfaces\OptionsInt;
 use DRPPSM\Traits\SingletonTrait;
@@ -47,6 +46,8 @@ class Notice implements NoticeInt {
 
 	/**
 	 * Set object properties.
+	 *
+	 * @since 1.0.0
 	 */
 	protected function __construct() {
 		// @codeCoverageIgnoreStart

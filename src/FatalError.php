@@ -72,6 +72,7 @@ class FatalError {
 	 * @since 1.0.0
 	 */
 	public static function set( string $message, \Throwable $th ): void {
+
 		/**
 		 * Options interface.
 		 *

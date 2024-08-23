@@ -16,7 +16,6 @@ defined( 'ABSPATH' ) || exit;
 use DRPPSM\Constants\Actions;
 use DRPPSM\Interfaces\Executable;
 use DRPPSM\Interfaces\PluginInt;
-use DRPPSM\Interfaces\Registrable;
 use DRPPSM\Interfaces\Runable;
 
 /**

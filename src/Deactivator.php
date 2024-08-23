@@ -32,6 +32,7 @@ class Deactivator {
 	 * @since 1.0.0
 	 */
 	public static function run(): bool {
+
 		$result = false;
 		try {
 			include_admin_plugin();

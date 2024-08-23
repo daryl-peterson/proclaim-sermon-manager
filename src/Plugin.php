@@ -15,10 +15,6 @@ defined( 'ABSPATH' ) || exit;
 
 use DRPPSM\Interfaces\NoticeInt;
 use DRPPSM\Interfaces\PluginInt;
-use DRPPSM\Interfaces\PostTypeSetupInt;
-use DRPPSM\Constants\Actions;
-use DRPPSM\DB\DbUpdates;
-use DRPPSM\Interfaces\Executable;
 
 /**
  * Plugin main class.

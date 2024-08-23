@@ -27,7 +27,7 @@ use DRPPSM\Interfaces\ImageSizeInt;
 class ImageSize implements ImageSizeInt {
 
 	/**
-	 * Set size constants.
+	 * Image sizes.
 	 */
 	public const SERMON_SMALL  = 'sermon_small';
 	public const SERMON_MEDIUM = 'sermon_medium';

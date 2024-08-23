@@ -42,6 +42,7 @@ class DateUtils {
 	 * @since 1.0.0
 	 */
 	public static function get( string $format = '', null|int|\WP_Post $post = null, $force_unix_sanitation = false, $localize = true ) {
+
 		// Reset the variable.
 		$has_time  = false;
 		$sanitized = false;

@@ -77,8 +77,6 @@ class OptAdvance implements Initable, Registrable {
 		return $submenus;
 	}
 
-
-
 	/**
 	 * Register metaboxes.
 	 *

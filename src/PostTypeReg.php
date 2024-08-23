@@ -32,6 +32,7 @@ class PostTypeReg implements PostTypeRegInt {
 	 * Post type.
 	 *
 	 * @var string
+	 * @since 1.0.0
 	 */
 	protected string $pt;
 
@@ -39,6 +40,7 @@ class PostTypeReg implements PostTypeRegInt {
 	 * Congifurage file to read.
 	 *
 	 * @var string
+	 * @since 1.0.0
 	 */
 	protected string $config_file;
 
