@@ -13,12 +13,10 @@ namespace DRPPSM;
 
 defined( 'ABSPATH' ) || exit;
 
-use DRPPSM\App;
 use DRPPSM\Constants\Actions;
 use DRPPSM\Constants\PT;
 use DRPPSM\Constants\Tax;
 use DRPPSM\Interfaces\Executable;
-use DRPPSM\Interfaces\Initable;
 use DRPPSM\Interfaces\OptionsInt;
 use DRPPSM\Interfaces\Registrable;
 use DRPPSM\SermonDetail;

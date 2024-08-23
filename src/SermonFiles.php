@@ -30,6 +30,7 @@ use DRPPSM\Interfaces\Registrable;
  */
 class SermonFiles implements Initable, Registrable {
 
+
 	/**
 	 * Get initialized object.
 	 *

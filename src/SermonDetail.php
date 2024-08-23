@@ -37,6 +37,7 @@ class SermonDetail implements Initable, Registrable {
 	 * Post type.
 	 *
 	 * @var string
+	 * @since 1.0.0
 	 */
 	private string $pt;
 
