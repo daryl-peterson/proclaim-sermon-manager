@@ -1,6 +1,13 @@
 {
-	"name": "dpeterson/wp-sermon-manager",
+	"name": "daryl-peterson/drp-proclaim-sermon-manager",
 	"type": "wordpress-plugin",
+	"keywords": [
+		"wordpress",
+		"plugin",
+		"sermons",
+		"sermon manager"
+	],
+	"homepage": "https://github.com/daryl-peterson/drp-proclaim-sermon-manager",
 	"autoload": {
 		"psr-4": {
 			"DRPPSM\\": "src/",
@@ -22,11 +29,14 @@
 	"authors": [
 		{
 			"name": "daryl-peterson",
-			"email": "daryl.peterson@gmail.com"
+			"email": "daryl.peterson@gmail.com",
+			"homepage": "https://wordpress.com/home/dpeterson1971.wordpress.com",
+			"role": "Developer"
 		}
 	],
 	"classmap-authoritative": true,
 	"require": {
+		"php": ">8.1",
 		"cmb2/cmb2": "^2.11",
 		"psr/container": "^2.0"
 	},

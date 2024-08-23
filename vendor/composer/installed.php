@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
-        'name' => 'dpeterson/wp-sermon-manager',
+        'name' => 'daryl-peterson/drp-proclaim-sermon-manager',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => '662025166c2babb23a9d50b294532757c5b80d83',
+        'reference' => '6b9a119fb0dfd3c84b2c39980234cf367d13137f',
         'type' => 'wordpress-plugin',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -19,10 +19,10 @@
             'aliases' => array(),
             'dev_requirement' => false,
         ),
-        'dpeterson/wp-sermon-manager' => array(
+        'daryl-peterson/drp-proclaim-sermon-manager' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => '662025166c2babb23a9d50b294532757c5b80d83',
+            'reference' => '6b9a119fb0dfd3c84b2c39980234cf367d13137f',
             'type' => 'wordpress-plugin',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
