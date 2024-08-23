@@ -22,7 +22,6 @@ namespace DRPPSM\Constants;
  */
 class PT {
 
-
 	public const SERMON      = 'drppsm_sermon';
 	public const SERMONS     = 'drppsm_sermons';
 	public const ATTACHEMENT = 'attachment';
