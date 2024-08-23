@@ -113,7 +113,6 @@ class QueryVars implements Executable, Registrable {
 		return $query;
 	}
 
-
 	/**
 	 * Get transient to see if conflicts have been detected.
 	 *
