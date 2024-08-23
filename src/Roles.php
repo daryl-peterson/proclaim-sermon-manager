@@ -78,7 +78,6 @@ class Roles implements RolesInt {
 		// @codeCoverageIgnoreEnd
 	}
 
-
 	/**
 	 * Initalize and register hooks.
 	 *
