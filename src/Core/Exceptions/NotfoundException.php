@@ -23,4 +23,5 @@ namespace DRPPSM\Exceptions;
  * @since       1.0.0
  */
 class NotfoundException extends \Exception {
+
 }
