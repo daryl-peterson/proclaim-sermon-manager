@@ -55,7 +55,6 @@ class TaxonomyReg implements TaxonomyRegInt {
 	 * @param string $taxonomy Taxonomomy name.
 	 * @param string $post_type Post type name.
 	 * @param string $config_file Configuration file.
-	 *
 	 * @since 1.0.0
 	 */
 	public function __construct( string $taxonomy, string $post_type, string $config_file ) {

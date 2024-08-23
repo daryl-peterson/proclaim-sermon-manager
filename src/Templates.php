@@ -34,6 +34,7 @@ class Templates implements Executable, Registrable {
 	 * @since 1.0.0
 	 */
 	public static function exec(): Templates {
+
 		$obj = new self();
 		$obj->register();
 		return $obj;

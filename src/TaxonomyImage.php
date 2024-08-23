@@ -18,8 +18,6 @@ use DRPPSM\Interfaces\OptionsInt;
 use DRPPSM\Interfaces\Registrable;
 use WP_Error;
 use WP_Post;
-use WP_Query;
-use WP_Tax_Query;
 
 /**
  * Taxonomy image attaching.

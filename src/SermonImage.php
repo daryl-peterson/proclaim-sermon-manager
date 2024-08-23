@@ -35,6 +35,7 @@ class SermonImage implements Executable, Registrable {
 	 * Initialize and register hooks.
 	 *
 	 * @return SermonImage
+	 *
 	 * @since 1.0.0
 	 */
 	public static function exec(): SermonImage {

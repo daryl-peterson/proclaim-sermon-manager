@@ -23,6 +23,7 @@ use DRPPSM\Constants\Tax;
  * @since       1.0.0
  */
 class Settings {
+
 	public const FIELD_MENU_ICON   = 'menu_icon';
 	public const DEFAULT_MENU_ICON = 'dashicons-drppsm-holy-spirit';
 

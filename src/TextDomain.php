@@ -37,6 +37,7 @@ class TextDomain implements TextDomainInt {
 	 * @since 1.0.0
 	 */
 	public static function exec(): TextDomainInt {
+
 		$obj = new self();
 		$obj->register();
 		return $obj;

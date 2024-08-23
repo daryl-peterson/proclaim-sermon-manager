@@ -52,6 +52,7 @@ class TaxonomyListTable implements Executable, Registrable {
 	 * @since 1.0.0
 	 */
 	protected function __construct() {
+
 		$this->columns = array(
 			'cb'                 => '<input type="checkbox" />',
 			'drppsm-image'       => 'Image',

@@ -50,8 +50,8 @@ class TaxUtils {
 	 * @since 1.0.0
 	 */
 	public static function get_taxonomy_field( string|int|\WP_Taxonomy $taxonomy, string $field_name ): ?string {
-		$taxonomy = get_taxonomy( $taxonomy );
 
+		$taxonomy = get_taxonomy( $taxonomy );
 		if ( ! $taxonomy instanceof \WP_Taxonomy ) {
 			return null;
 		}
