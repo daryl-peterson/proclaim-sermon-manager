@@ -95,7 +95,10 @@ class M001M000P000 implements Initable, Runable {
 					file varchar(100) DEFAULT NULL,
 					context longblob DEFAULT NULL,
 					PRIMARY KEY (id),
-					KEY SECONDARY (blog_id,dt,level,class,function,line)
+					KEY blog_id_IDX (blog_id),
+					KEY level_IDX (level),
+					KEY class_IDX (class),
+					KEY function_IDX (function)
 				) $charset_collate
 				EOT;
 				$obj->table = $table;

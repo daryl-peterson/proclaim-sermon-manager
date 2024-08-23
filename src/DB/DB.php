@@ -1,6 +1,6 @@
 <?php
 
-namespace DRPPSM;
+namespace DRPPSM\DB;
 
 use DRPPSM\Traits\OverLoadTrait;
 use wpdb;
@@ -16,7 +16,7 @@ use wpdb;
  * @since       1.0.0
  */
 #[\AllowDynamicProperties]
-class Db {
+class DB {
 	use OverLoadTrait;
 
 
@@ -39,7 +39,7 @@ class Db {
 		);
 	}
 
-	public function where( string $field, mixed $value, string $operator = '=' ): Db {
+	public function where( string $field, mixed $value, string $operator = '=' ): DB {
 		$this->where = array(
 			'field' => $field,
 			'value' => $value,
@@ -48,7 +48,7 @@ class Db {
 		return $this;
 	}
 
-	public function order( string|null $order = 'ASC' ): Db {
+	public function order( string|null $order = 'ASC' ): DB {
 		if ( ! isset( $order ) ) {
 			$order = 'ASC';
 		}
@@ -56,17 +56,17 @@ class Db {
 		return $this;
 	}
 
-	public function orderby( string $field ): Db {
+	public function orderby( string $field ): DB {
 		$this->field = $field;
 		return $this;
 	}
 
-	public function per_page( int $per_page ): Db {
+	public function per_page( int $per_page ): DB {
 		$this->per_page = $per_page;
 		return $this;
 	}
 
-	public function offset( int $offset ): Db {
+	public function offset( int $offset ): DB {
 		$this->offset = $offset;
 		return $this;
 	}

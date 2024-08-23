@@ -394,12 +394,11 @@ class TaxonomyImage implements Executable, Registrable {
 	private function get_sermons_by_term( string $taxonomy, int $term_id ): ?array {
 
 		// phpcs:disable
-		$sermons = new WP_Query(
+		$sermons = query_posts(
 			array(
 				'post_type'      => PT::SERMON,
 				'showposts'      => -1,
-				'posts_per_page' => 20,
-
+				'posts_per_page' => 50,
 				/**
 				 * 'fields' => 'ids' Returns array of ids.
 				 */
@@ -419,6 +418,7 @@ class TaxonomyImage implements Executable, Registrable {
 		if ( ! is_array( $sermons ) ) {
 			return null;
 		}
+		Logger::debug( array( 'SERMONS' => $sermons ) );
 		return $sermons;
 	}
 

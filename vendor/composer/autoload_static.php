@@ -85,6 +85,7 @@ class ComposerStaticInitf5da42b7feb65ba592bc9e68a42f25f4
         'DRPPSM\\Constants\\PT' => __DIR__ . '/../..' . '/src/Core/Constants/PT.php',
         'DRPPSM\\Constants\\Tax' => __DIR__ . '/../..' . '/src/Core/Constants/Tax.php',
         'DRPPSM\\Container' => __DIR__ . '/../..' . '/src/Container.php',
+        'DRPPSM\\DB\\DB' => __DIR__ . '/../..' . '/src/DB/DB.php',
         'DRPPSM\\DB\\DbUpdates' => __DIR__ . '/../..' . '/src/DB/DbUpdates.php',
         'DRPPSM\\DB\\M001M000P000' => __DIR__ . '/../..' . '/src/DB/M001M000P000.php',
         'DRPPSM\\DateUtils' => __DIR__ . '/../..' . '/src/DateUtils.php',

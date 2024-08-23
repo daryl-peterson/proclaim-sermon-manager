@@ -66,7 +66,7 @@ class SermonImage implements Executable, Registrable {
 	 * @param int     $post_id Post ID.
 	 * @param WP_Post $post Post.
 	 * @param bool    $update Udate flag.
-	 * @return bool
+	 * @return array
 	 * @since 1.0.0
 	 */
 	public function save_post( int $post_id, WP_Post $post, bool $update ): array {
@@ -74,7 +74,7 @@ class SermonImage implements Executable, Registrable {
 
 			$status = array();
 			if ( PT::SERMON !== $post->post_type || defined( 'DRPSM_SAVING_IMAGES' ) ) {
-				return false;
+				return $status;
 			}
 
 			define( 'DRPSM_SAVING_IMAGES', true );

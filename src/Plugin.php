@@ -88,7 +88,7 @@ class Plugin implements PluginInt {
 
 			$app->get( PostTypeSetupInt::class )->register();
 
-			textdomain()->register();
+			textdomain();
 
 			requirements();
 			roles();

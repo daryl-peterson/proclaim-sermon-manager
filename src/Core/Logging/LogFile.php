@@ -53,6 +53,12 @@ class LogFile extends LogWritterAbs implements LogWritterInt {
 		return true;
 	}
 
+	/**
+	 * Show log.
+	 * - Not implimented.
+	 *
+	 * @return void
+	 */
 	public function show(): void { }
 
 	/**
@@ -116,6 +122,7 @@ class LogFile extends LogWritterAbs implements LogWritterInt {
 		// @codeCoverageIgnoreStart
 
 		$log_file = LOG_FILE;
+		$level    = strtolower( $level );
 		if ( defined( 'WP_DEBUG_LOG' ) ) {
 			$log_file = dirname( WP_DEBUG_LOG ) . DIRECTORY_SEPARATOR . LOG_FILE . "-$level.log";
 		}

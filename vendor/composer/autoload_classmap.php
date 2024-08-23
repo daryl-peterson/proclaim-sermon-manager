@@ -20,6 +20,7 @@ return array(
     'DRPPSM\\Constants\\PT' => $baseDir . '/src/Core/Constants/PT.php',
     'DRPPSM\\Constants\\Tax' => $baseDir . '/src/Core/Constants/Tax.php',
     'DRPPSM\\Container' => $baseDir . '/src/Container.php',
+    'DRPPSM\\DB\\DB' => $baseDir . '/src/DB/DB.php',
     'DRPPSM\\DB\\DbUpdates' => $baseDir . '/src/DB/DbUpdates.php',
     'DRPPSM\\DB\\M001M000P000' => $baseDir . '/src/DB/M001M000P000.php',
     'DRPPSM\\DateUtils' => $baseDir . '/src/DateUtils.php',

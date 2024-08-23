@@ -141,6 +141,7 @@ class LogDatabase extends LogWritterAbs implements LogWritterInt {
 	 * @since 1.0.0
 	 */
 	public function write( LogRecord $record ): bool {
+
 		$result = false;
 		try {
 			$blog_id = get_current_blog_id();

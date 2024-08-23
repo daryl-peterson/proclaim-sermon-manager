@@ -25,6 +25,7 @@ use DRPPSM\Interfaces\TextDomainInt;
 use DRPPSM\Interfaces\ImageSizeInt;
 use DRPPSM\Interfaces\RewriteInt;
 use DRPPSM\Logging\LogDatabase;
+use DRPPSM\Logging\LogFile;
 use DRPPSM\Logging\LogWritterInt;
 
 return array(
@@ -56,7 +57,7 @@ return array(
 		return BibleLoader::exec();
 	},
 	LogWritterInt::class    => function (): LogWritterInt {
-		return LogDatabase::exec();
+		return LogFile::exec();
 	},
 	RewriteInt::class       => function (): RewriteInt {
 		return Rewrite::exec();
