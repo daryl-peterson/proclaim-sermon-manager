@@ -28,6 +28,7 @@ use DRPPSM\Traits\SingletonTrait;
  */
 class App implements Initable {
 
+
 	use SingletonTrait;
 
 	/**
