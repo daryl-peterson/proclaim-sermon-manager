@@ -15,10 +15,7 @@ namespace DRPPSM;
 defined( 'ABSPATH' ) || exit;
 
 use DRPPSM\Constants\Tax;
-<<<<<<< HEAD
-=======
 use DRPPSM\Interfaces\Executable;
->>>>>>> 822b76c (Refactoring)
 use DRPPSM\Interfaces\Initable;
 use DRPPSM\Interfaces\Registrable;
 use WP_Term;
@@ -33,11 +30,7 @@ use WP_Term;
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
  * @since       1.0.0
  */
-<<<<<<< HEAD
-class TaxonomyListTable implements Initable, Registrable {
-=======
 class TaxonomyListTable implements Executable, Registrable {
->>>>>>> 822b76c (Refactoring)
 
 	/**
 	 * Table columns
@@ -75,24 +68,15 @@ class TaxonomyListTable implements Executable, Registrable {
 	}
 
 	/**
-<<<<<<< HEAD
-	 * Get initialized object.
-=======
 	 * Initialize and register.
->>>>>>> 822b76c (Refactoring)
 	 *
 	 * @return TaxonomyListTable
 	 * @since 1.0.0
 	 */
-<<<<<<< HEAD
-	public static function init(): TaxonomyListTable {
-		return new self();
-=======
 	public static function exec(): TaxonomyListTable {
 		$obj = new self();
 		$obj->register();
 		return $obj;
->>>>>>> 822b76c (Refactoring)
 	}
 
 	/**

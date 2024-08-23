@@ -22,11 +22,7 @@ use DRPPSM\Exceptions\PluginException;
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
  * @since       1.0.0
  */
-<<<<<<< HEAD
-interface PostTypeSetupInt extends Registrable {
-=======
 interface PostTypeSetupInt extends Executable, Registrable {
->>>>>>> 822b76c (Refactoring)
 
 	/**
 	 * Add post types and taxonomy.

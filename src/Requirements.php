@@ -40,11 +40,7 @@ class Requirements implements RequirementsInt {
 	 */
 	protected function __construct() {
 
-<<<<<<< HEAD
-		$this->notice = notice();
-=======
 		// $this->notice = Notice::init();
->>>>>>> 822b76c (Refactoring)
 	}
 
 	/**
@@ -70,11 +66,7 @@ class Requirements implements RequirementsInt {
 	 * @since 1.0.0
 	 */
 	public static function exec(): RequirementsInt {
-<<<<<<< HEAD
-
-=======
 		Logger::debug( 'GETTINGS ' . __CLASS__ );
->>>>>>> 822b76c (Refactoring)
 		$obj = new self();
 		$obj->register();
 
@@ -112,11 +104,7 @@ class Requirements implements RequirementsInt {
 		if ( version_compare( PHP_VERSION, $version ) >= 0 ) {
 			return;
 		}
-<<<<<<< HEAD
-		$this->notice->set_error( '- Requirement Not Met', esc_html( $message ) );
-=======
 		// $this->notice->set_error( '- Requirement Not Met', esc_html( $message ) );
->>>>>>> 822b76c (Refactoring)
 		throw new PluginException( esc_html( $message ) );
 	}
 
@@ -140,11 +128,7 @@ class Requirements implements RequirementsInt {
 		if ( version_compare( $wp_version, $version ) >= 0 ) {
 			return;
 		}
-<<<<<<< HEAD
-		$this->notice->set_error( esc_html( $title ), esc_html( $message ) );
-=======
 		// $this->notice->set_error( esc_html( $title ), esc_html( $message ) );
->>>>>>> 822b76c (Refactoring)
 		throw new PluginException( esc_html( $message ) );
 	}
 }

@@ -65,10 +65,6 @@ class SermonComments implements Registrable, Executable {
 	public function default_comments_off( array $data ): array {
 
 		$comments = get_setting( 'comments' );
-<<<<<<< HEAD
-
-=======
->>>>>>> 822b76c (Refactoring)
 		if ( $comments ) {
 			return $data;
 		}

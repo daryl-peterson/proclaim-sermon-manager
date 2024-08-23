@@ -27,11 +27,7 @@ class AdminSermonTest extends BaseTest {
 	protected SermonEdit $obj;
 
 	public function setup(): void {
-<<<<<<< HEAD
-		$this->obj = SermonEdit::init();
-=======
 		$this->obj = SermonEdit::exec();
->>>>>>> 822b76c (Refactoring)
 	}
 
 	public function test_object() {

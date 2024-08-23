@@ -53,11 +53,7 @@ class PermaLinks implements PermaLinkInt {
 	 * @return PermaLinkInt
 	 * @since 1.0.0
 	 */
-<<<<<<< HEAD
-	public static function init(): PermaLinkInt {
-=======
 	public static function exec(): PermaLinkInt {
->>>>>>> 822b76c (Refactoring)
 		return self::get_instance();
 	}
 
@@ -108,15 +104,9 @@ class PermaLinks implements PermaLinkInt {
 		/**
 		 * Options interface.
 		 *
-<<<<<<< HEAD
-		 * @var OptionsInt $opts
-		 */
-		$opts = App::init()->get( OptionsInt::class );
-=======
 		 * @var OptionsInt $opts Options interface.
 		 */
 		$opts = options();
->>>>>>> 822b76c (Refactoring)
 
 		$perm = wp_parse_args(
 			(array) $opts->get( 'permalinks', array() ),

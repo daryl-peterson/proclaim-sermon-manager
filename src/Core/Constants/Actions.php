@@ -26,20 +26,12 @@ class Actions {
 
 	public const TEXT_DOMAIN_LOADED = 'drppsm_textdomain';
 
-<<<<<<< HEAD
-
-	/**
-	 * After admin init.
-	 */
-	public const AFTER_ADMIN_INIT = 'drppsm_after_admin_init';
-=======
 	/**
 	 * Fires after classes have been loaded.
 	 *
 	 * @since 1.0.0
 	 */
 	public const AFTER_INIT = 'drppsm_after_init';
->>>>>>> 822b76c (Refactoring)
 
 	/**
 	 * Register settings form.
@@ -56,10 +48,6 @@ class Actions {
 	 */
 	public const SETTINGS_REGISTER_FORM = 'drppsm_settings_register_form';
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 822b76c (Refactoring)
 	/**
 	 * Fires when the form is ready to be displayed.
 	 *

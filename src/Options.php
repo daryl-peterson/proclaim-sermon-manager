@@ -9,23 +9,13 @@
  * @since       1.0.0
  *
  * @uses Helper::getKeyName
-<<<<<<< HEAD
- *
- * @see https://developer.wordpress.org/reference/functions/get_option/
- * @see https://developer.wordpress.org/reference/functions/add_option/
- * @see https://developer.wordpress.org/reference/functions/update_option/
-=======
->>>>>>> 822b76c (Refactoring)
  */
 
 namespace DRPPSM;
 
 defined( 'ABSPATH' ) || exit;
 
-<<<<<<< HEAD
-=======
 use DRPPSM\Interfaces\Executable;
->>>>>>> 822b76c (Refactoring)
 use DRPPSM\Interfaces\OptionsInt;
 use DRPPSM\Traits\SingletonTrait;
 
@@ -39,13 +29,6 @@ use DRPPSM\Traits\SingletonTrait;
  * @since       1.0.0
  *
  * @uses Helper::getKeyName
-<<<<<<< HEAD
- *
- * @see https://developer.wordpress.org/reference/functions/get_option/
- * @see https://developer.wordpress.org/reference/functions/add_option/
- * @see https://developer.wordpress.org/reference/functions/update_option/
-=======
->>>>>>> 822b76c (Refactoring)
  */
 class Options implements OptionsInt {
 
@@ -56,8 +39,6 @@ class Options implements OptionsInt {
 	 *
 	 * @return OptionsInt
 	 */
-<<<<<<< HEAD
-=======
 	public static function exec(): OptionsInt {
 		return self::get_instance();
 	}
@@ -68,7 +49,6 @@ class Options implements OptionsInt {
 	 * @return OptionsInt
 	 * @since 1.0.0
 	 */
->>>>>>> 822b76c (Refactoring)
 	public static function init(): OptionsInt {
 		return self::get_instance();
 	}
@@ -79,10 +59,6 @@ class Options implements OptionsInt {
 	 * @param string $name Option name.
 	 * @param mixed  $default_value Default value to return if not found.
 	 * @return mixed
-<<<<<<< HEAD
-	 *
-=======
->>>>>>> 822b76c (Refactoring)
 	 * @since 1.0.0
 	 */
 	public function get( string $name, mixed $default_value = null ): mixed {
@@ -97,10 +73,6 @@ class Options implements OptionsInt {
 	 * @param string $name Option name.
 	 * @param mixed  $value Option value.
 	 * @return boolean True if option was set.
-<<<<<<< HEAD
-	 *
-=======
->>>>>>> 822b76c (Refactoring)
 	 * @since 1.0.0
 	 */
 	public function set( string $name, $value = null ): bool {
@@ -139,10 +111,6 @@ class Options implements OptionsInt {
 	 *
 	 * @param string $name Option name.
 	 * @return bool True on success, false on failure.
-<<<<<<< HEAD
-	 *
-=======
->>>>>>> 822b76c (Refactoring)
 	 * @since 1.0.0
 	 */
 	public function delete( string $name ): bool {

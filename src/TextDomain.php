@@ -63,10 +63,7 @@ class TextDomain implements TextDomainInt {
 	 * @since 1.0.0
 	 */
 	public function load_domain(): bool {
-<<<<<<< HEAD
-=======
 
->>>>>>> 822b76c (Refactoring)
 		if ( did_action( Actions::TEXT_DOMAIN_LOADED ) ) {
 			return false;
 		}
@@ -78,12 +75,8 @@ class TextDomain implements TextDomainInt {
 		// phpcs:enable
 
 		$result = load_plugin_textdomain( DOMAIN, false, $path );
-<<<<<<< HEAD
-		did_action( Actions::TEXT_DOMAIN_LOADED );
-=======
 		Logger::debug( array( 'TEXT DOMAIN LOADED' ) );
 		// do_action( Actions::TEXT_DOMAIN_LOADED );
->>>>>>> 822b76c (Refactoring)
 
 		return $result;
 	}

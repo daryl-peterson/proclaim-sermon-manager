@@ -13,11 +13,7 @@ namespace DRPPSM;
 
 defined( 'ABSPATH' ) || exit;
 
-<<<<<<< HEAD
-$permalinks = App::init()->permalinks();
-=======
 $permalinks = app()->permalinks();
->>>>>>> 822b76c (Refactoring)
 use DRPPSM\Constants\Caps;
 use DRPPSM\Constants\PT;
 

@@ -117,10 +117,7 @@ class ComposerStaticInitf5da42b7feb65ba592bc9e68a42f25f4
         'DRPPSM\\Interfaces\\Runable' => __DIR__ . '/../..' . '/src/Core/Interfaces/Runable.php',
         'DRPPSM\\Interfaces\\TaxonomyRegInt' => __DIR__ . '/../..' . '/src/Core/Interfaces/TaxonomyRegInt.php',
         'DRPPSM\\Interfaces\\TextDomainInt' => __DIR__ . '/../..' . '/src/Core/Interfaces/TextDomainInt.php',
-<<<<<<< HEAD
-=======
         'DRPPSM\\Loader' => __DIR__ . '/../..' . '/src/Loader.php',
->>>>>>> 822b76c (Refactoring)
         'DRPPSM\\Logger' => __DIR__ . '/../..' . '/src/Logger.php',
         'DRPPSM\\Logging\\LogDatabase' => __DIR__ . '/../..' . '/src/Core/Logging/LogDatabase.php',
         'DRPPSM\\Logging\\LogFile' => __DIR__ . '/../..' . '/src/Core/Logging/LogFile.php',

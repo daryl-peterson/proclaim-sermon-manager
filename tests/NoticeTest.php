@@ -12,17 +12,10 @@
 namespace DRPPSM\Tests;
 
 use DRPPSM\Logger;
-<<<<<<< HEAD
-use function DRPPSM\notice;
-
-
-
-=======
 use DRPPSM\Notice;
 
 use function DRPPSM\notice;
 
->>>>>>> 822b76c (Refactoring)
 /**
  * Notice testing.
  *

@@ -58,11 +58,7 @@ const PLUGIN_MIN_WP  = '6.4.0';
 const PLUGIN_VER     = '1.0.0';
 
 try {
-<<<<<<< HEAD
-	App::init()->plugin()->register();
-=======
 	app()->plugin();
->>>>>>> 822b76c (Refactoring)
 
 } catch ( \Throwable $th ) {
 	Logger::debug(

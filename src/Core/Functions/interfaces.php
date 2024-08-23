@@ -12,20 +12,13 @@
 namespace DRPPSM;
 
 use DRPPSM\Interfaces\BibleLoaderInt;
-<<<<<<< HEAD
-use DRPPSM\Interfaces\NoticeInt;
-=======
->>>>>>> 822b76c (Refactoring)
 use DRPPSM\Interfaces\OptionsInt;
 use DRPPSM\Interfaces\RequirementsInt;
 use DRPPSM\Interfaces\RolesInt;
 use DRPPSM\Interfaces\TextDomainInt;
 use DRPPSM\Interfaces\ImageSizeInt;
-<<<<<<< HEAD
-=======
 use DRPPSM\Interfaces\NoticeInt;
 use DRPPSM\Interfaces\PermaLinkInt;
->>>>>>> 822b76c (Refactoring)
 use DRPPSM\Logging\LogWritterInt;
 
 /**
@@ -59,19 +52,6 @@ function options(): OptionsInt {
 }
 
 /**
-<<<<<<< HEAD
- * Get notice interface.
- *
- * @return NoticeInt
- * @since 1.0.0
- */
-function notice(): NoticeInt {
-	return app()->get( NoticeInt::class );
-}
-
-/**
-=======
->>>>>>> 822b76c (Refactoring)
  * Get text domain interface.
  *
  * @return TextDomainInt
@@ -92,8 +72,6 @@ function imagesize(): ImageSizeInt {
 }
 
 /**
-<<<<<<< HEAD
-=======
  * Get notice interface.
  *
  * @return NoticeInt
@@ -114,7 +92,6 @@ function permalinks(): array {
 }
 
 /**
->>>>>>> 822b76c (Refactoring)
  * Get bible loader interface.
  *
  * @return BibleLoaderInt

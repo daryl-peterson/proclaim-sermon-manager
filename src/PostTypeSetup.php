@@ -58,11 +58,7 @@ class PostTypeSetup implements PostTypeSetupInt {
 	 *
 	 * @since 1.0.0
 	 */
-<<<<<<< HEAD
-	public function __construct() {
-=======
 	protected function __construct() {
->>>>>>> 822b76c (Refactoring)
 		$pt                        = PT::SERMON;
 		$this->post_types[ $pt ]   = new PostTypeReg( PT::SERMON, 'post-type-sermon.php' );
 		$this->taxonomies[ $pt ][] = new TaxonomyReg( Tax::BIBLE_BOOK, PT::SERMON, 'taxonomy-bible-book.php' );
@@ -72,8 +68,6 @@ class PostTypeSetup implements PostTypeSetupInt {
 		$this->taxonomies[ $pt ][] = new TaxonomyReg( Tax::TOPICS, PT::SERMON, 'taxonomy-topics.php' );
 	}
 
-<<<<<<< HEAD
-=======
 	/**
 	 * Initialize and register.
 	 *
@@ -86,17 +80,10 @@ class PostTypeSetup implements PostTypeSetupInt {
 		return $obj;
 	}
 
->>>>>>> 822b76c (Refactoring)
 
 	/**
 	 * Register hooks.
 	 *
-<<<<<<< HEAD
-	 * @return null|bool Return true default.
-	 * @since 1.0.0
-	 */
-	public function register(): ?bool {
-=======
 	 * @return null|bool Return true if hooks were set, otherwise false.
 	 * @since 1.0.0
 	 */
@@ -105,7 +92,6 @@ class PostTypeSetup implements PostTypeSetupInt {
 			return false;
 		}
 
->>>>>>> 822b76c (Refactoring)
 		add_action( 'init', array( $this, 'add' ) );
 		add_action( Filters::FLUSH_REWRITE_RULES, array( $this, 'flush' ) );
 		return true;

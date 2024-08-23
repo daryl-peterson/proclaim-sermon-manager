@@ -14,11 +14,7 @@ namespace DRPPSM\Interfaces;
 /**
  * Notice interface.
  */
-<<<<<<< HEAD
-interface NoticeInt extends Initable {
-=======
 interface NoticeInt extends Executable, Registrable {
->>>>>>> 822b76c (Refactoring)
 
 	/**
 	 * Display notice if it exist.

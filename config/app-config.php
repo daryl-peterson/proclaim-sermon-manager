@@ -13,13 +13,8 @@ namespace DRPPSM;
 
 defined( 'ABSPATH' ) || exit;
 
-<<<<<<< HEAD
-use DRPPSM\Interfaces\BibleLoaderInt;
-use DRPPSM\Interfaces\NoticeInt;
-=======
 use DRPPSM\DB\DbUpdates;
 use DRPPSM\Interfaces\BibleLoaderInt;
->>>>>>> 822b76c (Refactoring)
 use DRPPSM\Interfaces\OptionsInt;
 use DRPPSM\Interfaces\PermaLinkInt;
 use DRPPSM\Interfaces\PluginInt;
@@ -28,57 +23,12 @@ use DRPPSM\Interfaces\RequirementsInt;
 use DRPPSM\Interfaces\RolesInt;
 use DRPPSM\Interfaces\TextDomainInt;
 use DRPPSM\Interfaces\ImageSizeInt;
-<<<<<<< HEAD
-use DRPPSM\Interfaces\RewriteInt;
-use DRPPSM\Logging\LogDatabase;
-=======
 use DRPPSM\Interfaces\NoticeInt;
 use DRPPSM\Interfaces\RewriteInt;
->>>>>>> 822b76c (Refactoring)
 use DRPPSM\Logging\LogFile;
 use DRPPSM\Logging\LogWritterInt;
 
 return array(
-<<<<<<< HEAD
-	NoticeInt::class        => function (): NoticeInt {
-		return Notice::init();
-	},
-
-	OptionsInt::class       => function (): OptionsInt {
-		return Options::init();
-	},
-
-	RolesInt::class         => function (): RolesInt {
-		return Roles::exec();
-	},
-
-	RequirementsInt::class  => function (): RequirementsInt {
-		return Requirements::exec();
-	},
-
-	TextDomainInt::class    => function (): TextDomainInt {
-		return TextDomain::exec();
-	},
-
-	ImageSizeInt::class     => function (): ImageSizeInt {
-		return ImageSize::exec();
-	},
-
-	BibleLoaderInt::class   => function (): BibleLoaderInt {
-		return BibleLoader::exec();
-	},
-	LogWritterInt::class    => function (): LogWritterInt {
-		return LogFile::exec();
-	},
-	RewriteInt::class       => function (): RewriteInt {
-		return Rewrite::exec();
-	},
-
-	PermaLinkInt::class     => PermaLinks::class,
-	PluginInt::class        => Plugin::class,
-
-	PostTypeSetupInt::class => PostTypeSetup::class,
-=======
 
 	AdminMenu::class         => AdminMenu::class,
 	AdminSettings::class     => AdminSettings::class,
@@ -113,5 +63,4 @@ return array(
 	*/
 
 
->>>>>>> 822b76c (Refactoring)
 );

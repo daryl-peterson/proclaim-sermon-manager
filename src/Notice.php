@@ -13,10 +13,7 @@ namespace DRPPSM;
 
 defined( 'ABSPATH' ) || exit;
 
-<<<<<<< HEAD
-=======
 use DRPPSM\Interfaces\Executable;
->>>>>>> 822b76c (Refactoring)
 use DRPPSM\Interfaces\NoticeInt;
 use DRPPSM\Interfaces\OptionsInt;
 use DRPPSM\Traits\SingletonTrait;
@@ -58,15 +55,6 @@ class Notice implements NoticeInt {
 	}
 
 	/**
-<<<<<<< HEAD
-	 * Initialize object.
-	 *
-	 * @return NoticeInt Notice interface.
-	 * @since 1.0.0
-	 */
-	public static function init(): NoticeInt {
-		return self::get_instance();
-=======
 	 * Register hooks.
 	 *
 	 * @return boolean|null Returns true if hooks were registered, otherwise false.
@@ -90,7 +78,6 @@ class Notice implements NoticeInt {
 		$obj = new self();
 		$obj->register();
 		return $obj;
->>>>>>> 822b76c (Refactoring)
 	}
 
 	/**
@@ -134,10 +121,6 @@ class Notice implements NoticeInt {
 		$this->options->delete( $this->option_name );
 	}
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 822b76c (Refactoring)
 	/**
 	 * Set error notice.
 	 *

@@ -13,19 +13,12 @@ namespace DRPPSM;
 
 defined( 'ABSPATH' ) || exit;
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 822b76c (Refactoring)
 use DRPPSM\Interfaces\NoticeInt;
 use DRPPSM\Interfaces\PluginInt;
 use DRPPSM\Interfaces\PostTypeSetupInt;
 use DRPPSM\Constants\Actions;
 use DRPPSM\DB\DbUpdates;
-<<<<<<< HEAD
-=======
 use DRPPSM\Interfaces\Executable;
->>>>>>> 822b76c (Refactoring)
 
 /**
  * Plugin main class.
@@ -53,21 +46,6 @@ class Plugin implements PluginInt {
 	 */
 	private string $cmb2_version;
 
-<<<<<<< HEAD
-
-	/**
-	 * Set object properties.
-	 *
-	 * @param NoticeInt $notice Notice interface.
-	 *
-	 * @since 1.0.0
-	 */
-	public function __construct( NoticeInt $notice ) {
-		$this->notice       = $notice;
-		$this->cmb2_version = '?.?.?';
-	}
-
-=======
 	/**
 	 * Set object properties.
 	 *
@@ -84,7 +62,6 @@ class Plugin implements PluginInt {
 		return $obj;
 	}
 
->>>>>>> 822b76c (Refactoring)
 	/**
 	 * Initialize plugin hooks.
 	 *
@@ -94,60 +71,6 @@ class Plugin implements PluginInt {
 	public function register(): bool {
 		try {
 			FatalError::check();
-<<<<<<< HEAD
-			$hook = Actions::AFTER_PLUGIN_LOAD;
-
-			if ( did_action( $hook ) && ! defined( 'PHPUNIT_TESTING' ) ) {
-				// @codeCoverageIgnoreStart
-				return true;
-				// @codeCoverageIgnoreEnd
-			}
-			register_activation_hook( FILE, array( $this, 'activate' ) );
-			register_deactivation_hook( FILE, array( $this, 'deactivate' ) );
-			add_action( 'shutdown', array( $this, 'shutdown' ) );
-			add_action( 'admin_notices', array( $this, 'show_notice' ) );
-			add_action( 'cmb2_init', array( $this, 'cmb2_init' ) );
-
-			AdminMenu::init()->register();
-
-			// Load other classes.
-			$app = app();
-
-			$app->get( PostTypeSetupInt::class )->register();
-
-			textdomain();
-
-			requirements();
-			roles();
-			textdomain();
-			imagesize();
-			bible_loader();
-			log_writter();
-
-			SermonEdit::init()->register();
-			DbUpdates::exec();
-			QueueScripts::exec();
-			SermonImage::exec();
-			SermonComments::exec();
-			TaxonomyImage::exec();
-			Templates::exec();
-			QueryVars::exec();
-			Rewrite::exec();
-
-			Pagination::exec();
-
-			SermonListTable::init()->register();
-			TaxonomyListTable::init()->register();
-
-			AdminSettings::init()->register();
-
-			do_action( $hook );
-
-			if ( did_action( 'admin_init' ) ) {
-				do_action( Actions::AFTER_ADMIN_INIT );
-			}
-
-=======
 
 			if ( has_action( 'shutdown', array( $this, 'shutdown' ) ) ) {
 				return true;
@@ -159,17 +82,13 @@ class Plugin implements PluginInt {
 			add_action( 'cmb2_init', array( $this, 'cmb2_init' ) );
 
 			Loader::exec();
->>>>>>> 822b76c (Refactoring)
 			return true;
 
 			// @codeCoverageIgnoreStart
 		} catch ( \Throwable $th ) {
 			FatalError::set( $th->getMessage(), $th );
 			// @codeCoverageIgnoreEnd
-<<<<<<< HEAD
-=======
 			return false;
->>>>>>> 822b76c (Refactoring)
 		}
 	}
 
@@ -208,34 +127,18 @@ class Plugin implements PluginInt {
 	}
 
 	/**
-<<<<<<< HEAD
-	 * Display notice if it exist.
-	 *
-	 * @return string|null Notice strig if exist.
-	 * @since 1.0.0
-	 */
-	public function show_notice(): ?string {
-		return $this->notice->show_notice();
-	}
-
-	/**
-=======
->>>>>>> 822b76c (Refactoring)
 	 * Shut down cleanup.
 	 *
 	 * @return bool Return true if successfull.
 	 * @since 1.0.0
 	 */
 	public function shutdown(): bool {
-<<<<<<< HEAD
-=======
 
 		$message  = "\n\n";
 		$message .= str_repeat( '-', 80 );
 		$message .= "\nSHUTTING DOWN\n";
 		$message .= "\n\n";
 		Logger::debug( $message );
->>>>>>> 822b76c (Refactoring)
 		return true;
 	}
 

@@ -17,10 +17,7 @@ use DRPPSM\App;
 use DRPPSM\Constants\Actions;
 use DRPPSM\Constants\PT;
 use DRPPSM\Constants\Tax;
-<<<<<<< HEAD
-=======
 use DRPPSM\Interfaces\Executable;
->>>>>>> 822b76c (Refactoring)
 use DRPPSM\Interfaces\Initable;
 use DRPPSM\Interfaces\OptionsInt;
 use DRPPSM\Interfaces\Registrable;
@@ -37,11 +34,7 @@ use DRPPSM\TaxUtils;
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
  * @since       1.0.0
  */
-<<<<<<< HEAD
-class SermonEdit implements Initable, Registrable {
-=======
 class SermonEdit implements Executable, Registrable {
->>>>>>> 822b76c (Refactoring)
 
 	/**
 	 * Post type
@@ -67,32 +60,19 @@ class SermonEdit implements Executable, Registrable {
 	 */
 	protected function __construct() {
 		$this->post_type = PT::SERMON;
-<<<<<<< HEAD
-		$this->options   = App::init()->get( OptionsInt::class );
-	}
-
-	/**
-	 * Get initialize object.
-=======
 		$this->options   = options();
 	}
 
 	/**
 	 * Initalize and register.
->>>>>>> 822b76c (Refactoring)
 	 *
 	 * @return SermonEdit
 	 * @since 1.0.0
 	 */
-<<<<<<< HEAD
-	public static function init(): SermonEdit {
-		return new self();
-=======
 	public static function exec(): SermonEdit {
 		$obj = new self();
 		$obj->register();
 		return $obj;
->>>>>>> 822b76c (Refactoring)
 	}
 
 	/**
