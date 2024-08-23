@@ -31,6 +31,7 @@ use WP_Error;
  */
 class BibleLoader implements BibleLoaderInt {
 
+
 	/**
 	 * Register hooks.
 	 *
