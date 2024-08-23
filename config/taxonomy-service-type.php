@@ -17,15 +17,17 @@ use DRPPSM\Constants\Caps;
 use DRPPSM\Constants\Tax;
 use DRPPSM\Interfaces\OptionsInt;
 
-$permalinks   = app()->permalinks();
-$opts         = app()->get( OptionsInt::class );
-$slug         = Tax::SERVICE_TYPE;
+$permalinks = app()->permalinks();
+$opts       = app()->get( OptionsInt::class );
+$slug       = Tax::SERVICE_TYPE;
+
 $capabilities = array(
 	'manage_terms' => Caps::MANAGE_CATAGORIES,
 	'edit_terms'   => Caps::MANAGE_CATAGORIES,
 	'delete_terms' => Caps::MANAGE_CATAGORIES,
 	'assign_terms' => Caps::MANAGE_CATAGORIES,
 );
+
 $label        = get_setting( Settings::FIELD_SERVICE_TYPE, __( 'Service Type', 'drppsm' ) );
 $option_label = strtolower( $opts->get( 'service_type_label', '' ) );
 if ( ! empty( $option_label ) ) {
