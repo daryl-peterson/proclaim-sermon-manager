@@ -11,7 +11,6 @@
 
 namespace DRPPSM;
 
-use DRPPSM\Constants\Filters;
 use DRPPSM\Constants\Meta;
 use DRPPSM\Constants\PT;
 
@@ -28,7 +27,7 @@ class DateUtils {
 
 	/**
 	 * Retrieve the date on which the sermon was preached.
-	 * - Modify output with the {@see Filters::SERMON_DATES_GET } filter.
+	 * - Modify output with the {@see DRPPSM_FLTR_SERMON_DATES } filter.
 	 *
 	 * @param string      $format                Optional. PHP date format defaults to the date_format option if not
 	 *                                           specified.(or Unix timestamp if date_format option is not set).
@@ -125,7 +124,7 @@ class DateUtils {
 		 * @param string $format                Date format
 		 * @param bool   $force_unix_sanitation If the sanitation is forced
 		 */
-		$result = apply_filters( Filters::SERMON_DATES_GET, $date, $orig_date, $format, $force_unix_sanitation );
+		$result = apply_filters( DRPPSM_FLTR_SERMON_DATES, $date, $orig_date, $format, $force_unix_sanitation );
 		return $result;
 	}
 

@@ -13,7 +13,6 @@ namespace DRPPSM;
 
 defined( 'ABSPATH' ) || exit;
 
-use DRPPSM\Constants\Filters;
 use DRPPSM\Constants\Meta;
 use DRPPSM\Constants\PT;
 use DRPPSM\Constants\Tax;
@@ -374,11 +373,12 @@ class SermonListTable implements Executable, Registrable {
 	 */
 	public function sermon_filters(): string {
 
-		$output  = $this->select_filter( Tax::SERVICE_TYPE );
-		$output .= $this->select_filter( Tax::PREACHER );
-		$output .= $this->select_filter( Tax::SERIES );
+		$output[] = $this->select_filter( Tax::SERVICE_TYPE );
+		$output[] = $this->select_filter( Tax::PREACHER );
+		$output[] = $this->select_filter( Tax::SERIES );
 
-		return apply_filters( Filters::SERMON_FILTER, $output );
+		$output[] = apply_filters( DRPPSM_FLTR_ADMIN_SERMON, $output );
+		return implode( "\n", $output );
 	}
 
 	/**

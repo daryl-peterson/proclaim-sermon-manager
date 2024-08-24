@@ -14,7 +14,6 @@ namespace DRPPSM\Logging;
 defined( 'ABSPATH' ) || exit;
 
 use DRPPSM\Constants\Caps;
-use DRPPSM\Constants\Filters;
 use DRPPSM\Constants\PT;
 use wpdb;
 
@@ -247,7 +246,7 @@ class LogDatabase extends LogWritterAbs implements LogWritterInt {
 		$page        = filter_input( INPUT_GET, 'paged', FILTER_SANITIZE_NUMBER_INT );
 		$items       = $this->db->get_var( "SELECT COUNT(id) FROM $this->table" );
 		$this->page  = max( 1, $page );
-		$this->links = apply_filters( DRPPSM_PAGINATION_GET, $items, $this->limit, $this->page, $this->get_url() );
+		$this->links = apply_filters( DRPPSM_FLTR_PAGINATION_GET, $items, $this->limit, $this->page, $this->get_url() );
 	}
 
 	/**

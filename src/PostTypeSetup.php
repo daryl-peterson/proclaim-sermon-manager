@@ -17,7 +17,6 @@ defined( 'ABSPATH' ) || exit;
 
 use DRPPSM\Constants\Actions;
 use DRPPSM\PostTypeReg;
-use DRPPSM\Constants\Filters;
 use DRPPSM\Constants\PT;
 use DRPPSM\Constants\Tax;
 use DRPPSM\Exceptions\PluginException;
@@ -93,7 +92,7 @@ class PostTypeSetup implements PostTypeSetupInt {
 		}
 
 		add_action( 'init', array( $this, 'add' ) );
-		add_action( Filters::FLUSH_REWRITE_RULES, array( $this, 'flush' ) );
+		add_action( DRPPSM_FLTR_FLUSH_REWRITE, array( $this, 'flush' ) );
 		return true;
 	}
 

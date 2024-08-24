@@ -13,7 +13,6 @@ namespace DRPPSM;
 
 defined( 'ABSPATH' ) || exit;
 
-use DRPPSM\Constants\Filters;
 use DRPPSM\Constants\PT;
 use DRPPSM\Constants\Tax;
 use DRPPSM\Interfaces\Executable;
@@ -135,7 +134,7 @@ class Templates implements Executable, Registrable {
 	 * @since 1.0.0
 	 */
 	public function get_template_piece( string $name, array $args = array() ): void {
-		echo apply_filters( DRPPSM_TPL_PIECE, $name, $args );
+		echo apply_filters( DRPPSM_FLTR_TPL_PIECE, $name, $args );
 	}
 
 	/**
@@ -163,7 +162,7 @@ class Templates implements Executable, Registrable {
 		 * @param array  $args Array of variables to pass to template.
 		 * @since 1.0.0
 		 */
-		$content = apply_filters( DRPPSM_TPL_PARTIAL, $name, $args );
+		$content = apply_filters( DRPPSM_FLTR_TPL_PARTIAL, $name, $args );
 		if ( isset( $content ) || ! empty( $content ) ) {
 			echo $content;
 			return;

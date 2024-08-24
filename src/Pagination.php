@@ -13,7 +13,6 @@ namespace DRPPSM;
 
 defined( 'ABSPATH' ) || exit;
 
-use DRPPSM\Constants\Filters;
 use DRPPSM\Interfaces\Executable;
 use DRPPSM\Interfaces\Registrable;
 
@@ -32,6 +31,7 @@ class Pagination implements Executable, Registrable {
 	 * Initialize and register settings.
 	 *
 	 * @return Pagination
+	 * @since 1.0.0
 	 */
 	public static function exec(): Pagination {
 		$obj = new self();
@@ -46,10 +46,10 @@ class Pagination implements Executable, Registrable {
 	 * @since 1.0.0
 	 */
 	public function register(): ?bool {
-		if ( has_filter( DRPPSM_PAGINATION_GET, array( $this, 'pagination' ) ) ) {
+		if ( has_filter( DRPPSM_FLTR_PAGINATION_GET, array( $this, 'pagination' ) ) ) {
 			return false;
 		}
-		add_filter( DRPPSM_PAGINATION_GET, array( $this, 'pagination' ), 10, 4 );
+		add_filter( DRPPSM_FLTR_PAGINATION_GET, array( $this, 'pagination' ), 10, 4 );
 		return true;
 	}
 

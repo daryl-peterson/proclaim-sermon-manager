@@ -16,7 +16,6 @@ defined( 'ABSPATH' ) || exit;
 use CMB2_Boxes;
 use CMB2_Options_Hookup;
 use DRPPSM\Constants\Actions;
-use DRPPSM\Constants\Filters;
 use DRPPSM\Constants\PT;
 use DRPPSM\Interfaces\Executable;
 use DRPPSM\Interfaces\Registrable;
@@ -168,11 +167,11 @@ class AdminSettings implements Executable, Registrable {
 
 		global $plugin_page;
 
-		$hidden = apply_filters( DRPPSM_SETTINGS_REMOVE_SUBMENUS, array() );
+		$hidden = apply_filters( DRPPSM_FLTR_SETTINGS_RSM, array() );
 
 		// Select another submenu item to highlight (optional).
 		if ( $plugin_page && isset( $hidden[ $plugin_page ] ) ) {
-			$submenu_file = (string) apply_filters( DRPPSM_SETTINGS_MAIN_MENU, '' );
+			$submenu_file = (string) apply_filters( DRPPSM_FLTR_SETTINGS_MM, '' );
 		}
 
 		// Hide the submenus.
