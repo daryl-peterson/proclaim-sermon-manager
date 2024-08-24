@@ -11,13 +11,11 @@ class ComposerStaticInitf5da42b7feb65ba592bc9e68a42f25f4
         '508f928bcc69d4d7257b594ca5e3ed26' => __DIR__ . '/../..' . '/src/Core/Functions/include.php',
         '18ce892445e99103f067dd10d355c2b0' => __DIR__ . '/../..' . '/src/Core/Functions/interfaces.php',
         '1bf42cb946e1f36ab7e284ac9bd55dd2' => __DIR__ . '/../..' . '/src/Core/Functions/database.php',
+        'b10806ebc85e93fdf657c73b9e090110' => __DIR__ . '/../..' . '/src/Core/Functions/messages.php',
+        '8e0760fd21128b00441ec5c4abbdfb75' => __DIR__ . '/../..' . '/src/Core/Functions/templates.php',
     );
 
     public static $prefixLengthsPsr4 = array (
-        'P' => 
-        array (
-            'Psr\\Container\\' => 14,
-        ),
         'D' => 
         array (
             'DRPPSM\\Traits\\' => 14,
@@ -32,10 +30,6 @@ class ComposerStaticInitf5da42b7feb65ba592bc9e68a42f25f4
     );
 
     public static $prefixDirsPsr4 = array (
-        'Psr\\Container\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/psr/container/src',
-        ),
         'DRPPSM\\Traits\\' => 
         array (
             0 => __DIR__ . '/../..' . '/src/Core/Traits',
@@ -99,6 +93,7 @@ class ComposerStaticInitf5da42b7feb65ba592bc9e68a42f25f4
         'DRPPSM\\Interfaces\\AdminMenuInt' => __DIR__ . '/../..' . '/src/Core/Interfaces/AdminMenuInt.php',
         'DRPPSM\\Interfaces\\BaseInt' => __DIR__ . '/../..' . '/src/Core/Interfaces/BaseInt.php',
         'DRPPSM\\Interfaces\\BibleLoaderInt' => __DIR__ . '/../..' . '/src/Core/Interfaces/BibleLoaderInt.php',
+        'DRPPSM\\Interfaces\\ContainerInt' => __DIR__ . '/../..' . '/src/Core/Interfaces/ContainerInt.php',
         'DRPPSM\\Interfaces\\DbInt' => __DIR__ . '/../..' . '/src/Core/Interfaces/DbInt.php',
         'DRPPSM\\Interfaces\\Executable' => __DIR__ . '/../..' . '/src/Core/Interfaces/Executable.php',
         'DRPPSM\\Interfaces\\ImageSizeInt' => __DIR__ . '/../..' . '/src/Core/Interfaces/ImageSizeInt.php',
@@ -151,6 +146,7 @@ class ComposerStaticInitf5da42b7feb65ba592bc9e68a42f25f4
         'DRPPSM\\TaxonomyImage' => __DIR__ . '/../..' . '/src/TaxonomyImage.php',
         'DRPPSM\\TaxonomyListTable' => __DIR__ . '/../..' . '/src/TaxonomyListTable.php',
         'DRPPSM\\TaxonomyReg' => __DIR__ . '/../..' . '/src/TaxonomyReg.php',
+        'DRPPSM\\TemplateSermon' => __DIR__ . '/../..' . '/src/TemplateSermon.php',
         'DRPPSM\\Templates' => __DIR__ . '/../..' . '/src/Templates.php',
         'DRPPSM\\Tests\\ActivateDeactiveTest' => __DIR__ . '/../..' . '/tests/ActivateDeactiveTest.php',
         'DRPPSM\\Tests\\AdminSermonTest' => __DIR__ . '/../..' . '/tests/AdminSermonTest.php',
@@ -180,9 +176,6 @@ class ComposerStaticInitf5da42b7feb65ba592bc9e68a42f25f4
         'DRPPSM\\TextDomain' => __DIR__ . '/../..' . '/src/TextDomain.php',
         'DRPPSM\\Traits\\OverLoadTrait' => __DIR__ . '/../..' . '/src/Core/Traits/OverLoadTrait.php',
         'DRPPSM\\Traits\\SingletonTrait' => __DIR__ . '/../..' . '/src/Core/Traits/SingletonTrait.php',
-        'Psr\\Container\\ContainerExceptionInterface' => __DIR__ . '/..' . '/psr/container/src/ContainerExceptionInterface.php',
-        'Psr\\Container\\ContainerInterface' => __DIR__ . '/..' . '/psr/container/src/ContainerInterface.php',
-        'Psr\\Container\\NotFoundExceptionInterface' => __DIR__ . '/..' . '/psr/container/src/NotFoundExceptionInterface.php',
     );
 
     public static function getInitializer(ClassLoader $loader)

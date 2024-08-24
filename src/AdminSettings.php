@@ -32,7 +32,6 @@ use DRPPSM\Interfaces\Registrable;
  */
 class AdminSettings implements Executable, Registrable {
 
-
 	/**
 	 * Menu slug.
 	 */
@@ -41,7 +40,7 @@ class AdminSettings implements Executable, Registrable {
 	/**
 	 * Tab group.
 	 */
-	const TAB_GROUP = KEY_PREFIX . '_options';
+	const TAB_GROUP = DRPSM_KEY_PREFIX . '_options';
 
 	/**
 	 * Initialize and register.

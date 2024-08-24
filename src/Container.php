@@ -14,7 +14,7 @@ namespace DRPPSM;
 defined( 'ABSPATH' ) || exit;
 
 use DRPPSM\Exceptions\NotfoundException;
-use Psr\Container\ContainerInterface;
+use DRPPSM\Interfaces\ContainerInt;
 use ReflectionClass;
 
 /**
@@ -26,7 +26,7 @@ use ReflectionClass;
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
  * @since       1.0.0
  */
-class Container implements ContainerInterface {
+class Container implements ContainerInt {
 
 	/**
 	 * Services array
@@ -67,20 +67,6 @@ class Container implements ContainerInterface {
 
 			if ( isset( $this->services[ $id ] ) ) {
 				$name = $this->services[ $id ];
-
-				/*
-				if ( is_callable( $name ) ) {
-					Logger::debug(
-						array(
-							'IS CALLABLE',
-							'ID'   => $id,
-							'NAME' => $name,
-						)
-					);
-					$result = $name();
-
-				}
-				*/
 			}
 
 			$result = new ReflectionClass( $name );

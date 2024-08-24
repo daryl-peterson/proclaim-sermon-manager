@@ -30,6 +30,26 @@ class Filters {
 	public const SERMON_DATES_GET    = 'drppsm_dates_get';
 
 	/**
+	 * Allows for filtering partial content.
+	 *
+	 * @param string $name File name.
+	 * @param array  $args Array of variables to pass to template.
+	 * @since 1.0.0
+	 */
+	public const TPL_PARTIAL = 'drppsm_tpl_partial';
+
+	/**
+	 * Allows for filtering html items. Wrappers ect.
+	 *
+	 * @param string $name File name.
+	 * @param array  $args Array of variables to pass to template.
+	 * @since 1.0.0
+	 */
+	public const TPL_PIECE = 'drppsm_tpl_piece';
+
+	public const TEMPLATE_SERMON_CONTENT = 'drppsm_tpl_sermon_content';
+
+	/**
 	 * Get main settings menu.
 	 * - Fires to allow another menu item can be selected.
 	 *
@@ -59,7 +79,6 @@ class Filters {
 	 * ```
 	 */
 	public const SETTINGS_REMOVE_SUBMENUS = 'drppsm_settings_hidden_menu';
-
 
 	/**
 	 * Get pagination links

@@ -154,7 +154,6 @@ class Notice implements NoticeInt {
 	 * @param string $title Notice title.
 	 * @param string $message Notice message.
 	 * @return boolean True on success, false on failure.
-	 *
 	 * @since 1.0.0
 	 */
 	public function set_info( string $title, string $message ): bool {
@@ -167,7 +166,6 @@ class Notice implements NoticeInt {
 	 * @param string $title Notice title.
 	 * @param string $message Notice message.
 	 * @return boolean True on success, false on failure.
-	 *
 	 * @since 1.0.0
 	 */
 	public function set_success( string $title, string $message ): bool {
@@ -181,11 +179,10 @@ class Notice implements NoticeInt {
 	 * @param string $message       Notice message.
 	 * @param string $notice_level   Notice level.
 	 * @return boolean True on success, false on failure.
-	 *
 	 * @since 1.0.0
 	 */
 	protected function set_option( string $title, string $message, string $notice_level ): bool {
-		$title        = NAME . " $title";
+		$title        = DRPPSM_TITLE . " $title";
 		$option_value = array(
 			'title'        => $title,
 			'message'      => $message,

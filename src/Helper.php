@@ -35,7 +35,7 @@ class Helper {
 	 * @return string
 	 */
 	public static function get_key_name( string $name, string $delimiter = '_' ): string {
-		$prefix = KEY_PREFIX;
+		$prefix = DRPSM_KEY_PREFIX;
 
 		$name = trim( trim( $name, '-_' ) );
 

@@ -45,7 +45,7 @@ class FatalError {
 			return;
 		}
 
-		$name    = NAME;
+		$name    = DRPPSM_TITLE;
 		$admin   = get_admin_url( null, 'plugins.php' );
 		$message = <<<EOT
 			<h2>$name</h2>
@@ -58,7 +58,7 @@ class FatalError {
 
 		// @codeCoverageIgnoreStart
 		if ( ! defined( 'PHPUNIT_TESTING' ) ) {
-			wp_die( wp_kses( $message, allowed_html() ), wp_kses_data( NAME ) );
+			wp_die( wp_kses( $message, allowed_html() ), wp_kses_data( DRPPSM_TITLE ) );
 		}
 		// @codeCoverageIgnoreEnd
 	}

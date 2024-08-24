@@ -6,7 +6,6 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
-    'Psr\\Container\\' => array($vendorDir . '/psr/container/src'),
     'DRPPSM\\Traits\\' => array($baseDir . '/src/Core/Traits'),
     'DRPPSM\\Tests\\' => array($baseDir . '/tests'),
     'DRPPSM\\Logging\\' => array($baseDir . '/src/Core/Logging'),

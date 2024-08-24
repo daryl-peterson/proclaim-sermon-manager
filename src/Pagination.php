@@ -11,6 +11,8 @@
 
 namespace DRPPSM;
 
+defined( 'ABSPATH' ) || exit;
+
 use DRPPSM\Constants\Filters;
 use DRPPSM\Interfaces\Executable;
 use DRPPSM\Interfaces\Registrable;

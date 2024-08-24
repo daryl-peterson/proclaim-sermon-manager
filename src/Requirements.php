@@ -100,7 +100,7 @@ class Requirements implements RequirementsInt {
 	 */
 	public function check_php_ver( string $version = '' ): void {
 		if ( empty( $version ) ) {
-			$version = PLUGIN_MIN_PHP;
+			$version = DRPPSM_MIN_PHP;
 		}
 		$message = __( 'This Plugin requires PHP : ', 'drppsm' ) . $version;
 		if ( version_compare( PHP_VERSION, $version ) >= 0 ) {
@@ -123,7 +123,7 @@ class Requirements implements RequirementsInt {
 		global $wp_version;
 
 		if ( empty( $version ) ) {
-			$version = PLUGIN_MIN_WP;
+			$version = DRPPSM_MIN_WP;
 		}
 		$title   = __( 'Requiment Not Met', 'drppsm' );
 		$message = __( 'This Plugin requires WP : ', 'drppsm' ) . $version;

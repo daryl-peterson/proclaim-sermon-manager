@@ -356,11 +356,12 @@ class OptGeneral implements Initable, Registrable {
 	 * @param CMB2 $cmb CMB2 Object.
 	 * @return void
 	 * @since 1.0.0
+	 * 
 	 */
 	private function add_preacher( CMB2 $cmb ): void {
 		$s1    = '<code>' . __( '/preacher/mark', 'drppsm' ) . '</code>';
 		$s2    = '<code>' . __( '/reverend/mark', 'drppsm' ) . '</code>';
-		$desc  = __( 'The label should be in the singular form.', 'drppsm' );
+		$desc  = DRPPSM_MSG_LABEL_SINGLE;
 		$desc .= $this->dot() . __( 'You have the option to change the default value of "Preacher" to anything you prefer.' );
 		$desc .= $this->dot();
 

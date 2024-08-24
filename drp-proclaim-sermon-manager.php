@@ -24,10 +24,6 @@
  * Requires PHP:        8.1
  * Requires at least:   6.4
  * ----------------------------------------------------------------------------
- * Sermon Manager is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 2 of the License, or
- * any later version.
  */
 
 namespace DRPPSM;
@@ -48,20 +44,26 @@ if ( file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
 require_once __DIR__ . '/vendor/cmb2/cmb2/init.php';
 
 $ds = DIRECTORY_SEPARATOR;
-define( 'DRPSM_FILE', __FILE__ );
-define( 'DRPSM_PATH', dirname( DRPSM_FILE ) . $ds );
-define( 'DRPSM_BASENAME', plugin_basename( __FILE__ ) );
-define( 'DRPSM_URL', plugin_dir_url( __FILE__ ) );
+define( 'DRPPSM_FILE', __FILE__ );
+define( 'DRPPSM_PATH', dirname( DRPPSM_FILE ) . $ds );
+define( 'DRPPSM_BASENAME', plugin_basename( __FILE__ ) );
+define( 'DRPPSM_URL', plugin_dir_url( __FILE__ ) );
+define(
+	'DRPPSM_TITLE',
+	__( 'Proclaim Sermon Manager', 'drppsm' )
+);
 
-const NAME           = 'Proclaim Sermon Manager';
-const FILE           = __FILE__;
-const KEY_PREFIX     = 'drppsm';
-const DOMAIN         = 'drppsm';
-const NS             = __NAMESPACE__;
-const LOG_FILE       = 'drppsm';
-const PLUGIN_MIN_PHP = '8.1.0';
-const PLUGIN_MIN_WP  = '6.4.0';
-const PLUGIN_VER     = '1.0.0';
+define( 'DRPPSM_MIN_PHP', '8.1.0' );
+define( 'DRPPSM_MIN_WP', '6.4.0' );
+define( 'DRPPSM_VER', '1.0.0' );
+define( 'DRPSM_KEY_PREFIX', 'drppsm' );
+define( 'DRPSM_DOMAIN', 'drppsm' );
+
+
+const FILE     = __FILE__;
+const NS       = __NAMESPACE__;
+const LOG_FILE = 'drppsm';
+
 
 try {
 	app()->plugin();

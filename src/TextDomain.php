@@ -28,8 +28,6 @@ use DRPPSM\Interfaces\TextDomainInt;
  */
 class TextDomain implements TextDomainInt {
 
-	public const INIT_KEY = 'TEXT_DOMAIN_INIT';
-
 	/**
 	 * Initialize and register hooks.
 	 *
@@ -58,7 +56,7 @@ class TextDomain implements TextDomainInt {
 	}
 
 	/**
-	 * Load domain locales
+	 * Load domain locales.
 	 *
 	 * @return bool
 	 * @since 1.0.0
@@ -75,7 +73,7 @@ class TextDomain implements TextDomainInt {
 		$mofile = 'drppsm' . '-' . $locale . '.mo';
 		// phpcs:enable
 
-		$result = load_plugin_textdomain( DOMAIN, false, $path );
+		$result = load_plugin_textdomain( DRPSM_DOMAIN, false, $path );
 		Logger::debug( array( 'TEXT DOMAIN LOADED' ) );
 		// do_action( Actions::TEXT_DOMAIN_LOADED );
 

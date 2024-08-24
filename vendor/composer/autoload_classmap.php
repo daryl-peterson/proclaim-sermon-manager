@@ -34,6 +34,7 @@ return array(
     'DRPPSM\\Interfaces\\AdminMenuInt' => $baseDir . '/src/Core/Interfaces/AdminMenuInt.php',
     'DRPPSM\\Interfaces\\BaseInt' => $baseDir . '/src/Core/Interfaces/BaseInt.php',
     'DRPPSM\\Interfaces\\BibleLoaderInt' => $baseDir . '/src/Core/Interfaces/BibleLoaderInt.php',
+    'DRPPSM\\Interfaces\\ContainerInt' => $baseDir . '/src/Core/Interfaces/ContainerInt.php',
     'DRPPSM\\Interfaces\\DbInt' => $baseDir . '/src/Core/Interfaces/DbInt.php',
     'DRPPSM\\Interfaces\\Executable' => $baseDir . '/src/Core/Interfaces/Executable.php',
     'DRPPSM\\Interfaces\\ImageSizeInt' => $baseDir . '/src/Core/Interfaces/ImageSizeInt.php',
@@ -86,6 +87,7 @@ return array(
     'DRPPSM\\TaxonomyImage' => $baseDir . '/src/TaxonomyImage.php',
     'DRPPSM\\TaxonomyListTable' => $baseDir . '/src/TaxonomyListTable.php',
     'DRPPSM\\TaxonomyReg' => $baseDir . '/src/TaxonomyReg.php',
+    'DRPPSM\\TemplateSermon' => $baseDir . '/src/TemplateSermon.php',
     'DRPPSM\\Templates' => $baseDir . '/src/Templates.php',
     'DRPPSM\\Tests\\ActivateDeactiveTest' => $baseDir . '/tests/ActivateDeactiveTest.php',
     'DRPPSM\\Tests\\AdminSermonTest' => $baseDir . '/tests/AdminSermonTest.php',
@@ -115,7 +117,4 @@ return array(
     'DRPPSM\\TextDomain' => $baseDir . '/src/TextDomain.php',
     'DRPPSM\\Traits\\OverLoadTrait' => $baseDir . '/src/Core/Traits/OverLoadTrait.php',
     'DRPPSM\\Traits\\SingletonTrait' => $baseDir . '/src/Core/Traits/SingletonTrait.php',
-    'Psr\\Container\\ContainerExceptionInterface' => $vendorDir . '/psr/container/src/ContainerExceptionInterface.php',
-    'Psr\\Container\\ContainerInterface' => $vendorDir . '/psr/container/src/ContainerInterface.php',
-    'Psr\\Container\\NotFoundExceptionInterface' => $vendorDir . '/psr/container/src/NotFoundExceptionInterface.php',
 );

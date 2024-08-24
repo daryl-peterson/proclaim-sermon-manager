@@ -32,7 +32,9 @@
 			"src/Core/Functions/misc.php",
 			"src/Core/Functions/include.php",
 			"src/Core/Functions/interfaces.php",
-			"src/Core/Functions/database.php"
+			"src/Core/Functions/database.php",
+			"src/Core/Functions/messages.php",
+			"src/Core/Functions/templates.php"
 		]
 	},
 	"repositories": [
@@ -44,8 +46,7 @@
 	"classmap-authoritative": true,
 	"require": {
 		"php": ">8.1",
-		"cmb2/cmb2": "^2.11",
-		"psr/container": "^2.0"
+		"cmb2/cmb2": "^2.11"
 	},
 	"config": {
 		"allow-plugins": {

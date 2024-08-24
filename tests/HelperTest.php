@@ -14,8 +14,6 @@ namespace DRPPSM\Tests;
 use DRPPSM\Exceptions\PluginException;
 use DRPPSM\Helper;
 
-use const DRPPSM\KEY_PREFIX;
-
 /**
  * Test helper class.
  *
@@ -32,7 +30,7 @@ class HelperTest extends BaseTest {
 		$this->assertIsString( $result );
 
 		$key    = Helper::get_key_name( '_blah' );
-		$result = Helper::get_key_name( KEY_PREFIX . '_blah' );
+		$result = Helper::get_key_name( DRPSM_KEY_PREFIX . '_blah' );
 		$this->assertIsString( $result );
 		$this->assertEquals( $key, $result );
 

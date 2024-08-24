@@ -15,8 +15,6 @@ use DRPPSM\Interfaces\DbInt;
 use DRPPSM\Interfaces\OptionsInt;
 use DRPPSM\Logger;
 
-use const DRPPSM\PLUGIN_VER;
-
 /**
  * Get options interface.
  *
@@ -96,7 +94,7 @@ class DbUpdates implements DbInt {
 		}
 
 		if ( $result ) {
-			$this->options->set( 'plugin_ver', PLUGIN_VER );
+			$this->options->set( 'plugin_ver', DRPPSM_VER );
 		}
 
 		return $result;
@@ -109,7 +107,7 @@ class DbUpdates implements DbInt {
 	 * @since 1.0.0
 	 */
 	public function version_check(): void {
-		if ( PLUGIN_VER !== $this->options->get( 'plugin_ver' ) ) {
+		if ( DRPPSM_VER !== $this->options->get( 'plugin_ver' ) ) {
 			$this->run();
 		}
 	}
@@ -121,7 +119,7 @@ class DbUpdates implements DbInt {
 	 * @since 1.0.0
 	 */
 	private function version_to_file(): ?string {
-		$parts = explode( '.', PLUGIN_VER );
+		$parts = explode( '.', DRPPSM_VER );
 		if ( 3 !== count( $parts ) ) {
 			return null;
 		}

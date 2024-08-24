@@ -13,6 +13,7 @@ namespace DRPPSM;
 
 defined( 'ABSPATH' ) || exit;
 
+use DRPPSM\Constants\Filters;
 use DRPPSM\Constants\PT;
 use DRPPSM\Constants\Tax;
 use DRPPSM\Interfaces\Executable;
@@ -93,13 +94,6 @@ class Templates implements Executable, Registrable {
 		$pt = PT::SERMON;
 		$ds = DIRECTORY_SEPARATOR;
 
-		/*
-		ob_start();
-		var_dump( ini_get( 'output_buffering' ) );
-		$info = ob_get_clean();
-		Logger::debug( array( 'OUTPUT BUFFERING' => $info ) );
-		*/
-
 		if ( ! $this->should_modify() ) {
 			return $template;
 		}
@@ -121,7 +115,7 @@ class Templates implements Executable, Registrable {
 				return $full_path;
 			}
 
-			$full_path = DRPSM_PATH . 'views' . $ds . $template_file;
+			$full_path = DRPPSM_PATH . 'views' . $ds . $template_file;
 			if ( file_exists( $full_path ) ) {
 				Logger::debug( array( 'PLUGIN TEMPLATE' => $full_path ) );
 				return $full_path;
@@ -130,6 +124,71 @@ class Templates implements Executable, Registrable {
 			}
 		}
 		return $template;
+	}
+
+	public function get_template_piece( string $name, array $args = array() ) {
+		echo apply_filters( Filters::TPL_PIECE, $name, $args );
+	}
+
+	/**
+	 * Get partial template.
+	 *
+	 * - `/wp-contents/themes/<theme_name>/partials/<partial_name>.php`
+	 * - `/wp-contents/themes/<theme_name>/template-parts/<partial_name>.php`
+	 * - `/wp-contents/themes/<theme_name>/<partial_name>.php`
+	 *
+	 * @param string $name File name.
+	 * @param array  $args Array of variables to pass to template.
+	 * @return void
+	 * @since 1.0.0
+	 */
+	public function get_partial( string $name, array $args = array() ): void {
+
+		if ( false === strpos( $name, '.php' ) ) {
+			$name .= '.php';
+		}
+
+		/**
+		 * Allows for filtering partial content.
+		 *
+		 * @param string $name File name.
+		 * @param array  $args Array of variables to pass to template.
+		 * @since 1.0.0
+		 */
+		$content = apply_filters( Filters::TPL_PARTIAL, $name, $args );
+		if ( isset( $content ) || ! empty( $content ) ) {
+			echo $content;
+			return;
+		}
+
+		/**
+		 * No template partial so let's continue.
+		 */
+		$paths = array(
+			'partials/',
+			'template-parts/',
+			'',
+		);
+
+		foreach ( $paths as $path ) {
+			$partial = locate_template( $path . $name );
+
+			if ( $partial ) {
+				break;
+			}
+		}
+
+		if ( $partial ) {
+			load_template( $partial, false, $args );
+		} elseif ( file_exists( DRPPSM_PATH . 'views/partials/' . $name ) ) {
+			load_template( DRPPSM_PATH . 'views/partials/' . $name, false, $args );
+		} else {
+			$title  = DRPPSM_TITLE;
+			$error  = DRPPSM_MSG_FAILED_PARTIAL;
+			$error .= str_replace( '.php', '', $name );
+
+			echo "<b>$title</b>:<i>$error</i>." . DRPPSM_MSG_FILE_NOT_EXIST . '</p>';
+		}
 	}
 
 	/**

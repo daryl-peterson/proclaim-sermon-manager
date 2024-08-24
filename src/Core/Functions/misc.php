@@ -47,7 +47,7 @@ function get_setting( string $key, mixed $default_value = null ): mixed {
 }
 
 /**
- * Create a key for options ect.. with the KEY_PREFIX.
+ * Create a key for options ect.. with the DRPSM_KEY_PREFIX.
  *
  * @param string $name Name of key to create.
  * @param string $delimiter Delimiter to use for key.
@@ -55,7 +55,7 @@ function get_setting( string $key, mixed $default_value = null ): mixed {
  * @since 1.0.0
  */
 function get_key_name( string $name, string $delimiter = '_' ): string {
-	$prefix = KEY_PREFIX;
+	$prefix = DRPSM_KEY_PREFIX;
 
 	$name = trim( trim( $name, '-_' ) );
 
