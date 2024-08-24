@@ -72,7 +72,7 @@ class OptGeneral implements Initable, Registrable {
 		}
 
 		add_action( Actions::SETTINGS_REGISTER_FORM, array( $this, 'register_metaboxes' ) );
-		add_filter( Filters::SETTINGS_MAIN_MENU, array( $this, 'set_menu' ) );
+		add_filter( DRPPSM_SETTINGS_MAIN_MENU, array( $this, 'set_menu' ) );
 
 		$object_type = 'options-page';
 		$id          = self::OPTION_KEY;

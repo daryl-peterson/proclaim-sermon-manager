@@ -34,7 +34,8 @@
 			"src/Core/Functions/interfaces.php",
 			"src/Core/Functions/database.php",
 			"src/Core/Functions/messages.php",
-			"src/Core/Functions/templates.php"
+			"src/Core/Functions/templates.php",
+			"src/Core/Functions/filters.php"
 		]
 	},
 	"repositories": [

@@ -12,4 +12,5 @@ return array(
     '1bf42cb946e1f36ab7e284ac9bd55dd2' => $baseDir . '/src/Core/Functions/database.php',
     'b10806ebc85e93fdf657c73b9e090110' => $baseDir . '/src/Core/Functions/messages.php',
     '8e0760fd21128b00441ec5c4abbdfb75' => $baseDir . '/src/Core/Functions/templates.php',
+    '9d038f04b15ebc58e7e6cc2b7deb416a' => $baseDir . '/src/Core/Functions/filters.php',
 );

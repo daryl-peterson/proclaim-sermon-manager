@@ -1,6 +1,6 @@
 <?php
 /**
- * Template hooks.
+ * Template class.
  *
  * @package     Proclaim Sermon Manager
  * @author      Daryl Peterson <@gmail.com>
@@ -21,7 +21,7 @@ use DRPPSM\Interfaces\Registrable;
 use WP_Post;
 
 /**
- * Template hooks.
+ * Template class.
  *
  * @package     Proclaim Sermon Manager
  * @author      Daryl Peterson <@gmail.com>
@@ -126,8 +126,16 @@ class Templates implements Executable, Registrable {
 		return $template;
 	}
 
-	public function get_template_piece( string $name, array $args = array() ) {
-		echo apply_filters( Filters::TPL_PIECE, $name, $args );
+	/**
+	 * Get template piece.
+	 *
+	 * @param string $name Piece name.
+	 * @param array  $args Arguments to pass to filter.
+	 * @return void
+	 * @since 1.0.0
+	 */
+	public function get_template_piece( string $name, array $args = array() ): void {
+		echo apply_filters( DRPPSM_TPL_PIECE, $name, $args );
 	}
 
 	/**
@@ -155,7 +163,7 @@ class Templates implements Executable, Registrable {
 		 * @param array  $args Array of variables to pass to template.
 		 * @since 1.0.0
 		 */
-		$content = apply_filters( Filters::TPL_PARTIAL, $name, $args );
+		$content = apply_filters( DRPPSM_TPL_PARTIAL, $name, $args );
 		if ( isset( $content ) || ! empty( $content ) ) {
 			echo $content;
 			return;

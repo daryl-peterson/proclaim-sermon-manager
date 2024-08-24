@@ -168,11 +168,11 @@ class AdminSettings implements Executable, Registrable {
 
 		global $plugin_page;
 
-		$hidden = apply_filters( Filters::SETTINGS_REMOVE_SUBMENUS, array() );
+		$hidden = apply_filters( DRPPSM_SETTINGS_REMOVE_SUBMENUS, array() );
 
 		// Select another submenu item to highlight (optional).
 		if ( $plugin_page && isset( $hidden[ $plugin_page ] ) ) {
-			$submenu_file = (string) apply_filters( Filters::SETTINGS_MAIN_MENU, '' );
+			$submenu_file = (string) apply_filters( DRPPSM_SETTINGS_MAIN_MENU, '' );
 		}
 
 		// Hide the submenus.

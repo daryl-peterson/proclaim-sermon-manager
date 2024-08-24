@@ -14,7 +14,6 @@ namespace DRPPSM;
 defined( 'ABSPATH' ) || exit;
 
 use DRPPSM\Constants\Actions;
-use DRPPSM\Constants\Filters;
 use DRPPSM\Interfaces\Initable;
 use DRPPSM\Interfaces\Registrable;
 
@@ -59,7 +58,7 @@ class OptAdvance implements Initable, Registrable {
 	 */
 	public function register(): ?bool {
 		add_action( Actions::SETTINGS_REGISTER_FORM, array( $this, 'register_metaboxes' ) );
-		add_filter( Filters::SETTINGS_REMOVE_SUBMENUS, array( $this, 'set_menu' ) );
+		add_filter( DRPPSM_SETTINGS_REMOVE_SUBMENUS, array( $this, 'set_menu' ) );
 		return true;
 	}
 
