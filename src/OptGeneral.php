@@ -356,7 +356,6 @@ class OptGeneral implements Initable, Registrable {
 	 * @param CMB2 $cmb CMB2 Object.
 	 * @return void
 	 * @since 1.0.0
-	 * 
 	 */
 	private function add_preacher( CMB2 $cmb ): void {
 		$s1    = '<code>' . __( '/preacher/mark', 'drppsm' ) . '</code>';
