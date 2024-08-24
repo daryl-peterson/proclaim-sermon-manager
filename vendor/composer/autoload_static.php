@@ -75,7 +75,6 @@ class ComposerStaticInitf5da42b7feb65ba592bc9e68a42f25f4
         'DRPPSM\\Constants\\Actions' => __DIR__ . '/../..' . '/src/Core/Constants/Actions.php',
         'DRPPSM\\Constants\\Bible' => __DIR__ . '/../..' . '/src/Core/Constants/Bible.php',
         'DRPPSM\\Constants\\Caps' => __DIR__ . '/../..' . '/src/Core/Constants/Caps.php',
-        'DRPPSM\\Constants\\Filters' => __DIR__ . '/../..' . '/src/Core/Constants/Filters.php',
         'DRPPSM\\Constants\\Meta' => __DIR__ . '/../..' . '/src/Core/Constants/Meta.php',
         'DRPPSM\\Constants\\PT' => __DIR__ . '/../..' . '/src/Core/Constants/PT.php',
         'DRPPSM\\Constants\\Tax' => __DIR__ . '/../..' . '/src/Core/Constants/Tax.php',

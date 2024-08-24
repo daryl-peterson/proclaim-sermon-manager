@@ -15,7 +15,6 @@ return array(
     'DRPPSM\\Constants\\Actions' => $baseDir . '/src/Core/Constants/Actions.php',
     'DRPPSM\\Constants\\Bible' => $baseDir . '/src/Core/Constants/Bible.php',
     'DRPPSM\\Constants\\Caps' => $baseDir . '/src/Core/Constants/Caps.php',
-    'DRPPSM\\Constants\\Filters' => $baseDir . '/src/Core/Constants/Filters.php',
     'DRPPSM\\Constants\\Meta' => $baseDir . '/src/Core/Constants/Meta.php',
     'DRPPSM\\Constants\\PT' => $baseDir . '/src/Core/Constants/PT.php',
     'DRPPSM\\Constants\\Tax' => $baseDir . '/src/Core/Constants/Tax.php',
