@@ -2,7 +2,7 @@
 /**
  * App configuration.
  *
- * @package     Proclaim Sermon Manager
+ * @package     DRPPSM/Config
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
@@ -31,32 +31,32 @@ use DRPPSM\Logging\LogWritterInt;
 
 return array(
 
-	AdminMenu::class         => AdminMenu::class,
-	AdminSettings::class     => AdminSettings::class,
-	BibleLoaderInt::class    => BibleLoader::class,
-	DbUpdates::class         => DbUpdates::class,
-	ImageSizeInt::class      => ImageSize::class,
-	LogWritterInt::class     => LogFile::class,
-	LoggerInt::class         => Logger::class,
-	NoticeInt::class         => Notice::class,
-	OptionsInt::class        => Options::class,
-	Pagination::class        => Pagination::class,
-	PermaLinkInt::class      => PermaLinks::class,
-	PluginInt::class         => Plugin::class,
-	PostTypeSetupInt::class  => PostTypeSetup::class,
-	QueryVars::class         => QueryVars::class,
-	QueueScripts::class      => QueueScripts::class,
-	RequirementsInt::class   => Requirements::class,
-	RewriteInt::class        => Rewrite::class,
-	RolesInt::class          => Roles::class,
-	SermonComments::class    => SermonComments::class,
-	SermonEdit::class        => SermonEdit::class,
-	SermonImage::class       => SermonImage::class,
-	SermonListTable::class   => SermonListTable::class,
-	TaxonomyImage::class     => TaxonomyImage::class,
-	TaxonomyListTable::class => TaxonomyListTable::class,
-	TextDomainInt::class     => TextDomain::class,
-	Templates::class         => Templates::class,
+	AdminMenu::class           => AdminMenu::class,
+	AdminSettings::class       => AdminSettings::class,
+	BibleLoaderInt::class      => BibleLoader::class,
+	DbUpdates::class           => DbUpdates::class,
+	ImageSizeInt::class        => ImageSize::class,
+	LogWritterInt::class       => LogFile::class,
+	LoggerInt::class           => Logger::class,
+	NoticeInt::class           => Notice::class,
+	OptionsInt::class          => Options::class,
+	Pagination::class          => Pagination::class,
+	PermaLinkInt::class        => PermaLinks::class,
+	PluginInt::class           => Plugin::class,
+	PostTypeSetupInt::class    => PostTypeSetup::class,
+	QueryVars::class           => QueryVars::class,
+	QueueScripts::class        => QueueScripts::class,
+	RequirementsInt::class     => Requirements::class,
+	RewriteInt::class          => Rewrite::class,
+	RolesInt::class            => Roles::class,
+	SermonComments::class      => SermonComments::class,
+	SermonEdit::class          => SermonEdit::class,
+	SermonImageAttach::class   => SermonImageAttach::class,
+	SermonListTable::class     => SermonListTable::class,
+	TaxonomyImageAttach::class => TaxonomyImageAttach::class,
+	TaxonomyListTable::class   => TaxonomyListTable::class,
+	TextDomainInt::class       => TextDomain::class,
+	Templates::class           => Templates::class,
 
 	/*
 	PluginInt::class         => function (): PluginInt {

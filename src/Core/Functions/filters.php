@@ -11,6 +11,8 @@
 
 namespace DRPPSM;
 
+use WP_Post;
+
 /**
  * Allows for filtering html items. Wrappers ect.
  *
@@ -93,3 +95,22 @@ define( 'DRPPSM_FLTR_SERMON_DATES', 'drppsm_fltr_sermon_dates' );
  * @since 1.0.0
  */
 define( 'DRPPSM_FLTR_ADMIN_SERMON', 'drppsm_fltr_admin_sermons' );
+
+/**
+ * Allows for filter single sermon on the front end.
+ *
+ * @param WP_Post $post Sermon post object
+ * @return string HTML string.
+ * @since 1.0.0
+ */
+define( 'DRPPSM_FLTR_SERMON_SINGLE', 'drppsm_fltr_sermon_single' );
+
+
+/**
+ * Single sermon overriding.
+ *
+ * @param WP_Post $post Sermon post object
+ * @return string HTML string.
+ * @since 1.0.0
+ */
+define( 'DRPPSM_FLTR_SERMON_SINGLE_OVR', 'drppsm_fltr_sermon_single_ovr' );

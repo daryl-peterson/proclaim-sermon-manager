@@ -11,13 +11,9 @@
 
 namespace DRPPSM;
 
-$comments = get_setting( 'comments' );
-
-
 get_header();
-
 echo get_partial( 'content-sermon-wrapper-start' );
-echo apply_filters( 'single-sermon-before-sermons', '' );
+echo apply_filters( 'single-sermon-before', '' );
 
 while ( have_posts() ) :
 	global $post;
@@ -36,11 +32,6 @@ while ( have_posts() ) :
 	endif;
 endwhile;
 
-echo apply_filters( 'single-wpfc_sermon-after-sermons', '' );
-
-?>
-
-<?php echo wpfc_get_partial( 'content-sermon-wrapper-end' ); ?>
-
-<?php
+echo apply_filters( 'single-sermon-after', '' );
+echo get_partial( 'content-sermon-wrapper-end' );
 get_footer();

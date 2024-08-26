@@ -198,6 +198,41 @@ class Templates implements Executable, Registrable {
 		}
 	}
 
+
+	public function sermon_single( ?WP_Post $post_new = null ) {
+
+		if ( null === $post_new ) {
+			global $post;
+			$post_org = clone($post);
+		} else {
+			$post_org = clone($post_new);
+		}
+
+		/**
+		 * Allows you to modify the sermon HTML on single sermon pages.
+		 *
+		 * @param WP_Post $post Sermon post object.
+		 * @since 1.0.0
+		 */
+		$output = apply_filters( DRPPSM_FLTR_SERMON_SINGLE, $post_org );
+		if ( ! empty( $output ) ) {
+			echo $output;
+			return;
+		}
+
+		// Get the partial.
+		$this->get_partial( 'content-sermon-single', $post_org );
+
+		/**
+		 * Allows you to modify the sermon HTML on single sermon pages.
+		 *
+		 * @param string  $output the HTML that will be outputted
+		 * @param WP_Post $post   the sermon
+		 *
+		 * @since 2.12.0
+		 */
+	}
+
 	/**
 	 * Get single template.
 	 *

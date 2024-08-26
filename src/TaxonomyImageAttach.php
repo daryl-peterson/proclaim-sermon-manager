@@ -28,7 +28,7 @@ use WP_Post;
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
  * @since       1.0.0
  */
-class TaxonomyImage implements Executable, Registrable {
+class TaxonomyImageAttach implements Executable, Registrable {
 
 	/**
 	 * Options interface.
@@ -40,9 +40,9 @@ class TaxonomyImage implements Executable, Registrable {
 	/**
 	 * Sermon image class.
 	 *
-	 * @var SermonImage
+	 * @var SermonImageAttach
 	 */
-	private SermonImage $sermon_image;
+	private SermonImageAttach $sermon_image;
 
 	/**
 	 * Taxonomy list
@@ -73,7 +73,7 @@ class TaxonomyImage implements Executable, Registrable {
 	 */
 	protected function __construct() {
 		$this->options      = options();
-		$this->sermon_image = SermonImage::exec();
+		$this->sermon_image = SermonImageAttach::exec();
 		$this->tax          = array(
 			Tax::PREACHER,
 			Tax::SERIES,
@@ -89,10 +89,10 @@ class TaxonomyImage implements Executable, Registrable {
 	/**
 	 * Initialize and register hooks.
 	 *
-	 * @return TaxonomyImage
+	 * @return TaxonomyImageAttach
 	 * @since 1.0.0
 	 */
-	public static function exec(): TaxonomyImage {
+	public static function exec(): TaxonomyImageAttach {
 		$obj = new self();
 		$obj->register();
 		return $obj;
