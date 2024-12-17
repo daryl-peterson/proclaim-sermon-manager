@@ -1,6 +1,6 @@
 <?php
 /**
- * Sermon wrapper start.
+ * Sermon wrapper end.
  *
  * @package     DRPPSM/Views/Partials
  * @author      Daryl Peterson <@gmail.com>
@@ -9,15 +9,12 @@
  * @since       1.0.0
  */
 
-global $post;
+defined( 'ABSPATH' ) or exit;
 
+$wrapper = <<<EOT
+ 		</main>
+	</div>
+</div>
+EOT;
 
-
-?>
-<article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
-
-
-
-
-
-</article>
+echo $wrapper;

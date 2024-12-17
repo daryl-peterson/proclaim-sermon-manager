@@ -9,15 +9,13 @@
  * @since       1.0.0
  */
 
-global $post;
+defined( 'ABSPATH' ) or exit;
 
+$wrapper = <<<EOT
+<div class="wrap">
+	<div id="primary" class="content-area">
+		<main id="main" class="site-main drppsm-sermon-container">
 
+EOT;
 
-?>
-<article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
-
-
-
-
-
-</article>
+echo $wrapper;

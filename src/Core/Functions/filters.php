@@ -2,7 +2,7 @@
 /**
  * Filters defined.
  *
- * @package     Proclaim Sermon Manager
+ * @package     DRPPSM/Functions
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
@@ -51,7 +51,6 @@ define( 'DRPPSM_FLTR_SETTINGS_MM', 'drppsm_settings_main_menu' );
  */
 define( 'DRPPSM_FLTR_SETTINGS_RSM', 'drppsm_settings_hidden_menu' );
 
-
 /**
  * Get pagination links
  *
@@ -64,7 +63,6 @@ define( 'DRPPSM_FLTR_SETTINGS_RSM', 'drppsm_settings_hidden_menu' );
  */
 define( 'DRPPSM_FLTR_PAGINATION_GET', 'drppsm_pagination_get' );
 
-
 /**
  * Filter to flush rewrite rules.
  *
@@ -72,7 +70,6 @@ define( 'DRPPSM_FLTR_PAGINATION_GET', 'drppsm_pagination_get' );
  * @since 1.0.0
  */
 define( 'DRPPSM_FLTR_FLUSH_REWRITE', 'drppsm_flush_rewrite' );
-
 
 /**
  * Filters the date a post was preached
@@ -85,8 +82,6 @@ define( 'DRPPSM_FLTR_FLUSH_REWRITE', 'drppsm_flush_rewrite' );
  * @param bool   $force_unix_sanitation If the sanitation is forced
  */
 define( 'DRPPSM_FLTR_SERMON_DATES', 'drppsm_fltr_sermon_dates' );
-
-
 
 /**
  * Allows for filtering admin sermon inputs.
@@ -105,7 +100,6 @@ define( 'DRPPSM_FLTR_ADMIN_SERMON', 'drppsm_fltr_admin_sermons' );
  */
 define( 'DRPPSM_FLTR_SERMON_SINGLE', 'drppsm_fltr_sermon_single' );
 
-
 /**
  * Single sermon overriding.
  *
@@ -114,3 +108,13 @@ define( 'DRPPSM_FLTR_SERMON_SINGLE', 'drppsm_fltr_sermon_single' );
  * @since 1.0.0
  */
 define( 'DRPPSM_FLTR_SERMON_SINGLE_OVR', 'drppsm_fltr_sermon_single_ovr' );
+
+
+/**
+ * Allows for overriding sermon image size.
+ *
+ * @param string $image_size Image size.
+ * @param WP_Post $post Post Object.
+ * @return string
+ */
+define( 'DRPPSM_FLTR_SERMON_IMAGE_SIZE', 'drppsm_fltr_sermon_image_size' );

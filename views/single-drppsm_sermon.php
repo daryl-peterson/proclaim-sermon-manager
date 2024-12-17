@@ -2,7 +2,7 @@
 /**
  * Single sermon template.
  *
- * @package     Proclaim Sermon Manager
+ * @package     DRPPSM/Views
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
@@ -11,13 +11,16 @@
 
 namespace DRPPSM;
 
+use DRPPSM\Constants\Tax;
+
 get_header();
-echo get_partial( 'content-sermon-wrapper-start' );
-echo apply_filters( 'single-sermon-before', '' );
+get_partial( 'content-sermon-wrapper-start' );
 
 while ( have_posts() ) :
 	global $post;
 	the_post();
+
+	get_series_image( $post->ID );
 
 	if ( ! post_password_required( $post ) ) {
 		// wpfc_sermon_single_v2();
@@ -32,6 +35,5 @@ while ( have_posts() ) :
 	endif;
 endwhile;
 
-echo apply_filters( 'single-sermon-after', '' );
-echo get_partial( 'content-sermon-wrapper-end' );
+get_partial( 'content-sermon-wrapper-end' );
 get_footer();

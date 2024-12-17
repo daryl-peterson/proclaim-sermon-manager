@@ -377,7 +377,7 @@ class SermonListTable implements Executable, Registrable {
 		$output[] = $this->select_filter( Tax::PREACHER );
 		$output[] = $this->select_filter( Tax::SERIES );
 
-		$output[] = apply_filters( DRPPSM_FLTR_ADMIN_SERMON, $output );
+		$output = apply_filters( DRPPSM_FLTR_ADMIN_SERMON, $output );
 		return implode( "\n", $output );
 	}
 

@@ -151,10 +151,6 @@ class Templates implements Executable, Registrable {
 	 */
 	public function get_partial( string $name, array $args = array() ): void {
 
-		if ( false === strpos( $name, '.php' ) ) {
-			$name .= '.php';
-		}
-
 		/**
 		 * Allows for filtering partial content.
 		 *
@@ -163,9 +159,13 @@ class Templates implements Executable, Registrable {
 		 * @since 1.0.0
 		 */
 		$content = apply_filters( DRPPSM_FLTR_TPL_PARTIAL, $name, $args );
-		if ( isset( $content ) || ! empty( $content ) ) {
+		if ( ! empty( $content ) && $content !== $name ) {
 			echo $content;
 			return;
+		}
+
+		if ( false === strpos( $name, '.php' ) ) {
+			$name .= '.php';
 		}
 
 		/**
@@ -184,6 +184,7 @@ class Templates implements Executable, Registrable {
 				break;
 			}
 		}
+		Logger::debug( array( 'PARTIAL TEMPLATE' => $partial ) );
 
 		if ( $partial ) {
 			load_template( $partial, false, $args );
@@ -199,7 +200,14 @@ class Templates implements Executable, Registrable {
 	}
 
 
-	public function sermon_single( ?WP_Post $post_new = null ) {
+	/**
+	 * Get sermon single.
+	 *
+	 * @param null|WP_Post $post_new Post object.
+	 * @return void
+	 * @since 1.0.0
+	 */
+	public function sermon_single( ?WP_Post $post_new = null ): void {
 
 		if ( null === $post_new ) {
 			global $post;
@@ -222,15 +230,6 @@ class Templates implements Executable, Registrable {
 
 		// Get the partial.
 		$this->get_partial( 'content-sermon-single', $post_org );
-
-		/**
-		 * Allows you to modify the sermon HTML on single sermon pages.
-		 *
-		 * @param string  $output the HTML that will be outputted
-		 * @param WP_Post $post   the sermon
-		 *
-		 * @since 2.12.0
-		 */
 	}
 
 	/**
