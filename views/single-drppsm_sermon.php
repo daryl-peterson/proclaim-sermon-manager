@@ -20,10 +20,10 @@ while ( have_posts() ) :
 	global $post;
 	the_post();
 
-	get_series_image( $post->ID );
+
 
 	if ( ! post_password_required( $post ) ) {
-		// wpfc_sermon_single_v2();
+		sermon_single();
 	} else {
 		echo get_the_password_form( $post );
 	}

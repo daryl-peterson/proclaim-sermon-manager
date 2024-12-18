@@ -74,9 +74,6 @@ class TextDomain implements TextDomainInt {
 		// phpcs:enable
 
 		$result = load_plugin_textdomain( DRPSM_DOMAIN, false, $path );
-		Logger::debug( array( 'TEXT DOMAIN LOADED' ) );
-		// do_action( Actions::TEXT_DOMAIN_LOADED );
-
 		return $result;
 	}
 

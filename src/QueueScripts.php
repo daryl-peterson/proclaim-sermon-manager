@@ -65,6 +65,7 @@ class QueueScripts implements Registrable, Executable {
 	 * @since 1.0.0
 	 */
 	public function register(): ?bool {
+		add_action( 'wp_enqueue_scripts', array( $this, 'front_end' ) );
 
 		if ( ! is_admin() || has_action( 'admin_init', array( $this, 'init_script_styles' ) ) ) {
 			return true;
@@ -75,6 +76,14 @@ class QueueScripts implements Registrable, Executable {
 		add_action( 'admin_footer', array( $this, 'footer' ) );
 
 		return true;
+	}
+
+	public function front_end() {
+		$url = Helper::get_url() . 'assets';
+
+		$file = $url . '/css/drppsm-style.css';
+		Logger::debug( array( 'CSS FILE' => $file ) );
+		wp_enqueue_style( 'drppsm-style', $file );
 	}
 
 	/**

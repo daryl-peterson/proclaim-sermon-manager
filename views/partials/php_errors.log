@@ -1,8 +1,0 @@
-[29-Aug-2024 15:11:57 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function the_ID() in /home/daryl/Dropbox/Websites/local-wp.org/wp-content/plugins/drp-proclaim-sermon-manager/views/partials/content-sermon-single.php:15
-Stack trace:
-#0 {main}
-  thrown in /home/daryl/Dropbox/Websites/local-wp.org/wp-content/plugins/drp-proclaim-sermon-manager/views/partials/content-sermon-single.php on line 15
-[29-Aug-2024 15:13:26 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function the_ID() in /home/daryl/Dropbox/Websites/local-wp.org/wp-content/plugins/drp-proclaim-sermon-manager/views/partials/content-sermon-single.php:15
-Stack trace:
-#0 {main}
-  thrown in /home/daryl/Dropbox/Websites/local-wp.org/wp-content/plugins/drp-proclaim-sermon-manager/views/partials/content-sermon-single.php on line 15

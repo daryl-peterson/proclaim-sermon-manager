@@ -45,7 +45,7 @@ class OptGeneral implements Initable, Registrable {
 	 */
 	protected function __construct() {
 		$this->set_defaults();
-		$this->app_settings();
+		// $this->app_settings();
 	}
 
 	/**

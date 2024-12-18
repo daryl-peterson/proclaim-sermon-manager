@@ -12,7 +12,6 @@
 defined( 'ABSPATH' ) or exit;
 
 $wrapper = <<<EOT
-<div class="wrap">
 	<div id="primary" class="content-area">
 		<main id="main" class="site-main drppsm-sermon-container">
 

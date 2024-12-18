@@ -95,45 +95,53 @@ class Container implements ContainerInt {
 	private function get_instance( ReflectionClass $item ): mixed {
 
 		if ( $item->hasMethod( 'exec' ) ) {
+			/*
 			Logger::debug(
 				array(
 					'ITEM'   => $item->name,
 					'METHOD' => 'HAS EXEC',
 				)
 			);
+			*/
 			return call_user_func( $item->name . '::exec' );
 		}
 
 		if ( $item->hasMethod( 'init' ) ) {
+			/*
 			Logger::debug(
 				array(
 					'ITEM'   => $item->name,
 					'METHOD' => 'HAS INIT',
 				)
 			);
+			*/
 			return call_user_func( $item->name . '::init' );
 		}
 
 		// @codeCoverageIgnoreStart
 		if ( $item->hasMethod( 'get_instance' ) ) {
+			/*
 			Logger::debug(
 				array(
 					'ITEM'   => $item->name,
 					'METHOD' => 'HAS GET INSTANCE',
 				)
 			);
+			*/
 			return call_user_func( $item->name . '::get_instance' );
 		}
 		// @codeCoverageIgnoreEnd
 
 		$constructor = $item->getConstructor();
 		if ( is_null( $constructor ) || $constructor->getNumberOfRequiredParameters() === 0 ) {
+			/*
 			Logger::debug(
 				array(
 					'ITEM'   => $item->name,
 					'METHOD' => 'NEW INSTANCE',
 				)
 			);
+			*/
 			return $item->newInstance();
 		}
 		$params = array();
@@ -144,7 +152,7 @@ class Container implements ContainerInt {
 
 			}
 		}
-		Logger::debug( 'NEW INSTANCE ARGS' );
+		// Logger::debug( 'NEW INSTANCE ARGS' );
 		return $item->newInstanceArgs( $params );
 	}
 

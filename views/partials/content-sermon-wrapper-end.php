@@ -12,9 +12,8 @@
 defined( 'ABSPATH' ) or exit;
 
 $wrapper = <<<EOT
- 		</main>
+		</main>
 	</div>
-</div>
 EOT;
 
 echo $wrapper;

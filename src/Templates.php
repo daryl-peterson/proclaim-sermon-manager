@@ -149,7 +149,7 @@ class Templates implements Executable, Registrable {
 	 * @return void
 	 * @since 1.0.0
 	 */
-	public function get_partial( string $name, array $args = array() ): void {
+	public function get_partial( string $name, null|array $args = array() ): void {
 
 		/**
 		 * Allows for filtering partial content.
@@ -184,7 +184,12 @@ class Templates implements Executable, Registrable {
 				break;
 			}
 		}
-		Logger::debug( array( 'PARTIAL TEMPLATE' => $partial ) );
+		Logger::debug(
+			array(
+				'NAME'             => $name,
+				'PARTIAL TEMPLATE' => $partial,
+			)
+		);
 
 		if ( $partial ) {
 			load_template( $partial, false, $args );
@@ -223,13 +228,13 @@ class Templates implements Executable, Registrable {
 		 * @since 1.0.0
 		 */
 		$output = apply_filters( DRPPSM_FLTR_SERMON_SINGLE, $post_org );
-		if ( ! empty( $output ) ) {
+		if ( ! $output instanceof WP_Post && is_string( $output ) ) {
 			echo $output;
 			return;
 		}
 
 		// Get the partial.
-		$this->get_partial( 'content-sermon-single', $post_org );
+		$this->get_partial( 'content-sermon-single' );
 	}
 
 	/**

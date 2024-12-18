@@ -29,6 +29,7 @@
 			"DRPPSM\\Tests\\": "tests/"
 		},
 		"files": [
+			"src/Core/Functions/core.php",
 			"src/Core/Functions/misc.php",
 			"src/Core/Functions/include.php",
 			"src/Core/Functions/interfaces.php",
