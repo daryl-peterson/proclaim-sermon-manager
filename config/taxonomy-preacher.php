@@ -20,7 +20,8 @@ use DRPPSM\Interfaces\OptionsInt;
 $permalinks = App::init()->permalinks();
 $opts       = App::init()->get( OptionsInt::class );
 $slug       = Tax::PREACHER;
-$label      = get_option_general( Tax::PREACHER, __( 'Preacher', 'drppsm' ) );
+
+$label = OptGeneral::get( Settings::FIELD_PREACHER, __( 'Preacher', 'drppsm' ) );
 
 $capabilities = array(
 	'manage_terms' => Caps::MANAGE_CATAGORIES,

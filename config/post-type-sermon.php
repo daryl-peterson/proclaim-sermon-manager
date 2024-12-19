@@ -21,7 +21,8 @@ $capabilities = array(
 	Caps::MANAGE_SETTINGS   => Caps::MANAGE_SETTINGS,
 	Caps::MANAGE_CATAGORIES => Caps::MANAGE_CATAGORIES,
 );
-$menu_icon    = get_option_general( Settings::FIELD_MENU_ICON );
+
+$menu_icon = OptGeneral::get( Settings::FIELD_MENU_ICON );
 
 return array(
 	'labels'              => array(

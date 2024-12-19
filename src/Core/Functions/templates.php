@@ -95,10 +95,6 @@ function get_sermon_image_url( bool $fallback = true, string $image_size = 'post
 	);
 
 	// Get the series image.
-
-	$terms = get_the_terms( $post, Tax::SERIES );
-	Logger::debug( array( 'TERMS' => $terms ) );
-
 	$series_image = get_series_image( $post, $image_size );
 	Logger::debug( array( 'SERIES' => $series_image ) );
 

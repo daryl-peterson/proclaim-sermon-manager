@@ -50,7 +50,7 @@ class SermonListTable implements Executable, Registrable {
 	 * @since 1.0.0
 	 */
 	protected function __construct() {
-		$preacher = get_setting( Tax::PREACHER, __( 'Preacher', 'drppsm' ) );
+		$preacher = OptGeneral::get( Settings::FIELD_PREACHER, __( 'Preacher', 'drppsm' ) );
 
 		$this->pt                         = PT::SERMON;
 		$this->columns['cb']              = '<input type="checkbox" />';

@@ -27,12 +27,7 @@ $capabilities = array(
 	'delete_terms' => Caps::MANAGE_CATAGORIES,
 	'assign_terms' => Caps::MANAGE_CATAGORIES,
 );
-
-$label        = get_setting( Settings::FIELD_SERVICE_TYPE, __( 'Service Type', 'drppsm' ) );
-$option_label = strtolower( $opts->get( 'service_type_label', '' ) );
-if ( ! empty( $option_label ) ) {
-	$label = $option_label;
-}
+$label        = OptGeneral::get( Settings::FIELD_SERVICE_TYPE, __( 'Service Type', 'drppsm' ) );
 
 return array(
 	'hierarchical' => false,

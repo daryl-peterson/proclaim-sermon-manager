@@ -27,15 +27,18 @@ use DRPPSM\Interfaces\Registrable;
  */
 class OptGeneral implements Initable, Registrable {
 
-	public const OPTION_KEY = 'drppsm_options';
+	public const OPTION_KEY       = 'drppsm_options';
+	public const TRANSIENT_EXPIRE = '';
 
 	const DEFAULTS = array(
 		Settings::FIELD_MENU_ICON        => Settings::DEFAULT_MENU_ICON,
+		Settings::FIELD_COMMENTS         => Settings::DEFAULT_COMMENTS,
 		Settings::FIELD_DATE_FORMAT      => Settings::DEFAULT_DATE_FORMAT,
 		Settings::FIELD_SERMON_COUNT     => Settings::DEFAULT_SERMON_COUNT,
 		Settings::FIELD_ARCHIVE_SLUG     => Settings::DEFAULT_ARCHIVE_SLUG,
 		Settings::FIELD_COMMON_BASE_SLUG => Settings::DEFAULT_COMMON_BASE_SLUG,
 		Settings::FIELD_PREACHER         => Settings::DEFAULT_PREACHER,
+		Settings::FIELD_SERVICE_TYPE     => Settings::DEFAULT_SERVICE_TYPE,
 	);
 
 	/**
@@ -56,6 +59,53 @@ class OptGeneral implements Initable, Registrable {
 	 */
 	public static function init(): OptGeneral {
 		return new self();
+	}
+
+	/**
+	 * Get options value
+	 *
+	 * @param string $key
+	 * @param mixed  $default_value
+	 * @return mixed
+	 * @since 1.0.0
+	 */
+	public static function get( string $key, mixed $default_value = null ): mixed {
+
+		$options = \get_option( self::OPTION_KEY, $default_value );
+		if ( ! is_array( $options ) ) {
+			return $default_value;
+		}
+
+		if ( ! key_exists( $key, $options ) ) {
+			return $default_value;
+		}
+		return $options[ $key ];
+	}
+
+	/**
+	 * Set option value
+	 *
+	 * @param string $key
+	 * @param mixed  $value
+	 * @return boolean
+	 * @since 1.0.0
+	 */
+	public static function set( string $key, mixed $value ): bool {
+
+		$option_int = options();
+		$options    = (array) $option_int->get( self::OPTION_KEY, array() );
+
+		if ( ! is_array( $options ) ) {
+			$options = array();
+			foreach ( self::DEFAULTS as $opt_key => $value ) {
+				if ( ! key_exists( $opt_key, $options ) ) {
+					$options[ $opt_key ] = $value;
+				}
+			}
+		}
+
+		$options[ $key ] = $value;
+		return $option_int->set( self::OPTION_KEY, $options );
 	}
 
 	/**
@@ -149,15 +199,23 @@ class OptGeneral implements Initable, Registrable {
 	/**
 	 * Set defaults.
 	 *
-	 * @return bool True if defaults were set, otherwise false.
+	 * @param null|boolean|null $force
+	 * @return boolean
 	 * @since 1.0.0
 	 */
-	public function set_defaults(): bool {
+	public function set_defaults( null|bool $force = null ): bool {
+
+		if ( ! isset( $force ) ) {
+			$force = false;
+		}
+
 		$transient_key = get_key_name( self::OPTION_KEY . '_init' );
 		$transient     = get_transient( $transient_key );
 
 		if ( ! empty( $transient ) || ( $transient ) ) {
-			return false;
+			if ( ! $force ) {
+				return false;
+			}
 		}
 
 		$option_int = options();
@@ -169,7 +227,7 @@ class OptGeneral implements Initable, Registrable {
 			}
 		}
 		$option_int->set( self::OPTION_KEY, $options );
-		set_transient( $transient_key, true );
+		set_transient( $transient_key, true, DAY_IN_SECONDS );
 		return true;
 	}
 

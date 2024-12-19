@@ -171,8 +171,10 @@ class SermonDetail implements Initable, Registrable {
 	 * @since 1.0.0
 	 */
 	private function add_date_preached( CMB2 $cmb ): void {
+		$format = OptGeneral::get( Settings::FIELD_DATE_FORMAT );
+
 		// @codeCoverageIgnoreStart
-		switch ( get_setting( 'date_format', '' ) ) {
+		switch ( $format ) {
 			case '0':
 				$date_format_label = 'mm/dd/YYYY';
 				$date_format       = 'm/d/Y';

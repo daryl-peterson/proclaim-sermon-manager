@@ -47,8 +47,7 @@ class SermonComments implements Registrable, Executable {
 	 * @since 1.0.0
 	 */
 	public function register(): ?bool {
-		$comments = get_setting( Settings::FIELD_COMMENTS );
-		if ( $comments || has_filter( 'wp_insert_post_data', array( $this, 'default_comments_off' ) ) ) {
+		if ( has_filter( 'wp_insert_post_data', array( $this, 'default_comments_off' ) ) ) {
 			return false;
 		}
 		add_filter( 'wp_insert_post_data', array( $this, 'default_comments_off' ) );
@@ -64,7 +63,8 @@ class SermonComments implements Registrable, Executable {
 	 */
 	public function default_comments_off( array $data ): array {
 
-		$comments = get_setting( 'comments' );
+		$comments = OptGeneral::get( Settings::FIELD_COMMENTS );
+
 		if ( $comments ) {
 			return $data;
 		}

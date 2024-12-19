@@ -32,6 +32,10 @@ class OptAdvance implements Initable, Registrable {
 
 	public const OPTION_KEY = 'drppsm_options_adv';
 
+	const DEFAULTS = array(
+		// @todo Add defaults here
+	);
+
 	/**
 	 * Initialize object properties.
 	 *
@@ -48,6 +52,53 @@ class OptAdvance implements Initable, Registrable {
 	 */
 	public static function init(): OptAdvance {
 		return new self();
+	}
+
+	/**
+	 * Get options value
+	 *
+	 * @param string $key
+	 * @param mixed  $default_value
+	 * @return mixed
+	 * @since 1.0.0
+	 */
+	public static function get( string $key, mixed $default_value = null ): mixed {
+
+		$options = \get_option( self::OPTION_KEY, $default_value );
+		if ( ! is_array( $options ) ) {
+			return $default_value;
+		}
+
+		if ( ! key_exists( $key, $options ) ) {
+			return $default_value;
+		}
+		return $options[ $key ];
+	}
+
+	/**
+	 * Set option value
+	 *
+	 * @param string $key
+	 * @param mixed  $value
+	 * @return boolean
+	 * @since 1.0.0
+	 */
+	public static function set( string $key, mixed $value ): bool {
+
+		$option_int = options();
+		$options    = (array) $option_int->get( self::OPTION_KEY, array() );
+
+		if ( ! is_array( $options ) ) {
+			$options = array();
+			foreach ( self::DEFAULTS as $opt_key => $value ) {
+				if ( ! key_exists( $opt_key, $options ) ) {
+					$options[ $opt_key ] = $value;
+				}
+			}
+		}
+
+		$options[ $key ] = $value;
+		return $option_int->set( self::OPTION_KEY, $options );
 	}
 
 	/**

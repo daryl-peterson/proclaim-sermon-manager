@@ -35,10 +35,9 @@ HTML;
 
 }
 
-$preacher_label = get_option_general( Tax::PREACHER );
-
-
+$preacher_label = OptGeneral::get( Settings::FIELD_PREACHER, __( 'Preacher', 'drppsm' ) );
 Logger::debug( array( 'PREACHER LABEL' => $preacher_label ) );
+
 /*
 if ( has_term( '', 'wpfc_preacher', $post->ID ) ) : ?>
 	<div class="wpfc-sermon-single-meta-item wpfc-sermon-single-meta-preacher <?php echo \SermonManager::getOption( 'preacher_label', '' ) ? 'custom-label' : ''; ?>">
