@@ -123,12 +123,14 @@ class QueryVars implements Executable, Registrable {
 			$query = $this->tax_query( $query );
 		}
 
+		/*
 		Logger::debug(
 			array(
 				'QUERY ORG' => $query_org,
 				'QUERY'     => $query,
 			)
 		);
+		*/
 
 		return $query;
 	}
@@ -180,13 +182,6 @@ class QueryVars implements Executable, Registrable {
 			$results            = array_shift( $results );
 			$query['post_type'] = $results->post_type;
 		}
-
-		Logger::debug(
-			array(
-				'RESULTS' => $results,
-				'SQL'     => "\n$sql",
-			)
-		);
 
 		if ( isset( $this->matched ) ) {
 			unset( $query[ $this->matched ] );

@@ -149,7 +149,7 @@ class Templates implements Executable, Registrable {
 	 * @return void
 	 * @since 1.0.0
 	 */
-	public function get_partial( string $name, null|array $args = array() ): void {
+	public static function get_partial( string $name, null|array $args = array() ): void {
 
 		/**
 		 * Allows for filtering partial content.
@@ -212,7 +212,7 @@ class Templates implements Executable, Registrable {
 	 * @return void
 	 * @since 1.0.0
 	 */
-	public function sermon_single( ?WP_Post $post_new = null ): void {
+	public static function sermon_single( ?WP_Post $post_new = null ): void {
 
 		if ( null === $post_new ) {
 			global $post;
@@ -234,7 +234,7 @@ class Templates implements Executable, Registrable {
 		}
 
 		// Get the partial.
-		$this->get_partial( 'content-sermon-single' );
+		self::get_partial( 'content-sermon-single' );
 	}
 
 	/**

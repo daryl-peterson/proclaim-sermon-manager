@@ -11,10 +11,8 @@
 
 namespace DRPPSM;
 
-use DRPPSM\Constants\Tax;
-
 get_header();
-get_partial( 'content-sermon-wrapper-start' );
+Templates::get_partial( 'content-sermon-wrapper-start' );
 
 while ( have_posts() ) :
 	global $post;
@@ -23,7 +21,7 @@ while ( have_posts() ) :
 
 
 	if ( ! post_password_required( $post ) ) {
-		sermon_single();
+		Templates::sermon_single();
 	} else {
 		echo get_the_password_form( $post );
 	}
@@ -34,6 +32,5 @@ while ( have_posts() ) :
 		}
 	endif;
 endwhile;
-
-get_partial( 'content-sermon-wrapper-end' );
+Templates::get_partial( 'content-sermon-wrapper-end' );
 get_footer();

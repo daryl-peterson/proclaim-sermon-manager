@@ -31,6 +31,7 @@ class OptGeneral implements Initable, Registrable {
 	public const TRANSIENT_EXPIRE = '';
 
 	const DEFAULTS = array(
+		Settings::FIELD_PLAYER           => Settings::DEFAULT_PLAYER,
 		Settings::FIELD_MENU_ICON        => Settings::DEFAULT_MENU_ICON,
 		Settings::FIELD_COMMENTS         => Settings::DEFAULT_COMMENTS,
 		Settings::FIELD_DATE_FORMAT      => Settings::DEFAULT_DATE_FORMAT,
@@ -48,7 +49,6 @@ class OptGeneral implements Initable, Registrable {
 	 */
 	protected function __construct() {
 		$this->set_defaults();
-		// $this->app_settings();
 	}
 
 	/**
@@ -126,7 +126,6 @@ class OptGeneral implements Initable, Registrable {
 		$object_type = 'options-page';
 		$id          = self::OPTION_KEY;
 		add_action( "cmb2_{$object_type}_process_fields_{$id}", array( $this, 'pre_proccess' ), 10, 2 );
-
 		return true;
 	}
 
@@ -185,12 +184,13 @@ class OptGeneral implements Initable, Registrable {
 		}
 
 		$cmb = new_cmb2_box( $args );
-
+		$this->add_player( $cmb );
 		$this->add_menu_icon( $cmb );
 		$this->add_sermon_comments( $cmb );
 		$this->add_date_format( $cmb );
 		$this->add_sermon_count( $cmb );
 		$this->add_archive( $cmb );
+		$this->add_seperator( $cmb, __( 'Links', 'drppsm' ) );
 		$this->add_common_base_slug( $cmb );
 		$this->add_preacher( $cmb );
 		$this->add_service_type( $cmb );
@@ -229,6 +229,48 @@ class OptGeneral implements Initable, Registrable {
 		$option_int->set( self::OPTION_KEY, $options );
 		set_transient( $transient_key, true, DAY_IN_SECONDS );
 		return true;
+	}
+
+	/**
+	 * Add audio / video player selection
+	 *
+	 * @param CMB2 $cmb
+	 * @return void
+	 * @since 1.0.0
+	 */
+	private function add_player( CMB2 $cmb ): void {
+		$desc = __( 'Select which player to use for playing Sermons.', 'drppsm' );
+		$cmb->add_field(
+			array(
+				'id'               => Settings::FIELD_PLAYER,
+				'name'             => __( 'Audio & Video Player', 'drppsm' ),
+				'type'             => 'select',
+				'show_option_none' => true,
+				'options'          => array(
+					'plyr'         => 'Plyr',
+					'mediaelement' => 'Mediaelement',
+					'WordPress'    => 'Old WordPress player',
+					'none'         => 'Browser HTML5',
+				),
+				'default'          => Settings::DEFAULT_PLAYER,
+				'after_row'        => $this->description( $desc ),
+			)
+		);
+	}
+
+	private function add_seperator( CMB2 $cmb, string $title ): void {
+
+		$args = array(
+			'id'            => 'heading',
+			'name'          => $title,
+			'type'          => 'heading',
+			'repeatable'    => true,
+			'render_row_cb' => function () use ( $title ) {
+				echo "<h2>$title</h2><hr>";
+			},
+		);
+
+		$cmb->add_field( $args );
 	}
 
 	/**
@@ -498,18 +540,5 @@ class OptGeneral implements Initable, Registrable {
 	 */
 	private function dot(): string {
 		return '<span class="spacer"></span>';
-	}
-
-	/**
-	 * Set app settings.
-	 *
-	 * @return void
-	 * @since 1.0.0
-	 */
-	private function app_settings() {
-		$option_int = options();
-		$options    = (array) $option_int->get( self::OPTION_KEY, array() );
-
-		app()->set_setting( $options );
 	}
 }

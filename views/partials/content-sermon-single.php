@@ -1,10 +1,6 @@
 <?php
-namespace DRPPSM;
-
-use DRPPSM\Constants\Tax;
-
 /**
- * Sermon wrapper start.
+ * Sermon Single
  *
  * @package     DRPPSM/Views/Partials
  * @author      Daryl Peterson <@gmail.com>
@@ -13,39 +9,21 @@ use DRPPSM\Constants\Tax;
  * @since       1.0.0
  */
 
+namespace DRPPSM;
+
 global $post;
+
+Logger::debug( array( 'POST' => $post ) );
 
 $post_id    = 'post-' . get_the_ID();
 $post_class = esc_attr( implode( ' ', get_post_class( '', $post ) ) );
 $title      = the_title( '', '', false );
 
-$image     = get_sermon_image_url( true, ImageSize::SERMON_WIDE, true );
-$image_div = '';
-
-
-Logger::debug( array( 'image' => $image ) );
-
-if ( $image ) {
-	$image_div = <<<HTML
-
-	<div class="drppsm-sermon-single-image">
-		<img class="drppsm-sermon-single-image-img" alt="$title" src="$image" style="width:100%;">
-	</div>
-HTML;
-
-}
-
-$preacher_label = OptGeneral::get( Settings::FIELD_PREACHER, __( 'Preacher', 'drppsm' ) );
-Logger::debug( array( 'PREACHER LABEL' => $preacher_label ) );
-
-/*
-if ( has_term( '', 'wpfc_preacher', $post->ID ) ) : ?>
-	<div class="wpfc-sermon-single-meta-item wpfc-sermon-single-meta-preacher <?php echo \SermonManager::getOption( 'preacher_label', '' ) ? 'custom-label' : ''; ?>">
-		<span class="wpfc-sermon-single-meta-prefix"><?php echo sm_get_taxonomy_field( 'wpfc_preacher', 'singular_name' ) . ':'; ?></span>
-		<span class="wpfc-sermon-single-meta-text"><?php the_terms( $post->ID, 'wpfc_preacher' ); ?></span>
-	</div>
-}
-*/
+$inc               = DRPPSM_PATH . 'views/includes/';
+$image_div         = require $inc . 'sermon-single-image.php';
+$meta_preacher     = require $inc . 'sermon-single-meta-preacher.php';
+$meta_series       = require $inc . 'sermon-single-meta-series.php';
+$meta_service_type = require $inc . 'sermon-single-meta-service-type.php';
 
 $content = <<<HTML
 <article id="$post_id" class="$post_class">
@@ -59,8 +37,9 @@ $content = <<<HTML
 		</div>
 		<h2 class="drppsm-sermon-single-title">$title</h2>
 		<div class="drppsm-sermon-single-meta">
-
-
+			$meta_preacher
+			$meta_series
+			$meta_service_type
 		</div>
 	</div>
 </article>

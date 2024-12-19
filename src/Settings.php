@@ -22,6 +22,9 @@ namespace DRPPSM;
  */
 class Settings {
 
+	public const FIELD_PLAYER   = 'player';
+	public const DEFAULT_PLAYER = 'Plyr';
+
 	public const FIELD_MENU_ICON   = 'menu_icon';
 	public const DEFAULT_MENU_ICON = 'dashicons-drppsm-holy-spirit';
 
