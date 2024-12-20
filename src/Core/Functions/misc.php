@@ -89,7 +89,7 @@ function fix_slug( string $slug ): string {
  * @since 1.0.0
  */
 function get_slug( string $slug, string $default_value = '' ): string {
-	return untrailingslashit( fix_slug( get_setting( $slug, $default_value ) ) );
+	return untrailingslashit( fix_slug( OptGeneral::get( $slug, $default_value ) ) );
 }
 
 /**

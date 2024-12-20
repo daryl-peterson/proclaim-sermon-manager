@@ -161,9 +161,18 @@ class App implements Initable {
 	 * @since 1.0.0
 	 */
 	public function get_setting( string $key, mixed $default_value = null ): mixed {
+
+		Logger::debug(
+			array(
+				'SETTINGS' => $this->settings,
+				'KEY'      => $key,
+			)
+		);
+
 		if ( ! isset( $this->settings[ $key ] ) ) {
 			return $default_value;
 		}
+
 		return $this->settings[ $key ];
 	}
 }

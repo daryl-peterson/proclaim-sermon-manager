@@ -126,18 +126,6 @@ class Templates implements Executable, Registrable {
 	}
 
 	/**
-	 * Get template piece.
-	 *
-	 * @param string $name Piece name.
-	 * @param array  $args Arguments to pass to filter.
-	 * @return void
-	 * @since 1.0.0
-	 */
-	public function get_template_piece( string $name, array $args = array() ): void {
-		echo apply_filters( DRPPSM_FLTR_TPL_PIECE, $name, $args );
-	}
-
-	/**
 	 * Get partial template.
 	 *
 	 * - `/wp-contents/themes/<theme_name>/partials/<partial_name>.php`

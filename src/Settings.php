@@ -43,7 +43,6 @@ class Settings {
 	public const FIELD_PREACHER   = 'preacher_label';
 	public const DEFAULT_PREACHER = 'Preacher';
 
-
 	public const FIELD_SERVICE_TYPE   = 'service_type_label';
 	public const DEFAULT_SERVICE_TYPE = 'Service Type';
 

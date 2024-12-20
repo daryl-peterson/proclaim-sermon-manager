@@ -19,24 +19,6 @@ defined( 'ABSPATH' ) || exit;
 
 
 /**
- * Get partial template.
- * - This is a stub function to Templates class.
- *
- * `/wp-contents/themes/<theme_name>/partials/<partial_name>.php`\
- * `/wp-contents/themes/<theme_name>/template-parts/<partial_name>.php`\
- * `/wp-contents/themes/<theme_name>/<partial_name>.php`
- *
- * @param string $name Piece name.
- * @param array  $args Array of variables to pass to filters.
- * @return void
- * @since 1.0.0
- */
-function get_template_piece( string $name, array $args = array() ) {
-	Templates::exec()->get_template_piece( $name, $args );
-}
-
-
-/**
  * Get sermon image
  *
  * @param bool             $fallback

@@ -107,17 +107,12 @@ class PermaLinks implements PermaLinkInt {
 		 */
 		$opts = options();
 
+		Logger::debug( array( 'SETTINGS PREACHER' => DRPPSM_SETTINGS_PREACHER ) );
+
 		$perm = wp_parse_args(
 			(array) $opts->get( 'permalinks', array() ),
 			array(
-				Tax::PREACHER            => get_slug(
-					Settings::FIELD_PREACHER,
-					_x(
-						'preacher',
-						'slug',
-						'drppsm'
-					)
-				),
+				Tax::PREACHER            => DRPPSM_SETTINGS_PREACHER,
 				Tax::SERIES              => '',
 				Tax::TOPICS              => '',
 				Tax::BIBLE_BOOK          => '',
