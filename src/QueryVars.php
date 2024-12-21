@@ -144,14 +144,12 @@ class QueryVars implements Executable, Registrable {
 			$query = $this->tax_query( $query );
 		}
 
-		/*
 		Logger::debug(
 			array(
 				'QUERY ORG' => $query_org,
 				'QUERY'     => $query,
 			)
 		);
-		*/
 
 		return $query;
 	}
