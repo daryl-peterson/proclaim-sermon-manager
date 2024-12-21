@@ -15,7 +15,6 @@ defined( 'ABSPATH' ) || exit;
 
 use DRPPSM\Constants\PT;
 use DRPPSM\Constants\Tax;
-use DRPPSM\Interfaces\OptionsInt;
 use DRPPSM\Interfaces\PermaLinkInt;
 use DRPPSM\Traits\SingletonTrait;
 
@@ -45,6 +44,10 @@ class PermaLinks implements PermaLinkInt {
 	 * @var TextDomain
 	 */
 	private TextDomain $text;
+
+	protected function __construct() {
+		$this->text = TextDomain::exec();
+	}
 
 	/**
 	 * Get initialize object instance.
@@ -79,6 +82,43 @@ class PermaLinks implements PermaLinkInt {
 		return $this->permalinks;
 	}
 
+
+	/**
+	 * Get service type
+	 *
+	 * @return string
+	 */
+	private function get_service_type(): string {
+		return fix_permalink(
+			Settings::FIELD_SERVICE_TYPE,
+			_x( 'Service Type', 'slug', 'drppsm' )
+		);
+	}
+
+	/**
+	 * Get preacher
+	 *
+	 * @return string
+	 */
+	private function get_preacher(): string {
+		return fix_permalink(
+			Settings::FIELD_PREACHER,
+			_x( 'preacher', 'slug', 'drppsm' )
+		);
+	}
+
+	/**
+	 * Get sermon
+	 *
+	 * @return string
+	 */
+	private function get_sermon(): string {
+		return fix_permalink(
+			Settings::FIELD_ARCHIVE_SLUG,
+			_x( 'sermons', 'slug', 'drppsm' )
+		);
+	}
+
 	/**
 	 * Set configuration
 	 *
@@ -100,40 +140,18 @@ class PermaLinks implements PermaLinkInt {
 			// @codeCoverageIgnoreEnd
 		}
 
-		/**
-		 * Options interface.
-		 *
-		 * @var OptionsInt $opts Options interface.
-		 */
-		$opts = options();
+		if ( did_action( 'admin_init' ) ) {
+			$this->text->switch_to_site_locale();
+		}
 
-		Logger::debug( array( 'SETTINGS PREACHER' => DRPPSM_SETTINGS_PREACHER ) );
-
-		$perm = wp_parse_args(
-			(array) $opts->get( 'permalinks', array() ),
-			array(
-				Tax::PREACHER            => DRPPSM_SETTINGS_PREACHER,
-				Tax::SERIES              => '',
-				Tax::TOPICS              => '',
-				Tax::BIBLE_BOOK          => '',
-				Tax::SERVICE_TYPE        => get_slug(
-					Settings::FIELD_SERVICE_TYPE,
-					_x(
-						'service-type',
-						'slug',
-						'drppsm'
-					)
-				),
-				PT::SERMON               => get_slug(
-					Settings::FIELD_ARCHIVE_SLUG,
-					_x(
-						'sermons',
-						'slug',
-						'drppsm'
-					)
-				),
-				'use_verbose_page_rules' => false,
-			)
+		$perm = array(
+			Tax::PREACHER            => $this->get_preacher(),
+			Tax::SERIES              => '',
+			Tax::TOPICS              => '',
+			Tax::BIBLE_BOOK          => '',
+			Tax::SERVICE_TYPE        => $this->get_service_type(),
+			PT::SERMON               => $this->get_sermon(),
+			'use_verbose_page_rules' => false,
 		);
 
 		// Ensure rewrite slugs are set.
@@ -154,7 +172,7 @@ class PermaLinks implements PermaLinkInt {
 		}
 
 		// @todo fix
-		if ( $opts->get( 'common_base_slug' ) ) {
+		if ( OptGeneral::get( 'common_base_slug' ) ) {
 			foreach ( $perm as $name => &$permalink ) {
 				if ( PT::SERMON === $name ) {
 					continue;

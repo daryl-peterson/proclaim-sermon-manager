@@ -46,7 +46,7 @@ class LogFile extends LogWritterAbs implements LogWritterInt {
 	 * @since 1.0.0
 	 */
 	public function __construct() {
-		$this->size = 5;
+		$this->size = 30;
 	}
 
 	public function register(): ?bool {
@@ -96,7 +96,7 @@ class LogFile extends LogWritterAbs implements LogWritterInt {
 
 			$limit = $this->size * ( 1024 * 1024 );
 			if ( ! $fs || ( $fs > $limit ) ) {
-				$this->truncate();
+				// $this->truncate();
 			}
 			$result = true;
 

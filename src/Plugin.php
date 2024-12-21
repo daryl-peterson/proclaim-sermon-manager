@@ -13,6 +13,7 @@ namespace DRPPSM;
 
 defined( 'ABSPATH' ) || exit;
 
+use DRPPSM\Constants\PT;
 use DRPPSM\Interfaces\NoticeInt;
 use DRPPSM\Interfaces\PluginInt;
 
@@ -103,6 +104,8 @@ class Plugin implements PluginInt {
 	public function activate(): bool {
 		try {
 			options()->set( 'activated', time() );
+			flush_rewrite_rules();
+			Logger::debug( 'ACTIVATED' );
 			// @codeCoverageIgnoreStart
 		} catch ( \Throwable $th ) {
 			Logger::error(
@@ -125,6 +128,9 @@ class Plugin implements PluginInt {
 	 */
 	public function deactivate(): bool {
 		options()->delete( 'activated' );
+		unregister_post_type( PT::SERMON );
+		Logger::debug( 'DEACTIVATED' );
+		flush_rewrite_rules();
 		return true;
 	}
 

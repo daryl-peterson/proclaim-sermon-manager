@@ -30,7 +30,6 @@ use DRPPSM\Logging\LoggerInt;
 use DRPPSM\Logging\LogWritterInt;
 
 return array(
-
 	AdminMenu::class           => AdminMenu::class,
 	AdminSettings::class       => AdminSettings::class,
 	BibleLoaderInt::class      => BibleLoader::class,

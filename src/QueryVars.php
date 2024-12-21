@@ -57,7 +57,17 @@ class QueryVars implements Executable, Registrable {
 	 * @since 1.0.0
 	 */
 	protected function __construct() {
-		$this->list     = array_merge( Tax::LIST, array( PT::SERMON ) );
+		$permalinks = PermaLinks::exec()->get();
+		$this->list = array_merge( Tax::LIST, array( PT::SERMON ) );
+		/*
+		$taxonomies = array();
+		foreach ( Tax::LIST as $tax ) {
+			$taxonomies[ $tax ] = $permalinks[ $tax ];
+		}
+		$this->list = array_merge( $taxonomies, array( PT::SERMON ) );
+
+		Logger::debug( array( 'LIST' => $this->list ) );
+		*/
 		$this->conflict = $this->get_conflict();
 	}
 
@@ -80,6 +90,7 @@ class QueryVars implements Executable, Registrable {
 	 * @since 1.0.0
 	 */
 	public function register(): ?bool {
+		Logger::debug( array( 'REGISTERING HOOKS' ) );
 		if ( has_filter( 'request', array( $this, 'overwrite_query_vars' ) ) ) {
 			return false;
 		}
@@ -95,6 +106,16 @@ class QueryVars implements Executable, Registrable {
 	 * @since 1.0.0
 	 */
 	public function overwrite_query_vars( array $query ): array {
+		global $wp;
+
+		$term = get_queried_object();
+
+		Logger::debug(
+			array(
+				'REQUEST' => $wp->request,
+				'TERM'    => $term,
+			)
+		);
 
 		if ( ! isset( $this->conflict ) ) {
 			Logger::debug(
@@ -249,6 +270,16 @@ class QueryVars implements Executable, Registrable {
 	 * @since 1.0.0
 	 */
 	private function should_modify( array $query ): bool {
+		global $wp;
+
+		$term = get_queried_object();
+		Logger::debug(
+			array(
+				'REQUEST' => $wp->request,
+				'TERM'    => $term,
+				'QUERY'   => $query,
+			)
+		);
 
 		$match = false;
 		foreach ( $this->list as $item ) {

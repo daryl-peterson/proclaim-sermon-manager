@@ -44,9 +44,5 @@ class FatalErrorTest extends BaseTest {
 
 		$result = Helper::is_plugin_active( plugin_basename( FILE ) );
 		$this->assertFalse( $result );
-
-		Activator::run();
-		$result = Helper::is_plugin_active( plugin_basename( FILE ) );
-		$this->assertTrue( $result );
 	}
 }

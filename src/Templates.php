@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Template class.
  *
@@ -90,38 +91,30 @@ class Templates implements Executable, Registrable {
 	 * @since 1.0.0
 	 */
 	public function get_template( string $template ): string {
-		$pt = PT::SERMON;
-		$ds = DIRECTORY_SEPARATOR;
+		$default_file = '';
 
-		if ( ! $this->should_modify() ) {
-			return $template;
-		}
+		if ( is_singular( $this->pt ) ) {
+			$default_file = 'single-drppsm_sermon.php';
+		} elseif ( is_tax( get_object_taxonomies( $this->pt ) ) ) {
+			$term = get_queried_object();
 
-		$template_file = $this->get_single_template();
-		if ( ! isset( $template_file ) ) {
-			$template_file = $this->get_tax_template();
-		}
-
-		if ( ! isset( $template_file ) ) {
-			$template_file = $this->get_archive_template();
-		}
-
-		if ( $template_file ) {
-
-			$full_path = get_stylesheet_directory() . $ds . $template_file;
-			if ( file_exists( $full_path ) ) {
-				Logger::debug( array( 'THEME TEMPLATE' => $full_path ) );
-				return $full_path;
-			}
-
-			$full_path = DRPPSM_PATH . 'views' . $ds . $template_file;
-			if ( file_exists( $full_path ) ) {
-				Logger::debug( array( 'PLUGIN TEMPLATE' => $full_path ) );
-				return $full_path;
+			if ( is_tax( Tax::LIST ) ) {
+				$default_file = $this->get_tax_template();
 			} else {
-				Logger::debug( array( 'PLUGIN TEMPLATE MISSING' => $full_path ) );
+				$default_file = 'archive-drppsm_sermon.php';
 			}
+		} elseif ( is_post_type_archive( $this->pt ) ) {
+			$default_file = $this->get_archive_template();
 		}
+
+		if ( $default_file ) {
+			if ( file_exists( get_stylesheet_directory() . '/' . $default_file ) ) {
+				return get_stylesheet_directory() . '/' . $default_file;
+			}
+
+			return DRPPSM_PATH . 'views/' . $default_file;
+		}
+
 		return $template;
 	}
 
@@ -204,9 +197,9 @@ class Templates implements Executable, Registrable {
 
 		if ( null === $post_new ) {
 			global $post;
-			$post_org = clone($post);
+			$post_org = clone ($post);
 		} else {
-			$post_org = clone($post_new);
+			$post_org = clone ($post_new);
 		}
 
 		/**
@@ -262,10 +255,12 @@ class Templates implements Executable, Registrable {
 	 * @since 1.0.0
 	 */
 	private function get_tax_template(): ?string {
+		/*
 		if ( is_tax( Tax::LIST ) ) {
 			Logger::debug( 'NOT A TAX TEMPLATE' );
 			return null;
 		}
+		*/
 
 		$term          = get_queried_object();
 		$template_file = "taxonomy-{$term->taxonomy}.php";
@@ -274,31 +269,5 @@ class Templates implements Executable, Registrable {
 			$template_file = "archive-{$this->pt}.php";
 		}
 		return $template_file;
-	}
-
-	/**
-	 * Check if we should modify template variable.
-	 *
-	 * @return bool Return true if it's ours, otherwise false.
-	 * @since 1.0.0
-	 */
-	private function should_modify(): bool {
-		$object = get_queried_object();
-		if ( is_array( $object ) ) {
-			$object = array_shift( $object );
-		}
-		Logger::debug( array( 'OBJECT' => $object ) );
-		if ( $object instanceof WP_Post ) {
-			$search = $object->post_type;
-		} else {
-			$search = $object->taxonomy;
-		}
-
-		if ( ! in_array( $search, $this->types, true ) ) {
-			Logger::debug( 'NOT OUR CPT/TAXONOMY' );
-			return false;
-		}
-		Logger::debug( 'YES LETS FIND THE TEMPLATE' );
-		return true;
 	}
 }
