@@ -255,12 +255,6 @@ class Templates implements Executable, Registrable {
 	 * @since 1.0.0
 	 */
 	private function get_tax_template(): ?string {
-		/*
-		if ( is_tax( Tax::LIST ) ) {
-			Logger::debug( 'NOT A TAX TEMPLATE' );
-			return null;
-		}
-		*/
 
 		$term          = get_queried_object();
 		$template_file = "taxonomy-{$term->taxonomy}.php";

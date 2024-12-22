@@ -172,7 +172,10 @@ class PermaLinks implements PermaLinkInt {
 		}
 
 		// @todo fix
+
+		$common = OptGeneral::get( 'common_base_slug' );
 		if ( OptGeneral::get( 'common_base_slug' ) ) {
+			Logger::debug( array( 'COMMON BASE' => $common ) );
 			foreach ( $perm as $name => &$permalink ) {
 				if ( PT::SERMON === $name ) {
 					continue;

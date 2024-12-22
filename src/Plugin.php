@@ -128,7 +128,7 @@ class Plugin implements PluginInt {
 	 */
 	public function deactivate(): bool {
 		options()->delete( 'activated' );
-		unregister_post_type( PT::SERMON );
+		// unregister_post_type( PT::SERMON );
 		Logger::debug( 'DEACTIVATED' );
 		flush_rewrite_rules();
 		return true;

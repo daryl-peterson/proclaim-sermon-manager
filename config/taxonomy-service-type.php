@@ -29,6 +29,8 @@ $capabilities = array(
 );
 $label        = OptGeneral::get( Settings::FIELD_SERVICE_TYPE, __( 'Service Type', 'drppsm' ) );
 
+Logger::debug( array( 'PERMA LINKS' => $permalinks ) );
+
 return array(
 	'hierarchical' => false,
 	'label'        => ucwords( $label ),

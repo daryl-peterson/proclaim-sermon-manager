@@ -42,6 +42,9 @@ class OptGeneral implements Initable, Registrable {
 		Settings::FIELD_SERVICE_TYPE     => Settings::DEFAULT_SERVICE_TYPE,
 	);
 
+	private $orginal;
+	private bool $flush;
+
 	/**
 	 * Initialize object properties.
 	 *
@@ -49,6 +52,8 @@ class OptGeneral implements Initable, Registrable {
 	 */
 	protected function __construct() {
 		$this->set_defaults();
+		$this->orginal = Options::exec()->get( self::OPTION_KEY );
+		$this->flush   = false;
 	}
 
 	/**
@@ -115,6 +120,7 @@ class OptGeneral implements Initable, Registrable {
 	 * @since 1.0.0
 	 */
 	public function register(): ?bool {
+		$object_type = 'options-page';
 
 		if ( ! is_admin() || has_action( Actions::SETTINGS_REGISTER_FORM, array( $this, 'register_metaboxes' ) ) ) {
 			return false;
@@ -123,9 +129,9 @@ class OptGeneral implements Initable, Registrable {
 		add_action( Actions::SETTINGS_REGISTER_FORM, array( $this, 'register_metaboxes' ) );
 		add_filter( DRPPSM_FLTR_SETTINGS_MM, array( $this, 'set_menu' ) );
 
-		$object_type = 'options-page';
-		$id          = self::OPTION_KEY;
+		$id = self::OPTION_KEY;
 		add_action( "cmb2_{$object_type}_process_fields_{$id}", array( $this, 'pre_proccess' ), 10, 2 );
+		add_action( "cmb2_save_{$object_type}_fields_{$id}", array( $this, 'after_save' ), 10, 3 );
 		return true;
 	}
 
@@ -149,6 +155,38 @@ class OptGeneral implements Initable, Registrable {
 	 * @todo impliment this.
 	 */
 	public function pre_proccess( mixed $obj, mixed $object_id ) {
+		Logger::debug( array( 'OBJECT' => $obj ) );
+	}
+
+	public function after_save( $object_id, $updated, $cmb ) {
+		Logger::debug(
+			array(
+				'OBJECT ID' => $object_id,
+				'UPDATED'   => $updated,
+				'CMB'       => $cmb,
+				'ORGINAL'   => $this->orginal,
+
+			)
+		);
+
+		$check = array(
+			'archive_slug',
+			'drppsm_preacher',
+			'drppsm_stype',
+			'preacher_label',
+			'service_type_label',
+		);
+
+		$flush = false;
+		foreach ( $check as $value ) {
+			if ( in_array( $value, $updated ) ) {
+				$flush = true;
+				break;
+			}
+		}
+		if ( $flush ) {
+			flush_rewrite_rules();
+		}
 	}
 
 	/**
@@ -189,9 +227,10 @@ class OptGeneral implements Initable, Registrable {
 		$this->add_sermon_comments( $cmb );
 		$this->add_date_format( $cmb );
 		$this->add_sermon_count( $cmb );
-		$this->add_archive( $cmb );
+
 		$this->add_seperator( $cmb, __( 'Links', 'drppsm' ) );
 		$this->add_common_base_slug( $cmb );
+		$this->add_archive( $cmb );
 		$this->add_preacher( $cmb );
 		$this->add_service_type( $cmb );
 	}

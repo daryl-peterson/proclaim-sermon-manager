@@ -106,7 +106,7 @@ class QueryVars implements Executable, Registrable {
 	 * @since 1.0.0
 	 */
 	public function overwrite_query_vars( array $query ): array {
-		global $wp;
+		global $wp, $typenow;
 
 		$term = get_queried_object();
 
@@ -114,6 +114,8 @@ class QueryVars implements Executable, Registrable {
 			array(
 				'REQUEST' => $wp->request,
 				'TERM'    => $term,
+				'QUERY'   => $query,
+				'TYPE'    => $typenow,
 			)
 		);
 
@@ -121,7 +123,6 @@ class QueryVars implements Executable, Registrable {
 			Logger::debug(
 				array(
 					'RESULT' => 'NO CONFLICTS',
-					'QUERY'  => $query,
 				)
 			);
 			return $query;
@@ -130,8 +131,7 @@ class QueryVars implements Executable, Registrable {
 		if ( ! $this->should_modify( $query ) ) {
 			Logger::debug(
 				array(
-					'RESULT' => 'NOT OURS',
-					'QUERY'  => $query,
+					'RESULT' => 'IT IS OURS',
 				)
 			);
 			return $query;
@@ -178,6 +178,10 @@ class QueryVars implements Executable, Registrable {
 	 */
 	private function post_query( array $query ): array {
 		global $wpdb;
+
+		if ( ! key_exists( 'name', $query ) ) {
+			return $query;
+		}
 
 		$name = sanitize_text_field( $query['name'] );
 
@@ -271,22 +275,29 @@ class QueryVars implements Executable, Registrable {
 		global $wp;
 
 		$term = get_queried_object();
+
+		$common = OptGeneral::get( Settings::FIELD_COMMON_BASE_SLUG );
+		if ( $common ) {
+			Logger::debug( array( 'COMMON BASE' ) );
+		}
+
+		$match = true;
+		foreach ( $this->list as $item ) {
+			if ( key_exists( $item, $query ) ) {
+				$match         = false;
+				$this->matched = $item;
+				break;
+			}
+		}
+
 		Logger::debug(
 			array(
 				'REQUEST' => $wp->request,
 				'TERM'    => $term,
 				'QUERY'   => $query,
+				'RETURN'  => $match,
 			)
 		);
-
-		$match = false;
-		foreach ( $this->list as $item ) {
-			if ( key_exists( $item, $query ) ) {
-				$match         = true;
-				$this->matched = $item;
-				break;
-			}
-		}
 		return $match;
 	}
 }
