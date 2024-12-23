@@ -13,8 +13,7 @@ namespace DRPPSM;
 
 defined( 'ABSPATH' ) || exit;
 
-use DRPPSM\Constants\PT;
-use DRPPSM\Interfaces\NoticeInt;
+use DRPPSM\Constants\Actions;
 use DRPPSM\Interfaces\PluginInt;
 
 /**
@@ -27,13 +26,6 @@ use DRPPSM\Interfaces\PluginInt;
  * @since       1.0.0
  */
 class Plugin implements PluginInt {
-
-	/**
-	 * Notice interface.
-	 *
-	 * @var NoticeInt
-	 */
-	private NoticeInt $notice;
 
 	/**
 	 * String for CMB version.
@@ -49,7 +41,6 @@ class Plugin implements PluginInt {
 	 * @since 1.0.0
 	 */
 	protected function __construct() {
-		$this->notice       = notice();
 		$this->cmb2_version = '?.?.?';
 	}
 
@@ -128,9 +119,8 @@ class Plugin implements PluginInt {
 	 */
 	public function deactivate(): bool {
 		options()->delete( 'activated' );
-		// unregister_post_type( PT::SERMON );
 		Logger::debug( 'DEACTIVATED' );
-		flush_rewrite_rules();
+		do_action( Actions::REWRITE_FLUSH );
 		return true;
 	}
 

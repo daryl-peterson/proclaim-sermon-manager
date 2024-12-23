@@ -83,7 +83,7 @@ class TaxonomyReg implements TaxonomyRegInt {
 		try {
 			$def    = Helper::get_config( $this->config_file );
 			$result = register_taxonomy( $this->taxonomy, $this->post_type, $def );
-			register_taxonomy_for_object_type( $this->taxonomy, $this->post_type );
+			// register_taxonomy_for_object_type( $this->taxonomy, $this->post_type );
 
 			// @codeCoverageIgnoreStart
 		} catch ( \Throwable $th ) {

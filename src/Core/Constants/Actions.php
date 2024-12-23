@@ -25,6 +25,7 @@ class Actions {
 	public const AFTER_POST_SETUP   = 'drppsm_after_post_setup';
 	public const AFTER_PLUGIN_LOAD  = 'drppsm_plugin_loaded';
 	public const TEXT_DOMAIN_LOADED = 'drppsm_textdomain';
+	public const REWRITE_FLUSH      = 'drppsm_rewrite_flush';
 
 	/**
 	 * Fires after classes have been loaded.

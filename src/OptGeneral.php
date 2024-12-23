@@ -42,9 +42,6 @@ class OptGeneral implements Initable, Registrable {
 		Settings::FIELD_SERVICE_TYPE     => Settings::DEFAULT_SERVICE_TYPE,
 	);
 
-	private $orginal;
-	private bool $flush;
-
 	/**
 	 * Initialize object properties.
 	 *
@@ -52,8 +49,6 @@ class OptGeneral implements Initable, Registrable {
 	 */
 	protected function __construct() {
 		$this->set_defaults();
-		$this->orginal = Options::exec()->get( self::OPTION_KEY );
-		$this->flush   = false;
 	}
 
 	/**
@@ -121,17 +116,15 @@ class OptGeneral implements Initable, Registrable {
 	 */
 	public function register(): ?bool {
 		$object_type = 'options-page';
+		$id          = self::OPTION_KEY;
 
 		if ( ! is_admin() || has_action( Actions::SETTINGS_REGISTER_FORM, array( $this, 'register_metaboxes' ) ) ) {
 			return false;
 		}
 
 		add_action( Actions::SETTINGS_REGISTER_FORM, array( $this, 'register_metaboxes' ) );
+		add_action( "cmb2_save_{$object_type}_fields_{$id}", array( $this, 'flush_check' ), 10, 3 );
 		add_filter( DRPPSM_FLTR_SETTINGS_MM, array( $this, 'set_menu' ) );
-
-		$id = self::OPTION_KEY;
-		add_action( "cmb2_{$object_type}_process_fields_{$id}", array( $this, 'pre_proccess' ), 10, 2 );
-		add_action( "cmb2_save_{$object_type}_fields_{$id}", array( $this, 'after_save' ), 10, 3 );
 		return true;
 	}
 
@@ -147,27 +140,15 @@ class OptGeneral implements Initable, Registrable {
 	}
 
 	/**
-	 * Not used yet.
+	 * Check if rewrite rules need to be flushed after cmb save
 	 *
-	 * @param mixed $obj Some variable.
-	 * @param mixed $object_id Some object id.
+	 * @param string     $object_id
+	 * @param null|array $updated
+	 * @param CMB2       $cmb
 	 * @return void
-	 * @todo impliment this.
+	 * @since 1.0.0
 	 */
-	public function pre_proccess( mixed $obj, mixed $object_id ) {
-		Logger::debug( array( 'OBJECT' => $obj ) );
-	}
-
-	public function after_save( $object_id, $updated, $cmb ) {
-		Logger::debug(
-			array(
-				'OBJECT ID' => $object_id,
-				'UPDATED'   => $updated,
-				'CMB'       => $cmb,
-				'ORGINAL'   => $this->orginal,
-
-			)
-		);
+	public function flush_check( string $object_id, null|array $updated, CMB2 $cmb ) {
 
 		$check = array(
 			'archive_slug',
@@ -175,6 +156,7 @@ class OptGeneral implements Initable, Registrable {
 			'drppsm_stype',
 			'preacher_label',
 			'service_type_label',
+			'common_base_slug',
 		);
 
 		$flush = false;
@@ -184,8 +166,18 @@ class OptGeneral implements Initable, Registrable {
 				break;
 			}
 		}
+
+		Logger::debug(
+			array(
+				'OBJECT ID' => $object_id,
+				'UPDATED'   => $updated,
+				// 'CMB'       => $cmb,
+				'FLUSH'     => $flush,
+			)
+		);
+
 		if ( $flush ) {
-			flush_rewrite_rules();
+			do_action( Actions::REWRITE_FLUSH );
 		}
 	}
 

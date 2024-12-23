@@ -57,17 +57,8 @@ class QueryVars implements Executable, Registrable {
 	 * @since 1.0.0
 	 */
 	protected function __construct() {
-		$permalinks = PermaLinks::exec()->get();
-		$this->list = array_merge( Tax::LIST, array( PT::SERMON ) );
-		/*
-		$taxonomies = array();
-		foreach ( Tax::LIST as $tax ) {
-			$taxonomies[ $tax ] = $permalinks[ $tax ];
-		}
-		$this->list = array_merge( $taxonomies, array( PT::SERMON ) );
 
-		Logger::debug( array( 'LIST' => $this->list ) );
-		*/
+		$this->list     = array_merge( Tax::LIST, array( PT::SERMON ) );
 		$this->conflict = $this->get_conflict();
 	}
 
@@ -90,11 +81,12 @@ class QueryVars implements Executable, Registrable {
 	 * @since 1.0.0
 	 */
 	public function register(): ?bool {
-		Logger::debug( array( 'REGISTERING HOOKS' ) );
 		if ( has_filter( 'request', array( $this, 'overwrite_query_vars' ) ) ) {
 			return false;
 		}
+		// add_action( 'parse_request', array( $this, 'parse_request' ) );
 		add_filter( 'request', array( $this, 'overwrite_query_vars' ), 10, 1 );
+		Logger::debug( 'HOOKS REGISTERED' );
 		return true;
 	}
 
@@ -106,50 +98,103 @@ class QueryVars implements Executable, Registrable {
 	 * @since 1.0.0
 	 */
 	public function overwrite_query_vars( array $query ): array {
-		global $wp, $typenow;
 
-		$term = get_queried_object();
-
-		Logger::debug(
-			array(
-				'REQUEST' => $wp->request,
-				'TERM'    => $term,
-				'QUERY'   => $query,
-				'TYPE'    => $typenow,
-			)
+		$msg = array(
+			'QUERY ORG' => $query,
+			'CONFLICTS' => $this->conflict,
 		);
 
 		if ( ! isset( $this->conflict ) ) {
-			Logger::debug(
-				array(
-					'RESULT' => 'NO CONFLICTS',
-				)
-			);
+			$msg['RESULT'] = 'NO CONFLICTS';
+			Logger::debug( $msg );
 			return $query;
 		}
+
+		$query = $this->fix_attachment( $query );
 
 		if ( ! $this->should_modify( $query ) ) {
-			Logger::debug(
-				array(
-					'RESULT' => 'IT IS OURS',
-				)
-			);
+			$msg['RESULT'] = 'NOT OURS';
+			Logger::debug( $msg );
 			return $query;
 		}
 
-		$query_org = $query;
 		if ( isset( $query['post_type'] ) ) {
 			$query = $this->post_query( $query );
 		} else {
 			$query = $this->tax_query( $query );
 		}
 
+		$msg['QUERY'] = $query;
+		Logger::debug( $msg );
+		return $query;
+	}
+
+	/**
+	 * Check if we should modify query.
+	 *
+	 * @param array $query Original query array.
+	 * @return boolean
+	 * @since 1.0.0
+	 */
+	private function should_modify( array $query ): bool {
+		global $wp;
+
+		$term          = get_queried_object();
+		$common        = OptGeneral::get( Settings::FIELD_COMMON_BASE_SLUG );
+		$this->matched = null;
+
+		$match = false;
+		foreach ( $this->list as $item ) {
+			if ( key_exists( $item, $query ) ) {
+				$match         = true;
+				$this->matched = $item;
+				break;
+			}
+		}
+
 		Logger::debug(
 			array(
-				'QUERY ORG' => $query_org,
-				'QUERY'     => $query,
+				'COMMON BASE' => $common,
+				'REQUEST'     => $wp->request,
+				'TERM'        => $term,
+				'QUERY'       => $query,
+				'RETURN'      => $match,
 			)
 		);
+		return $match;
+	}
+
+	/**
+	 * Fix attachment if it's matches our permalinks.
+	 *
+	 * @param array $query
+	 * @return array
+	 * @since 1.0.0
+	 */
+	private function fix_attachment( array $query ): array {
+		global $wp;
+
+		if ( ! key_exists( 'attachment', $query ) ) {
+			return $query;
+		}
+
+		$links   = PermaLinks::exec()->get();
+		$request = $wp->request;
+		$term    = $query['attachment'];
+		$request = trim( str_replace( '/' . $term, '', $request ) );
+		$key     = array_search( $request, $links );
+		Logger::debug(
+			array(
+				'REQUEST'    => $request,
+				'TERM'       => $term,
+				'KEY'        => $key,
+				'PERMALINKS' => $links,
+			)
+		);
+		if ( $key ) {
+			unset( $query['attachment'] );
+			$query[ $key ] = $term;
+		}
 
 		return $query;
 	}
@@ -200,7 +245,9 @@ class QueryVars implements Executable, Registrable {
 			)
 		);
 
-		$results = $wpdb->get_results( $sql );
+		$results   = $wpdb->get_results( $sql );
+		$query_org = $query;
+
 		if ( is_array( $results ) ) {
 			$results            = array_shift( $results );
 			$query['post_type'] = $results->post_type;
@@ -209,6 +256,15 @@ class QueryVars implements Executable, Registrable {
 		if ( isset( $this->matched ) ) {
 			unset( $query[ $this->matched ] );
 		}
+
+		Logger::debug(
+			array(
+				'RESULTS'   => $results,
+				'SQL'       => $sql,
+				'QUERY ORG' => $query_org,
+				'QUERY'     => $query,
+			)
+		);
 
 		return $query;
 	}
@@ -238,7 +294,7 @@ class QueryVars implements Executable, Registrable {
 			FROM {$wpdb->prefix}terms t
 			LEFT JOIN {$wpdb->prefix}term_taxonomy tt
 				ON t.term_id = tt.term_id
-			WHERE t.slug = %s
+			WHERE t.slug = %s and tt.term_id is not null
 		EOT;
 
 		$sql = $wpdb->prepare(
@@ -249,55 +305,22 @@ class QueryVars implements Executable, Registrable {
 		);
 
 		$results = $wpdb->get_results( $sql );
-		Logger::debug(
-			array(
-				'RESULTS' => $results,
-				'SQL'     => $sql,
-			)
-		);
 
 		if ( is_array( $results ) && isset( $results[0] ) ) {
-			$results = $results[0];
+			$results   = $results[0];
+			$query_org = $query;
 			unset( $query );
 			$query[ $results->taxonomy ] = $results->slug;
 		}
-		return $query;
-	}
-
-	/**
-	 * Check if we should modify query.
-	 *
-	 * @param array $query Original query array.
-	 * @return boolean
-	 * @since 1.0.0
-	 */
-	private function should_modify( array $query ): bool {
-		global $wp;
-
-		$term = get_queried_object();
-
-		$common = OptGeneral::get( Settings::FIELD_COMMON_BASE_SLUG );
-		if ( $common ) {
-			Logger::debug( array( 'COMMON BASE' ) );
-		}
-
-		$match = true;
-		foreach ( $this->list as $item ) {
-			if ( key_exists( $item, $query ) ) {
-				$match         = false;
-				$this->matched = $item;
-				break;
-			}
-		}
 
 		Logger::debug(
 			array(
-				'REQUEST' => $wp->request,
-				'TERM'    => $term,
-				'QUERY'   => $query,
-				'RETURN'  => $match,
+				'RESULTS'   => $results,
+				'SQL'       => $sql,
+				'QUERY ORG' => $query_org,
+				'QUERY'     => $query,
 			)
 		);
-		return $match;
+		return $query;
 	}
 }

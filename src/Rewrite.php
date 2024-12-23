@@ -13,6 +13,7 @@ namespace DRPPSM;
 
 defined( 'ABSPATH' ) || exit;
 
+use DRPPSM\Constants\Actions;
 use DRPPSM\Constants\PT;
 use DRPPSM\Constants\Tax;
 use DRPPSM\Interfaces\RewriteInt;
@@ -59,7 +60,20 @@ class Rewrite implements RewriteInt {
 		add_action( 'init', array( $this, 'find_conflicts' ) );
 		add_action( 'activate_plugin', array( $this, 'reset' ), 10, 2 );
 		add_action( 'deactivate_plugin', array( $this, 'reset' ), 10, 2 );
+		add_action( Actions::REWRITE_FLUSH, array( $this, 'flush' ) );
 		return true;
+	}
+
+	/**
+	 * Flush rewrite rules
+	 *
+	 * @return void
+	 * @since 1.0.0
+	 */
+	public function flush(): void {
+		flush_rewrite_rules();
+		delete_transient( self::TRANS_NAME );
+		Logger::debug( 'FLUSHED REWRITE RULES' );
 	}
 
 	/**
@@ -80,35 +94,30 @@ class Rewrite implements RewriteInt {
 	 * @return void
 	 * @since 1.0.0
 	 */
-	public function find_conflicts() {
+	public function find_conflicts(): void {
 		$trans = get_transient( self::TRANS_NAME );
 		if ( $trans ) {
 			return;
 		}
-
-		Logger::debug( 'HERE' );
 
 		$rewrite = $this->get_slugs();
 		$this->get_post_type_slugs( $rewrite );
 		$this->get_taxonmy_slugs( $rewrite );
 		$conflict = $this->has_conflicts( $rewrite );
 
-		Logger::debug(
-			array(
-				'REWRITE'   => $rewrite,
-				'CONFLICTS' => $conflict,
-			)
+		$info = array(
+			'conflict' => $conflict,
+			'rewrite'  => $rewrite,
+			'time'     => time(),
 		);
 
 		set_transient(
 			self::TRANS_NAME,
-			array(
-				'conflict' => $conflict,
-				'rewrite'  => $rewrite,
-				'time'     => time(),
-			),
+			$info,
 			self::TRANS_TIMEOUT
 		);
+
+		Logger::debug( $info );
 	}
 
 	/**
@@ -190,15 +199,5 @@ class Rewrite implements RewriteInt {
 			}
 		}
 		return $conflict;
-	}
-
-	/**
-	 * Force check to run again.
-	 *
-	 * @return void
-	 * @since 1.0.0
-	 */
-	public static function force() {
-		delete_transient( self::TRANS_NAME );
 	}
 }
