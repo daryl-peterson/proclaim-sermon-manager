@@ -94,7 +94,8 @@ class Templates implements Executable, Registrable {
 		$default_file = '';
 
 		if ( is_singular( $this->pt ) ) {
-			$default_file = 'single-drppsm_sermon.php';
+			// $default_file = 'single-drppsm_sermon.php';
+			$default_file = $this->get_single_template();
 		} elseif ( is_tax( get_object_taxonomies( $this->pt ) ) ) {
 			$term = get_queried_object();
 

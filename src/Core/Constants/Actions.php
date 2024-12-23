@@ -25,7 +25,19 @@ class Actions {
 	public const AFTER_POST_SETUP   = 'drppsm_after_post_setup';
 	public const AFTER_PLUGIN_LOAD  = 'drppsm_plugin_loaded';
 	public const TEXT_DOMAIN_LOADED = 'drppsm_textdomain';
-	public const REWRITE_FLUSH      = 'drppsm_rewrite_flush';
+
+	/**
+	 * Action to trigger rewrite rules to flush.
+	 *
+	 * @since 1.0.0
+	 *
+	 *
+	 * ```php
+	 * # Example
+	 * do_action( Actions::REWRITE_FLUSH );
+	 * ```
+	 */
+	public const REWRITE_FLUSH = 'drppsm_rewrite_flush';
 
 	/**
 	 * Fires after classes have been loaded.
@@ -37,13 +49,11 @@ class Actions {
 	/**
 	 * Register settings form.
 	 *
-	 * @param callable $display_cb Display form callback.
-	 * @return void
 	 * @since 1.0.0
 	 *
 	 *
 	 * ```php
-	 * # Use
+	 * # Example
 	 * add_action(REGISTER_SETTINGS_FORM,[$this,'regisiter_metaboxes',10,1]);
 	 * ```
 	 */
@@ -52,11 +62,10 @@ class Actions {
 	/**
 	 * Fires when the form is ready to be displayed.
 	 *
-	 * @return void
 	 * @since 1.0.0
 	 *
 	 * ```php
-	 * # Use
+	 * # Example
 	 * add_action(SERMON_EDIT_FORM, array($this,'your_function') );
 	 * ```
 	 */

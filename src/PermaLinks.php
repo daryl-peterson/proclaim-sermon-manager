@@ -82,6 +82,20 @@ class PermaLinks implements PermaLinkInt {
 		return $this->permalinks;
 	}
 
+	/**
+	 * Fix permalink options
+	 *
+	 * @param string $slug Name of slug.
+	 * @param string $default_value Default value if not found.
+	 * @return string
+	 * @since 1.0.0
+	 */
+	public static function fix_permalink( string $slug, string $default_value = '' ): string {
+		$value = OptGeneral::get( $slug, $default_value );
+		$value = trim( sanitize_title( $value ) );
+		return untrailingslashit( $value );
+	}
+
 
 	/**
 	 * Get service type
@@ -89,7 +103,7 @@ class PermaLinks implements PermaLinkInt {
 	 * @return string
 	 */
 	private function get_service_type(): string {
-		return fix_permalink(
+		return self::fix_permalink(
 			Settings::FIELD_SERVICE_TYPE,
 			_x( 'Service Type', 'slug', 'drppsm' )
 		);
@@ -101,7 +115,7 @@ class PermaLinks implements PermaLinkInt {
 	 * @return string
 	 */
 	private function get_preacher(): string {
-		return fix_permalink(
+		return self::fix_permalink(
 			Settings::FIELD_PREACHER,
 			_x( 'preacher', 'slug', 'drppsm' )
 		);
@@ -113,7 +127,7 @@ class PermaLinks implements PermaLinkInt {
 	 * @return string
 	 */
 	private function get_sermon(): string {
-		return fix_permalink(
+		return self::fix_permalink(
 			Settings::FIELD_ARCHIVE_SLUG,
 			_x( 'sermons', 'slug', 'drppsm' )
 		);
