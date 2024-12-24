@@ -14,14 +14,13 @@ namespace DRPPSM;
 defined( 'ABSPATH' ) || exit;
 
 use DRPPSM\Constants\Caps;
-use DRPPSM\Constants\Tax;
 use DRPPSM\Interfaces\OptionsInt;
 
 $permalinks = App::init()->permalinks();
 $opts       = App::init()->get( OptionsInt::class );
 $slug       = Tax::PREACHER;
 
-$label = OptGeneral::get( Settings::FIELD_PREACHER, __( 'Preacher', 'drppsm' ) );
+$label = OptGeneral::get( Tax::PREACHER_FIELD, _x( Tax::PREACHER_DEFAULT, 'slug', 'drppsm' ) );
 
 $capabilities = array(
 	'manage_terms' => Caps::MANAGE_CATAGORIES,

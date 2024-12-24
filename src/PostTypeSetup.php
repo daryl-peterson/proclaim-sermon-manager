@@ -18,7 +18,6 @@ defined( 'ABSPATH' ) || exit;
 use DRPPSM\Constants\Actions;
 use DRPPSM\PostTypeReg;
 use DRPPSM\Constants\PT;
-use DRPPSM\Constants\Tax;
 use DRPPSM\Exceptions\PluginException;
 use DRPPSM\Interfaces\PostTypeRegInt;
 use DRPPSM\Interfaces\PostTypeSetupInt;
@@ -234,6 +233,10 @@ class PostTypeSetup implements PostTypeSetupInt {
 			return null;
 		}
 
-		return $this->taxonomies[ $post_type ];
+		$result = $this->taxonomies[ $post_type ];
+
+		Logger::debug( array( 'RESULT' => $result ) );
+
+		return $result;
 	}
 }

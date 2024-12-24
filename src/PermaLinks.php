@@ -14,7 +14,6 @@ namespace DRPPSM;
 defined( 'ABSPATH' ) || exit;
 
 use DRPPSM\Constants\PT;
-use DRPPSM\Constants\Tax;
 use DRPPSM\Interfaces\PermaLinkInt;
 use DRPPSM\Traits\SingletonTrait;
 
@@ -116,7 +115,7 @@ class PermaLinks implements PermaLinkInt {
 	 */
 	private function get_preacher(): string {
 		return self::fix_permalink(
-			Settings::FIELD_PREACHER,
+			Tax::PREACHER_FIELD,
 			_x( 'preacher', 'slug', 'drppsm' )
 		);
 	}

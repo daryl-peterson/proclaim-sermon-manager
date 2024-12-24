@@ -2,7 +2,7 @@
 
 namespace DRPPSM\Tests;
 
-use DRPPSM\Constants\Tax;
+use DRPPSM\Tax;
 use DRPPSM\SermonDetail;
 use ReflectionMethod;
 use ReflectionProperty;

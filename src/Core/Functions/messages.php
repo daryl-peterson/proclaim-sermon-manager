@@ -25,10 +25,3 @@ define(
 	'DRPPSM_MSG_LABEL_SINGLE',
 	__( 'The label should be in the singular form.', 'drppsm' )
 );
-
-$value = get_slug(
-	Settings::FIELD_PREACHER,
-	_x( 'preacher', 'slug', 'drppsm' )
-);
-
-define( 'DRPPSM_SETTINGS_PREACHER', $value );

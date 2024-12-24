@@ -14,7 +14,6 @@ namespace DRPPSM;
 defined( 'ABSPATH' ) || exit;
 
 use DRPPSM\Constants\Caps;
-use DRPPSM\Constants\Tax;
 
 $permalinks   = App::init()->permalinks();
 $slug         = Tax::TOPICS;

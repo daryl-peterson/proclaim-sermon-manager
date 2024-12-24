@@ -14,7 +14,6 @@ namespace DRPPSM;
 defined( 'ABSPATH' ) || exit;
 
 use DRPPSM\Constants\Caps;
-use DRPPSM\Constants\Tax;
 use DRPPSM\Interfaces\OptionsInt;
 
 $permalinks = app()->permalinks();
@@ -27,7 +26,7 @@ $capabilities = array(
 	'delete_terms' => Caps::MANAGE_CATAGORIES,
 	'assign_terms' => Caps::MANAGE_CATAGORIES,
 );
-$label        = OptGeneral::get( Settings::FIELD_SERVICE_TYPE, __( 'Service Type', 'drppsm' ) );
+$label        = Tax::get_label( Tax::SERVICE_TYPE );
 
 Logger::debug( array( 'PERMA LINKS' => $permalinks ) );
 

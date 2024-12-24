@@ -3,7 +3,7 @@
 namespace DRPPSM\Tests;
 
 use DRPPSM\Constants\PT;
-use DRPPSM\Constants\Tax;
+use DRPPSM\Tax;
 use DRPPSM\TaxonomyReg;
 use WP_Error;
 

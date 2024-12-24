@@ -1,8 +1,12 @@
 <?php // phpcs:ignore
 /**
- * Template used for displaying archive pages
+ * Sermon archive template.
  *
- * @package SM/Views
+ * @package     DRPPSM/Views/
+ * @author      Daryl Peterson <@gmail.com>
+ * @copyright   Copyright (c) 2024, Daryl Peterson
+ * @license     https://www.gnu.org/licenses/gpl-3.0.txt
+ * @since       1.0.0
  */
 
 namespace DRPPSM;
@@ -12,7 +16,7 @@ get_header(); ?>
 <?php Templates::get_partial( 'content-sermon-wrapper-start' ); ?>
 
 <?php
-// echo render_wpfc_sorting();
+Templates::get_partial( 'content-sermon-filtering' );
 
 if ( have_posts() ) :
 

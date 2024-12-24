@@ -15,7 +15,6 @@ defined( 'ABSPATH' ) || exit;
 
 use DRPPSM\Constants\Actions;
 use DRPPSM\Constants\Bible;
-use DRPPSM\Constants\Tax;
 use DRPPSM\Interfaces\BibleLoaderInt;
 use DRPPSM\Logger;
 use WP_Error;

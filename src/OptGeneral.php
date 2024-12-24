@@ -30,6 +30,7 @@ class OptGeneral implements Initable, Registrable {
 	public const OPTION_KEY       = 'drppsm_options';
 	public const TRANSIENT_EXPIRE = '';
 
+
 	const DEFAULTS = array(
 		Settings::FIELD_PLAYER           => Settings::DEFAULT_PLAYER,
 		Settings::FIELD_MENU_ICON        => Settings::DEFAULT_MENU_ICON,
@@ -38,8 +39,10 @@ class OptGeneral implements Initable, Registrable {
 		Settings::FIELD_SERMON_COUNT     => Settings::DEFAULT_SERMON_COUNT,
 		Settings::FIELD_ARCHIVE_SLUG     => Settings::DEFAULT_ARCHIVE_SLUG,
 		Settings::FIELD_COMMON_BASE_SLUG => Settings::DEFAULT_COMMON_BASE_SLUG,
-		Settings::FIELD_PREACHER         => Settings::DEFAULT_PREACHER,
-		Settings::FIELD_SERVICE_TYPE     => Settings::DEFAULT_SERVICE_TYPE,
+		Tax::BIBLE_BOOK_FIELD            => Tax::BIBLE_BOOK_DEFAULT,
+		Tax::PREACHER_FIELD              => Tax::PREACHER_DEFAULT,
+		Tax::SERVICE_TYPE_FIELD          => Tax::SERVICE_TYPE_DEFAULT,
+		Tax::SERIES_FIELD                => Tax::SERIES_DEFAULT,
 	);
 
 	/**
@@ -508,10 +511,10 @@ class OptGeneral implements Initable, Registrable {
 		 */
 		$cmb->add_field(
 			array(
-				'id'        => Settings::FIELD_PREACHER,
+				'id'        => Tax::PREACHER_FIELD,
 				'name'      => __( 'Preacher Label', 'drppsm' ),
 				'type'      => 'text',
-				'default'   => Settings::DEFAULT_PREACHER,
+				'default'   => Tax::PREACHER_DEFAULT,
 				'after_row' => $this->description( $desc ),
 			)
 		);
@@ -543,10 +546,10 @@ class OptGeneral implements Initable, Registrable {
 
 		$cmb->add_field(
 			array(
-				'id'        => Settings::FIELD_SERVICE_TYPE,
+				'id'        => Tax::SERVICE_TYPE_FIELD,
 				'name'      => __( 'Service Type Label', 'drppsm' ),
 				'type'      => 'text',
-				'default'   => Settings::DEFAULT_SERVICE_TYPE,
+				'default'   => Tax::SERVICE_TYPE_DEFAULT,
 				'after_row' => $this->description( $desc ),
 			)
 		);

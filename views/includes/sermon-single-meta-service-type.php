@@ -14,13 +14,11 @@ namespace DRPPSM;
 
 defined( 'ABSPATH' ) || exit;
 
-use DRPPSM\Constants\Tax;
-
 if ( ! has_term( '', Tax::SERVICE_TYPE, $post->ID ) ) {
 	return '';
 }
 
-$label_service_type = OptGeneral::get( Settings::FIELD_SERVICE_TYPE );
+$label_service_type = Tax::get_label( Tax::SERVICE_TYPE );
 $service_type       = get_the_term_list( $post->ID, Tax::SERVICE_TYPE );
 
 $meta_service_type = <<<HTML

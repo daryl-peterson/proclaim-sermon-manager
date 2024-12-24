@@ -12,9 +12,7 @@
 
 namespace DRPPSM;
 
-use DRPPSM\Constants\Tax;
-
-$label_preacher = OptGeneral::get( Settings::FIELD_PREACHER, __( 'Preacher', 'drppsm' ) );
+$label_preacher = Tax::get_label( Tax::PREACHER );
 $preacher       = get_the_term_list( $post->ID, Tax::PREACHER );
 $meta_preacher  = '';
 

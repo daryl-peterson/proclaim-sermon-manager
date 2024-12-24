@@ -13,7 +13,6 @@ namespace DRPPSM;
 
 use DRPPSM\Constants\Meta;
 use DRPPSM\Constants\PT;
-use DRPPSM\Constants\Tax;
 use DRPPSM\Interfaces\Executable;
 use DRPPSM\Interfaces\Registrable;
 use WP_Error;

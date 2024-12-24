@@ -15,7 +15,6 @@ defined( 'ABSPATH' ) || exit;
 
 use DRPPSM\Constants\Actions;
 use DRPPSM\Constants\PT;
-use DRPPSM\Constants\Tax;
 use DRPPSM\Interfaces\RewriteInt;
 
 /**
@@ -60,7 +59,7 @@ class Rewrite implements RewriteInt {
 		add_action( 'init', array( $this, 'find_conflicts' ) );
 		add_action( 'activate_plugin', array( $this, 'reset' ), 10, 2 );
 		add_action( 'deactivate_plugin', array( $this, 'reset' ), 10, 2 );
-		add_action( Actions::REWRITE_FLUSH, array( $this, 'flush' ) );
+		add_action( DRPPSM_FLTR_FLUSH_REWRITE, array( $this, 'flush' ) );
 		return true;
 	}
 

@@ -15,7 +15,6 @@ defined( 'ABSPATH' ) || exit;
 
 use DRPPSM\Constants\Meta;
 use DRPPSM\Constants\PT;
-use DRPPSM\Constants\Tax;
 use DRPPSM\Interfaces\Executable;
 use DRPPSM\Interfaces\Registrable;
 
@@ -50,7 +49,7 @@ class SermonListTable implements Executable, Registrable {
 	 * @since 1.0.0
 	 */
 	protected function __construct() {
-		$preacher = OptGeneral::get( Settings::FIELD_PREACHER, __( 'Preacher', 'drppsm' ) );
+		$preacher = Tax::get_label( Tax::PREACHER );
 
 		$this->pt                         = PT::SERMON;
 		$this->columns['cb']              = '<input type="checkbox" />';

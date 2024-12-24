@@ -14,8 +14,6 @@ namespace DRPPSM;
 
 defined( 'ABSPATH' ) || exit;
 
-use DRPPSM\Constants\Tax;
-
 if ( ! has_term( '', Tax::SERIES, $post->ID ) ) {
 	return '';
 }
