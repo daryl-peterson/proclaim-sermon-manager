@@ -32,5 +32,5 @@ while ( have_posts() ) :
 		}
 	endif;
 endwhile;
-Templates::get_partial( 'content-sermon-wrapper-end' );
+Templates::get_partial( 'sermon-wrapper-end' );
 get_footer();

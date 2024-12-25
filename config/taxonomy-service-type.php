@@ -28,8 +28,6 @@ $capabilities = array(
 );
 $label        = Tax::get_label( Tax::SERVICE_TYPE );
 
-Logger::debug( array( 'PERMA LINKS' => $permalinks ) );
-
 return array(
 	'hierarchical' => false,
 	'label'        => ucwords( $label ),

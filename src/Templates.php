@@ -112,6 +112,8 @@ class Templates implements Executable, Registrable {
 			return DRPPSM_PATH . 'views/' . $default_file;
 		}
 
+		Logger::debug( array( 'TEMPLATE' => $template ) );
+
 		return $template;
 	}
 

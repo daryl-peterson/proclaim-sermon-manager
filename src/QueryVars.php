@@ -84,9 +84,56 @@ class QueryVars implements Executable, Registrable {
 			return false;
 		}
 		// add_action( 'parse_request', array( $this, 'parse_request' ) );
-		add_filter( 'request', array( $this, 'overwrite_query_vars' ), 10, 1 );
+		// add_filter( 'request', array( $this, 'overwrite_query_vars' ), 10, 1 );
+		add_filter( 'request', array( $this, 'request_query' ) );
 		Logger::debug( 'HOOKS REGISTERED' );
 		return true;
+	}
+
+	public function request_query( $vars ) {
+		global $typenow;
+
+		Logger::debug(
+			array(
+				'TYPENOW' => $typenow,
+				$vars,
+			)
+		);
+
+		if ( PT::SERMON === $typenow ) {
+			// Sorting.
+			if ( isset( $vars['orderby'] ) ) {
+				switch ( $vars['orderby'] ) {
+					case 'preached':
+						$vars = array_merge(
+							$vars,
+							array(
+								'meta_key'       => 'sermon_date',
+								'orderby'        => 'meta_value_num',
+								'meta_value_num' => time(),
+								'meta_compare'   => '<=',
+							)
+						);
+						break;
+
+					case 'views':
+						$vars = array_merge(
+							$vars,
+							array(
+								'meta_key' => 'Views',
+								'orderby'  => 'meta_value_num',
+							)
+						);
+						break;
+				}
+			}
+
+			if ( isset( $vars['wpfc_service_type'] ) && trim( $vars['wpfc_service_type'] ) === '' ) {
+				unset( $vars['wpfc_service_type'] );
+			}
+		}
+
+		return $vars;
 	}
 
 	/**
@@ -98,10 +145,14 @@ class QueryVars implements Executable, Registrable {
 	 */
 	public function overwrite_query_vars( array $query ): array {
 
+		return $query;
+
 		$msg = array(
 			'QUERY ORG' => $query,
 			'CONFLICTS' => $this->conflict,
 		);
+
+		$query = $this->fix_taxonomy( $query );
 
 		if ( ! isset( $this->conflict ) ) {
 			$msg['RESULT'] = 'NO CONFLICTS';
@@ -195,6 +246,29 @@ class QueryVars implements Executable, Registrable {
 			$query[ $key ] = $term;
 		}
 
+		return $query;
+	}
+
+	private function fix_taxonomy( array $query ): array {
+
+		/*
+		(
+			[page] =>
+			[drppsm_sermon] => service-types
+			[post_type] => drppsm_sermon
+			[name] => service-types
+		)
+
+		*/
+		if ( key_exists( PT::SERMON, $query ) ) {
+			$term = get_term_by( 'slug', $query[ PT::SERMON ] );
+			Logger::debug( array( 'TERM' => $term ) );
+			$query['taxonomy'] = Tax::SERVICE_TYPE;
+			unset( $query['page'] );
+			unset( $query['name'] );
+		}
+
+		Logger::debug( array( 'QUERY' => $query ) );
 		return $query;
 	}
 
