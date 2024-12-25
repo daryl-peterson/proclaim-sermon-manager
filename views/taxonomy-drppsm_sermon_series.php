@@ -3,7 +3,6 @@
  * Template used for displaying taxonomy archive pages
  *
  * @package SM/Views
- *
  */
 
 namespace DRPPSM;
@@ -11,7 +10,7 @@ namespace DRPPSM;
 get_header();
 ?>
 
-<?php Templates::get_partial( 'content-sermon-wrapper-start' ); ?>
+<?php Templates::get_partial( 'sermon-wrapper-start' ); ?>
 
 <?php
 // echo render_wpfc_sorting();
@@ -35,7 +34,7 @@ else :
 endif;
 ?>
 
-<?php Templates::get_partial( 'content-sermon-wrapper-end' ); ?>
+<?php Templates::get_partial( 'sermon-wrapper-end' ); ?>
 
 <?php
 get_footer();

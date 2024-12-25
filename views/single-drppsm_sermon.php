@@ -12,7 +12,7 @@
 namespace DRPPSM;
 
 get_header();
-Templates::get_partial( 'content-sermon-wrapper-start' );
+Templates::get_partial( 'sermon-wrapper-start' );
 
 while ( have_posts() ) :
 	global $post;

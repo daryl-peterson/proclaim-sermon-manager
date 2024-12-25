@@ -13,7 +13,7 @@ namespace DRPPSM;
 
 get_header();
 
-Templates::get_partial( 'content-sermon-wrapper-start' );
+Templates::get_partial( 'sermon-wrapper-start' );
 Templates::get_partial( 'content-sermon-filtering' );
 
 if ( have_posts() ) :
@@ -34,5 +34,5 @@ else :
 	echo __( 'Sorry, but there aren\'t any posts matching your query.' );
 endif;
 
-Templates::get_partial( 'content-sermon-wrapper-end' );
+Templates::get_partial( 'sermon-wrapper-end' );
 get_footer();
