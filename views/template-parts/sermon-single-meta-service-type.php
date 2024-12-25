@@ -28,4 +28,4 @@ $meta_service_type = <<<HTML
 	</div>
 HTML;
 
-return $meta_service_type;
+echo $meta_service_type;

@@ -75,29 +75,26 @@ class Templates implements Executable, Registrable {
 	 */
 	public function register(): ?bool {
 
-		if ( has_filter( 'template_include', array( $this, 'get_template' ) ) ) {
+		if ( has_filter( 'template_include', array( $this, 'template_include' ) ) ) {
 			return false;
 		}
-		add_filter( 'template_include', array( $this, 'get_template' ), 10, 1 );
+		add_filter( 'template_include', array( $this, 'template_include' ), 10, 1 );
 		return true;
 	}
 
 	/**
-	 * Get table for use.
+	 * Include template
 	 *
 	 * @param string $template Template name.
 	 * @return string
 	 * @since 1.0.0
 	 */
-	public function get_template( string $template ): string {
+	public function template_include( string $template ): string {
 		$default_file = '';
 
 		if ( is_singular( $this->pt ) ) {
-			// $default_file = 'single-drppsm_sermon.php';
 			$default_file = $this->get_single_template();
 		} elseif ( is_tax( get_object_taxonomies( $this->pt ) ) ) {
-			$term = get_queried_object();
-
 			if ( is_tax( Tax::LIST ) ) {
 				$default_file = $this->get_tax_template();
 			} else {
@@ -159,10 +156,26 @@ class Templates implements Executable, Registrable {
 		);
 
 		foreach ( $paths as $path ) {
-			$partial = locate_template( $path . $name );
+			$search = $path . $name;
+			Logger::debug( $search );
+			$partial = locate_template( $search );
 
 			if ( $partial ) {
 				break;
+			}
+		}
+
+		if ( ! $partial ) {
+
+			$search = array(
+				DRPPSM_PATH . 'views/partials/',
+				DRPPSM_PATH . 'views/template-parts/',
+			);
+			foreach ( $search as $path ) {
+				if ( file_exists( $path . $name ) ) {
+					$partial = $path . $name;
+					break;
+				}
 			}
 		}
 		Logger::debug(
@@ -174,14 +187,12 @@ class Templates implements Executable, Registrable {
 
 		if ( $partial ) {
 			load_template( $partial, false, $args );
-		} elseif ( file_exists( DRPPSM_PATH . 'views/partials/' . $name ) ) {
-			load_template( DRPPSM_PATH . 'views/partials/' . $name, false, $args );
 		} else {
 			$title  = DRPPSM_TITLE;
 			$error  = DRPPSM_MSG_FAILED_PARTIAL;
 			$error .= str_replace( '.php', '', $name );
 
-			echo "<b>$title</b>:<i>$error</i>." . DRPPSM_MSG_FILE_NOT_EXIST . '</p>';
+			echo "<b>$title</b>:<i>$error</i>. " . DRPPSM_MSG_FILE_NOT_EXIST . '</p>';
 		}
 	}
 
@@ -217,6 +228,18 @@ class Templates implements Executable, Registrable {
 		// Get the partial.
 		self::get_partial( 'content-sermon-single' );
 	}
+
+	public static function sermon_excerpt( $args = array() ) {
+		global $post;
+
+		$args += array(
+			'image_size' => 'post-thumbnail',
+		);
+
+		// Get the partial.
+		self::get_partial( 'content-sermon-archive', $args );
+	}
+
 
 	/**
 	 * Get single template.

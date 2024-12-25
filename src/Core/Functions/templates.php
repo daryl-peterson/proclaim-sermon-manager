@@ -16,11 +16,6 @@ use WP_Post;
 
 defined( 'ABSPATH' ) || exit;
 
-
-function get_taxonomy_label( string $tax ) {
-}
-
-
 /**
  * Build html option elements for select element.
  *
@@ -142,10 +137,17 @@ function get_sermon_image_url( bool $fallback = true, string $image_size = 'post
 	 * @since 2.15.2 - Added missing $image_size argument, and re-labelled $image to correct description.
 	 */
 	$result = apply_filters( 'get_sermon_image_url', $image, $fallback, $series_image_primary, $post, $image_size );
+	/*
 	if ( is_string( $result ) ) {
 		return $result;
 	}
-	return null;
+	*/
+
+	if ( ! $image ) {
+		$image = DRPPSM_URL . 'assets/images/spacer.png';
+	}
+	Logger::debug( array( 'IMAGE' => $image ) );
+	return $image;
 }
 
 function get_sermon_image( null|WP_Post $post = null, string $image_size = 'post-thumbnail' ) {
@@ -169,6 +171,10 @@ function get_series_image( null|int|WP_Post $post = null, string $image_size = '
 	$terms = get_the_terms( $post, Tax::SERIES );
 	$url   = null;
 
+	if ( ! is_array( $terms ) ) {
+		return $url;
+	}
+
 	foreach ( $terms as $term ) {
 		$meta = get_term_meta( $term->term_id, Meta::SERIES_IMAGE_ID, true );
 		$url  = null;
@@ -180,11 +186,5 @@ function get_series_image( null|int|WP_Post $post = null, string $image_size = '
 		}
 	}
 
-	Logger::debug(
-		array(
-			'URL'   => $url,
-			'TERMS' => $terms,
-		)
-	);
 	return $url;
 }

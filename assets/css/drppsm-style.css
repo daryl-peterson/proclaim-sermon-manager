@@ -1,6 +1,143 @@
 /* phpcs:ignoreFile */
 
-img.drppsm-sermon-single-image-img {
-	height: auto;
-	max-width: 100% !important;
+/******************************************************
+* SERMON ARCHIVE STYLES
+******************************************************/
+
+@media (min-width: 993px) {
+
+	.drppsm-archive-inner {
+		display: flex;
+		flex-direction: row;
+	}
+
+	.drppsm-archive-article {
+		padding: 2em !important;
+	}
+
+	.drppsm-archive-image {
+		width: 20%;
+	}
+
+	.drppsm-archive-main {
+		width: 80%;
+		padding-left: 1em;
+	}
+
+	.drppsm-archive-meta-item {
+		display: flex;
+		flex-direction: row;
+	}
+
+	.drppsm-archive-meta-title {
+		flex: 0 0 100%;
+	}
+
+	.drppsm-archive-meta-prefix {
+		width: 15%;
+	}
+
+	.drppsm-archive-meta-text {
+		width: 80%;
+	}
+
+	.drppsm-archive-meta-text>h4 {
+		text-align: center;
+	}
+
+}
+
+@media (max-width: 544px) {
+	.drppsm-archive-article {
+		padding: 0;
+	}
+
+	.drppsm-archive-inner {
+		display: grid;
+	}
+
+	.drppsm-archive-image {
+		width: 100%;
+	}
+
+	.drppsm-archive-image-img {
+		width: 100%;
+		height: auto !important;
+	}
+
+	.drppsm-archive-main {
+		width: 100%;
+		padding-left: 0;
+	}
+
+	.drppsm-archive-meta-item {
+		display: inline-block;
+		width: 100%;
+	}
+
+	.drppsm-archive-meta-title {
+		flex: 0 0 100%;
+	}
+
+	.drppsm-archive-meta-prefix {
+		display: inline-block;
+	}
+
+	.drppsm-archive-meta-text {
+		display: inline-block;
+	}
+
+	.drppsm-archive-meta-text>h4 {
+		text-align: left;
+		padding-top: 1em;
+	}
+}
+
+/******************************************************
+* SERMON SINGE STYLES
+******************************************************/
+@media (min-width: 993px) {
+	.drppsm-single-inner {
+		display: flex;
+		flex-direction: row;
+	}
+
+	.drppsm-single-article {
+		padding: 2em !important;
+	}
+
+	.drppsm-single-image {
+		width: 35% !important;
+	}
+
+	.drppsm-single-image-img {
+		width: 100%;
+		height: auto !important;
+	}
+
+	.drppsm-single-main {
+		width: 65%;
+		padding-left: 1em;
+	}
+
+	.drppsm-single-meta-item {
+		display: flex;
+		flex-direction: row;
+	}
+
+	.drppsm-single-meta-title {
+		flex: 0 0 100%;
+	}
+
+	.drppsm-single-meta-prefix {
+		width: 15%;
+	}
+
+	.drppsm-single-meta-text {
+		width: 80%;
+	}
+
+	.drppsm-single-meta-text>h4 {
+		text-align: center;
+	}
 }

@@ -11,11 +11,9 @@
 
 namespace DRPPSM;
 
-get_header(); ?>
+get_header();
 
-<?php Templates::get_partial( 'content-sermon-wrapper-start' ); ?>
-
-<?php
+Templates::get_partial( 'content-sermon-wrapper-start' );
 Templates::get_partial( 'content-sermon-filtering' );
 
 if ( have_posts() ) :
@@ -24,7 +22,7 @@ if ( have_posts() ) :
 
 	while ( have_posts() ) :
 		the_post();
-		// wpfc_sermon_excerpt_v2(); // You can edit the content of this function in `partials/content-sermon-archive.php`.
+		Templates::sermon_excerpt();
 	endwhile;
 
 	echo apply_filters( 'archive-wpfc_sermon-after-sermons', '' );
@@ -35,9 +33,6 @@ if ( have_posts() ) :
 else :
 	echo __( 'Sorry, but there aren\'t any posts matching your query.' );
 endif;
-?>
 
-<?php Templates::get_partial( 'content-sermon-wrapper-end' ); ?>
-
-<?php
+Templates::get_partial( 'content-sermon-wrapper-end' );
 get_footer();

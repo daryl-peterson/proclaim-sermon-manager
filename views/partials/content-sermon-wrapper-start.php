@@ -13,7 +13,7 @@ defined( 'ABSPATH' ) or exit;
 
 $wrapper = <<<EOT
 	<div id="primary" class="content-area">
-		<main id="main" class="site-main drppsm-sermon-container">
+		<main id="main" class="drppsm-sermon-container">
 
 EOT;
 
