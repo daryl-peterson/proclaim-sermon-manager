@@ -20,6 +20,6 @@ if ( ! has_term( '', Tax::SERIES, $post->ID ) ) {
 
 ?>
 <div class="drppsm-single-meta-item">
-	<div class="drppsm-single-meta-prefix"><?php echo Tax::get_label( Tax::SERIES ); ?></div>
+	<div class="drppsm-single-meta-prefix"><?php echo ucfirst( Tax::get_label( Tax::SERIES ) ); ?></div>
 	<div class="drppsm-single-meta-text"><?php echo get_the_term_list( $post->ID, Tax::SERIES ); ?></div>
 </div>

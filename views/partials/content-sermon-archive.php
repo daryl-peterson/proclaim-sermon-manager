@@ -27,6 +27,7 @@ $post_class = esc_attr( implode( ' ', get_post_class( 'drppsm-archive-article', 
 				Templates::get_partial( 'sermon-archive-meta-date' );
 				Templates::get_partial( 'sermon-archive-meta-series' );
 				Templates::get_partial( 'sermon-archive-meta-preacher' );
+				Templates::get_partial( 'sermon-archive-meta-service-type' );
 			?>
 		</div>
 	</div>

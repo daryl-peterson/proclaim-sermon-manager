@@ -13,6 +13,7 @@
 
 	.drppsm-archive-article {
 		padding: 2em !important;
+
 	}
 
 	.drppsm-archive-image {
@@ -39,10 +40,6 @@
 
 	.drppsm-archive-meta-text {
 		width: 80%;
-	}
-
-	.drppsm-archive-meta-text>h4 {
-		text-align: center;
 	}
 
 }
@@ -87,10 +84,6 @@
 		display: inline-block;
 	}
 
-	.drppsm-archive-meta-text>h4 {
-		text-align: left;
-		padding-top: 1em;
-	}
 }
 
 /******************************************************
@@ -104,6 +97,7 @@
 
 	.drppsm-single-article {
 		padding: 2em !important;
+
 	}
 
 	.drppsm-single-image {
@@ -137,7 +131,4 @@
 		width: 80%;
 	}
 
-	.drppsm-single-meta-text>h4 {
-		text-align: center;
-	}
 }
