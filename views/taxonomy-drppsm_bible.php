@@ -8,7 +8,7 @@
 get_header();
 ?>
 
-<?php echo wpfc_get_partial( 'content-sermon-wrapper-start' ); ?>
+<?php echo wpfc_get_partial( 'sermon-wrapper-start' ); ?>
 
 <?php
 echo render_wpfc_sorting();
@@ -32,7 +32,7 @@ else :
 endif;
 ?>
 
-<?php echo wpfc_get_partial( 'content-sermon-wrapper-end' ); ?>
+<?php echo wpfc_get_partial( 'sermon-wrapper-end' ); ?>
 
 <?php
 get_footer();
