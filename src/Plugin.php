@@ -96,6 +96,7 @@ class Plugin implements PluginInt {
 		try {
 			options()->set( 'activated', time() );
 			flush_rewrite_rules();
+			// do_action( DRPPSM_FLTR_FLUSH_REWRITE );
 			Logger::debug( 'ACTIVATED' );
 			// @codeCoverageIgnoreStart
 		} catch ( \Throwable $th ) {

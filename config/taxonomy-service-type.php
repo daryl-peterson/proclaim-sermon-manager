@@ -13,19 +13,9 @@ namespace DRPPSM;
 
 defined( 'ABSPATH' ) || exit;
 
-use DRPPSM\Constants\Caps;
-use DRPPSM\Interfaces\OptionsInt;
-
-$permalinks = app()->permalinks();
-$opts       = app()->get( OptionsInt::class );
-$slug       = Tax::SERVICE_TYPE;
-
-$capabilities = array(
-	'manage_terms' => Caps::MANAGE_CATAGORIES,
-	'edit_terms'   => Caps::MANAGE_CATAGORIES,
-	'delete_terms' => Caps::MANAGE_CATAGORIES,
-	'assign_terms' => Caps::MANAGE_CATAGORIES,
-);
+$permalinks   = app()->permalinks();
+$slug         = Tax::SERVICE_TYPE;
+$capabilities = Tax::CAPS;
 $label        = Tax::get_label( Tax::SERVICE_TYPE );
 
 return array(

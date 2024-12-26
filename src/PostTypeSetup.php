@@ -91,7 +91,7 @@ class PostTypeSetup implements PostTypeSetupInt {
 		}
 
 		add_action( 'init', array( $this, 'add' ) );
-		add_action( DRPPSM_FLTR_FLUSH_REWRITE, array( $this, 'flush' ) );
+		// add_action( DRPPSM_FLTR_FLUSH_REWRITE, array( $this, 'flush' ) );
 		return true;
 	}
 
@@ -130,7 +130,7 @@ class PostTypeSetup implements PostTypeSetupInt {
 				}
 			}
 
-			flush_rewrite_rules( false );
+			do_action( DRPPSM_FLTR_FLUSH_REWRITE );
 			do_action( Actions::AFTER_POST_SETUP );
 
 			return $status;
@@ -192,7 +192,7 @@ class PostTypeSetup implements PostTypeSetupInt {
 	 * @since 1.0.0
 	 */
 	public function flush(): void {
-		flush_rewrite_rules( false );
+		do_action( DRPPSM_FLTR_FLUSH_REWRITE );
 	}
 
 	/**

@@ -11,6 +11,7 @@
 
 namespace DRPPSM;
 
+use DRPPSM\Constants\Caps;
 use DRPPSM\Interfaces\Executable;
 use DRPPSM\OptGeneral;
 
@@ -51,6 +52,13 @@ class Tax implements Executable {
 		self::SERVICE_TYPE,
 		self::SERIES,
 		self::TOPICS,
+	);
+
+	public const CAPS = array(
+		'manage_terms' => Caps::MANAGE_CATAGORIES,
+		'edit_terms'   => Caps::MANAGE_CATAGORIES,
+		'delete_terms' => Caps::MANAGE_CATAGORIES,
+		'assign_terms' => Caps::MANAGE_CATAGORIES,
 	);
 
 	public array $map;

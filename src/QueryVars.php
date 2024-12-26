@@ -84,8 +84,8 @@ class QueryVars implements Executable, Registrable {
 			return false;
 		}
 		// add_action( 'parse_request', array( $this, 'parse_request' ) );
-		// add_filter( 'request', array( $this, 'overwrite_query_vars' ), 10, 1 );
-		add_filter( 'request', array( $this, 'request_query' ) );
+		add_filter( 'request', array( $this, 'overwrite_query_vars' ) );
+		// add_filter( 'request', array( $this, 'request_query' ) );
 		Logger::debug( 'HOOKS REGISTERED' );
 		return true;
 	}
@@ -145,36 +145,15 @@ class QueryVars implements Executable, Registrable {
 	 */
 	public function overwrite_query_vars( array $query ): array {
 
-		return $query;
-
-		$msg = array(
-			'QUERY ORG' => $query,
-			'CONFLICTS' => $this->conflict,
-		);
-
-		$query = $this->fix_taxonomy( $query );
-
-		if ( ! isset( $this->conflict ) ) {
-			$msg['RESULT'] = 'NO CONFLICTS';
-			Logger::debug( $msg );
-			return $query;
-		}
+		$query_org = $query;
 
 		$query = $this->fix_attachment( $query );
 
-		if ( ! $this->should_modify( $query ) ) {
-			$msg['RESULT'] = 'NOT OURS';
-			Logger::debug( $msg );
-			return $query;
-		}
-
-		if ( isset( $query['post_type'] ) ) {
-			$query = $this->post_query( $query );
-		} else {
-			$query = $this->tax_query( $query );
-		}
-
-		$msg['QUERY'] = $query;
+		$msg = array(
+			'QUERY ORG' => $query_org,
+			'QUERY'     => $query,
+			'CONFLICTS' => $this->conflict,
+		);
 		Logger::debug( $msg );
 		return $query;
 	}

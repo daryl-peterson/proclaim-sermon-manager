@@ -70,7 +70,7 @@ class Rewrite implements RewriteInt {
 	 * @since 1.0.0
 	 */
 	public function flush(): void {
-		flush_rewrite_rules();
+		flush_rewrite_rules( false );
 		delete_transient( self::TRANS_NAME );
 		Logger::debug( 'FLUSHED REWRITE RULES' );
 	}

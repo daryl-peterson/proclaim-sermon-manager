@@ -13,16 +13,9 @@ namespace DRPPSM;
 
 defined( 'ABSPATH' ) || exit;
 
-use DRPPSM\Constants\Caps;
-
 $permalinks   = App::init()->permalinks();
 $slug         = Tax::SERIES;
-$capabilities = array(
-	'manage_terms' => Caps::MANAGE_CATAGORIES,
-	'edit_terms'   => Caps::MANAGE_CATAGORIES,
-	'delete_terms' => Caps::MANAGE_CATAGORIES,
-	'assign_terms' => Caps::MANAGE_CATAGORIES,
-);
+$capabilities = Tax::CAPS;
 
 return array(
 	'hierarchical' => false,

@@ -13,21 +13,11 @@ namespace DRPPSM;
 
 defined( 'ABSPATH' ) || exit;
 
-use DRPPSM\Constants\Caps;
-use DRPPSM\Interfaces\OptionsInt;
-
-$permalinks = App::init()->permalinks();
-$opts       = App::init()->get( OptionsInt::class );
-$slug       = Tax::PREACHER;
-
-$label = OptGeneral::get( Tax::PREACHER_FIELD, _x( Tax::PREACHER_DEFAULT, 'slug', 'drppsm' ) );
-
-$capabilities = array(
-	'manage_terms' => Caps::MANAGE_CATAGORIES,
-	'edit_terms'   => Caps::MANAGE_CATAGORIES,
-	'delete_terms' => Caps::MANAGE_CATAGORIES,
-	'assign_terms' => Caps::MANAGE_CATAGORIES,
-);
+$permalinks   = App::init()->permalinks();
+$slug         = Tax::PREACHER;
+$label        = Tax::get_label( Tax::PREACHER );
+$label        = isset( $label ) ? $label : _x( Tax::PREACHER_DEFAULT, 'slug', 'drppsm' );
+$capabilities = Tax::CAPS;
 
 return array(
 	'hierarchical' => false,

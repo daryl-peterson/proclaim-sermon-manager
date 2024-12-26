@@ -64,10 +64,8 @@ class PostTypeReg implements PostTypeRegInt {
 	 * @since 1.0.0
 	 */
 	public function add(): void {
-		global $wp_post_types;
 
-		// $exist = $this->exist();
-		$exist = false;
+		$exist = $this->exist();
 
 		// @codeCoverageIgnoreStart
 		if ( ! is_blog_installed() || $exist ) {
