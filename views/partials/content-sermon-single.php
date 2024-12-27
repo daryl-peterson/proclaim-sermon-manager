@@ -19,21 +19,19 @@ $post_class = esc_attr( implode( ' ', get_post_class( 'drppsm-single-article', $
 ?>
 
 <article id="post-<?php the_ID(); ?>" class="<?php echo $post_class; ?>">
-
 	<div class="drppsm-single-inner">
 		<?php
-			Templates::get_partial( 'sermon-single-image' );
+			get_partial( 'sermon-single-image' );
 		?>
 		<div class="drppsm-single-main">
 			<?php
-				Templates::get_partial( 'sermon-single-meta-title' );
-				Templates::get_partial( 'sermon-single-meta-date' );
-				Templates::get_partial( 'sermon-single-meta-series' );
-				Templates::get_partial( 'sermon-single-meta-preacher' );
+				get_partial( 'sermon-single-meta-title' );
+				get_partial( 'sermon-single-meta-date' );
+				get_partial( 'sermon-single-meta-series' );
+				get_partial( 'sermon-single-meta-preacher' );
+				get_partial( 'sermon-single-meta-views' );
 			?>
-
 		</div>
-
 	</div>
 </article>
 

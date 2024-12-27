@@ -1,8 +1,13 @@
-<?php // phpcs:ignore
+<?php
+
 /**
- * Template used for displaying taxonomy archive pages
+ * Sermon taxonomy series
  *
- * @package SM/Views
+ * @package     DRPPSM/Views/Partials
+ * @author      Daryl Peterson <@gmail.com>
+ * @copyright   Copyright (c) 2024, Daryl Peterson
+ * @license     https://www.gnu.org/licenses/gpl-3.0.txt
+ * @since       1.0.0
  */
 
 namespace DRPPSM;
@@ -10,7 +15,7 @@ namespace DRPPSM;
 get_header();
 ?>
 
-<?php Templates::get_partial( 'sermon-wrapper-start' ); ?>
+<?php get_partial( 'sermon-wrapper-start' ); ?>
 
 <?php
 // echo render_wpfc_sorting();
@@ -34,7 +39,7 @@ else :
 endif;
 ?>
 
-<?php Templates::get_partial( 'sermon-wrapper-end' ); ?>
+<?php get_partial( 'sermon-wrapper-end' ); ?>
 
 <?php
 get_footer();

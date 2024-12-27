@@ -88,8 +88,6 @@ class Tax implements Executable {
 		);
 	}
 
-
-
 	/**
 	 * Initailize and register hooks.
 	 *
@@ -106,10 +104,10 @@ class Tax implements Executable {
 		return array_keys( $obj->map );
 	}
 
-	public static function get_label( string $tax ): ?string {
+	public static function get_label( string $tax, string $default = '' ): ?string {
 		$obj   = self::exec();
 		$label = $obj->get_value( $tax, 'label' );
-		return OptGeneral::get( $label, '' );
+		return OptGeneral::get( $label, $default );
 	}
 
 	public static function get_default( string $tax ): string {

@@ -13,7 +13,6 @@ namespace DRPPSM;
 
 use WP_Taxonomy;
 
-
 function taxonomy_field( $taxonomy, $field_name ) {
 	$taxonomy = get_taxonomy( $taxonomy );
 

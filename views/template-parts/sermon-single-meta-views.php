@@ -12,9 +12,11 @@
 namespace DRPPSM;
 
 defined( 'ABSPATH' ) || exit;
-
+Logger::debug( $post );
+$view_label = __( 'Views', 'drppsm' );
+$view_count = get_sermon_view_count( (int) $post->ID );
 ?>
 <div class="drppsm-single-meta-item">
-	<div class="drppsm-single-meta-prefix">Date</div>
-	<div class="drppsm-single-meta-text"><?php the_date(); ?></div>
+	<div class="drppsm-single-meta-prefix"><?php echo $view_label; ?></div>
+	<div class="drppsm-single-meta-text"><?php echo $view_count; ?></div>
 </div>

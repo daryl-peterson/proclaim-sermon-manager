@@ -118,3 +118,6 @@ define( 'DRPPSM_FLTR_SERMON_SINGLE_OVR', 'drppsm_fltr_sermon_single_ovr' );
  * @return string
  */
 define( 'DRPPSM_FLTR_SERMON_IMAGE_SIZE', 'drppsm_fltr_sermon_image_size' );
+
+
+define( 'DRPPSM_ACT_TEMPLATE_ERROR', 'drppsm_act_template_error' );

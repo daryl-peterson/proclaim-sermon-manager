@@ -37,12 +37,7 @@ class Templates implements Executable, Registrable {
 	 */
 	private string $pt;
 
-	/**
-	 * Post types and taxonomies allowed.
-	 *
-	 * @var array
-	 */
-	private array $types;
+	private string $html_error;
 
 	/**
 	 * Initialize object properties.
@@ -50,8 +45,8 @@ class Templates implements Executable, Registrable {
 	 * @since 1.0.0
 	 */
 	protected function __construct() {
-		$this->pt    = PT::SERMON;
-		$this->types = array_merge( Tax::LIST, array( PT::SERMON ) );
+		$this->pt         = PT::SERMON;
+		$this->html_error = '';
 	}
 
 	/**
@@ -120,16 +115,12 @@ class Templates implements Executable, Registrable {
 	/**
 	 * Get partial template.
 	 *
-	 * - `/wp-contents/themes/<theme_name>/partials/<partial_name>.php`
-	 * - `/wp-contents/themes/<theme_name>/template-parts/<partial_name>.php`
-	 * - `/wp-contents/themes/<theme_name>/<partial_name>.php`
-	 *
 	 * @param string $name File name.
 	 * @param array  $args Array of variables to pass to template.
 	 * @return void
 	 * @since 1.0.0
 	 */
-	public static function get_partial( string $name, null|array $args = array() ): void {
+	public function get_partial( string $name, array $args = array() ): void {
 
 		/**
 		 * Allows for filtering partial content.
@@ -144,60 +135,25 @@ class Templates implements Executable, Registrable {
 			return;
 		}
 
-		if ( false === strpos( $name, '.php' ) ) {
-			$name .= '.php';
-		}
-
-		/**
-		 * No template partial so let's continue.
-		 */
-		$paths = array(
-			'partials/',
-			'template-parts/',
-			'',
-		);
-
-		foreach ( $paths as $path ) {
-			$search = $path . $name;
-			Logger::debug( $search );
-			$partial = locate_template( $search );
-
-			if ( $partial ) {
-				break;
-			}
-		}
+		$name    = $this->fix_template_name( $name );
+		$partial = $this->get_partial_theme( $name );
 
 		if ( ! $partial ) {
-
-			$search = array(
-				DRPPSM_PATH . 'views/partials/',
-				DRPPSM_PATH . 'views/template-parts/',
-			);
-			foreach ( $search as $path ) {
-				if ( file_exists( $path . $name ) ) {
-					$partial = $path . $name;
-					break;
-				}
-			}
+			$partial = $this->get_partial_plugin( $name );
 		}
-		Logger::debug(
-			array(
-				'NAME'             => $name,
-				'PARTIAL TEMPLATE' => $partial,
-			)
-		);
 
 		if ( $partial ) {
 			load_template( $partial, false, $args );
 		} else {
-			$title  = DRPPSM_TITLE;
-			$error  = DRPPSM_MSG_FAILED_PARTIAL;
-			$error .= str_replace( '.php', '', $name );
-
-			echo "<b>$title</b>:<i>$error</i>. " . DRPPSM_MSG_FILE_NOT_EXIST . '</p>';
+			$this->template_error( $name );
+			Logger::error(
+				array(
+					'NAME' => $name,
+					'ARGS' => $args,
+				)
+			);
 		}
 	}
-
 
 	/**
 	 * Get sermon single.
@@ -206,7 +162,7 @@ class Templates implements Executable, Registrable {
 	 * @return void
 	 * @since 1.0.0
 	 */
-	public static function sermon_single( ?WP_Post $post_new = null ): void {
+	public function sermon_single( ?WP_Post $post_new = null ): void {
 
 		if ( null === $post_new ) {
 			global $post;
@@ -228,20 +184,53 @@ class Templates implements Executable, Registrable {
 		}
 
 		// Get the partial.
-		self::get_partial( 'content-sermon-single' );
+		$this->get_partial( 'content-sermon-single' );
 	}
 
-	public static function sermon_excerpt( $args = array() ) {
-		global $post;
+	/**
+	 * Get sermon excerpt
+	 *
+	 * @param array $args
+	 * @return void
+	 * @since 1.0.0
+	 */
+	public function sermon_excerpt( $args = array() ): void {
 
 		$args += array(
 			'image_size' => 'post-thumbnail',
 		);
 
 		// Get the partial.
-		self::get_partial( 'content-sermon-archive', $args );
+		$this->get_partial( 'content-sermon-archive', $args );
 	}
 
+	/**
+	 * Make sure template name ends with .php .
+	 *
+	 * @param string $name
+	 * @return string
+	 */
+	private function fix_template_name( string $name ): string {
+		if ( false === strpos( $name, '.php' ) ) {
+			$name .= '.php';
+		}
+		return $name;
+	}
+
+	/**
+	 * Get archive template.
+	 *
+	 * @return null|string Return file name if true,otherwise null.
+	 * @since 1.0.0
+	 */
+	private function get_archive_template(): ?string {
+		if ( ! is_post_type_archive( $this->pt ) ) {
+			Logger::debug( 'NOT A ARCHIVE TEMPLATE' );
+			return null;
+		}
+		Logger::debug( "IT'S A ARCHIVE TEMPLATE" );
+		return "archive-{$this->pt}.php";
+	}
 
 	/**
 	 * Get single template.
@@ -259,21 +248,6 @@ class Templates implements Executable, Registrable {
 	}
 
 	/**
-	 * Get archive template.
-	 *
-	 * @return null|string Return file name if true,otherwise null.
-	 * @since 1.0.0
-	 */
-	public function get_archive_template(): ?string {
-		if ( ! is_post_type_archive( $this->pt ) ) {
-			Logger::debug( 'NOT A ARCHIVE TEMPLATE' );
-			return null;
-		}
-		Logger::debug( "IT'S A ARCHIVE TEMPLATE" );
-		return "archive-{$this->pt}.php";
-	}
-
-	/**
 	 * Get taxonomy template.
 	 *
 	 * @return null|string Return file name if true,otherwise null.
@@ -288,5 +262,96 @@ class Templates implements Executable, Registrable {
 			$template_file = "archive-{$this->pt}.php";
 		}
 		return $template_file;
+	}
+
+	/**
+	 * Get partial from theme.
+	 *
+	 * @param string $name
+	 * @return null|string
+	 * @since 1.0.0
+	 */
+	private function get_partial_theme( string $name ): ?string {
+		$partial = null;
+
+		$paths = array(
+			'partials/',
+			'template-parts/',
+			'',
+		);
+
+		foreach ( $paths as $path ) {
+			$search  = $path . $name;
+			$partial = locate_template( $search );
+
+			if ( $partial ) {
+				break;
+			}
+		}
+		Logger::debug(
+			array(
+				'PARTIAL' => $partial,
+				'NAME'    => $name,
+			)
+		);
+		return $partial;
+	}
+
+	/**
+	 * Get plugin partial template
+	 *
+	 * @param string $name
+	 * @return null|string
+	 * @since 1.0.0
+	 */
+	private function get_partial_plugin( string $name ): ?string {
+		$partial = null;
+
+		$search = array(
+			DRPPSM_PATH . 'views/partials/',
+			DRPPSM_PATH . 'views/template-parts/',
+		);
+		foreach ( $search as $path ) {
+			if ( file_exists( $path . $name ) ) {
+				$partial = $path . $name;
+				break;
+			}
+		}
+		Logger::debug(
+			array(
+				'PARTIAL' => $partial,
+				'NAME'    => $name,
+			)
+		);
+		return $partial;
+	}
+
+	/**
+	 * Display template error
+	 *
+	 * @param string $name
+	 * @return void
+	 * @since 1.0.0
+	 */
+	private function template_error( string $name ): void {
+
+		$title = DRPPSM_TITLE;
+		$error = DRPPSM_MSG_FAILED_PARTIAL . " $name . " . DRPPSM_MSG_FILE_NOT_EXIST;
+
+		$html = '';
+		if ( did_action( DRPPSM_ACT_TEMPLATE_ERROR ) ) {
+			return;
+		}
+
+		$html .= <<<HTML
+
+				<div class="drppsm-error-wrap">
+					<article class="drppsm-template-error">
+						<b>$title</b>:<i>$error</i>
+					</article>
+				</div>
+		HTML;
+		echo $html;
+		do_action( DRPPSM_ACT_TEMPLATE_ERROR );
 	}
 }

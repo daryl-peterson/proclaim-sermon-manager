@@ -16,8 +16,8 @@ defined( 'ABSPATH' ) || exit;
 
 ?>
 <div class="drppsm-archive-meta-item">
-	<div class="drppsm-archive-meta-prefix"></div>
-	<div class="drppsm-archive-meta-text">
+	<div class="drppsm-archive-title-prefix"></div>
+	<div class="drppsm-archive-title-text">
 		<a href="<?php the_permalink( $post->id ); ?>">
 			<h4><?php the_title( '', '' ); ?></h4>
 		</a>

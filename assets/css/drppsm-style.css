@@ -34,14 +34,15 @@
 		flex: 0 0 100%;
 	}
 
-	.drppsm-archive-meta-prefix {
+	.drppsm-archive-meta-prefix,
+	.drppsm-archive-title-prefix {
 		width: 15%;
 	}
 
-	.drppsm-archive-meta-text {
+	.drppsm-archive-meta-text,
+	.drppsm-archive-title-text {
 		width: 80%;
 	}
-
 }
 
 @media (max-width: 544px) {
@@ -84,12 +85,26 @@
 		display: inline-block;
 	}
 
+	.drppsm-archive-title-prefix {
+		width: 0;
+		margin: 0;
+		padding: 0;
+		display: none;
+	}
+
+	.drppsm-archive-title-text {
+		width: 100%;
+		padding-top: .5em;
+		padding-bottom: .5em;
+	}
+
 }
 
 /******************************************************
 * SERMON SINGE STYLES
 ******************************************************/
 @media (min-width: 993px) {
+
 	.drppsm-single-inner {
 		display: flex;
 		flex-direction: row;
@@ -123,12 +138,92 @@
 		flex: 0 0 100%;
 	}
 
-	.drppsm-single-meta-prefix {
+	.drppsm-single-meta-prefix,
+	.drppsm-single-title-prefix {
 		width: 15%;
 	}
 
-	.drppsm-single-meta-text {
+	.drppsm-single-meta-text,
+	.drppsm-single-title-text {
 		width: 80%;
 	}
+}
 
+@media (max-width: 544px) {
+	.drppsm-single-article {
+		padding: 0;
+	}
+
+	.drppsm-single-inner {
+		display: grid;
+	}
+
+	.drppsm-single-image {
+		width: 100%;
+	}
+
+	.drppsm-single-image-img {
+		width: 100%;
+		height: auto !important;
+	}
+
+	.drppsm-single-main {
+		width: 100%;
+		padding-left: 0;
+		min-height: 80vh;
+	}
+
+	.drppsm-single-meta-item {
+		display: inline-block;
+		width: 100%;
+	}
+
+	.drppsm-single-meta-prefix {
+		display: inline-block;
+	}
+
+	.drppsm-single-meta-text {
+		display: inline-block;
+	}
+
+	.drppsm-single-meta-text>a>h4 {
+		padding-top: .5em;
+		padding-bottom: .5em;
+	}
+
+	.drppsm-single-title-prefix {
+		width: 0;
+		margin: 0;
+		padding: 0;
+		display: none;
+	}
+
+	.drppsm-single-title-text {
+		width: 100%;
+		padding-top: .5em;
+		padding-bottom: .5em;
+	}
+}
+
+.drppsm-sermon-container {
+	min-height: 70vh;
+}
+
+.drppsm-single-player {
+	display: flex;
+	flex-direction: row;
+}
+
+.drppsm-error-wrap {
+	padding: 1.5em;
+	flex-grow: 1;
+	flex-shrink: 0;
+	flex-basis: 100%;
+	min-height: 80vh;
+}
+
+.drppsm-template-error {
+	flex-direction: column;
+	width: 100%;
+	height: 100%;
 }

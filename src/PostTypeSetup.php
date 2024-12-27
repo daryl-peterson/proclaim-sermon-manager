@@ -130,7 +130,6 @@ class PostTypeSetup implements PostTypeSetupInt {
 				}
 			}
 
-			do_action( DRPPSM_FLTR_FLUSH_REWRITE );
 			do_action( Actions::AFTER_POST_SETUP );
 
 			return $status;

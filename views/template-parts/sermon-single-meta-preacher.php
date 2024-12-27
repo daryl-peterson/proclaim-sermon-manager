@@ -19,7 +19,7 @@ if ( ! has_term( '', Tax::PREACHER, $post->ID ) ) {
 }
 
 ?>
-<div class="drppsm-single-meta-item drppsm-single-meta-series">
+<div class="drppsm-single-meta-item">
 	<div class="drppsm-single-meta-prefix"><?php echo Tax::get_label( Tax::PREACHER ); ?></div>
 	<div class="drppsm-single-meta-text"><?php echo get_the_term_list( $post->ID, Tax::PREACHER ); ?></div>
 </div>

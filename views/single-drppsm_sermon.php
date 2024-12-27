@@ -12,7 +12,7 @@
 namespace DRPPSM;
 
 get_header();
-Templates::get_partial( 'sermon-wrapper-start' );
+get_partial( 'sermon-wrapper-start' );
 
 while ( have_posts() ) :
 	global $post;
@@ -21,7 +21,7 @@ while ( have_posts() ) :
 
 
 	if ( ! post_password_required( $post ) ) {
-		Templates::sermon_single();
+		sermon_single();
 	} else {
 		echo get_the_password_form( $post );
 	}
@@ -32,5 +32,5 @@ while ( have_posts() ) :
 		}
 	endif;
 endwhile;
-Templates::get_partial( 'sermon-wrapper-end' );
+get_partial( 'sermon-wrapper-end' );
 get_footer();

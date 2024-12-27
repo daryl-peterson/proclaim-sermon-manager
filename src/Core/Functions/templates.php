@@ -17,6 +17,63 @@ use WP_Post;
 defined( 'ABSPATH' ) || exit;
 
 /**
+ * Get partial template.
+ *
+ * - `/wp-contents/themes/<theme_name>/partials/<partial_name>.php`
+ * - `/wp-contents/themes/<theme_name>/template-parts/<partial_name>.php`
+ * - `/wp-contents/themes/<theme_name>/<partial_name>.php`
+ *
+ * @param string $name File name.
+ * @param array  $args Array of variables to pass to template.
+ * @return void
+ * @since 1.0.0
+ */
+function get_partial( string $name, array $args = array() ) {
+	Templates::exec()->get_partial( $name, $args );
+}
+
+/**
+ * Get sermon excerpt
+ *
+ * @param array $args
+ * @return void
+ * @since 1.0.0
+ */
+function sermon_excerpt( $args = array() ): void {
+	Templates::exec()->sermon_excerpt( $args );
+}
+
+/**
+ * Get sermon single.
+ *
+ * @param null|WP_Post $post_new Post object.
+ * @return void
+ * @since 1.0.0
+ */
+function sermon_single( ?WP_Post $post_new = null ): void {
+	Templates::exec()->sermon_single( $post_new );
+}
+
+/**
+ * Get sermon view count
+ *
+ * @param int  $post_id
+ * @param bool $update
+ * @return int
+ * @since 1.0.0
+ */
+function get_sermon_view_count( int $post_id, bool $update = false ): int {
+	$key   = 'Views';
+	$count = get_post_meta( $post_id, $key, true );
+	if ( $count == '' ) {
+		$count = 1;
+		delete_post_meta( $post_id, $key );
+		add_post_meta( $post_id, $key, $count );
+	}
+	return $count;
+}
+
+/**
  * Build html option elements for select element.
  *
  * @param string $taxonomy
