@@ -233,9 +233,6 @@ class PostTypeSetup implements PostTypeSetupInt {
 		}
 
 		$result = $this->taxonomies[ $post_type ];
-
-		Logger::debug( array( 'RESULT' => $result ) );
-
 		return $result;
 	}
 }

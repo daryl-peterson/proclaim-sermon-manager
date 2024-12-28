@@ -26,25 +26,36 @@ use DRPPSM\OptGeneral;
  */
 class Tax implements Executable {
 
-	public const BIBLE_BOOK         = 'drppsm_bible';
-	public const BIBLE_BOOK_FIELD   = 'bible_label';
-	public const BIBLE_BOOK_DEFAULT = 'book';
+	public const BIBLE_BOOK              = 'drppsm_bible';
+	public const BIBLE_BOOK_FIELD        = 'bible_label';
+	public const BIBLE_BOOK_DEFAULT      = 'book';
+	public const BIBLE_BOOK_SORT_FIELD   = 'bible_sort';
+	public const BIBLE_BOOK_SORT_DEFAULT = true;
 
-	public const PREACHER         = 'drppsm_preacher';
-	public const PREACHER_FIELD   = 'preacher_label';
-	public const PREACHER_DEFAULT = 'Preacher';
+	public const PREACHER              = 'drppsm_preacher';
+	public const PREACHER_FIELD        = 'preacher_label';
+	public const PREACHER_DEFAULT      = 'Preacher';
+	public const PREACHER_SORT_FIELD   = 'preacher_sort';
+	public const PREACHER_SORT_DEFAULT = true;
 
-	public const SERVICE_TYPE         = 'drppsm_stype';
-	public const SERVICE_TYPE_FIELD   = 'service_type_label';
-	public const SERVICE_TYPE_DEFAULT = 'Service Type';
+	public const SERVICE_TYPE              = 'drppsm_stype';
+	public const SERVICE_TYPE_FIELD        = 'service_type_label';
+	public const SERVICE_TYPE_DEFAULT      = 'Service Type';
+	public const SERVICE_TYPE_SORT_FIELD   = 'service_type_sort';
+	public const SERVICE_TYPE_SORT_DEFAULT = false;
 
-	public const SERIES         = 'drppsm_series';
-	public const SERIES_FIELD   = 'series_label';
-	public const SERIES_DEFAULT = 'series';
+	public const SERIES              = 'drppsm_series';
+	public const SERIES_FIELD        = 'series_label';
+	public const SERIES_DEFAULT      = 'series';
+	public const SERIES_SORT_FIELD   = 'series_sort';
+	public const SERIES_SORT_DEFAULT = true;
 
-	public const TOPICS         = 'drppsm_topics';
-	public const TOPICS_FIELD   = 'topics_label';
-	public const TOPICS_DEFAULT = 'topics';
+
+	public const TOPICS              = 'drppsm_topics';
+	public const TOPICS_FIELD        = 'topics_label';
+	public const TOPICS_DEFAULT      = 'topics';
+	public const TOPICS_SORT_FIELD   = 'topics_sort';
+	public const TOPICS_SORT_DEFAULT = true;
 
 	public const LIST = array(
 		self::BIBLE_BOOK,

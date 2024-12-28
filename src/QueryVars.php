@@ -7,6 +7,7 @@
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
  * @since       1.0.0
+ *
  */
 
 namespace DRPPSM;
@@ -16,6 +17,7 @@ defined( 'ABSPATH' ) || exit;
 use DRPPSM\Constants\PT;
 use DRPPSM\Interfaces\Executable;
 use DRPPSM\Interfaces\Registrable;
+use WP_Query;
 
 /**
  * Overwrite query vars if conflicts exist.
@@ -83,58 +85,18 @@ class QueryVars implements Executable, Registrable {
 		if ( has_filter( 'request', array( $this, 'overwrite_query_vars' ) ) ) {
 			return false;
 		}
-		// add_action( 'parse_request', array( $this, 'parse_request' ) );
+		add_action( 'parse_request', array( $this, 'parse_request' ) );
 		add_filter( 'request', array( $this, 'overwrite_query_vars' ) );
-		// add_filter( 'request', array( $this, 'request_query' ) );
 		Logger::debug( 'HOOKS REGISTERED' );
 		return true;
 	}
 
-	public function request_query( $vars ) {
-		global $typenow;
-
-		Logger::debug(
-			array(
-				'TYPENOW' => $typenow,
-				$vars,
-			)
-		);
-
-		if ( PT::SERMON === $typenow ) {
-			// Sorting.
-			if ( isset( $vars['orderby'] ) ) {
-				switch ( $vars['orderby'] ) {
-					case 'preached':
-						$vars = array_merge(
-							$vars,
-							array(
-								'meta_key'       => 'sermon_date',
-								'orderby'        => 'meta_value_num',
-								'meta_value_num' => time(),
-								'meta_compare'   => '<=',
-							)
-						);
-						break;
-
-					case 'views':
-						$vars = array_merge(
-							$vars,
-							array(
-								'meta_key' => 'Views',
-								'orderby'  => 'meta_value_num',
-							)
-						);
-						break;
-				}
-			}
-
-			if ( isset( $vars['wpfc_service_type'] ) && trim( $vars['wpfc_service_type'] ) === '' ) {
-				unset( $vars['wpfc_service_type'] );
-			}
-		}
-
-		return $vars;
+	public function parse_request( $var ) {
+		Logger::debug( array( 'VARS' => $var ) );
+		return $var;
 	}
+
+
 
 	/**
 	 * Overwrite query vars if needed.
@@ -148,6 +110,22 @@ class QueryVars implements Executable, Registrable {
 		$query_org = $query;
 
 		$query = $this->fix_attachment( $query );
+
+		if ( key_exists( PT::SERMON, $query ) ) {
+			$arg = $query[ PT::SERMON ];
+
+			switch ( $arg ) {
+				case 'series':
+					$query = array(
+						'taxonomy' => Tax::SERIES,
+						'term'     => '',
+					);
+					break;
+				default:
+					// code
+					break;
+			}
+		}
 
 		$msg = array(
 			'QUERY ORG' => $query_org,

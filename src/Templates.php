@@ -74,7 +74,28 @@ class Templates implements Executable, Registrable {
 			return false;
 		}
 		add_filter( 'template_include', array( $this, 'template_include' ), 10, 1 );
+		add_action( 'template_redirect', array( $this, 'template_redirect' ) );
+
+		add_action(
+			'init',
+			function () {
+				add_rewrite_endpoint( 'series', EP_PERMALINK );
+			}
+		);
 		return true;
+	}
+
+	public function template_redirect() {
+		global $wp, $wp_query;
+
+		$request = $wp->request;
+		$key     = array_search( $request, Tax::LIST );
+
+		if ( ! $key ) {
+			return;
+		}
+
+		Logger::debug( array( 'KEY' => $key ) );
 	}
 
 	/**
@@ -202,6 +223,40 @@ class Templates implements Executable, Registrable {
 
 		// Get the partial.
 		$this->get_partial( 'content-sermon-archive', $args );
+	}
+
+	public function render_sorting( array $args = array() ) {
+		// Filters HTML fields data.
+		$filters = apply_filters(
+			DRPPSM_FLTR_TAX_SORTING,
+			array(
+				array(
+					'className' => 'drppsm_sort_preacher',
+					'taxonomy'  => Tax::PREACHER,
+					'title'     => get_taxonomy_field( Tax::PREACHER, 'singular_name' ),
+				),
+				array(
+					'className' => 'drppsm_sort_series',
+					'taxonomy'  => Tax::SERIES,
+					'title'     => __( 'Series', 'drppsm' ),
+				),
+				array(
+					'className' => 'drppsm_sort_topics',
+					'taxonomy'  => Tax::TOPICS,
+					'title'     => __( 'Topic', 'drppsm' ),
+				),
+				array(
+					'className' => 'drppsm_sort_book',
+					'taxonomy'  => Tax::BIBLE_BOOK,
+					'title'     => __( 'Book', 'drppsm' ),
+				),
+				array(
+					'className' => 'sortServiceTypes',
+					'taxonomy'  => Tax::SERVICE_TYPE,
+					'title'     => get_taxonomy_field( Tax::SERVICE_TYPE, 'singular_name' ),
+				),
+			)
+		);
 	}
 
 	/**

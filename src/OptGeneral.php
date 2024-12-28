@@ -30,6 +30,8 @@ class OptGeneral implements Initable, Registrable {
 	public const OPTION_KEY       = 'drppsm_options';
 	public const TRANSIENT_EXPIRE = '';
 
+	private int $separator_count = 0;
+
 
 	const DEFAULTS = array(
 		Settings::FIELD_PLAYER           => Settings::DEFAULT_PLAYER,
@@ -228,6 +230,12 @@ class OptGeneral implements Initable, Registrable {
 		$this->add_archive( $cmb );
 		$this->add_preacher( $cmb );
 		$this->add_service_type( $cmb );
+
+		$this->add_seperator( $cmb, __( 'Archive Sorting', 'drppsm' ) );
+		$this->add_bible_book_sort( $cmb );
+		$this->add_preacher_sort( $cmb );
+		$this->add_series_sort( $cmb );
+		$this->add_topic_sort( $cmb );
 	}
 
 	/**
@@ -292,15 +300,23 @@ class OptGeneral implements Initable, Registrable {
 		);
 	}
 
+	/**
+	 * Add heading seperator.
+	 *
+	 * @param CMB2   $cmb
+	 * @param string $title
+	 * @return void
+	 * @since 1.0.0
+	 */
 	private function add_seperator( CMB2 $cmb, string $title ): void {
-
+		++$this->separator_count;
 		$args = array(
-			'id'            => 'heading',
+			'id'            => 'heading_' . $this->separator_count,
 			'name'          => $title,
 			'type'          => 'heading',
 			'repeatable'    => true,
 			'render_row_cb' => function () use ( $title ) {
-				echo "<h2>$title</h2><hr>";
+				echo "<h2 class='drppsm-seperator'>$title</h2><hr>";
 			},
 		);
 
@@ -484,6 +500,28 @@ class OptGeneral implements Initable, Registrable {
 	}
 
 	/**
+	 * Add common base slug.
+	 *
+	 * @param CMB2 $cmb CMB2 Object.
+	 * @return void
+	 * @since 1.0.0
+	 */
+	private function add_bible_book_sort( CMB2 $cmb ): void {
+
+		$desc = __( 'If this option is unchecked, archive sorting for bible books  is hidden.', 'drppsm' );
+
+		$cmb->add_field(
+			array(
+				'id'        => Tax::BIBLE_BOOK_SORT_FIELD,
+				'name'      => __( 'Bible Book', 'drppsm' ),
+				'type'      => 'checkbox',
+				'default'   => Tax::BIBLE_BOOK_SORT_DEFAULT,
+				'after_row' => $this->description( $desc ),
+			)
+		);
+	}
+
+	/**
 	 * Add preacher field.
 	 *
 	 * @param CMB2 $cmb CMB2 Object.
@@ -515,6 +553,73 @@ class OptGeneral implements Initable, Registrable {
 				'name'      => __( 'Preacher Label', 'drppsm' ),
 				'type'      => 'text',
 				'default'   => Tax::PREACHER_DEFAULT,
+				'after_row' => $this->description( $desc ),
+			)
+		);
+	}
+
+	/**
+	 * Add preacher sorting.
+	 *
+	 * @param CMB2 $cmb
+	 * @return void
+	 * @since 1.0.0
+	 */
+	private function add_preacher_sort( CMB2 $cmb ): void {
+		$label = Tax::get_label( Tax::PREACHER );
+		$desc  = __( 'If this option is unchecked, archive sorting for ', 'drppsm' );
+		$desc .= $label . __( ' is hidden.', 'drppsm' );
+
+		$cmb->add_field(
+			array(
+				'id'        => Tax::PREACHER_SORT_FIELD,
+				'name'      => $label,
+				'type'      => 'checkbox',
+				'default'   => Tax::PREACHER_SORT_DEFAULT,
+				'after_row' => $this->description( $desc ),
+			)
+		);
+	}
+
+	/**
+	 * Add series sorting.
+	 *
+	 * @param CMB2 $cmb
+	 * @return void
+	 * @since 1.0.0
+	 */
+	private function add_series_sort( CMB2 $cmb ): void {
+		$label = __( 'Series', 'drppsm' );
+		$desc  = __( 'If this option is unchecked, archive sorting for series is hidden', 'drppsm' );
+
+		$cmb->add_field(
+			array(
+				'id'        => Tax::SERIES_SORT_FIELD,
+				'name'      => $label,
+				'type'      => 'checkbox',
+				'default'   => Tax::SERIES_SORT_DEFAULT,
+				'after_row' => $this->description( $desc ),
+			)
+		);
+	}
+
+	/**
+	 * Add topic sorting.
+	 *
+	 * @param CMB2 $cmb
+	 * @return void
+	 * @since 1.0.0
+	 */
+	private function add_topic_sort( CMB2 $cmb ): void {
+		$label = __( 'Topic', 'drppsm' );
+		$desc  = __( 'If this option is unchecked, archive sorting for topics is hidden', 'drppsm' );
+
+		$cmb->add_field(
+			array(
+				'id'        => Tax::TOPICS_SORT_FIELD,
+				'name'      => $label,
+				'type'      => 'checkbox',
+				'default'   => Tax::TOPICS_SORT_DEFAULT,
 				'after_row' => $this->description( $desc ),
 			)
 		);

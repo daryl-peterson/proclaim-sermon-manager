@@ -121,3 +121,6 @@ define( 'DRPPSM_FLTR_SERMON_IMAGE_SIZE', 'drppsm_fltr_sermon_image_size' );
 
 
 define( 'DRPPSM_ACT_TEMPLATE_ERROR', 'drppsm_act_template_error' );
+
+
+define( 'DRPPSM_FLTR_TAX_SORTING', 'drppsm_fltr_tax_sorting' );
