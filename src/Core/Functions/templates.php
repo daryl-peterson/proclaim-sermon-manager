@@ -80,8 +80,11 @@ function get_sermon_view_count( int $post_id, bool $update = false ): int {
  * @param string $default
  * @return string
  * @since 1.0.0
+ *
+ * @todo fix
  */
 function get_term_dropdown( string $taxonomy, string $default = '' ): string {
+	return '';
 
 	$terms = get_terms(
 		array(
@@ -93,7 +96,7 @@ function get_term_dropdown( string $taxonomy, string $default = '' ): string {
 	);
 
 	$current_slug = get_query_var( $taxonomy ) ?: ( isset( $_GET[ $taxonomy ] ) ? $_GET[ $taxonomy ] : '' );
-	$label        = Tax::get_label( $taxonomy );
+	$label        = '';
 	$html         = PHP_EOL;
 	$html        .= "<option value=\"$label\">$label</option>" . PHP_EOL;
 

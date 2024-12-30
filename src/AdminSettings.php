@@ -42,6 +42,8 @@ class AdminSettings implements Executable, Registrable {
 	 */
 	const TAB_GROUP = DRPSM_KEY_PREFIX . '_options';
 
+
+
 	/**
 	 * Initialize and register.
 	 *
@@ -69,8 +71,8 @@ class AdminSettings implements Executable, Registrable {
 		add_action( 'cmb2_admin_init', array( $this, 'register_metaboxes' ) );
 		add_filter( 'submenu_file', array( $this, 'remove_submenus' ) );
 
-		OptGeneral::init()->register();
-		OptAdvance::init()->register();
+		OptGeneral::exec();
+		OptDisplay::exec();
 		return true;
 	}
 

@@ -106,10 +106,8 @@ class TaxonomyImageAttach implements Executable, Registrable {
 	public function register(): ?bool {
 		$meta_type = 'term';
 		if ( ! is_admin() || has_action( "get_{$meta_type}_metadata", array( $this, 'get_metadata' ) ) ) {
-			Logger::debug( 'HOOKS PREVIOUSLY REGISTERED ' . __CLASS__ );
 			return false;
 		}
-		Logger::debug( 'REGISTRING HOOKS ' . __CLASS__ );
 		add_filter( "get_{$meta_type}_metadata", array( $this, 'get_metadata' ), 10, 5 );
 		add_action( "add_{$meta_type}_meta", array( $this, 'add_meta' ), 10, 3 );
 		add_action( "update_{$meta_type}_meta", array( $this, 'update_meta' ), 10, 4 );

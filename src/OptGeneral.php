@@ -13,7 +13,7 @@ namespace DRPPSM;
 
 use CMB2;
 use DRPPSM\Constants\Actions;
-use DRPPSM\Interfaces\Initable;
+use DRPPSM\Interfaces\Executable;
 use DRPPSM\Interfaces\Registrable;
 
 /**
@@ -25,92 +25,22 @@ use DRPPSM\Interfaces\Registrable;
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
  * @since       1.0.0
  */
-class OptGeneral implements Initable, Registrable {
+class OptGeneral extends OptBase implements Executable, Registrable {
 
-	public const OPTION_KEY       = 'drppsm_options';
+	public string $option_key     = Settings::OPTION_KEY_GENERAL;
 	public const TRANSIENT_EXPIRE = '';
 
-	private int $separator_count = 0;
-
-
-	const DEFAULTS = array(
-		Settings::FIELD_PLAYER           => Settings::DEFAULT_PLAYER,
-		Settings::FIELD_MENU_ICON        => Settings::DEFAULT_MENU_ICON,
-		Settings::FIELD_COMMENTS         => Settings::DEFAULT_COMMENTS,
-		Settings::FIELD_DATE_FORMAT      => Settings::DEFAULT_DATE_FORMAT,
-		Settings::FIELD_SERMON_COUNT     => Settings::DEFAULT_SERMON_COUNT,
-		Settings::FIELD_ARCHIVE_SLUG     => Settings::DEFAULT_ARCHIVE_SLUG,
-		Settings::FIELD_COMMON_BASE_SLUG => Settings::DEFAULT_COMMON_BASE_SLUG,
-		Tax::BIBLE_BOOK_FIELD            => Tax::BIBLE_BOOK_DEFAULT,
-		Tax::PREACHER_FIELD              => Tax::PREACHER_DEFAULT,
-		Tax::SERVICE_TYPE_FIELD          => Tax::SERVICE_TYPE_DEFAULT,
-		Tax::SERIES_FIELD                => Tax::SERIES_DEFAULT,
-	);
 
 	/**
-	 * Initialize object properties.
-	 *
-	 * @since 1.0.0
-	 */
-	protected function __construct() {
-		$this->set_defaults();
-	}
-
-	/**
-	 * Get initialize object.
+	 * Initailize and register hooks.
 	 *
 	 * @return OptGeneral
 	 * @since 1.0.0
 	 */
-	public static function init(): OptGeneral {
-		return new self();
-	}
-
-	/**
-	 * Get options value
-	 *
-	 * @param string $key
-	 * @param mixed  $default_value
-	 * @return mixed
-	 * @since 1.0.0
-	 */
-	public static function get( string $key, mixed $default_value = null ): mixed {
-
-		$options = \get_option( self::OPTION_KEY, $default_value );
-		if ( ! is_array( $options ) ) {
-			return $default_value;
-		}
-
-		if ( ! key_exists( $key, $options ) ) {
-			return $default_value;
-		}
-		return $options[ $key ];
-	}
-
-	/**
-	 * Set option value
-	 *
-	 * @param string $key
-	 * @param mixed  $value
-	 * @return boolean
-	 * @since 1.0.0
-	 */
-	public static function set( string $key, mixed $value ): bool {
-
-		$option_int = options();
-		$options    = (array) $option_int->get( self::OPTION_KEY, array() );
-
-		if ( ! is_array( $options ) ) {
-			$options = array();
-			foreach ( self::DEFAULTS as $opt_key => $value ) {
-				if ( ! key_exists( $opt_key, $options ) ) {
-					$options[ $opt_key ] = $value;
-				}
-			}
-		}
-
-		$options[ $key ] = $value;
-		return $option_int->set( self::OPTION_KEY, $options );
+	public static function exec(): OptGeneral {
+		$obj = new self();
+		$obj->register();
+		return $obj;
 	}
 
 	/**
@@ -121,7 +51,7 @@ class OptGeneral implements Initable, Registrable {
 	 */
 	public function register(): ?bool {
 		$object_type = 'options-page';
-		$id          = self::OPTION_KEY;
+		$id          = $this->option_key;
 
 		if ( ! is_admin() || has_action( Actions::SETTINGS_REGISTER_FORM, array( $this, 'register_metaboxes' ) ) ) {
 			return false;
@@ -133,16 +63,6 @@ class OptGeneral implements Initable, Registrable {
 		return true;
 	}
 
-	/**
-	 * Set this menu as the main.
-	 *
-	 * @param string $menu Main menu.
-	 * @return string
-	 * @since 1.0.0
-	 */
-	public function set_menu( string $menu ): string {
-		return self::OPTION_KEY;
-	}
 
 	/**
 	 * Check if rewrite rules need to be flushed after cmb save
@@ -202,15 +122,14 @@ class OptGeneral implements Initable, Registrable {
 		 * Registers main options page menu item and form.
 		 */
 		$args = array(
-			'id'           => self::OPTION_KEY,
+			'id'           => $this->option_key,
 			'title'        => $title,
 			'menu_title'   => $menu_title,
 			'object_types' => array( 'options-page' ),
-			'option_key'   => self::OPTION_KEY,
+			'option_key'   => $this->option_key,
 			'parent_slug'  => AdminSettings::SLUG,
 			'tab_group'    => AdminSettings::TAB_GROUP,
 			'tab_title'    => 'General',
-
 		);
 
 		// 'tab_group' property is supported in > 2.4.0.
@@ -219,58 +138,19 @@ class OptGeneral implements Initable, Registrable {
 		}
 
 		$cmb = new_cmb2_box( $args );
+		$this->add_seperator( $cmb, __( 'General Settings', 'drppsm' ) );
 		$this->add_player( $cmb );
 		$this->add_menu_icon( $cmb );
 		$this->add_sermon_comments( $cmb );
 		$this->add_date_format( $cmb );
 		$this->add_sermon_count( $cmb );
 
-		$this->add_seperator( $cmb, __( 'Links', 'drppsm' ) );
+		$this->add_seperator( $cmb, __( 'Links', 'drppsm' ), true );
 		$this->add_common_base_slug( $cmb );
 		$this->add_archive( $cmb );
+		$this->add_series( $cmb );
 		$this->add_preacher( $cmb );
 		$this->add_service_type( $cmb );
-
-		$this->add_seperator( $cmb, __( 'Archive Sorting', 'drppsm' ) );
-		$this->add_bible_book_sort( $cmb );
-		$this->add_preacher_sort( $cmb );
-		$this->add_series_sort( $cmb );
-		$this->add_topic_sort( $cmb );
-	}
-
-	/**
-	 * Set defaults.
-	 *
-	 * @param null|boolean|null $force
-	 * @return boolean
-	 * @since 1.0.0
-	 */
-	public function set_defaults( null|bool $force = null ): bool {
-
-		if ( ! isset( $force ) ) {
-			$force = false;
-		}
-
-		$transient_key = get_key_name( self::OPTION_KEY . '_init' );
-		$transient     = get_transient( $transient_key );
-
-		if ( ! empty( $transient ) || ( $transient ) ) {
-			if ( ! $force ) {
-				return false;
-			}
-		}
-
-		$option_int = options();
-		$options    = (array) $option_int->get( self::OPTION_KEY, array() );
-
-		foreach ( self::DEFAULTS as $key => $value ) {
-			if ( ! key_exists( $key, $options ) ) {
-				$options[ $key ] = $value;
-			}
-		}
-		$option_int->set( self::OPTION_KEY, $options );
-		set_transient( $transient_key, true, DAY_IN_SECONDS );
-		return true;
 	}
 
 	/**
@@ -284,8 +164,8 @@ class OptGeneral implements Initable, Registrable {
 		$desc = __( 'Select which player to use for playing Sermons.', 'drppsm' );
 		$cmb->add_field(
 			array(
-				'id'               => Settings::FIELD_PLAYER,
-				'name'             => __( 'Audio & Video Player', 'drppsm' ),
+				'id'               => Settings::PLAYER,
+				'name'             => DRPPSM_SETTINGS_PLAYER_NAME,
 				'type'             => 'select',
 				'show_option_none' => true,
 				'options'          => array(
@@ -294,33 +174,10 @@ class OptGeneral implements Initable, Registrable {
 					'WordPress'    => 'Old WordPress player',
 					'none'         => 'Browser HTML5',
 				),
-				'default'          => Settings::DEFAULT_PLAYER,
+				'default'          => Settings::get_default( Settings::PLAYER ),
 				'after_row'        => $this->description( $desc ),
 			)
 		);
-	}
-
-	/**
-	 * Add heading seperator.
-	 *
-	 * @param CMB2   $cmb
-	 * @param string $title
-	 * @return void
-	 * @since 1.0.0
-	 */
-	private function add_seperator( CMB2 $cmb, string $title ): void {
-		++$this->separator_count;
-		$args = array(
-			'id'            => 'heading_' . $this->separator_count,
-			'name'          => $title,
-			'type'          => 'heading',
-			'repeatable'    => true,
-			'render_row_cb' => function () use ( $title ) {
-				echo "<h2 class='drppsm-seperator'>$title</h2><hr>";
-			},
-		);
-
-		$cmb->add_field( $args );
 	}
 
 	/**
@@ -334,8 +191,8 @@ class OptGeneral implements Initable, Registrable {
 		$desc = __( 'Allows for changing the admin menu icon.', 'drppsm' );
 		$cmb->add_field(
 			array(
-				'id'               => Settings::FIELD_MENU_ICON,
-				'name'             => __( 'Menu Icon', 'drppsm' ),
+				'id'               => Settings::MENU_ICON,
+				'name'             => DRPPSM_SETTINGS_MENU_ICON_NAME,
 				'type'             => 'select',
 				'show_option_none' => true,
 				'options'          => array(
@@ -354,7 +211,7 @@ class OptGeneral implements Initable, Registrable {
 					'dashicons-drppsm-sermon-inv'  => __( 'Sermon Alt', 'drppsm' ),
 					'dashicons-drppsm-holy-spirit' => __( 'Holy Spirit', 'drppsm' ),
 				),
-				'default'          => Settings::DEFAULT_MENU_ICON,
+				'default'          => Settings::get_default( Settings::MENU_ICON ),
 				'after_row'        => $this->description( $desc ),
 			)
 		);
@@ -371,8 +228,8 @@ class OptGeneral implements Initable, Registrable {
 		$desc = __( 'Used only in admin area, when creating a new Sermon', 'drppsm' );
 		$cmb->add_field(
 			array(
-				'id'               => Settings::FIELD_DATE_FORMAT,
-				'name'             => __( 'Sermon Date Format', 'drppsm' ),
+				'id'               => Settings::DATE_FORMAT,
+				'name'             => DRPPSM_SETTINGS_DATE_FORMAT_NAME,
 				'type'             => 'select',
 				'show_option_none' => true,
 				'options'          => array(
@@ -381,7 +238,7 @@ class OptGeneral implements Initable, Registrable {
 					'YY/mm/dd' => 'YY/mm/dd',
 					'YY/dd/mm' => 'YY/dd/mm',
 				),
-				'default'          => Settings::DEFAULT_DATE_FORMAT,
+				'default'          => Settings::get_default( Settings::DATE_FORMAT ),
 				'after_row'        => $this->description( $desc ),
 			)
 		);
@@ -397,10 +254,10 @@ class OptGeneral implements Initable, Registrable {
 	private function add_sermon_comments( CMB2 $cmb ): void {
 		$cmb->add_field(
 			array(
-				'id'      => Settings::FIELD_COMMENTS,
-				'name'    => __( 'Allow Comments', 'drppsm' ),
+				'id'      => Settings::COMMENTS,
+				'name'    => DRPPSM_SETTINGS_COMMENTS_NAME,
 				'type'    => 'checkbox',
-				'default' => Settings::DEFAULT_COMMENTS,
+				'default' => Settings::get_default( Settings::COMMENTS ),
 			)
 		);
 	}
@@ -416,14 +273,14 @@ class OptGeneral implements Initable, Registrable {
 		$desc = __( 'Affects only the default number, other settings will override it', 'drppsm' );
 		$cmb->add_field(
 			array(
-				'id'         => Settings::FIELD_SERMON_COUNT,
-				'name'       => __( 'Sermons Per Page', 'drppsm' ),
+				'id'         => Settings::SERMON_COUNT,
+				'name'       => DRPPSM_SETTINGS_SERMON_COUNT_NAME,
 				'type'       => 'text',
 				'attributes' => array(
 					'type'    => 'number',
 					'pattern' => '\d*',
 				),
-				'default'    => Settings::DEFAULT_SERMON_COUNT,
+				'default'    => Settings::get_default( Settings::SERMON_COUNT ),
 				'after_row'  => $this->description( $desc ),
 			)
 		);
@@ -457,10 +314,10 @@ class OptGeneral implements Initable, Registrable {
 
 		$cmb->add_field(
 			array(
-				'id'        => Settings::FIELD_ARCHIVE_SLUG,
+				'id'        => Settings::ARCHIVE_SLUG,
 				'name'      => __( 'Archive Page Slug', 'drppsm' ),
 				'type'      => 'text',
-				'default'   => Settings::DEFAULT_ARCHIVE_SLUG,
+				'default'   => Settings::get_default( Settings::ARCHIVE_SLUG ),
 				'after_row' => $this->description( $desc ),
 			)
 		);
@@ -490,32 +347,44 @@ class OptGeneral implements Initable, Registrable {
 
 		$cmb->add_field(
 			array(
-				'id'        => Settings::FIELD_COMMON_BASE_SLUG,
+				'id'        => Settings::COMMON_BASE_SLUG,
 				'name'      => __( 'Common Base Slug', 'drppsm' ),
 				'type'      => 'checkbox',
-				'default'   => Settings::DEFAULT_COMMON_BASE_SLUG,
+				'default'   => Settings::get_default( Settings::COMMON_BASE_SLUG ),
 				'after_row' => $this->description( $desc ),
 			)
 		);
 	}
 
 	/**
-	 * Add common base slug.
+	 * Add series field
 	 *
-	 * @param CMB2 $cmb CMB2 Object.
+	 * @param CMB2 $cmb
 	 * @return void
 	 * @since 1.0.0
 	 */
-	private function add_bible_book_sort( CMB2 $cmb ): void {
+	private function add_series( CMB2 $cmb ): void {
+		$s1    = '<code>' . __( '/series/open-doors', 'drppsm' ) . '</code>';
+		$s2    = '<code>' . __( '/list/open-doors', 'drppsm' ) . '</code>';
+		$desc  = DRPPSM_MSG_LABEL_SINGLE;
+		$desc .= $this->dot() . __( 'You have the option to change the default value of "Series" to anything you prefer.' );
+		$desc .= $this->dot();
 
-		$desc = __( 'If this option is unchecked, archive sorting for bible books  is hidden.', 'drppsm' );
+		$desc .= wp_sprintf(
+			// translators: %1$s Default preacher slug/path. Effectively <code>/preacher/mark</code>.
+			// translators: %2$s Example reverend slug/path. Effectively <code>/reverend/mark</code>.
+			__( 'Changing "Series" to "List" would result in %1$s becoming %2$s.', 'drppsm' ),
+			$s1,
+			$s2
+		);
+		$desc .= $this->dot() . __( 'Note: This also changes the slugs.' );
 
 		$cmb->add_field(
 			array(
-				'id'        => Tax::BIBLE_BOOK_SORT_FIELD,
-				'name'      => __( 'Bible Book', 'drppsm' ),
-				'type'      => 'checkbox',
-				'default'   => Tax::BIBLE_BOOK_SORT_DEFAULT,
+				'id'        => Settings::SERIES,
+				'name'      => __( 'Series Label', 'drppsm' ),
+				'type'      => 'text',
+				'default'   => Settings::get_default( Settings::SERIES ),
 				'after_row' => $this->description( $desc ),
 			)
 		);
@@ -549,84 +418,17 @@ class OptGeneral implements Initable, Registrable {
 		 */
 		$cmb->add_field(
 			array(
-				'id'        => Tax::PREACHER_FIELD,
+				'id'        => Settings::PREACHER,
 				'name'      => __( 'Preacher Label', 'drppsm' ),
 				'type'      => 'text',
-				'default'   => Tax::PREACHER_DEFAULT,
+				'default'   => Settings::get_default( Settings::PREACHER ),
 				'after_row' => $this->description( $desc ),
 			)
 		);
 	}
 
 	/**
-	 * Add preacher sorting.
-	 *
-	 * @param CMB2 $cmb
-	 * @return void
-	 * @since 1.0.0
-	 */
-	private function add_preacher_sort( CMB2 $cmb ): void {
-		$label = Tax::get_label( Tax::PREACHER );
-		$desc  = __( 'If this option is unchecked, archive sorting for ', 'drppsm' );
-		$desc .= $label . __( ' is hidden.', 'drppsm' );
-
-		$cmb->add_field(
-			array(
-				'id'        => Tax::PREACHER_SORT_FIELD,
-				'name'      => $label,
-				'type'      => 'checkbox',
-				'default'   => Tax::PREACHER_SORT_DEFAULT,
-				'after_row' => $this->description( $desc ),
-			)
-		);
-	}
-
-	/**
-	 * Add series sorting.
-	 *
-	 * @param CMB2 $cmb
-	 * @return void
-	 * @since 1.0.0
-	 */
-	private function add_series_sort( CMB2 $cmb ): void {
-		$label = __( 'Series', 'drppsm' );
-		$desc  = __( 'If this option is unchecked, archive sorting for series is hidden', 'drppsm' );
-
-		$cmb->add_field(
-			array(
-				'id'        => Tax::SERIES_SORT_FIELD,
-				'name'      => $label,
-				'type'      => 'checkbox',
-				'default'   => Tax::SERIES_SORT_DEFAULT,
-				'after_row' => $this->description( $desc ),
-			)
-		);
-	}
-
-	/**
-	 * Add topic sorting.
-	 *
-	 * @param CMB2 $cmb
-	 * @return void
-	 * @since 1.0.0
-	 */
-	private function add_topic_sort( CMB2 $cmb ): void {
-		$label = __( 'Topic', 'drppsm' );
-		$desc  = __( 'If this option is unchecked, archive sorting for topics is hidden', 'drppsm' );
-
-		$cmb->add_field(
-			array(
-				'id'        => Tax::TOPICS_SORT_FIELD,
-				'name'      => $label,
-				'type'      => 'checkbox',
-				'default'   => Tax::TOPICS_SORT_DEFAULT,
-				'after_row' => $this->description( $desc ),
-			)
-		);
-	}
-
-	/**
-	 * Add service type.
+	 * Add service type.self::OPTION_KEY
 	 *
 	 * @param CMB2 $cmb CMB2 Object.
 	 * @return void
@@ -651,33 +453,12 @@ class OptGeneral implements Initable, Registrable {
 
 		$cmb->add_field(
 			array(
-				'id'        => Tax::SERVICE_TYPE_FIELD,
+				'id'        => Settings::SERVICE_TYPE,
 				'name'      => __( 'Service Type Label', 'drppsm' ),
 				'type'      => 'text',
-				'default'   => Tax::SERVICE_TYPE_DEFAULT,
+				'default'   => Settings::get_default( Settings::SERVICE_TYPE ),
 				'after_row' => $this->description( $desc ),
 			)
 		);
-	}
-
-	/**
-	 * Move description to a new line.
-	 *
-	 * @param string $desc Description.
-	 * @return string
-	 * @since 1.0.0
-	 */
-	private function description( string $desc ): string {
-		return '<div class="description">' . $desc . '</div>';
-	}
-
-	/**
-	 * Create spacing between new lines.
-	 *
-	 * @return string
-	 * @since 1.0.0
-	 */
-	private function dot(): string {
-		return '<span class="spacer"></span>';
 	}
 }

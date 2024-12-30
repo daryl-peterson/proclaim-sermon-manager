@@ -7,7 +7,6 @@
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
  * @since       1.0.0
- *
  */
 
 namespace DRPPSM;
@@ -85,18 +84,10 @@ class QueryVars implements Executable, Registrable {
 		if ( has_filter( 'request', array( $this, 'overwrite_query_vars' ) ) ) {
 			return false;
 		}
-		add_action( 'parse_request', array( $this, 'parse_request' ) );
+		// add_action( 'parse_request', array( $this, 'parse_request' ) );
 		add_filter( 'request', array( $this, 'overwrite_query_vars' ) );
-		Logger::debug( 'HOOKS REGISTERED' );
 		return true;
 	}
-
-	public function parse_request( $var ) {
-		Logger::debug( array( 'VARS' => $var ) );
-		return $var;
-	}
-
-
 
 	/**
 	 * Overwrite query vars if needed.
@@ -147,7 +138,7 @@ class QueryVars implements Executable, Registrable {
 		global $wp;
 
 		$term          = get_queried_object();
-		$common        = OptGeneral::get( Settings::FIELD_COMMON_BASE_SLUG );
+		$common        = Settings::get( Settings::COMMON_BASE_SLUG, false );
 		$this->matched = null;
 
 		$match = false;

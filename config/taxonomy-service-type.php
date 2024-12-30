@@ -16,7 +16,7 @@ defined( 'ABSPATH' ) || exit;
 $permalinks   = app()->permalinks();
 $slug         = Tax::SERVICE_TYPE;
 $capabilities = Tax::CAPS;
-$label        = Tax::get_label( Tax::SERVICE_TYPE );
+$label        = Settings::get( Settings::SERVICE_TYPE );
 
 return array(
 	'hierarchical' => false,

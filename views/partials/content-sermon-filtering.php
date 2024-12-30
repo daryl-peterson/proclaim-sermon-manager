@@ -11,6 +11,3 @@
  */
 
 namespace DRPPSM;
-
-Logger::debug( Tax::get_list() );
-get_term_dropdown( Tax::PREACHER );

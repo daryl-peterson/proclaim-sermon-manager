@@ -170,32 +170,8 @@ class SermonDetail implements Initable, Registrable {
 	 * @since 1.0.0
 	 */
 	private function add_date_preached( CMB2 $cmb ): void {
-		$format = OptGeneral::get( Settings::FIELD_DATE_FORMAT );
-
-		// @codeCoverageIgnoreStart
-		switch ( $format ) {
-			case '0':
-				$date_format_label = 'mm/dd/YYYY';
-				$date_format       = 'm/d/Y';
-				break;
-			case '1':
-				$date_format_label = 'dd/mm/YYYY';
-				$date_format       = 'd/m/Y';
-				break;
-			case '2':
-				$date_format_label = 'YYYY/mm/dd';
-				$date_format       = 'Y/m/d';
-				break;
-			case '3':
-				$date_format_label = 'YYYY/dd/mm';
-				$date_format       = 'Y/d/m';
-				break;
-			default:
-				$date_format_label = 'mm/dd/YYYY';
-				$date_format       = 'm/d/Y';
-				break;
-		}
-		// @codeCoverageIgnoreEnd
+		$format = Settings::get( Settings::DATE_FORMAT, Settings::get_default( Settings::DATE_FORMAT ) );
+		Logger::debug( array( 'FORMAT' => $format ) );
 
 		/**
 		 * Date preached.
@@ -204,10 +180,10 @@ class SermonDetail implements Initable, Registrable {
 			array(
 				'name'         => esc_html__( 'Date Preached', 'drppsm' ),
 				// translators: %1 Date preached.
-				'desc'         => '<br>' . wp_sprintf( esc_html__( 'format: %s', 'drppsm' ), $date_format_label ),
+				'desc'         => '<br>' . wp_sprintf( esc_html__( 'format: %s', 'drppsm' ), $format ),
 				'id'           => Meta::DATE,
 				'type'         => 'text_date_timestamp',
-				'date_format'  => $date_format,
+				'date_format'  => $format,
 				'autocomplete' => 'off',
 			)
 		);

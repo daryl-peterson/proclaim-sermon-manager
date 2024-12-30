@@ -90,7 +90,8 @@ class PermaLinks implements PermaLinkInt {
 	 * @since 1.0.0
 	 */
 	public static function fix_permalink( string $slug, string $default_value = '' ): string {
-		$value = OptGeneral::get( $slug, $default_value );
+		// $value = OptGeneral::get( $slug, $default_value );
+		$value = Settings::get( $slug, $default_value );
 		$value = trim( sanitize_title( $value ) );
 		return untrailingslashit( $value );
 	}
@@ -103,7 +104,7 @@ class PermaLinks implements PermaLinkInt {
 	 */
 	private function get_service_type(): string {
 		return self::fix_permalink(
-			Settings::FIELD_SERVICE_TYPE,
+			Settings::SERVICE_TYPE,
 			_x( 'Service Type', 'slug', 'drppsm' )
 		);
 	}
@@ -115,7 +116,7 @@ class PermaLinks implements PermaLinkInt {
 	 */
 	private function get_preacher(): string {
 		return self::fix_permalink(
-			Tax::PREACHER_FIELD,
+			Settings::PREACHER,
 			_x( 'preacher', 'slug', 'drppsm' )
 		);
 	}
@@ -124,10 +125,11 @@ class PermaLinks implements PermaLinkInt {
 	 * Get sermon
 	 *
 	 * @return string
+	 * @since 1.0.0
 	 */
 	private function get_sermon(): string {
 		return self::fix_permalink(
-			Settings::FIELD_ARCHIVE_SLUG,
+			Settings::ARCHIVE_SLUG,
 			_x( 'sermons', 'slug', 'drppsm' )
 		);
 	}
@@ -185,9 +187,8 @@ class PermaLinks implements PermaLinkInt {
 		}
 
 		// @todo fix
-
-		$common = OptGeneral::get( 'common_base_slug' );
-		if ( OptGeneral::get( 'common_base_slug' ) ) {
+		$common = Settings::get( Settings::COMMON_BASE_SLUG );
+		if ( $common ) {
 			Logger::debug( array( 'COMMON BASE' => $common ) );
 			foreach ( $perm as $name => &$permalink ) {
 				if ( PT::SERMON === $name ) {

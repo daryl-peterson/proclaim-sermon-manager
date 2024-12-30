@@ -63,7 +63,7 @@ class SermonComments implements Registrable, Executable {
 	 */
 	public function default_comments_off( array $data ): array {
 
-		$comments = OptGeneral::get( Settings::FIELD_COMMENTS );
+		$comments = Settings::get( Settings::COMMENTS );
 
 		if ( $comments ) {
 			return $data;

@@ -15,8 +15,7 @@ defined( 'ABSPATH' ) || exit;
 
 $permalinks   = App::init()->permalinks();
 $slug         = Tax::PREACHER;
-$label        = Tax::get_label( Tax::PREACHER );
-$label        = isset( $label ) ? $label : _x( Tax::PREACHER_DEFAULT, 'slug', 'drppsm' );
+$label        = Settings::get( Settings::PREACHER, Settings::get_default( Settings::PREACHER ) );
 $capabilities = Tax::CAPS;
 
 return array(
