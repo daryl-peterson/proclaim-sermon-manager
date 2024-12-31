@@ -92,15 +92,6 @@ class OptGeneral extends OptBase implements Executable, Registrable {
 			}
 		}
 
-		Logger::debug(
-			array(
-				'OBJECT ID' => $object_id,
-				'UPDATED'   => $updated,
-				// 'CMB'       => $cmb,
-				'FLUSH'     => $flush,
-			)
-		);
-
 		if ( $flush ) {
 			do_action( Actions::REWRITE_FLUSH );
 		}

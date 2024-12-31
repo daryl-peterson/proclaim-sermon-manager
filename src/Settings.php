@@ -62,30 +62,10 @@ class Settings {
 		self::TOPICS_SORT       => self::OPTION_KEY_DISPLAY,
 	);
 
-	public const OPTION_DEFAULT = array(
+	private static array $option_default;
 
-		self::OPTION_KEY_GENERAL => array(
-			self::ARCHIVE_SLUG     => 'Sermons',
-			self::BIBLE_BOOK       => 'book',
-			self::COMMENTS         => false,
-			self::COMMON_BASE_SLUG => false,
-			self::DATE_FORMAT      => 'mm/dd/YY',
-			self::MENU_ICON        => 'dashicons-drppsm-holy-spirit',
-			self::PLAYER           => 'Plyr',
-			self::PREACHER         => 'Preacher',
-			self::SERIES           => 'Series',
-			self::SERMON_COUNT     => 10,
-			self::SERVICE_TYPE     => 'Service Type',
-		),
-		self::OPTION_KEY_DISPLAY => array(
-			self::BIBLE_BOOK_SORT   => true,
-			self::PREACHER_SORT     => true,
-			self::SERIES_SORT       => true,
-			self::SERVICE_TYPE_SORT => false,
-			self::TOPICS_SORT       => true,
-		),
 
-	);
+
 
 	/**
 	 * Get options value
@@ -111,25 +91,35 @@ class Settings {
 	}
 
 	public static function get_default( string $key, mixed $default_value = null ): mixed {
+		self::init_defaults();
 		$option_key = self::get_option_key( $key );
 
-		if ( ! isset( self::OPTION_DEFAULT[ $option_key ] ) ) {
+		if ( ! isset( self::$option_default[ $option_key ] ) ) {
 			return $default_value;
 		}
 
-		if ( ! key_exists( $key, self::OPTION_DEFAULT[ $option_key ] ) ) {
+		if ( ! key_exists( $key, self::$option_default[ $option_key ] ) ) {
 			return $default_value;
 		}
 
-		$result = self::OPTION_DEFAULT[ $option_key ][ $key ];
-		return self::OPTION_DEFAULT[ $option_key ][ $key ];
+		$result = self::$option_default[ $option_key ][ $key ];
+		return self::$option_default[ $option_key ][ $key ];
 	}
 
+	/**
+	 * Get defaults for an option page.
+	 *
+	 * @param string $option_key
+	 * @return null|array
+	 * @since 1.0.0
+	 */
 	public static function get_defaults( string $option_key ): ?array {
-		if ( ! isset( self::OPTION_DEFAULT[ $option_key ] ) ) {
+		self::init_defaults();
+
+		if ( ! isset( self::$option_default[ $option_key ] ) ) {
 			return null;
 		}
-		return self::OPTION_DEFAULT[ $option_key ];
+		return self::$option_default[ $option_key ];
 	}
 
 	/**
@@ -156,6 +146,36 @@ class Settings {
 
 		$options[ $key ] = $value;
 		return \update_option( $option_key, $option_key );
+	}
+
+	private static function init_defaults() {
+		if ( isset( self::$option_default ) ) {
+			return;
+		}
+		self::$option_default = array(
+
+			self::OPTION_KEY_GENERAL => array(
+				self::ARCHIVE_SLUG     => 'Sermons',
+				self::BIBLE_BOOK       => 'book',
+				self::COMMENTS         => false,
+				self::COMMON_BASE_SLUG => false,
+				self::DATE_FORMAT      => 'mm/dd/YY',
+				self::MENU_ICON        => 'dashicons-drppsm-holy-spirit',
+				self::PLAYER           => 'Plyr',
+				self::PREACHER         => __( 'Preacher', 'drppsm' ),
+				self::SERIES           => 'Series',
+				self::SERMON_COUNT     => 10,
+				self::SERVICE_TYPE     => 'Service Type',
+			),
+			self::OPTION_KEY_DISPLAY => array(
+				self::BIBLE_BOOK_SORT   => true,
+				self::PREACHER_SORT     => true,
+				self::SERIES_SORT       => true,
+				self::SERVICE_TYPE_SORT => false,
+				self::TOPICS_SORT       => true,
+			),
+
+		);
 	}
 
 	/**

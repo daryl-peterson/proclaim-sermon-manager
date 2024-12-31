@@ -52,3 +52,8 @@ define(
 	'DRPPSM_SETTINGS_SERMON_COUNT_NAME',
 	__( 'Sermons Per Page', 'drppsm' )
 );
+
+define(
+	'DRPPSM_SETTING_PREACHER_LABEL',
+	__( 'Preacher', 'drppsm' )
+);
