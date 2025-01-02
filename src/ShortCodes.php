@@ -90,7 +90,7 @@ class ShortCodes implements Executable, Registrable {
 		$args = array(
 			'per_page'   => 10,
 			'order'      => 'ASC',
-			'orderby'    => 'post_modified',
+			'orderby'    => '',
 			'image_size' => 'post-thumbnail',
 		);
 
@@ -123,15 +123,22 @@ class ShortCodes implements Executable, Registrable {
 				global $post;
 
 				/**
-				 * Filters overrideing of latest sermon output
+				 * Allows for filtering shortcode output.
+				 * - Filters are prefixed with drppsmf_
 				 *
-				 * @param string $shortcode
-				 * @param string $post
-				 * @param array $args
+				 * @param string $shortcode Shortcode name.
+				 * @param string $post Current post.
+				 * @param array $args Arguments from shortcode plus defaults.
 				 * @return string
 				 * @since 1.0.0
 				 */
-				$override = apply_filters( DRPPSMF_SC_OUTPUT_OVRD, DRPPSM_SC_LATEST_SERMON, $post, $args );
+				$override = apply_filters(
+					DRPPSMF_SC_OUTPUT_OVRD,
+					DRPPSM_SC_LATEST_SERMON,
+					$post,
+					$args
+				);
+
 				if ( $override !== DRPPSM_SC_LATEST_SERMON ) {
 					$output .= $override;
 					continue;
@@ -150,9 +157,6 @@ class ShortCodes implements Executable, Registrable {
 		if ( $output !== '' ) {
 			$result = $output;
 		}
-
-		Logger::debug( PHP_EOL . $result );
-
 		return $result;
 	}
 
@@ -238,7 +242,7 @@ class ShortCodes implements Executable, Registrable {
 		$orderby = strtolower( $args['orderby'] );
 
 		if ( ! in_array( $orderby, DRPPSM_SERMON_ORDER_BY ) ) {
-			$orderby = 'post_date';
+			$orderby = Settings::get( Settings::ARCHIVE_ORDER_BY, 'post_date' );
 		}
 		return $orderby;
 	}

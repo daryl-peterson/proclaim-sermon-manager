@@ -87,11 +87,13 @@ define(
 */
 
 /**
- * Allows for filtering latest sermon shortcode.
+ * Allows for filtering shortcode output.
  * - Filters are prefixed with drppsmf_
  *
- * @param bool $override.
- * @return bool True if output is overridden.
+ * @param string $shortcode Shortcode name.
+ * @param string $post Current post.
+ * @param array $args Arguments from shortcode plus defaults.
+ * @return string
  * @since 1.0.0
  */
 define( 'DRPPSMF_SC_OUTPUT_OVRD', 'drppsmf_sc_output_ovrd' );
