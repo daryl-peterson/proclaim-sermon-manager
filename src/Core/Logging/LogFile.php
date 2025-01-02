@@ -94,9 +94,9 @@ class LogFile extends LogWritterAbs implements LogWritterInt {
 
 			$fs = wp_filesize( $this->file );
 
-			$limit = $this->size * ( 1024 * 1024 );
+			$limit = $this->size * 1000000;
 			if ( ! $fs || ( $fs > $limit ) ) {
-				// $this->truncate();
+				$this->truncate();
 			}
 			$result = true;
 

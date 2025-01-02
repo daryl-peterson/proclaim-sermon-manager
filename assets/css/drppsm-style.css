@@ -4,7 +4,7 @@
 * SERMON ARCHIVE STYLES
 ******************************************************/
 
-@media (min-width: 993px) {
+@media (min-width: 801px) {
 
 	.drppsm-archive-inner {
 		display: flex;
@@ -16,11 +16,14 @@
 	}
 
 	.drppsm-archive-image {
-		width: 25%;
+		/*width: 25%;*/
+		flex: 0 30%;
+
 	}
 
 	.drppsm-archive-main {
-		width: 75%;
+		/*width: 75%;*/
+		flex: 1;
 		padding-left: 1rem;
 	}
 
@@ -55,7 +58,7 @@
 	}
 
 	.drppsm-archive-image {
-		width: 100%;
+		/*width: 100%;*/
 	}
 
 	.drppsm-archive-image-img {
@@ -63,10 +66,12 @@
 		height: auto !important;
 	}
 
+	/*
 	.drppsm-archive-main {
 		width: 100%;
 		padding-left: 0;
 	}
+	*/
 
 	.drppsm-archive-meta-item {
 		display: inline-block;
@@ -109,6 +114,16 @@
 .drppsm-archive-post-title {
 	color: black;
 	font-size: 1.3rem;
+}
+
+.drppsm-archive-image {
+	height: auto;
+	position: relative;
+}
+
+.drppsm-archive-main {
+	/*width: 100%;*/
+	/*padding: 24px;*/
 }
 
 /******************************************************
