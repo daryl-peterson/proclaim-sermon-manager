@@ -18,8 +18,10 @@ $image = get_sermon_image_url( true, ImageSize::SERMON_MEDIUM, true );
 
 <div class="drppsm-single-image">
 	<?php if ( $image ) { ?>
-		<a href="<?php the_permalink( $post->id ); ?>">
-		<img class="drppsm-single-image-img" alt="<?php the_title(); ?>" src="<?php echo $image; ?>">
-		</a>
+
+	<a href="<?php the_permalink( $post->id ); ?>">
+	<img class="drppsm-single-image-img" alt="<?php the_title(); ?>" src="<?php echo $image; ?>">
+	</a>
+
 	<?php } ?>
 </div>

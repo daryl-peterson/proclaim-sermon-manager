@@ -19,9 +19,8 @@ if ( ! has_term( '', Tax::PREACHER, $post->ID ) ) {
 }
 
 ?>
-<div class="drppsm-archive-meta-item drppsm-archive-meta-series">
+
+<div class="drppsm-archive-meta-item">
 	<div class="drppsm-archive-meta-prefix"><?php echo ucwords( Settings::get( Settings::PREACHER ) ); ?></div>
 	<div class="drppsm-archive-meta-text"><?php echo get_the_term_list( $post->ID, Tax::PREACHER ); ?></div>
 </div>
-
-

@@ -12,17 +12,16 @@
 	}
 
 	.drppsm-archive-article {
-		padding: 2em !important;
-
+		padding: 1.5rem !important;
 	}
 
 	.drppsm-archive-image {
-		width: 20%;
+		width: 25%;
 	}
 
 	.drppsm-archive-main {
-		width: 80%;
-		padding-left: 1em;
+		width: 75%;
+		padding-left: 1rem;
 	}
 
 	.drppsm-archive-meta-item {
@@ -43,6 +42,7 @@
 	.drppsm-archive-title-text {
 		width: 80%;
 	}
+
 }
 
 @media (max-width: 544px) {
@@ -98,6 +98,17 @@
 		padding-bottom: .5em;
 	}
 
+}
+
+#drppsm-sermon-wrapper {
+	width: 100%;
+	margin: 1.5rem 0;
+	padding: 0;
+}
+
+.drppsm-archive-post-title {
+	color: black;
+	font-size: 1.3rem;
 }
 
 /******************************************************

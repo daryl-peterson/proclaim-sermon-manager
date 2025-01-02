@@ -39,7 +39,6 @@ class ShortCodes implements Executable, Registrable {
 	}
 
 	public function register(): ?bool {
-
 		if ( shortcode_exists( DRPPSM_SC_LATEST_SERIES ) ) {
 			return false;
 		}
@@ -79,10 +78,11 @@ class ShortCodes implements Executable, Registrable {
 	 * Display latest sermon.
 	 *
 	 * @param array $atts
-	 * @return void
+	 * @return string
 	 * @since 1.0.0
 	 */
-	public function latest_sermon( array $atts ): void {
+	public function latest_sermon( array $atts ): string {
+
 		$atts = $this->fix_atts( $atts );
 
 		// order="DESC", orderby="post_modified"
@@ -108,11 +108,16 @@ class ShortCodes implements Executable, Registrable {
 		);
 
 		$query = new WP_Query( $query_args );
+		Logger::debug( array( 'QUERY' => $query ) );
 
 		// Add query to the args.
 		$args['query'] = $query;
 
+		$output = '';
+
+		ob_start();
 		if ( $query->have_posts() ) {
+
 			while ( $query->have_posts() ) {
 				$query->the_post();
 				global $post;
@@ -120,19 +125,35 @@ class ShortCodes implements Executable, Registrable {
 				/**
 				 * Filters overrideing of latest sermon output
 				 *
-				 * @param book $override
-				 * @return bool
+				 * @param string $shortcode
+				 * @param string $post
+				 * @param array $args
+				 * @return string
+				 * @since 1.0.0
 				 */
-				$override = apply_filters( DRPPSMF_SC_OUTPUT_OVRD, false );
-				if ( $override ) {
+				$override = apply_filters( DRPPSMF_SC_OUTPUT_OVRD, DRPPSM_SC_LATEST_SERMON, $post, $args );
+				if ( $override !== DRPPSM_SC_LATEST_SERMON ) {
+					$output .= $override;
 					continue;
 				}
-
 				get_partial( 'content-sermon-archive', $args );
-			}
-		} else {
 
+			}
+
+			wp_reset_postdata();
+		} else {
+			get_partial( 'content-sermon-none' );
 		}
+
+		$result = ob_get_clean();
+
+		if ( $output !== '' ) {
+			$result = $output;
+		}
+
+		Logger::debug( PHP_EOL . $result );
+
+		return $result;
 	}
 
 	/**
@@ -157,7 +178,7 @@ class ShortCodes implements Executable, Registrable {
 		$atts = $this->fix_atts( $atts );
 
 		Logger::debug( 'SERMON LISTING HERE' );
-		echo 'blah';
+		// echo 'blah';
 	}
 
 	/**

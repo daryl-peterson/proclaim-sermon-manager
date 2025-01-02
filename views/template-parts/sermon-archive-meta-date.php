@@ -14,7 +14,12 @@ namespace DRPPSM;
 defined( 'ABSPATH' ) || exit;
 
 ?>
-<div class="drppsm-archive-meta-item drppsm-archive-meta-series">
+<div class="drppsm-archive-meta-item">
 	<div class="drppsm-archive-meta-prefix">Date</div>
-	<div class="drppsm-archive-meta-text"><?php the_date(); ?></div>
+	<div class="drppsm-archive-meta-text">
+		<?php
+		the_date();
+		?>
+
+	</div>
 </div>

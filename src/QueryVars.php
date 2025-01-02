@@ -118,12 +118,14 @@ class QueryVars implements Executable, Registrable {
 			}
 		}
 
+		/*
 		$msg = array(
 			'QUERY ORG' => $query_org,
 			'QUERY'     => $query,
 			'CONFLICTS' => $this->conflict,
 		);
 		Logger::debug( $msg );
+		*/
 		return $query;
 	}
 

@@ -229,6 +229,8 @@ class Templates implements Executable, Registrable {
 	 * @return mixed
 	 * @throws WP_Exception
 	 * @since 1.0.0
+	 *
+	 * @todo Finish
 	 */
 	public function render_sorting( array $args = array() ) {
 		// Filters HTML fields data.
@@ -330,7 +332,7 @@ class Templates implements Executable, Registrable {
 		 *
 		 * @since 2.13.5
 		 */
-		$args = apply_filters( 'sm_render_wpfc_sorting_args', $args, $orig_args, $filters, $visibility_mapping );
+		$args = apply_filters( 'drppsm_render_sorting_args', $args, $orig_args, $filters, $visibility_mapping );
 
 		$hide_filters = $args['hide_filters'];
 
@@ -347,8 +349,8 @@ class Templates implements Executable, Registrable {
 		 * @since 2.13.5
 		 * @since 2.15.0 - add other parameters, except $hide_filters.
 		 */
-		if ( apply_filters( 'sm_render_wpfc_sorting', $hide_filters, $args, $orig_args, $filters, $visibility_mapping ) ) {
-			$content = wpfc_get_partial(
+		if ( apply_filters( 'drppsm_sm_render_sorting', $hide_filters, $args, $orig_args, $filters, $visibility_mapping ) ) {
+			$content = get_partial(
 				'content-sermon-filtering',
 				array(
 
@@ -373,7 +375,7 @@ class Templates implements Executable, Registrable {
 		 *
 		 * @since 2.15.0
 		 */
-		return apply_filters( 'render_wpfc_sorting_output', $content, $args, $orig_args, $filters, $visibility_mapping );
+		return apply_filters( 'drppsm_sorting_output', $content, $args, $orig_args, $filters, $visibility_mapping );
 	}
 
 	/**
@@ -462,8 +464,8 @@ class Templates implements Executable, Registrable {
 		}
 		Logger::debug(
 			array(
-				'PARTIAL' => $partial,
 				'NAME'    => $name,
+				'PARTIAL' => $partial,
 			)
 		);
 		return $partial;
@@ -491,8 +493,8 @@ class Templates implements Executable, Registrable {
 		}
 		Logger::debug(
 			array(
-				'PARTIAL' => $partial,
 				'NAME'    => $name,
+				'PARTIAL' => $partial,
 			)
 		);
 		return $partial;

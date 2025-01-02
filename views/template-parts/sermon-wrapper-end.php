@@ -13,7 +13,9 @@ defined( 'ABSPATH' ) or exit;
 
 $wrapper = <<<EOT
 		</main>
+		<!-- #main -->
 	</div>
+	<!-- #primary -->
 EOT;
 
 echo $wrapper;

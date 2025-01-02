@@ -1,6 +1,6 @@
-<?php // phpcs:ignore
+<?php
 /**
- * Sermon archive template.
+ * Sermon series taxonomy template.
  *
  * @package     DRPPSM/Views/
  * @author      Daryl Peterson <@gmail.com>

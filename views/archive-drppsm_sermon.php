@@ -11,21 +11,23 @@
 
 namespace DRPPSM;
 
-get_header();
+if ( ! did_action( 'get_header' ) ) {
+	get_header();
+}
 
 get_partial( 'sermon-wrapper-start' );
 get_partial( 'content-sermon-filtering' );
 
 if ( have_posts() ) :
 
-	echo apply_filters( 'archive-wpfc_sermon-before-sermons', '' );
+	// echo apply_filters( 'archive-wpfc_sermon-before-sermons', '' );
 
 	while ( have_posts() ) :
 		the_post();
 		sermon_excerpt();
 	endwhile;
 
-	echo apply_filters( 'archive-wpfc_sermon-after-sermons', '' );
+	// echo apply_filters( 'archive-wpfc_sermon-after-sermons', '' );
 
 	echo '<div class="sm-pagination ast-pagination">';
 	// sm_pagination();
@@ -35,4 +37,7 @@ else :
 endif;
 
 get_partial( 'sermon-wrapper-end' );
-get_footer();
+
+if ( ! did_action( 'get_footer' ) ) {
+	get_footer();
+}
