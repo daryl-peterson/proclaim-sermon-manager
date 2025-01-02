@@ -131,11 +131,16 @@ class PostTypeSetup implements PostTypeSetupInt {
 			}
 
 			do_action( Actions::AFTER_POST_SETUP );
-
 			return $status;
 
 			// @codeCoverageIgnoreStart
 		} catch ( \Throwable $th ) {
+			Logger::error(
+				array(
+					'ERROR' => $th->getMessage(),
+					'TRACE' => $th->getTrace(),
+				)
+			);
 			throw new PluginException( wp_kses( $th->getMessage(), allowed_html() ) );
 			// @codeCoverageIgnoreEnd
 		}
@@ -191,7 +196,7 @@ class PostTypeSetup implements PostTypeSetupInt {
 	 * @since 1.0.0
 	 */
 	public function flush(): void {
-		do_action( DRPPSM_FLTR_FLUSH_REWRITE );
+		do_action( DRPPSMA_FLUSH_REWRITE );
 	}
 
 	/**
@@ -213,7 +218,7 @@ class PostTypeSetup implements PostTypeSetupInt {
 	 * @since 1.0.0
 	 */
 	public function get_post_type( string $post_type ): PostTypeRegInt {
-		if ( ! isset( $this->post_types[ $post_type ] ) ) {
+		if ( ! is_array( $this->post_types ) || ! isset( $this->post_types[ $post_type ] ) ) {
 			throw new PluginException( esc_html( "Invalid post type : $post_type" ) );
 		}
 

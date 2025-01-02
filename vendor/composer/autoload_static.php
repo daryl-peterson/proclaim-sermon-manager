@@ -8,13 +8,12 @@ class ComposerStaticInitf5da42b7feb65ba592bc9e68a42f25f4
 {
     public static $files = array (
         '2b1771712136d63f0ed4fa70e62557eb' => __DIR__ . '/../..' . '/src/Core/Functions/core.php',
+        '0ecdf14f9753bb884fe2a3c55c79a401' => __DIR__ . '/../..' . '/src/Core/Functions/defines.php',
         'd75c4dd93ef9af06b15ee96390970d1c' => __DIR__ . '/../..' . '/src/Core/Functions/misc.php',
         '508f928bcc69d4d7257b594ca5e3ed26' => __DIR__ . '/../..' . '/src/Core/Functions/include.php',
         '18ce892445e99103f067dd10d355c2b0' => __DIR__ . '/../..' . '/src/Core/Functions/interfaces.php',
         '1bf42cb946e1f36ab7e284ac9bd55dd2' => __DIR__ . '/../..' . '/src/Core/Functions/database.php',
-        'b10806ebc85e93fdf657c73b9e090110' => __DIR__ . '/../..' . '/src/Core/Functions/messages.php',
         '8e0760fd21128b00441ec5c4abbdfb75' => __DIR__ . '/../..' . '/src/Core/Functions/templates.php',
-        '9d038f04b15ebc58e7e6cc2b7deb416a' => __DIR__ . '/../..' . '/src/Core/Functions/filters.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -120,9 +119,6 @@ class ComposerStaticInitf5da42b7feb65ba592bc9e68a42f25f4
         'DRPPSM\\Logging\\LogWritterInt' => __DIR__ . '/../..' . '/src/Core/Logging/LogWritterInt.php',
         'DRPPSM\\Logging\\LoggerInt' => __DIR__ . '/../..' . '/src/Core/Logging/LoggerInt.php',
         'DRPPSM\\Notice' => __DIR__ . '/../..' . '/src/Notice.php',
-        'DRPPSM\\OptBase' => __DIR__ . '/../..' . '/src/OptBase.php',
-        'DRPPSM\\OptDisplay' => __DIR__ . '/../..' . '/src/OptDisplay.php',
-        'DRPPSM\\OptGeneral' => __DIR__ . '/../..' . '/src/OptGeneral.php',
         'DRPPSM\\Options' => __DIR__ . '/../..' . '/src/Options.php',
         'DRPPSM\\Pagination' => __DIR__ . '/../..' . '/src/Pagination.php',
         'DRPPSM\\PermaLinks' => __DIR__ . '/../..' . '/src/PermaLinks.php',
@@ -142,6 +138,11 @@ class ComposerStaticInitf5da42b7feb65ba592bc9e68a42f25f4
         'DRPPSM\\SermonImageAttach' => __DIR__ . '/../..' . '/src/SermonImageAttach.php',
         'DRPPSM\\SermonListTable' => __DIR__ . '/../..' . '/src/SermonListTable.php',
         'DRPPSM\\Settings' => __DIR__ . '/../..' . '/src/Settings.php',
+        'DRPPSM\\SettingsAdvanced' => __DIR__ . '/../..' . '/src/SettingsAdvanced.php',
+        'DRPPSM\\SettingsBase' => __DIR__ . '/../..' . '/src/SettingsBase.php',
+        'DRPPSM\\SettingsDisplay' => __DIR__ . '/../..' . '/src/SettingsDisplay.php',
+        'DRPPSM\\SettingsGeneral' => __DIR__ . '/../..' . '/src/SettingsGeneral.php',
+        'DRPPSM\\ShortCodes' => __DIR__ . '/../..' . '/src/ShortCodes.php',
         'DRPPSM\\Tax' => __DIR__ . '/../..' . '/src/Tax.php',
         'DRPPSM\\TaxUtils' => __DIR__ . '/../..' . '/src/TaxUtils.php',
         'DRPPSM\\TaxonomyImageAttach' => __DIR__ . '/../..' . '/src/TaxonomyImageAttach.php',

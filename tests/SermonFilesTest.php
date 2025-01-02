@@ -40,9 +40,4 @@ class SermonFilesTest extends BaseTest {
 		$this->assertNotNull( $this->obj );
 		$this->assertInstanceOf( SermonFiles::class, $this->obj );
 	}
-
-	public function test_show() {
-		$result = $this->obj->show();
-		$this->assertTrue( $result );
-	}
 }

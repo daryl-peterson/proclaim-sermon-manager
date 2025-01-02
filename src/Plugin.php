@@ -131,12 +131,6 @@ class Plugin implements PluginInt {
 	 * @since 1.0.0
 	 */
 	public function shutdown(): bool {
-
-		$message  = "\n\n";
-		$message .= str_repeat( '-', 80 );
-		$message .= "\nSHUTTING DOWN\n";
-		$message .= "\n\n";
-		Logger::debug( $message );
 		return true;
 	}
 

@@ -1,8 +1,8 @@
 <?php
 /**
- * Filters defined.
+ * Sermon no content
  *
- * @package     DRPPSM/Functions
+ * @package     DRPPSM/Views/Partials
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
@@ -11,4 +11,4 @@
 
 namespace DRPPSM;
 
-use WP_Post;
+defined( 'ABSPATH' ) or exit;

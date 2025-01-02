@@ -59,7 +59,7 @@ class Rewrite implements RewriteInt {
 		add_action( 'init', array( $this, 'find_conflicts' ) );
 		add_action( 'activate_plugin', array( $this, 'reset' ), 10, 2 );
 		add_action( 'deactivate_plugin', array( $this, 'reset' ), 10, 2 );
-		add_action( DRPPSM_FLTR_FLUSH_REWRITE, array( $this, 'flush' ) );
+		add_action( DRPPSMA_FLUSH_REWRITE, array( $this, 'flush' ) );
 		return true;
 	}
 

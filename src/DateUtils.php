@@ -124,7 +124,8 @@ class DateUtils {
 		 * @param string $format                Date format
 		 * @param bool   $force_unix_sanitation If the sanitation is forced
 		 */
-		$result = apply_filters( DRPPSM_FLTR_SERMON_DATES, $date, $orig_date, $format, $force_unix_sanitation );
+		$result = apply_filters( DRPPSMF_SERMON_DATES, $date, $orig_date, $format, $force_unix_sanitation );
+
 		return $result;
 	}
 

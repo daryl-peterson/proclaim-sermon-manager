@@ -52,6 +52,7 @@ return array(
 	SermonEdit::class          => SermonEdit::class,
 	SermonImageAttach::class   => SermonImageAttach::class,
 	SermonListTable::class     => SermonListTable::class,
+	ShortCodes::class          => ShortCodes::class,
 	TaxonomyImageAttach::class => TaxonomyImageAttach::class,
 	TaxonomyListTable::class   => TaxonomyListTable::class,
 	TextDomainInt::class       => TextDomain::class,

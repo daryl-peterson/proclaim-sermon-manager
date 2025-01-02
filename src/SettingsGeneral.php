@@ -25,7 +25,7 @@ use DRPPSM\Interfaces\Registrable;
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
  * @since       1.0.0
  */
-class OptGeneral extends OptBase implements Executable, Registrable {
+class SettingsGeneral extends SettingsBase implements Executable, Registrable {
 
 	public string $option_key     = Settings::OPTION_KEY_GENERAL;
 	public const TRANSIENT_EXPIRE = '';
@@ -34,10 +34,10 @@ class OptGeneral extends OptBase implements Executable, Registrable {
 	/**
 	 * Initailize and register hooks.
 	 *
-	 * @return OptGeneral
+	 * @return SettingsGeneral
 	 * @since 1.0.0
 	 */
-	public static function exec(): OptGeneral {
+	public static function exec(): SettingsGeneral {
 		$obj = new self();
 		$obj->register();
 		return $obj;
@@ -59,7 +59,6 @@ class OptGeneral extends OptBase implements Executable, Registrable {
 
 		add_action( Actions::SETTINGS_REGISTER_FORM, array( $this, 'register_metaboxes' ) );
 		add_action( "cmb2_save_{$object_type}_fields_{$id}", array( $this, 'flush_check' ), 10, 3 );
-		add_filter( DRPPSM_FLTR_SETTINGS_MM, array( $this, 'set_menu' ) );
 		return true;
 	}
 

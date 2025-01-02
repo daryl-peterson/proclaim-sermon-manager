@@ -22,7 +22,7 @@ use CMB2;
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
  * @since       1.0.0
  */
-class OptBase {
+class SettingsBase {
 	protected int $separator_count = 0;
 	public string $option_key      = 'NOT SET';
 
@@ -43,13 +43,13 @@ class OptBase {
 	/**
 	 * Set this menu as the main.
 	 *
-	 * @param string $menu Main menu.
+	 * @param mixed $menu Main menu.
 	 * @return string
 	 * @since 1.0.0
 	 */
-	public function set_menu( array $submenus ): array {
+	public function set_menu( mixed $submenus ): mixed {
 
-		if ( ! in_array( $this->option_key, $submenus, true ) ) {
+		if ( is_array( $submenus ) && ! in_array( $this->option_key, $submenus, true ) ) {
 			$submenus[] = $this->option_key;
 		}
 		return $submenus;
@@ -66,12 +66,16 @@ class OptBase {
 
 		$options  = \get_option( $this->option_key, array() );
 		$defaults = Settings::get_defaults( $this->option_key );
+
 		if ( ! $defaults ) {
 			return false;
 		}
 
 		$changed = false;
 		foreach ( $defaults as $key => $value ) {
+			if ( ! is_array( $options ) ) {
+				continue;
+			}
 			if ( ! key_exists( $key, $options ) ) {
 				$options[ $key ] = $value;
 				$changed         = true;

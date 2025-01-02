@@ -17,6 +17,7 @@ defined( 'ABSPATH' ) || exit;
 use DRPPSM\Constants\PT;
 use DRPPSM\Interfaces\Executable;
 use DRPPSM\Interfaces\Registrable;
+use WP_Exception;
 use WP_Post;
 
 /**
@@ -150,17 +151,26 @@ class Templates implements Executable, Registrable {
 	 */
 	public function get_partial( string $name, array $args = array() ): void {
 
+		// Save orginal name.
+		$name_org = $name;
+
 		/**
-		 * Allows for filtering partial content.
+		 * Allows for filtering the name of the template with path.
+		 * - Filters are prefixed with drppsmf_
+		 * - Used in Templates class.
 		 *
 		 * @param string $name File name.
 		 * @param array  $args Array of variables to pass to template.
+		 * @return string $name File name.
 		 * @since 1.0.0
 		 */
-		$content = apply_filters( DRPPSM_FLTR_TPL_PARTIAL, $name, $args );
-		if ( ! empty( $content ) && $content !== $name ) {
-			echo $content;
-			return;
+		$name = apply_filters( DRPPSMF_TPL_PARTIAL, $name, $args );
+		if ( $name !== $name_org ) {
+			if ( file_exists( $name ) ) {
+				load_template( $name, false, $args );
+				return;
+			}
+			$name = $name_org;
 		}
 
 		$name    = $this->fix_template_name( $name );
@@ -192,25 +202,6 @@ class Templates implements Executable, Registrable {
 	 */
 	public function sermon_single( ?WP_Post $post_new = null ): void {
 
-		if ( null === $post_new ) {
-			global $post;
-			$post_org = clone ($post);
-		} else {
-			$post_org = clone ($post_new);
-		}
-
-		/**
-		 * Allows you to modify the sermon HTML on single sermon pages.
-		 *
-		 * @param WP_Post $post Sermon post object.
-		 * @since 1.0.0
-		 */
-		$output = apply_filters( DRPPSM_FLTR_SERMON_SINGLE, $post_org );
-		if ( ! $output instanceof WP_Post && is_string( $output ) ) {
-			echo $output;
-			return;
-		}
-
 		// Get the partial.
 		$this->get_partial( 'content-sermon-single' );
 	}
@@ -232,33 +223,40 @@ class Templates implements Executable, Registrable {
 		$this->get_partial( 'content-sermon-archive', $args );
 	}
 
+	/**
+	 *
+	 * @param array $args
+	 * @return mixed
+	 * @throws WP_Exception
+	 * @since 1.0.0
+	 */
 	public function render_sorting( array $args = array() ) {
 		// Filters HTML fields data.
 		$filters = apply_filters(
-			DRPPSM_FLTR_TAX_SORTING,
+			DRPPSMF_TAX_SORTING,
 			array(
 				array(
-					'className' => 'drppsm_sort_preacher',
+					'className' => 'drppsm-sort-preacher',
 					'taxonomy'  => Tax::PREACHER,
 					'title'     => get_taxonomy_field( Tax::PREACHER, 'singular_name' ),
 				),
 				array(
-					'className' => 'drppsm_sort_series',
+					'className' => 'drppsm-sort-series',
 					'taxonomy'  => Tax::SERIES,
 					'title'     => __( 'Series', 'drppsm' ),
 				),
 				array(
-					'className' => 'drppsm_sort_topics',
+					'className' => 'drppsm-sort-topics',
 					'taxonomy'  => Tax::TOPICS,
 					'title'     => __( 'Topic', 'drppsm' ),
 				),
 				array(
-					'className' => 'drppsm_sort_book',
+					'className' => 'drppsm-sort-book',
 					'taxonomy'  => Tax::BIBLE_BOOK,
 					'title'     => __( 'Book', 'drppsm' ),
 				),
 				array(
-					'className' => 'sortServiceTypes',
+					'className' => 'drppsm-sort-stype',
 					'taxonomy'  => Tax::SERVICE_TYPE,
 					'title'     => get_taxonomy_field( Tax::SERVICE_TYPE, 'singular_name' ),
 				),
@@ -266,7 +264,7 @@ class Templates implements Executable, Registrable {
 		);
 
 		$visibility_mapping = apply_filters(
-			'render_wpfc_sorting_visibility_mapping',
+			'drppsm_sorting_visibility_mapping',
 			array(
 				Tax::TOPICS       => 'hide_topics',
 				Tax::SERIES       => 'hide_series',
@@ -281,26 +279,25 @@ class Templates implements Executable, Registrable {
 		$orig_args = $args;
 
 		$default = array(
-			'id'                  => 'wpfc_sermon_sorting',
-			'classes'             => '',
-			'series_filter'       => '',
-			'service_type_filter' => '',
-			'series'              => '',
-			'preachers'           => '',
-			'topics'              => '',
-			'books'               => '',
-			'visibility'          => 'suggest',
-			'hide_topics'         => '',
-			'hide_series'         => '',
-			'hide_preachers'      => '',
-			'hide_books'          => '',
+			'id'                    => 'drppsm_sermon_sorting',
+			'classes'               => '',
+			'series_filter'         => '',
+			'service_type_filter'   => '',
+			'series'                => '',
+			'preachers'             => '',
+			'topics'                => '',
+			'books'                 => '',
+			'visibility'            => 'suggest',
+			Settings::TOPICS_SORT   => Settings::get( Settings::TOPICS_SORT, true ),
+			Settings::SERIES_SORT   => Settings::get( Settings::SERIES_SORT, true ),
+			Settings::PREACHER_SORT => Settings::get( Settings::PREACHER_SORT, true ),
+			Settings::BIBLE_BOOK    => Settings::get( Settings::BIBLE_BOOK, true ),
 			// 'hide_service_types'  => SermonManager::getOption( 'service_type_filtering' ) ? '' : 'yes',
-			'hide_dates'          => '',
+			'hide_dates'            => '',
 			// 'hide_filters'        => ! SermonManager::getOption( 'hide_filters' ),
-			'action'              => 'none',
+			'action'                => 'none',
 		);
 		$args    = $args + $default;
-		echo '<pre>' . print_r( $args, true ) . '</pre>';
 
 		// Populate the action field.
 		switch ( $args['action'] ) {
@@ -333,7 +330,7 @@ class Templates implements Executable, Registrable {
 		 *
 		 * @since 2.13.5
 		 */
-		$args = apply_filters( 'sm_render_wpfc_sorting_args', $args, $orig_args, $action, $filters, $visibility_mapping );
+		$args = apply_filters( 'sm_render_wpfc_sorting_args', $args, $orig_args, $filters, $visibility_mapping );
 
 		$hide_filters = $args['hide_filters'];
 
@@ -350,11 +347,11 @@ class Templates implements Executable, Registrable {
 		 * @since 2.13.5
 		 * @since 2.15.0 - add other parameters, except $hide_filters.
 		 */
-		if ( apply_filters( 'sm_render_wpfc_sorting', $hide_filters, $args, $orig_args, $action, $filters, $visibility_mapping ) ) {
+		if ( apply_filters( 'sm_render_wpfc_sorting', $hide_filters, $args, $orig_args, $filters, $visibility_mapping ) ) {
 			$content = wpfc_get_partial(
 				'content-sermon-filtering',
 				array(
-					'action'             => $action,
+
 					'filters'            => $filters,
 					'visibility_mapping' => $visibility_mapping,
 					'args'               => $args,
@@ -376,7 +373,7 @@ class Templates implements Executable, Registrable {
 		 *
 		 * @since 2.15.0
 		 */
-		return apply_filters( 'render_wpfc_sorting_output', $content, $args, $orig_args, $action, $filters, $visibility_mapping );
+		return apply_filters( 'render_wpfc_sorting_output', $content, $args, $orig_args, $filters, $visibility_mapping );
 	}
 
 	/**
@@ -514,7 +511,7 @@ class Templates implements Executable, Registrable {
 		$error = DRPPSM_MSG_FAILED_PARTIAL . " $name . " . DRPPSM_MSG_FILE_NOT_EXIST;
 
 		$html = '';
-		if ( did_action( DRPPSM_ACT_TEMPLATE_ERROR ) ) {
+		if ( did_action( DRPPSMA_TPL_ERROR ) ) {
 			return;
 		}
 
@@ -527,6 +524,6 @@ class Templates implements Executable, Registrable {
 				</div>
 		HTML;
 		echo $html;
-		do_action( DRPPSM_ACT_TEMPLATE_ERROR );
+		do_action( DRPPSMA_TPL_ERROR );
 	}
 }

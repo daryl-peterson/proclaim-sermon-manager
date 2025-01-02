@@ -68,10 +68,8 @@ class Requirements implements RequirementsInt {
 	 * @since 1.0.0
 	 */
 	public static function exec(): RequirementsInt {
-		Logger::debug( 'GETTINGS ' . __CLASS__ );
 		$obj = new self();
 		$obj->register();
-
 		return $obj;
 	}
 

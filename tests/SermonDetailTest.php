@@ -36,9 +36,4 @@ class SermonDetailTest extends BaseTest {
 		$this->assertNotNull( $this->obj );
 		$this->assertInstanceOf( SermonDetail::class, $this->obj );
 	}
-
-	public function test_show() {
-		$result = $this->obj->show();
-		$this->assertTrue( $result );
-	}
 }

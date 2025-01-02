@@ -210,18 +210,6 @@ function get_sermon_image_url( bool $fallback = true, string $image_size = 'post
 	return $image;
 }
 
-function get_sermon_image( null|WP_Post $post = null, string $image_size = 'post-thumbnail' ) {
-	if ( null === $post ) {
-		global $post;
-
-	}
-
-	$image_size = apply_filters( DRPPSM_FLTR_SERMON_IMAGE_SIZE, $image_size, $post );
-
-	$sermon_image = get_the_post_thumbnail_url( $post, $image_size ) ?: null;
-	$series_image = get_series_image( $post );
-}
-
 
 function get_series_image( null|int|WP_Post $post = null, string $image_size = 'post-thumbnail' ): ?string {
 	if ( null === $post ) {

@@ -171,11 +171,7 @@ class SermonDetail implements Initable, Registrable {
 	 */
 	private function add_date_preached( CMB2 $cmb ): void {
 		$format = Settings::get( Settings::DATE_FORMAT, Settings::get_default( Settings::DATE_FORMAT ) );
-		Logger::debug( array( 'FORMAT' => $format ) );
 
-		/**
-		 * Date preached.
-		 */
 		$cmb->add_field(
 			array(
 				'name'         => esc_html__( 'Date Preached', 'drppsm' ),

@@ -71,12 +71,8 @@ class Container implements ContainerInt {
 
 			$result = new ReflectionClass( $name );
 			return $result;
-		} catch ( \ReflectionException $th ) {
+		} catch ( \Throwable | \ReflectionException $th ) {
 			$error = true;
-			// @codeCoverageIgnoreStart
-		} catch ( \Throwable $th ) {
-			$error = true;
-			// @codeCoverageIgnoreEnd
 		}
 
 		throw new NotFoundException(
@@ -170,8 +166,8 @@ class Container implements ContainerInt {
 	public function has( $id ): bool {
 		try {
 			$item = $this->resolve( $id );
-			// @codeCoverageIgnoreStart
-		} catch ( \Throwable $th ) {
+
+		} catch ( \Throwable | NotfoundException $th ) {
 			Logger::error(
 				array(
 					'MESSAGE' => $th->getMessage(),
@@ -179,7 +175,6 @@ class Container implements ContainerInt {
 				)
 			);
 			return false;
-			// @codeCoverageIgnoreEnd
 		}
 		if ( $item instanceof ReflectionClass ) {
 			return $item->isInstantiable();

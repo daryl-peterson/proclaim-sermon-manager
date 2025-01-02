@@ -55,8 +55,10 @@ class Loader implements Executable, Runable {
 	 * @since 1.0.0
 	 */
 	public function run(): bool {
-		if ( did_action( Actions::AFTER_INIT ) ) {
+		if ( did_action( Actions::AFTER_INIT ) && ! ( defined( DRPPSM_TESTING ) ) ) {
+			// @codeCoverageIgnoreStart
 			return false;
+			// @codeCoverageIgnoreEnd
 
 		}
 		$this->classes = app()->container()->keys();

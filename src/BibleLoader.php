@@ -16,7 +16,6 @@ defined( 'ABSPATH' ) || exit;
 use DRPPSM\Constants\Actions;
 use DRPPSM\Constants\Bible;
 use DRPPSM\Interfaces\BibleLoaderInt;
-use WP_Error;
 
 /**
  * Loads bible books taxomony data.
@@ -28,19 +27,6 @@ use WP_Error;
  * @since       1.0.0
  */
 class BibleLoader implements BibleLoaderInt {
-
-	/**
-	 * Register hooks.
-	 *
-	 * @return boolean|null
-	 * @since 1.0.0
-	 */
-	public function register(): ?bool {
-		if ( has_action( Actions::AFTER_POST_SETUP, array( $this, 'run' ) ) ) {
-			return false;
-		}
-		return add_action( Actions::AFTER_POST_SETUP, array( $this, 'run' ) );
-	}
 
 	/**
 	 * Initailize and register hooks.
@@ -55,6 +41,21 @@ class BibleLoader implements BibleLoaderInt {
 	}
 
 	/**
+	 * Register hooks.
+	 *
+	 * @return boolean|null
+	 * @since 1.0.0
+	 */
+	public function register(): ?bool {
+		if ( has_action( Actions::AFTER_POST_SETUP, array( $this, 'run' ) ) ) {
+			// @codeCoverageIgnoreStart
+			return false;
+			// @codeCoverageIgnoreEnd
+		}
+		return add_action( Actions::AFTER_POST_SETUP, array( $this, 'run' ) );
+	}
+
+	/**
 	 * Check if Bible books have been loaded.
 	 * - Call function to load them.
 	 *
@@ -62,21 +63,42 @@ class BibleLoader implements BibleLoaderInt {
 	 * @since 1.0.0
 	 */
 	public function run(): bool {
+		$result = false;
 
-		$hook    = Tax::BIBLE_BOOK . '_loaded';
-		$options = options();
-		$ran     = $options->get( $hook, false );
+		try {
+			$key  = Tax::BIBLE_BOOK . '_loaded';
+			$load = Settings::get( Settings::BIBLE_BOOK_LOAD, false );
 
-		if ( $ran && ! defined( 'PHPUNIT_TESTING' ) ) {
-			// @codeCoverageIgnoreStart
-			return false;
-			// @codeCoverageIgnoreEnd
+			if ( $load ) {
+				Logger::debug( 'DELETING OPTION ' . $key );
+				\delete_option( $key );
+			}
+
+			$key = Tax::BIBLE_BOOK . '_loaded';
+			$ran = \get_option( $key, false );
+
+			if ( $ran && ! defined( DRPPSM_TESTING ) ) {
+				// @codeCoverageIgnoreStart
+				return false;
+				// @codeCoverageIgnoreEnd
+			}
+
+			$result = $this->load();
+
+			if ( $result ) {
+				\delete_option( $key );
+				\add_option( $key, true );
+			}
+		} catch ( \Throwable $th ) {
+			Logger::error(
+				array(
+					'ERROR' => $th->getMessage(),
+					'TRACE' => $th->getTrace(),
+				)
+			);
 		}
 
-		$result = $this->load();
-		if ( $result ) {
-			$options->set( $hook, true );
-		}
+		Settings::set( Settings::BIBLE_BOOK_LOAD, false );
 		return $result;
 	}
 
@@ -93,33 +115,20 @@ class BibleLoader implements BibleLoaderInt {
 		try {
 			$result = false;
 			foreach ( $books as $book ) {
-				$slug   = sanitize_title( $book );
-				$result = term_exists( $slug, $tax );
+				$book = $this->fix_book( $book );
+				$slug = sanitize_title( $book );
+				$term = term_exists( $slug, $tax );
 
-				Logger::debug( array( $result ) );
-
-				if ( isset( $result ) ) {
+				if ( isset( $term ) ) {
+					// @codeCoverageIgnoreStart
 					continue;
+					// @codeCoverageIgnoreEnd
 				}
 
-				$result = wp_insert_term(
-					$book,
-					$tax,
-					array(
-						'slug' => $slug,
-					)
-				);
-
-				if ( $result instanceof WP_Error ) {
-					$result = false;
-					break;
-				}
-			}
-			if ( $result ) {
-				return true;
+				$result = $this->insert_term( $book, $tax, $slug );
 			}
 
-			return false;
+			return $result;
 			// @codeCoverageIgnoreStart
 		} catch ( \Throwable $th ) {
 			Logger::error(
@@ -131,5 +140,67 @@ class BibleLoader implements BibleLoaderInt {
 			return false;
 			// @codeCoverageIgnoreEnd
 		}
+	}
+
+	/**
+	 * Fix book name if unit testing.
+	 *
+	 * @param string $book
+	 * @return string
+	 * @since 1.0.0
+	 */
+	private function fix_book( string $book ): string {
+
+		if ( defined( DRPPSM_TESTING ) ) {
+			$book .= ' Test';
+		}
+		return $book;
+	}
+
+	/**
+	 * Insert term and delete it if unit testing.
+	 *
+	 * @param string $book
+	 * @param string $tax
+	 * @param string $slug
+	 * @return boolean
+	 * @since 1.0.0
+	 */
+	private function insert_term( string $book, string $tax, string $slug ): bool {
+		$result     = wp_insert_term(
+			$book,
+			$tax,
+			array(
+				'slug' => $slug,
+			)
+		);
+		$result_org = $result;
+		$term_id    = null;
+
+		if ( is_array( $result ) && isset( $result['term_id'] ) ) {
+			$term_id = $result['term_id'];
+			$result  = true;
+		} else {
+			// @codeCoverageIgnoreStart
+			$result = false;
+			// @codeCoverageIgnoreEnd
+		}
+
+		$delete = null;
+		if ( defined( DRPPSM_TESTING ) && isset( $term_id ) ) {
+			$delete = wp_delete_term( $term_id, $tax );
+		}
+
+		Logger::debug(
+			array(
+				'BOOK'          => $book,
+				'TAX'           => $tax,
+				'TERM_ID'       => $term_id,
+				'INSERT RESULT' => $result_org,
+				'DELETE RESULT' => $delete,
+			)
+		);
+
+		return $result;
 	}
 }

@@ -18,9 +18,9 @@ $slug         = Tax::BIBLE_BOOK;
 $capabilities = Tax::CAPS;
 
 return array(
-	'hierarchical' => false,
-	'label'        => __( 'Books', 'drppsm' ),
-	'labels'       => array(
+	'hierarchical'      => false,
+	'label'             => __( 'Books', 'drppsm' ),
+	'labels'            => array(
 		'name'              => __( 'Bible books', 'drppsm' ),
 		'singular_name'     => __( 'Book', 'drppsm' ),
 		'menu_name'         => _x( 'Books', 'menu', 'drppsm' ),
@@ -34,12 +34,13 @@ return array(
 		'new_item_name'     => __( 'New book name', 'drppsm' ),
 		'not_found'         => __( 'No books found', 'drppsm' ),
 	),
-	'show_ui'      => true,
-	'query_var'    => true,
-	'show_in_rest' => true,
-	'rewrite'      => array(
+	'show_ui'           => true,
+	'query_var'         => true,
+	'show_in_rest'      => true,
+	'show_admin_column' => true,
+	'rewrite'           => array(
 		'slug'       => $permalinks[ $slug ],
 		'with_front' => false,
 	),
-	'capabilities' => $capabilities,
+	'capabilities'      => $capabilities,
 );

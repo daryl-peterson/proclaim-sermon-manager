@@ -243,10 +243,21 @@ class LogDatabase extends LogWritterAbs implements LogWritterInt {
 	 * @since 1.0.0
 	 */
 	private function set_totals() {
-		$page        = filter_input( INPUT_GET, 'paged', FILTER_SANITIZE_NUMBER_INT );
-		$items       = $this->db->get_var( "SELECT COUNT(id) FROM $this->table" );
-		$this->page  = max( 1, $page );
-		$this->links = apply_filters( DRPPSM_FLTR_PAGINATION_GET, $items, $this->limit, $this->page, $this->get_url() );
+		$page       = filter_input( INPUT_GET, 'paged', FILTER_SANITIZE_NUMBER_INT );
+		$items      = $this->db->get_var( "SELECT COUNT(id) FROM $this->table" );
+		$this->page = max( 1, $page );
+
+		/**
+		 * Get pagination links
+		 * - Filters are prefixed with drppsmf_
+		 *
+		 * @param integer $items Total records.
+		 * @param integer $limit Per page.
+		 * @param integer $page Page number.
+		 * @return string
+		 * @since 1.0.0
+		 */
+		$this->links = apply_filters( DRPPSMF_PAGINATION_GET, $items, $this->limit, $this->page, $this->get_url() );
 	}
 
 	/**

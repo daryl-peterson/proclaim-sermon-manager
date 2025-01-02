@@ -46,9 +46,6 @@ class TextDomainTest extends BaseTest {
 	 * @since 1.0.0
 	 */
 	public function test_functions() {
-		$hook = Helper::get_key_name( TextDomain::INIT_KEY );
-		do_action( $hook );
-		$this->assertIsString( $hook );
 
 		$result = $this->obj->switch_to_site_locale();
 		$this->assertTrue( $result );

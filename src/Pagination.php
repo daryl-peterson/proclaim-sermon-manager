@@ -46,10 +46,10 @@ class Pagination implements Executable, Registrable {
 	 * @since 1.0.0
 	 */
 	public function register(): ?bool {
-		if ( has_filter( DRPPSM_FLTR_PAGINATION_GET, array( $this, 'pagination' ) ) ) {
+		if ( has_filter( DRPPSMF_PAGINATION_GET, array( $this, 'pagination' ) ) ) {
 			return false;
 		}
-		add_filter( DRPPSM_FLTR_PAGINATION_GET, array( $this, 'pagination' ), 10, 4 );
+		add_filter( DRPPSMF_PAGINATION_GET, array( $this, 'pagination' ), 10, 4 );
 		return true;
 	}
 

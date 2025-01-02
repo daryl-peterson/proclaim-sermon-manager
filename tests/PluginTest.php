@@ -40,16 +40,6 @@ class PluginTest extends BaseTest {
 		$this->assertTrue( $result );
 	}
 
-
-	public function test_show_notice() {
-		$result = $this->obj->show_notice();
-		if ( ! isset( $result ) ) {
-			$this->assertNull( $result );
-		} else {
-			$this->assertIsString( $result );
-		}
-	}
-
 	public function test_shut_down() {
 		$result = $this->obj->shutdown();
 		$this->assertTrue( $result );

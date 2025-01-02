@@ -42,8 +42,6 @@ class AdminSettings implements Executable, Registrable {
 	 */
 	const TAB_GROUP = DRPSM_KEY_PREFIX . '_options';
 
-
-
 	/**
 	 * Initialize and register.
 	 *
@@ -63,7 +61,6 @@ class AdminSettings implements Executable, Registrable {
 	 * @since 1.0.0
 	 */
 	public function register(): ?bool {
-
 		if ( ! is_admin() || has_action( 'cmb2_admin_init', array( $this, 'register_metaboxes' ) ) ) {
 			return false;
 		}
@@ -71,8 +68,8 @@ class AdminSettings implements Executable, Registrable {
 		add_action( 'cmb2_admin_init', array( $this, 'register_metaboxes' ) );
 		add_filter( 'submenu_file', array( $this, 'remove_submenus' ) );
 
-		OptGeneral::exec();
-		OptDisplay::exec();
+		SettingsGeneral::exec();
+		SettingsDisplay::exec();
 		return true;
 	}
 
@@ -170,11 +167,11 @@ class AdminSettings implements Executable, Registrable {
 
 		global $plugin_page;
 
-		$hidden = apply_filters( DRPPSM_FLTR_SETTINGS_RSM, array() );
+		$hidden = apply_filters( DRPPSMF_SETTINGS_RSM, array() );
 
 		// Select another submenu item to highlight (optional).
-		if ( $plugin_page && isset( $hidden[ $plugin_page ] ) ) {
-			$submenu_file = (string) apply_filters( DRPPSM_FLTR_SETTINGS_MM, '' );
+		if ( $plugin_page && in_array( $plugin_page, $hidden ) ) {
+			$submenu_file = Settings::OPTION_KEY_GENERAL;
 		}
 
 		// Hide the submenus.

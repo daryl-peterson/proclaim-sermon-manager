@@ -15,7 +15,6 @@ namespace DRPPSM;
 defined( 'ABSPATH' ) || exit;
 
 use DRPPSM\Interfaces\Executable;
-use DRPPSM\Interfaces\Initable;
 use DRPPSM\Interfaces\Registrable;
 use WP_Term;
 
@@ -53,17 +52,18 @@ class TaxonomyListTable implements Executable, Registrable {
 	protected function __construct() {
 
 		$this->columns = array(
-			'cb'                 => '<input type="checkbox" />',
-			'drppsm-image'       => 'Image',
-			'name'               => 'Name',
-			'drppsm-description' => 'Description',
-			'slug'               => 'Slug',
-			'drppsm-count'       => 'Count',
+			'cb'           => '<input type="checkbox" />',
+			'drppsm-image' => 'Image',
+			'name'         => 'Name',
+			// 'drppsm-description' => 'Description',
+			'slug'         => 'Slug',
+			'posts'        => 'Count',
 		);
 		$this->tax     = array(
 			Tax::PREACHER,
 			Tax::SERIES,
 			Tax::TOPICS,
+			Tax::BIBLE_BOOK,
 		);
 	}
 
@@ -110,8 +110,9 @@ class TaxonomyListTable implements Executable, Registrable {
 	 */
 	public function cmb(): void {
 		foreach ( $this->tax as $taxonomy ) {
-			$this->add_image_field( $taxonomy );
-
+			if ( $taxonomy !== Tax::BIBLE_BOOK ) {
+				$this->add_image_field( $taxonomy );
+			}
 		}
 	}
 
@@ -123,6 +124,9 @@ class TaxonomyListTable implements Executable, Registrable {
 	 * @since 1.0.0
 	 */
 	public function set_columns( array $columns ): array {
+		if ( $this->get_tax_name() === Tax::BIBLE_BOOK ) {
+			unset( $this->columns['drppsm-image'] );
+		}
 		return $this->columns;
 	}
 
