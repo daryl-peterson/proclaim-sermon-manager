@@ -13,7 +13,6 @@ namespace DRPPSM;
 
 defined( 'ABSPATH' ) || exit;
 
-use DRPPSM\Constants\PT;
 use DRPPSM\Interfaces\PermaLinkInt;
 use DRPPSM\Traits\SingletonTrait;
 
@@ -37,6 +36,57 @@ class PermaLinks implements PermaLinkInt {
 	 */
 	private array $permalinks;
 
+
+
+	/**
+	 * Sermon post type.
+	 *
+	 * @var string
+	 * @since 1.0.0
+	 */
+	private string $pt_sermon;
+
+	/**
+	 * Bible taxonomy.
+	 *
+	 * @var string
+	 * @since 1.0.0
+	 */
+	private string $tax_bible;
+
+	/**
+	 * Preacher taxonomy.
+	 *
+	 * @var string
+	 * @since 1.0.0
+	 */
+	private string $tax_preacher;
+
+	/**
+	 * Series taxonomy.
+	 *
+	 * @var string
+	 * @since 1.0.0
+	 */
+	private string $tax_series;
+
+	/**
+	 * Service type taxonomy.
+	 *
+	 * @var string
+	 * @since 1.0.0
+	 */
+	private string $tax_service_type;
+
+
+	/**
+	 * Topics taxonomy.
+	 *
+	 * @var string
+	 * @since 1.0.0
+	 */
+	private string $tax_topics;
+
 	/**
 	 * Text domain
 	 *
@@ -45,7 +95,13 @@ class PermaLinks implements PermaLinkInt {
 	private TextDomain $text;
 
 	protected function __construct() {
-		$this->text = TextDomain::exec();
+		$this->pt_sermon        = DRPPSM_PT_SERMON;
+		$this->tax_bible        = DRPPSM_TAX_BIBLE;
+		$this->tax_preacher     = DRPPSM_TAX_PREACHER;
+		$this->tax_series       = DRPPSM_TAX_SERIES;
+		$this->tax_service_type = DRPPSM_TAX_SERVICE_TYPE;
+		$this->tax_topics       = DRPPSM_TAX_TOPICS;
+		$this->text             = TextDomain::exec();
 	}
 
 	/**
@@ -160,27 +216,28 @@ class PermaLinks implements PermaLinkInt {
 		}
 
 		$perm = array(
-			Tax::PREACHER            => $this->get_preacher(),
-			Tax::SERIES              => '',
-			Tax::TOPICS              => '',
-			Tax::BIBLE_BOOK          => '',
-			Tax::SERVICE_TYPE        => $this->get_service_type(),
-			PT::SERMON               => $this->get_sermon(),
+			$this->tax_bible         => '',
+			$this->tax_preacher      => $this->get_preacher(),
+			$this->tax_series        => '',
+			$this->tax_service_type  => $this->get_service_type(),
+			$this->tax_topics        => '',
+
+			$this->pt_sermon         => $this->get_sermon(),
 			'use_verbose_page_rules' => false,
 		);
 
 		// Ensure rewrite slugs are set.
-		$perm[ Tax::SERIES ] = empty( $perm[ Tax::SERIES ] ) ?
-			_x( 'series', 'slug', 'drppsm' ) : $perm[ Tax::SERIES ];
+		$perm[ $this->tax_series ] = empty( $perm[ $this->tax_series ] ) ?
+			_x( 'series', 'slug', 'drppsm' ) : $perm[ $this->tax_series ];
 
-		$perm[ Tax::TOPICS ] = empty( $perm[ Tax::TOPICS ] ) ?
-			_x( 'topics', 'slug', 'drppsm' ) : $perm[ Tax::TOPICS ];
+		$perm[ $this->tax_topics ] = empty( $perm[ $this->tax_topics ] ) ?
+			_x( 'topics', 'slug', 'drppsm' ) : $perm[ $this->tax_topics ];
 
-		$perm[ Tax::BIBLE_BOOK ] = empty( $perm[ Tax::BIBLE_BOOK ] ) ?
-			_x( 'book', 'slug', 'drppsm' ) : $perm[ Tax::BIBLE_BOOK ];
+		$perm[ $this->tax_bible ] = empty( $perm[ $this->tax_bible ] ) ?
+			_x( 'book', 'slug', 'drppsm' ) : $perm[ $this->tax_bible ];
 
-		$perm[ PT::SERMON ] = empty( $perm[ PT::SERMON ] ) ?
-			_x( 'sermons', 'slug', 'drppsm' ) : $perm[ PT::SERMON ];
+		$perm[ $this->pt_sermon ] = empty( $perm[ $this->pt_sermon ] ) ?
+			_x( 'sermons', 'slug', 'drppsm' ) : $perm[ $this->pt_sermon ];
 
 		foreach ( $perm as $key => $value ) {
 			$perm[ $key ] = untrailingslashit( $value );
@@ -189,13 +246,12 @@ class PermaLinks implements PermaLinkInt {
 		// @todo fix
 		$common = Settings::get( Settings::COMMON_BASE_SLUG );
 		if ( $common ) {
-			Logger::debug( array( 'COMMON BASE' => $common ) );
+
 			foreach ( $perm as $name => &$permalink ) {
-				if ( PT::SERMON === $name ) {
+				if ( $this->pt_sermon === $name ) {
 					continue;
 				}
-
-				$permalink = $perm[ PT::SERMON ] . '/' . $permalink;
+				$permalink = $perm[ $this->pt_sermon ] . '/' . $permalink;
 			}
 		}
 

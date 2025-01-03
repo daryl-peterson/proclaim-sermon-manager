@@ -15,7 +15,6 @@ defined( 'ABSPATH' ) || exit;
 
 use DRPPSM\Constants\Actions;
 use DRPPSM\Constants\Meta;
-use DRPPSM\Constants\PT;
 use DRPPSM\Interfaces\Initable;
 use DRPPSM\Interfaces\Registrable;
 
@@ -62,7 +61,7 @@ class SermonFiles implements Initable, Registrable {
 	 */
 	public function show(): bool {
 
-		$post_type = PT::SERMON;
+		$post_type = DRPPSM_PT_SERMON;
 
 		$cmb = \new_cmb2_box(
 			array(

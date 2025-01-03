@@ -216,7 +216,7 @@ function get_series_image( null|int|WP_Post $post = null, string $image_size = '
 		global $post;
 	}
 
-	$terms = get_the_terms( $post, Tax::SERIES );
+	$terms = get_the_terms( $post, DRPPSM_TAX_SERIES );
 	$url   = null;
 
 	if ( ! is_array( $terms ) ) {

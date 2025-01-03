@@ -11,7 +11,6 @@
 
 namespace DRPPSM;
 
-use DRPPSM\Constants\PT;
 use DRPPSM\Interfaces\Executable;
 use DRPPSM\Interfaces\OptionsInt;
 use DRPPSM\Interfaces\Registrable;
@@ -28,6 +27,8 @@ use WP_Post;
  * @since       1.0.0
  */
 class TaxonomyImageAttach implements Executable, Registrable {
+
+	private $pt = DRPPSM_PT_SERMON;
 
 	/**
 	 * Options interface.
@@ -74,9 +75,9 @@ class TaxonomyImageAttach implements Executable, Registrable {
 		$this->options      = options();
 		$this->sermon_image = SermonImageAttach::exec();
 		$this->tax          = array(
-			Tax::PREACHER,
-			Tax::SERIES,
-			Tax::TOPICS,
+			DRPPSM_TAX_PREACHER,
+			DRPPSM_TAX_SERIES,
+			DRPPSM_TAX_TOPICS,
 		);
 		$this->image_suffix = '_image_id';
 
@@ -372,7 +373,7 @@ class TaxonomyImageAttach implements Executable, Registrable {
 			$sermon = array_shift( $sermon );
 		}
 
-		if ( ( ! $sermon instanceof WP_Post ) || ( PT::SERMON !== $sermon->post_type ) ) {
+		if ( ( ! $sermon instanceof WP_Post ) || ( $this->pt !== $sermon->post_type ) ) {
 			return null;
 		}
 		Logger::debug( $sermon );
@@ -392,7 +393,7 @@ class TaxonomyImageAttach implements Executable, Registrable {
 		// phpcs:disable
 		$sermons = query_posts(
 			array(
-				'post_type'      => PT::SERMON,
+				'post_type'      => $this->pt,
 				'showposts'      => -1,
 				'posts_per_page' => 50,
 				/**
@@ -440,7 +441,7 @@ class TaxonomyImageAttach implements Executable, Registrable {
 			return null;
 		}
 
-		if ( PT::ATTACHEMENT !== $attachment->post_type ) {
+		if ( 'attachment' !== $attachment->post_type ) {
 			return null;
 		}
 		Logger::debug( $attachment );

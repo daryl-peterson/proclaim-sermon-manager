@@ -14,8 +14,8 @@ namespace DRPPSM;
 defined( 'ABSPATH' ) || exit;
 
 $permalinks   = App::init()->permalinks();
-$slug         = Tax::TOPICS;
-$capabilities = Tax::CAPS;
+$slug         = DRPPSM_TAX_TOPICS;
+$capabilities = DRPPSM_TAX_CAPS;
 
 return array(
 	'hierarchical' => false,

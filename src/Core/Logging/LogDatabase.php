@@ -14,7 +14,6 @@ namespace DRPPSM\Logging;
 defined( 'ABSPATH' ) || exit;
 
 use DRPPSM\Constants\Caps;
-use DRPPSM\Constants\PT;
 use wpdb;
 
 use function DRPPSM\get_key_name;
@@ -112,7 +111,7 @@ class LogDatabase extends LogWritterAbs implements LogWritterInt {
 	public function add_menu(): void {
 
 		add_submenu_page(
-			'edit.php?post_type=' . PT::SERMON,
+			'edit.php?post_type=' . DRPPSM_PT_SERMON,
 			__( 'Proclaim Debug', 'drppsm' ),
 			__( 'Debug', 'drppsm' ),
 			Caps::MANAGE_CATAGORIES,
@@ -328,7 +327,7 @@ class LogDatabase extends LogWritterAbs implements LogWritterInt {
 	 * @since 1.0.0
 	 */
 	private function get_url(): string {
-		$url = admin_url( 'edit.php?post_type=' . PT::SERMON . '&page=' . self::SLUG );
+		$url = admin_url( 'edit.php?post_type=' . DRPPSM_PT_SERMON . '&page=' . self::SLUG );
 
 		$removable = array_merge( wp_removable_query_args(), array( 'purge' ) );
 		return remove_query_arg( $removable, $url );

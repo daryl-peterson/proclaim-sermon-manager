@@ -12,7 +12,6 @@
 namespace DRPPSM;
 
 use DRPPSM\Constants\Meta;
-use DRPPSM\Constants\PT;
 
 /**
  * Date utils.
@@ -50,7 +49,7 @@ class DateUtils {
 		$post = get_post( $post );
 
 		// If we are working on right post type.
-		if ( ! $post || PT::SERMON !== $post->post_type ) {
+		if ( ! $post || DRPPSM_PT_SERMON !== $post->post_type ) {
 			return false;
 		}
 

@@ -11,7 +11,6 @@
 
 namespace DRPPSM\Tests;
 
-use DRPPSM\Constants\PT;
 use DRPPSM\SermonComments;
 
 /**
@@ -48,7 +47,7 @@ class SermonCommentsTest extends BaseTest {
 
 	public function test_default_comments_off() {
 		$comments = array(
-			'post_type' => PT::SERMON,
+			'post_type' => DRPPSM_PT_SERMON,
 		);
 		$result   = $this->obj->default_comments_off( $comments );
 		$this->assertIsArray( $result );

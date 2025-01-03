@@ -12,7 +12,6 @@
 namespace DRPPSM\Tests;
 
 use DRPPSM\Constants\Caps;
-use DRPPSM\Constants\PT;
 use DRPPSM\Interfaces\RolesInt;
 use DRPPSM\Logger;
 
@@ -100,7 +99,7 @@ class RolesTest extends BaseTest {
 				continue;
 			}
 			foreach ( $caps as $key => $value ) {
-				if ( strpos( $key, PT::SERMON ) !== false ) {
+				if ( strpos( $key, DRPPSM_PT_SERMON ) !== false ) {
 					$role->remove_cap( $key );
 
 					$result = $role->has_cap( $key );

@@ -13,10 +13,8 @@ namespace DRPPSM;
 
 defined( 'ABSPATH' ) || exit;
 
-$permalinks   = app()->permalinks();
-$slug         = Tax::SERVICE_TYPE;
-$capabilities = Tax::CAPS;
-$label        = Settings::get( Settings::SERVICE_TYPE );
+$permalinks = app()->permalinks();
+$label      = Settings::get( Settings::SERVICE_TYPE );
 
 return array(
 	'hierarchical' => false,
@@ -46,8 +44,8 @@ return array(
 	'query_var'    => true,
 	'show_in_rest' => true,
 	'rewrite'      => array(
-		'slug'       => $permalinks[ $slug ],
+		'slug'       => $permalinks[ DRPPSM_TAX_SERVICE_TYPE ],
 		'with_front' => false,
 	),
-	'capabilities' => $capabilities,
+	'capabilities' => DRPPSM_TAX_CAPS,
 );

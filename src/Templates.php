@@ -14,7 +14,6 @@ namespace DRPPSM;
 
 defined( 'ABSPATH' ) || exit;
 
-use DRPPSM\Constants\PT;
 use DRPPSM\Interfaces\Executable;
 use DRPPSM\Interfaces\Registrable;
 use WP_Exception;
@@ -38,7 +37,48 @@ class Templates implements Executable, Registrable {
 	 */
 	private string $pt;
 
-	private string $html_error;
+
+	/**
+	 * Bible taxonomy.
+	 *
+	 * @var string
+	 * @since 1.0.0
+	 */
+	private string $tax_bible;
+
+	/**
+	 * Preacher taxonomy.
+	 *
+	 * @var string
+	 * @since 1.0.0
+	 */
+	private string $tax_preacher;
+
+	/**
+	 * Series taxonomy.
+	 *
+	 * @var string
+	 * @since 1.0.0
+	 */
+	private string $tax_series;
+
+
+	/**
+	 * Service type taxonomy.
+	 *
+	 * @var string
+	 * @since 1.0.0
+	 */
+	private string $tax_service_type;
+
+
+	/**
+	 * Topics taxonomy.
+	 *
+	 * @var string
+	 * @since 1.0.0
+	 */
+	private string $tax_topics;
 
 	/**
 	 * Initialize object properties.
@@ -46,8 +86,12 @@ class Templates implements Executable, Registrable {
 	 * @since 1.0.0
 	 */
 	protected function __construct() {
-		$this->pt         = PT::SERMON;
-		$this->html_error = '';
+		$this->pt               = DRPPSM_PT_SERMON;
+		$this->tax_bible        = DRPPSM_TAX_BIBLE;
+		$this->tax_preacher     = DRPPSM_TAX_PREACHER;
+		$this->tax_series       = DRPPSM_TAX_SERIES;
+		$this->tax_service_type = DRPPSM_TAX_SERVICE_TYPE;
+		$this->tax_topics       = DRPPSM_TAX_TOPICS;
 	}
 
 	/**
@@ -75,28 +119,7 @@ class Templates implements Executable, Registrable {
 			return false;
 		}
 		add_filter( 'template_include', array( $this, 'template_include' ), 10, 1 );
-		add_action( 'template_redirect', array( $this, 'template_redirect' ) );
-
-		add_action(
-			'init',
-			function () {
-				add_rewrite_endpoint( 'series', EP_PERMALINK );
-			}
-		);
 		return true;
-	}
-
-	public function template_redirect() {
-		global $wp, $wp_query;
-
-		$request = $wp->request;
-		$key     = array_search( $request, Tax::LIST );
-
-		if ( ! $key ) {
-			return;
-		}
-
-		Logger::debug( array( 'KEY' => $key ) );
 	}
 
 	/**
@@ -107,23 +130,20 @@ class Templates implements Executable, Registrable {
 	 * @since 1.0.0
 	 */
 	public function template_include( string $template ): string {
-		global $wp;
 
 		$default_file = '';
 
 		if ( is_singular( $this->pt ) ) {
 			$default_file = $this->get_single_template();
 		} elseif ( is_tax( get_object_taxonomies( $this->pt ) ) ) {
-			if ( is_tax( Tax::LIST ) ) {
-				$default_file = $this->get_tax_template();
-			} else {
-				$default_file = 'archive-drppsm_sermon.php';
-			}
+			$default_file = $this->get_tax_template();
 		} elseif ( is_post_type_archive( $this->pt ) ) {
 			$default_file = $this->get_archive_template();
 		}
 
 		if ( $default_file ) {
+
+			// Search theme
 			if ( file_exists( get_stylesheet_directory() . '/' . $default_file ) ) {
 				return get_stylesheet_directory() . '/' . $default_file;
 			}
@@ -131,18 +151,12 @@ class Templates implements Executable, Registrable {
 			return DRPPSM_PATH . 'views/' . $default_file;
 		}
 
-		Logger::debug(
-			array(
-				'TEMPLATE' => $template,
-				$wp->query_vars,
-			)
-		);
-
 		return $template;
 	}
 
 	/**
 	 * Get partial template.
+	 * - Will render template output.
 	 *
 	 * @param string $name File name.
 	 * @param array  $args Array of variables to pass to template.
@@ -157,7 +171,6 @@ class Templates implements Executable, Registrable {
 		/**
 		 * Allows for filtering the name of the template with path.
 		 * - Filters are prefixed with drppsmf_
-		 * - Used in Templates class.
 		 *
 		 * @param string $name File name.
 		 * @param array  $args Array of variables to pass to template.
@@ -239,28 +252,28 @@ class Templates implements Executable, Registrable {
 			array(
 				array(
 					'className' => 'drppsm-sort-preacher',
-					'taxonomy'  => Tax::PREACHER,
-					'title'     => get_taxonomy_field( Tax::PREACHER, 'singular_name' ),
+					'taxonomy'  => $this->tax_preacher,
+					'title'     => get_taxonomy_field( $this->tax_preacher, 'singular_name' ),
 				),
 				array(
 					'className' => 'drppsm-sort-series',
-					'taxonomy'  => Tax::SERIES,
+					'taxonomy'  => $this->tax_series,
 					'title'     => __( 'Series', 'drppsm' ),
 				),
 				array(
 					'className' => 'drppsm-sort-topics',
-					'taxonomy'  => Tax::TOPICS,
+					'taxonomy'  => $this->tax_topics,
 					'title'     => __( 'Topic', 'drppsm' ),
 				),
 				array(
 					'className' => 'drppsm-sort-book',
-					'taxonomy'  => Tax::BIBLE_BOOK,
+					'taxonomy'  => $this->tax_bible,
 					'title'     => __( 'Book', 'drppsm' ),
 				),
 				array(
 					'className' => 'drppsm-sort-stype',
-					'taxonomy'  => Tax::SERVICE_TYPE,
-					'title'     => get_taxonomy_field( Tax::SERVICE_TYPE, 'singular_name' ),
+					'taxonomy'  => $this->tax_service_type,
+					'title'     => get_taxonomy_field( $this->tax_service_type, 'singular_name' ),
 				),
 			)
 		);
@@ -268,12 +281,12 @@ class Templates implements Executable, Registrable {
 		$visibility_mapping = apply_filters(
 			'drppsm_sorting_visibility_mapping',
 			array(
-				Tax::TOPICS       => 'hide_topics',
-				Tax::SERIES       => 'hide_series',
-				Tax::PREACHER     => 'hide_preachers',
-				Tax::BIBLE_BOOK   => 'hide_books',
-				Tax::SERVICE_TYPE => 'hide_service_types',
-				'drppsm_dates'    => 'hide_dates',
+				$this->tax_topics       => 'hide_topics',
+				$this->tax_series       => 'hide_series',
+				$this->tax_preacher     => 'hide_preachers',
+				$this->tax_bible        => 'hide_books',
+				$this->tax_service_type => 'hide_service_types',
+				'drppsm_dates'          => 'hide_dates',
 			)
 		);
 
@@ -428,14 +441,8 @@ class Templates implements Executable, Registrable {
 	 * @since 1.0.0
 	 */
 	private function get_tax_template(): ?string {
-
-		$term          = get_queried_object();
-		$template_file = "taxonomy-{$term->taxonomy}.php";
-
-		if ( ! file_exists( get_stylesheet_directory() . '/' . $template_file ) ) {
-			$template_file = "archive-{$this->pt}.php";
-		}
-		return $template_file;
+		$term = get_queried_object();
+		return "taxonomy-{$term->taxonomy}.php";
 	}
 
 	/**
@@ -491,12 +498,6 @@ class Templates implements Executable, Registrable {
 				break;
 			}
 		}
-		Logger::debug(
-			array(
-				'NAME'    => $name,
-				'PARTIAL' => $partial,
-			)
-		);
 		return $partial;
 	}
 

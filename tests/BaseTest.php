@@ -3,7 +3,6 @@
 namespace DRPPSM\Tests;
 
 use DRPPSM\App;
-use DRPPSM\Constants\PT;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -43,7 +42,7 @@ class BaseTest extends TestCase {
 	public function getTestSermon(): ?\WP_Post {
 		$args  = array(
 			'numberposts' => 5,
-			'post_type'   => PT::SERMON,
+			'post_type'   => DRPPSM_PT_SERMON,
 			'order'       => 'DESC',
 			'orderby'     => 'date',
 		);

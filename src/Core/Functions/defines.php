@@ -45,27 +45,181 @@ define(
 	)
 );
 
+
+define( 'DRPPSM_PT_SERMON', 'drppsm_sermon' );
+
+/*
+|------------------------------------------------------------------------------
+| TAXONOMY DEFINES
+|------------------------------------------------------------------------------
+| This sections begins the list of defined taxonomies.
+*/
+
 /**
- * SHORTCODES DEFINES
+ * Taxomomy Capabilities.
+ *
+ * #### Capabilities
+ * - **manage_terms**
+ * - **edit_terms**
+ * - **delete_terms**
+ * - **assign_terms**
+ *
+ * @since 1.0.0
+ */
+define(
+	'DRPPSM_TAX_CAPS',
+	array(
+		'manage_terms' => 'manage_categories_drppsm_sermon',
+		'edit_terms'   => 'manage_categories_drppsm_sermon',
+		'delete_terms' => 'manage_categories_drppsm_sermon',
+		'assign_terms' => 'manage_categories_drppsm_sermon',
+	)
+);
+
+/**
+ * Bible taxonomy.
+ *
+ * @since 1.0.0
+ */
+define( 'DRPPSM_TAX_BIBLE', 'drppsm_bible' );
+
+/**
+ * Preacher taxonomy.
+ *
+ * @since 1.0.0
+ */
+define( 'DRPPSM_TAX_PREACHER', 'drppsm_preacher' );
+
+/**
+ * Service type taxonomy.
+ *
+ * @since 1.0.0
+ */
+define( 'DRPPSM_TAX_SERVICE_TYPE', 'drppsm_stype' );
+
+/**
+ * Series taxonomy.
+ *
+ * @since 1.0.0
+ */
+define( 'DRPPSM_TAX_SERIES', 'drppsm_series' );
+
+/**
+ * Topics taxonomy.
+ *
+ * @since 1.0.0
+ */
+define( 'DRPPSM_TAX_TOPICS', 'drppsm_topics' );
+
+/**
+ * Taxomomy mapping friendly to unfriendly.
+ *
+ * @since 1.0.0
+ */
+define(
+	'DRPPSM_TAX_MAP',
+	array(
+		'books'         => 'drppsm_bible',
+		'preachers'     => 'drppsm_preacher',
+		'series'        => 'drppsm_series',
+		'service_types' => 'drppsm_stype',
+		'topics'        => 'drppms_topics',
+	)
+);
+
+define(
+	'DRPPSM_TAX_LIST',
+	array(
+		'drppsm_bible',
+		'drppsm_preacher',
+		'drppsm_series',
+		'drppsm_stype',
+		'drppms_topics',
+	)
+);
+
+/*
+|------------------------------------------------------------------------------
+| SHORTCODES DEFINES
+|------------------------------------------------------------------------------
+| This sections begins the list of defined shortcodes.
+*/
+
+/**
+ * Latest series shortcode.
+ *
+ * @since 1.0.0
  */
 define( 'DRPPSM_SC_LATEST_SERIES', 'drppsm_latest_series' );
+
+/**
+ * Latest sermon shortcode.
+ *
+ * @since 1.0.0
+ */
 define( 'DRPPSM_SC_LATEST_SERMON', 'drppsm_latest_sermon' );
+
+/**
+ * Podcast list shortcode.
+ *
+ * @since 1.0.0
+ */
 define( 'DRPPSM_SC_LIST_PODCAST', 'drppsm_list_podcasts' );
-define( 'DRPPSM_SC_LIST_SERMONS', 'drppsm_list_sermons' );
+
+/**
+ * Terms list shortcode.
+ *
+ * @since 1.0.0
+ */
+define( 'DRPPSM_SC_TERMS', 'drppsm_terms' );
+
+/**
+ * Sermons shortcode.
+ *
+ * @since 1.0.0
+ */
 define( 'DRPPSM_SC_SERMONS', 'drppsm_sermons' );
+
+/**
+ * Sermon images shortcode.
+ *
+ * @since 1.0.0
+ */
 define( 'DRPPSM_SC_SERMON_IMAGES', 'drppsm_sermon_images' );
+
+
+/**
+ * Sermon sorting shortcode.
+ *
+ * @since 1.0.0
+ */
 define( 'DRPPSM_SC_SERMON_SORTING', 'drppsm_sermon_sorting' );
 
 
 
+
+/*
+|------------------------------------------------------------------------------
+| MESSAGES
+|------------------------------------------------------------------------------
+| This sections begins the list of defined messages.
+*/
+
 /**
- * MESSAGES
+ * File does not exist message.
+ *
+ * @since 1.0.0
  */
 define(
 	'DRPPSM_MSG_FILE_NOT_EXIST',
 	__( 'File does not exist.', 'drppsm' )
 );
 
+/**
+ * Failed loading partial file.
+ *
+ * @since 1.0.0
+ */
 define(
 	'DRPPSM_MSG_FAILED_PARTIAL',
 	__( 'Failed loading partial file.', 'drppsm' )
@@ -80,9 +234,9 @@ define(
 
 
 /*
-|--------------------------------------------------------------------------
+|------------------------------------------------------------------------------
 | Filters
-|--------------------------------------------------------------------------
+|------------------------------------------------------------------------------
 | This sections begins the list of defined filters.
 */
 

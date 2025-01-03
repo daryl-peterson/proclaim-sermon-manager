@@ -29,6 +29,18 @@ use DRPPSM\Interfaces\BibleLoaderInt;
 class BibleLoader implements BibleLoaderInt {
 
 	/**
+	 * Bible taxonomy.
+	 *
+	 * @var string
+	 * @since 1.0.0
+	 */
+	private string $tax_bible;
+
+	protected function __construct() {
+		$this->tax_bible = DRPPSM_TAX_BIBLE;
+	}
+
+	/**
 	 * Initailize and register hooks.
 	 *
 	 * @return BibleLoaderInt
@@ -66,7 +78,7 @@ class BibleLoader implements BibleLoaderInt {
 		$result = false;
 
 		try {
-			$key  = Tax::BIBLE_BOOK . '_loaded';
+			$key  = $this->tax_bible . '_loaded';
 			$load = Settings::get( Settings::BIBLE_BOOK_LOAD, false );
 
 			if ( $load ) {
@@ -74,7 +86,7 @@ class BibleLoader implements BibleLoaderInt {
 				\delete_option( $key );
 			}
 
-			$key = Tax::BIBLE_BOOK . '_loaded';
+			$key = $this->tax_bible . '_loaded';
 			$ran = \get_option( $key, false );
 
 			if ( $ran && ! defined( DRPPSM_TESTING ) ) {
@@ -110,14 +122,13 @@ class BibleLoader implements BibleLoaderInt {
 	 */
 	private function load(): bool {
 		$books = Bible::BOOKS;
-		$tax   = Tax::BIBLE_BOOK;
 
 		try {
 			$result = false;
 			foreach ( $books as $book ) {
 				$book = $this->fix_book( $book );
 				$slug = sanitize_title( $book );
-				$term = term_exists( $slug, $tax );
+				$term = term_exists( $slug, $this->tax_bible );
 
 				if ( isset( $term ) ) {
 					// @codeCoverageIgnoreStart
@@ -125,7 +136,7 @@ class BibleLoader implements BibleLoaderInt {
 					// @codeCoverageIgnoreEnd
 				}
 
-				$result = $this->insert_term( $book, $tax, $slug );
+				$result = $this->insert_term( $book, $this->tax_bible, $slug );
 			}
 
 			return $result;

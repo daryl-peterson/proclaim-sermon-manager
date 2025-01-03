@@ -2,7 +2,6 @@
 
 namespace DRPPSM\Tests;
 
-use DRPPSM\Tax;
 use DRPPSM\SermonDetail;
 use ReflectionMethod;
 use ReflectionProperty;

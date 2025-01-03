@@ -13,8 +13,6 @@ namespace DRPPSM;
 
 defined( 'ABSPATH' ) || exit;
 
-use DRPPSM\Constants\Actions;
-use DRPPSM\Constants\PT;
 use DRPPSM\Interfaces\RewriteInt;
 
 /**
@@ -129,9 +127,10 @@ class Rewrite implements RewriteInt {
 		global $wp_post_types, $wp_taxonomies;
 
 		$rewrite            = array();
-		$slug               = $wp_post_types[ PT::SERMON ]->rewrite['slug'];
-		$rewrite[ $slug ][] = PT::SERMON;
-		foreach ( Tax::LIST as $type ) {
+		$slug               = $wp_post_types[ DRPPSM_PT_SERMON ]->rewrite['slug'];
+		$rewrite[ $slug ][] = DRPPSM_PT_SERMON;
+		$tax                = array_values( DRPPSM_TAX_MAP );
+		foreach ( $tax as $type ) {
 			$slug               = $wp_taxonomies[ $type ]->rewrite['slug'];
 			$rewrite[ $slug ][] = $type;
 		}

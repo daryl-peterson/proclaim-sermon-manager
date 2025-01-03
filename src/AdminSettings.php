@@ -16,7 +16,6 @@ defined( 'ABSPATH' ) || exit;
 use CMB2_Boxes;
 use CMB2_Options_Hookup;
 use DRPPSM\Constants\Actions;
-use DRPPSM\Constants\PT;
 use DRPPSM\Interfaces\Executable;
 use DRPPSM\Interfaces\Registrable;
 
@@ -35,7 +34,7 @@ class AdminSettings implements Executable, Registrable {
 	/**
 	 * Menu slug.
 	 */
-	const SLUG = 'edit.php?post_type=' . PT::SERMON;
+	const SLUG = 'edit.php?post_type=' . DRPPSM_PT_SERMON;
 
 	/**
 	 * Tab group.

@@ -13,10 +13,8 @@ namespace DRPPSM;
 
 defined( 'ABSPATH' ) || exit;
 
-$permalinks   = App::init()->permalinks();
-$slug         = Tax::PREACHER;
-$label        = Settings::get( Settings::PREACHER, Settings::get_default( Settings::PREACHER ) );
-$capabilities = Tax::CAPS;
+$permalinks = App::init()->permalinks();
+$label      = Settings::get( Settings::PREACHER, Settings::get_default( Settings::PREACHER ) );
 
 return array(
 	'hierarchical' => false,
@@ -46,8 +44,8 @@ return array(
 	'query_var'    => true,
 	'show_in_rest' => true,
 	'rewrite'      => array(
-		'slug'       => $permalinks[ $slug ],
+		'slug'       => $permalinks[ DRPPSM_TAX_PREACHER ],
 		'with_front' => false,
 	),
-	'capabilities' => $capabilities,
+	'capabilities' => DRPPSM_TAX_CAPS,
 );

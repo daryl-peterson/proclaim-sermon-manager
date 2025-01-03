@@ -13,8 +13,9 @@ namespace DRPPSM;
 
 defined( 'ABSPATH' ) || exit;
 
+$tax_preacher = DRPPSM_TAX_PREACHER;
 
-if ( ! has_term( '', Tax::PREACHER, $post->ID ) ) {
+if ( ! has_term( '', $tax_preacher, $post->ID ) ) {
 	return;
 }
 
@@ -22,5 +23,5 @@ if ( ! has_term( '', Tax::PREACHER, $post->ID ) ) {
 
 <div class="drppsm-single-meta-item">
 	<div class="drppsm-single-meta-prefix"><?php echo Settings::get( Settings::PREACHER ); ?></div>
-	<div class="drppsm-single-meta-text"><?php echo get_the_term_list( $post->ID, Tax::PREACHER ); ?></div>
+	<div class="drppsm-single-meta-text"><?php echo get_the_term_list( $post->ID, $tax_preacher ); ?></div>
 </div>

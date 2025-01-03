@@ -13,8 +13,6 @@ namespace DRPPSM;
 
 defined( 'ABSPATH' ) || exit;
 
-use DRPPSM\Constants\PT;
-
 /**
  * Sermon utils.
  *
@@ -49,7 +47,7 @@ class PostTypeUtils {
 			// @codeCoverageIgnoreEnd
 		}
 
-		if ( PT::SERMON !== $post->post_type ) {
+		if ( DRPPSM_PT_SERMON !== $post->post_type ) {
 			return false;
 		}
 

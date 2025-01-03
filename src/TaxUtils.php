@@ -13,8 +13,6 @@ namespace DRPPSM;
 
 defined( 'ABSPATH' ) || exit;
 
-use DRPPSM\Constants\PT;
-
 /**
  * Taxonomy utilities.
  *
@@ -35,7 +33,7 @@ class TaxUtils {
 	 */
 	public static function get_taxonomies( string $post_type = '' ): array {
 		if ( empty( $post_type ) ) {
-			$post_type = PT::SERMON;
+			$post_type = DRPPSM_PT_SERMON;
 		}
 
 		return get_object_taxonomies( $post_type );

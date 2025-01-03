@@ -14,9 +14,10 @@ namespace DRPPSM;
 
 defined( 'ABSPATH' ) || exit;
 
-use DRPPSM\Constants\PT;
+use DRPPSM\Constants\Bible;
 use DRPPSM\Interfaces\Executable;
 use DRPPSM\Interfaces\Registrable;
+use WP_Error;
 use WP_Query;
 use WP_Term;
 
@@ -47,7 +48,7 @@ class ShortCodes implements Executable, Registrable {
 		add_shortcode( DRPPSM_SC_LATEST_SERMON, array( $this, 'latest_sermon' ) );
 
 		add_shortcode( DRPPSM_SC_LIST_PODCAST, array( $this, 'podcasts_list' ) );
-		add_shortcode( DRPPSM_SC_LIST_SERMONS, array( $this, 'sermons_list' ) );
+		add_shortcode( DRPPSM_SC_TERMS, array( $this, 'term_list' ) );
 
 		add_shortcode( DRPPSM_SC_SERMON_IMAGES, array( $this, 'display_images' ) );
 		add_shortcode( DRPPSM_SC_SERMONS, array( $this, 'sermons' ) );
@@ -100,7 +101,7 @@ class ShortCodes implements Executable, Registrable {
 
 		// Set query args.
 		$query_args = array(
-			'post_type'      => PT::SERMON,
+			'post_type'      => DRPPSM_PT_SERMON,
 			'posts_per_page' => $args['per_page'],
 			'order'          => $args['order'],
 			'orderby'        => $args['orderby'],
@@ -108,7 +109,6 @@ class ShortCodes implements Executable, Registrable {
 		);
 
 		$query = new WP_Query( $query_args );
-		Logger::debug( array( 'QUERY' => $query ) );
 
 		// Add query to the args.
 		$args['query'] = $query;
@@ -172,25 +172,115 @@ class ShortCodes implements Executable, Registrable {
 	}
 
 	/**
-	 * Display sermon list.
+	 * Display simple unordered term list.
 	 *
-	 * @param array $attr
-	 * @return void
+	 * @param array $atts Attribute list.
+	 * @return string
 	 * @since 1.0.0
+	 *
+	 * #### Atts Parameters
+	 * - **display** : Options "series", "preachers", "topics", "books", "serives_types".
+	 * - **order** : Options "DESC" for descending; "ASC" for ascending.
+	 * - **orderby** : Options "name" (default), "id", "count", "slug", "term_group", "none"
+	 *
+	 * ```
+	 * // An example using all three options.
+	 * [list_sermons display="preachers" order="DESC" orderby="id"]
+	 * ```
 	 */
-	public function sermons_list( array $atts ): void {
+	public function term_list( array $atts ): string {
 		$atts = $this->fix_atts( $atts );
 
-		Logger::debug( 'SERMON LISTING HERE' );
-		// echo 'blah';
+		// Default options.
+		$defaults = array(
+			'display' => 'series',
+			'order'   => 'ASC',
+			'orderby' => 'name',
+		);
+
+		// Join default and user options.
+		$args = shortcode_atts( $defaults, $atts, DRPPSM_SC_TERMS );
+
+		// Fix taxonomy
+		$args['display'] = $this->convert_taxonomy_name( $args['display'], true );
+
+		$query_args = array(
+			'taxonomy' => $args['display'],
+			'orderby'  => $args['orderby'],
+			'order'    => $args['order'],
+		);
+
+		if ( 'date' === $query_args['orderby'] ) {
+			$query_args['orderby']        = 'meta_value_num';
+			$query_args['meta_key']       = 'sermon_date';
+			$query_args['meta_compare']   = '<=';
+			$query_args['meta_value_num'] = time();
+		}
+
+		// Get items.
+		$terms = get_terms( $query_args );
+
+		if ( $terms instanceof WP_Error ) {
+			Logger::error(
+				array(
+					'ERROR' => $terms->get_error_message(),
+					$terms->get_error_data(),
+				)
+			);
+			return 'Shortcode Error';
+		}
+
+		if ( count( $terms ) > 0 ) {
+			// Sort books by order.
+			if ( DRPPSM_TAX_BIBLE === $args['display'] && 'book' === $args['orderby'] ) {
+				// Book order.
+				$books = Bible::BOOKS;
+
+				// Assign every book a number.
+				foreach ( $terms as $term ) {
+					$ordered_terms[ array_search( $term->name, $books ) ] = $term;
+				}
+
+				// Order the numbers (books).
+				ksort( $ordered_terms );
+				$terms = $ordered_terms;
+			}
+
+			$list = '<ul id="list-sermons">';
+			foreach ( $terms as $term ) {
+				$list .= '<li><a href="' . esc_url( get_term_link( $term, $term->taxonomy ) ) . '" title="' . $term->name . '">' . $term->name . '</a></li>';
+			}
+			$list .= '</ul>';
+
+			return $list;
+		} else {
+			// If nothing has been found.
+			return 'No ' . $this->convert_taxonomy_name( $args['display'], true ) . ' found.';
+		}
 	}
 
 	/**
-	 * Main short code.
+	 * Display sermons.
 	 *
 	 * @param array $attr
 	 * @return void
 	 * @since 1.0.0
+	 *
+	 * #### Atts Parameters
+	 * - **per_page** : Define how many sermons to show per page. Overrides the WordPress setting.
+	 * - **sermons** : Use comma separated list of individual sermon IDs to show just them.
+	 * - **order** : "DESC" for descending; "ASC" for ascending
+	 * - **orderby** : Options "date" (default), "id", "none", "title", "name", "rand", "comment_count"
+	 * - **filter_by** : Options "series", "preachers", "topics", "books", "service_type"
+	 * - **filter_value** : Use the "slug" related to the taxonomy field you want to filter by.
+	 * - **hide_pagination** : Set to 1 to hide.
+	 * - **image_size** : { sermon_small, sermon_medium, sermon_wide, thumbnail, medium, large, full } any added with add_image_size().
+	 * - **year** : Show only sermons created in the specified year.
+	 * - **month** : Show only sermons created in the specified month, regardless of year.
+	 * - **week** : Show only sermons created in the specified week.
+	 * - **day** : Show only sermons created on the specified day.
+	 * - **after** : Show only sermons created after the specified date.
+	 * - **before** :Show only sermons created before the specified date.
 	 */
 	public function sermons( array $atts ): void {
 		$atts = $this->fix_atts( $atts );
@@ -231,6 +321,13 @@ class ShortCodes implements Executable, Registrable {
 		return null;
 	}
 
+	/**
+	 * Fix attributes.
+	 *
+	 * @param array $atts
+	 * @return array
+	 * @since 1.0.0
+	 */
 	private function fix_atts( array $atts ): array {
 		foreach ( $atts as &$att ) {
 			$att = unquote( $att );
@@ -242,8 +339,54 @@ class ShortCodes implements Executable, Registrable {
 		$orderby = strtolower( $args['orderby'] );
 
 		if ( ! in_array( $orderby, DRPPSM_SERMON_ORDER_BY ) ) {
-			$orderby = Settings::get( Settings::ARCHIVE_ORDER_BY, 'post_date' );
+			$orderby = Settings::get( Settings::ARCHIVE_ORDER_BY, 'date' );
 		}
+
 		return $orderby;
+	}
+
+	/**
+	 * Convert between friendly and unfriendly taxomomy names.
+	 *
+	 * @param string $name Search for string.
+	 * @param bool   $friendly If true will convert friendly => unfriendly else unfriendly => friendly\
+	 *               In the event of no conversion orginal $name is returned.
+	 *
+	 * @return string \
+	 *               The converted taxonomy or orginal supplied argument.
+	 * @since 1.0.0
+	 *
+	 * ```
+	 * // Example friendly to unfriendly.
+	 * $this->convert_taxonomy_name('series',true); # returns drppms_series
+	 *
+	 * ```
+	 */
+	private function convert_taxonomy_name( string $name, bool $friendly = false ): string {
+		$tax_map = DRPPSM_TAX_MAP;
+		$result  = $name;
+
+		// friendly => unfriendly
+		if ( $friendly ) {
+
+			// Lets go ahead and pluralize it.
+			if ( substr( $name, -1 ) !== 's' ) {
+				$name .= 's';
+			}
+
+			if ( key_exists( $name, $tax_map ) ) {
+				$result = $tax_map[ $name ];
+			}
+
+			// unfriendly => friendly
+		} else {
+
+			$match = array_search( $name, $tax_map );
+			if ( $match ) {
+				$result = $match;
+			}
+		}
+
+		return $result;
 	}
 }

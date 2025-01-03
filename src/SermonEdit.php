@@ -14,7 +14,6 @@ namespace DRPPSM;
 defined( 'ABSPATH' ) || exit;
 
 use DRPPSM\Constants\Actions;
-use DRPPSM\Constants\PT;
 use DRPPSM\Interfaces\Executable;
 use DRPPSM\Interfaces\OptionsInt;
 use DRPPSM\Interfaces\Registrable;
@@ -56,7 +55,7 @@ class SermonEdit implements Executable, Registrable {
 	 * @since 1.0.0
 	 */
 	protected function __construct() {
-		$this->post_type = PT::SERMON;
+		$this->post_type = DRPPSM_PT_SERMON;
 		$this->options   = options();
 	}
 
@@ -114,7 +113,7 @@ class SermonEdit implements Executable, Registrable {
 	 * @return boolean
 	 */
 	public function disable_gutenberg( bool $current_status, string $post_type ): bool {
-		if ( PT::SERMON === $post_type ) {
+		if ( $this->post_type === $post_type ) {
 			return false;
 		}
 
@@ -186,7 +185,7 @@ class SermonEdit implements Executable, Registrable {
 	public function remove_meta_boxes(): void {
 		include_admin_template();
 		remove_meta_box( 'postcustom', $this->post_type, 'normal' );
-		remove_meta_box( 'tagsdiv-' . Tax::SERVICE_TYPE, $this->post_type, 'high' );
+		remove_meta_box( 'tagsdiv-' . DRPPSM_TAX_SERVICE_TYPE, $this->post_type, 'high' );
 		remove_meta_box( 'commentsdiv', $this->post_type, 'normal' );
 		remove_meta_box( 'revisionsdiv', $this->post_type, 'normal' );
 	}

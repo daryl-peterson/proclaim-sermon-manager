@@ -15,7 +15,7 @@ defined( 'ABSPATH' ) || exit;
 
 $permalinks = app()->permalinks();
 use DRPPSM\Constants\Caps;
-use DRPPSM\Constants\PT;
+
 
 $capabilities = array(
 	Caps::MANAGE_SETTINGS   => Caps::MANAGE_SETTINGS,
@@ -52,7 +52,7 @@ return array(
 	),
 	'public'              => true,
 	'show_ui'             => true,
-	'capability_type'     => PT::SERMON,
+	'capability_type'     => DRPPSM_PT_SERMON,
 	'capabilities'        => $capabilities,
 	'map_meta_cap'        => true,
 	'publicly_queryable'  => true,
@@ -61,7 +61,7 @@ return array(
 	'menu_icon'           => $menu_icon,
 	'hierarchical'        => false,
 	'rewrite'             => array(
-		'slug'       => $permalinks[ PT::SERMON ],
+		'slug'       => $permalinks[ DRPPSM_PT_SERMON ],
 		'with_front' => false,
 	),
 	'query_var'           => true,

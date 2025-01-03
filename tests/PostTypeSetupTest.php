@@ -11,7 +11,6 @@
 
 namespace DRPPSM\Tests;
 
-use DRPPSM\Constants\PT;
 use DRPPSM\Exceptions\PluginException;
 use DRPPSM\Interfaces\PostTypeRegInt;
 use DRPPSM\Interfaces\PostTypeSetupInt;
@@ -81,7 +80,7 @@ class PostTypeSetupTest extends BaseTest {
 	public function test_add_remove() {
 		global $wp_post_types;
 
-		$pt = PT::SERMON;
+		$pt = DRPPSM_PT_SERMON;
 
 		$exist = post_type_exists( $pt );
 

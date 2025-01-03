@@ -13,7 +13,6 @@ namespace DRPPSM;
 
 defined( 'ABSPATH' ) || exit;
 
-use DRPPSM\Constants\PT;
 use DRPPSM\Interfaces\Executable;
 use DRPPSM\Interfaces\Registrable;
 
@@ -69,12 +68,12 @@ class AdminMenu implements Executable, Registrable {
 
 		$GLOBALS['menu'];
 
-		if ( ! isset( $submenu[ 'edit.php?post_type=' . PT::SERMON ] ) ) {
+		if ( ! isset( $submenu[ 'edit.php?post_type=' . DRPPSM_PT_SERMON ] ) ) {
 			return;
 		}
 
-		foreach ( $submenu[ 'edit.php?post_type=' . PT::SERMON ] as &$sermon_item ) {
-			if ( 'edit.php?post_type=' . PT::SERMON === $sermon_item[2] ) {
+		foreach ( $submenu[ 'edit.php?post_type=' . DRPPSM_PT_SERMON ] as &$sermon_item ) {
+			if ( 'edit.php?post_type=' . DRPPSM_PT_SERMON === $sermon_item[2] ) {
 				$sermon_item[0] = __( 'All Sermons', 'drppsm' );
 				return;
 			}

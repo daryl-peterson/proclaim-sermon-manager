@@ -41,8 +41,18 @@ class TaxonomyListTable implements Executable, Registrable {
 	 * Taxonomy list
 	 *
 	 * @var array
+	 * @since 1.0.0
 	 */
 	private array $tax;
+
+
+	/**
+	 * Bible taxonomy.
+	 *
+	 * @var string
+	 * @since 1.0.0
+	 */
+	private string $tax_bible;
 
 	/**
 	 * Initialize object properties.
@@ -50,6 +60,7 @@ class TaxonomyListTable implements Executable, Registrable {
 	 * @since 1.0.0
 	 */
 	protected function __construct() {
+		$this->tax_bible = DRPPSM_TAX_BIBLE;
 
 		$this->columns = array(
 			'cb'           => '<input type="checkbox" />',
@@ -59,12 +70,7 @@ class TaxonomyListTable implements Executable, Registrable {
 			'slug'         => 'Slug',
 			'posts'        => 'Count',
 		);
-		$this->tax     = array(
-			Tax::PREACHER,
-			Tax::SERIES,
-			Tax::TOPICS,
-			Tax::BIBLE_BOOK,
-		);
+		$this->tax     = array_values( DRPPSM_TAX_MAP );
 	}
 
 	/**
@@ -110,7 +116,7 @@ class TaxonomyListTable implements Executable, Registrable {
 	 */
 	public function cmb(): void {
 		foreach ( $this->tax as $taxonomy ) {
-			if ( $taxonomy !== Tax::BIBLE_BOOK ) {
+			if ( $taxonomy !== $this->tax_bible ) {
 				$this->add_image_field( $taxonomy );
 			}
 		}
@@ -124,7 +130,7 @@ class TaxonomyListTable implements Executable, Registrable {
 	 * @since 1.0.0
 	 */
 	public function set_columns( array $columns ): array {
-		if ( $this->get_tax_name() === Tax::BIBLE_BOOK ) {
+		if ( $this->get_tax_name() === $this->tax_bible ) {
 			unset( $this->columns['drppsm-image'] );
 		}
 		return $this->columns;

@@ -17,7 +17,6 @@ defined( 'ABSPATH' ) || exit;
 
 use DRPPSM\Constants\Actions;
 use DRPPSM\PostTypeReg;
-use DRPPSM\Constants\PT;
 use DRPPSM\Exceptions\PluginException;
 use DRPPSM\Interfaces\PostTypeRegInt;
 use DRPPSM\Interfaces\PostTypeSetupInt;
@@ -57,13 +56,13 @@ class PostTypeSetup implements PostTypeSetupInt {
 	 * @since 1.0.0
 	 */
 	protected function __construct() {
-		$pt                        = PT::SERMON;
-		$this->post_types[ $pt ]   = new PostTypeReg( PT::SERMON, 'post-type-sermon.php' );
-		$this->taxonomies[ $pt ][] = new TaxonomyReg( Tax::BIBLE_BOOK, PT::SERMON, 'taxonomy-bible-book.php' );
-		$this->taxonomies[ $pt ][] = new TaxonomyReg( Tax::PREACHER, PT::SERMON, 'taxonomy-preacher.php' );
-		$this->taxonomies[ $pt ][] = new TaxonomyReg( Tax::SERIES, PT::SERMON, 'taxonomy-series.php' );
-		$this->taxonomies[ $pt ][] = new TaxonomyReg( Tax::SERVICE_TYPE, PT::SERMON, 'taxonomy-service-type.php' );
-		$this->taxonomies[ $pt ][] = new TaxonomyReg( Tax::TOPICS, PT::SERMON, 'taxonomy-topics.php' );
+		$pt                        = DRPPSM_PT_SERMON;
+		$this->post_types[ $pt ]   = new PostTypeReg( DRPPSM_PT_SERMON, 'post-type-sermon.php' );
+		$this->taxonomies[ $pt ][] = new TaxonomyReg( DRPPSM_TAX_BIBLE, DRPPSM_PT_SERMON, 'taxonomy-bible-book.php' );
+		$this->taxonomies[ $pt ][] = new TaxonomyReg( DRPPSM_TAX_PREACHER, DRPPSM_PT_SERMON, 'taxonomy-preacher.php' );
+		$this->taxonomies[ $pt ][] = new TaxonomyReg( DRPPSM_TAX_SERIES, DRPPSM_PT_SERMON, 'taxonomy-series.php' );
+		$this->taxonomies[ $pt ][] = new TaxonomyReg( DRPPSM_TAX_SERVICE_TYPE, DRPPSM_PT_SERMON, 'taxonomy-service-type.php' );
+		$this->taxonomies[ $pt ][] = new TaxonomyReg( DRPPSM_TAX_TOPICS, DRPPSM_PT_SERMON, 'taxonomy-topics.php' );
 	}
 
 	/**

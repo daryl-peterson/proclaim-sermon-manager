@@ -12,7 +12,6 @@
 namespace DRPPSM;
 
 use DRPPSM\Constants\Meta;
-use DRPPSM\Constants\PT;
 use DRPPSM\Interfaces\Executable;
 use DRPPSM\Interfaces\Registrable;
 use WP_Error;
@@ -29,6 +28,13 @@ use WP_Term;
  * @since       1.0.0
  */
 class SermonImageAttach implements Executable, Registrable {
+
+	/**
+	 * Post type.
+	 *
+	 * @var string
+	 */
+	private string $pt = DRPPSM_PT_SERMON;
 
 	/**
 	 * Initialize and register hooks.
@@ -73,7 +79,7 @@ class SermonImageAttach implements Executable, Registrable {
 		try {
 
 			$status = array();
-			if ( PT::SERMON !== $post->post_type || defined( 'DRPSM_SAVING_IMAGES' ) ) {
+			if ( $this->pt !== $post->post_type || defined( 'DRPSM_SAVING_IMAGES' ) ) {
 				return $status;
 			}
 
@@ -105,7 +111,7 @@ class SermonImageAttach implements Executable, Registrable {
 	 * @since 1.0.0
 	 */
 	public function attach_thumb( WP_Post $sermon ): bool {
-		if ( PT::SERMON !== $sermon->post_type ) {
+		if ( $this->pt !== $sermon->post_type ) {
 			return false;
 		}
 
@@ -130,11 +136,11 @@ class SermonImageAttach implements Executable, Registrable {
 	 * @since 1.0.0
 	 */
 	public function attach_series( WP_Post $sermon ): bool {
-		if ( PT::SERMON !== $sermon->post_type ) {
+		if ( $this->pt !== $sermon->post_type ) {
 			return false;
 		}
 
-		$term = get_the_terms( $sermon, Tax::SERIES );
+		$term = get_the_terms( $sermon, DRPPSM_TAX_SERIES );
 		if ( ! is_array( $term ) ) {
 			return false;
 		}
@@ -167,8 +173,8 @@ class SermonImageAttach implements Executable, Registrable {
 	 */
 	public function attach_image( WP_Post $attachment, WP_Post $sermon ): bool {
 
-		if ( PT::ATTACHEMENT !== $attachment->post_type
-			|| PT::SERMON !== $sermon->post_type
+		if ( 'attachment' !== $attachment->post_type
+			|| $this->pt !== $sermon->post_type
 			|| defined(
 				'DRPSM_ATTACHING_IMAGE'
 			) ) {
@@ -204,7 +210,7 @@ class SermonImageAttach implements Executable, Registrable {
 	 * @since 1.0.0
 	 */
 	public function detach_image( WP_Post $attachment, WP_Post $sermon ): bool {
-		if ( PT::ATTACHEMENT !== $attachment->post_type || PT::SERMON !== $sermon->post_type || defined( 'DRPSM_ATTACHING_IMAGE' ) ) {
+		if ( $this->pt !== $attachment->post_type || $this->pt !== $sermon->post_type || defined( 'DRPSM_ATTACHING_IMAGE' ) ) {
 			return false;
 		}
 

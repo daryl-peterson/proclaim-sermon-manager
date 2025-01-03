@@ -13,9 +13,8 @@ namespace DRPPSM;
 
 defined( 'ABSPATH' ) || exit;
 
-$permalinks   = App::init()->permalinks();
-$slug         = Tax::BIBLE_BOOK;
-$capabilities = Tax::CAPS;
+$permalinks = App::init()->permalinks();
+
 
 return array(
 	'hierarchical'      => false,
@@ -39,8 +38,8 @@ return array(
 	'show_in_rest'      => true,
 	'show_admin_column' => true,
 	'rewrite'           => array(
-		'slug'       => $permalinks[ $slug ],
+		'slug'       => $permalinks[ DRPPSM_TAX_BIBLE ],
 		'with_front' => false,
 	),
-	'capabilities'      => $capabilities,
+	'capabilities'      => DRPPSM_TAX_CAPS,
 );

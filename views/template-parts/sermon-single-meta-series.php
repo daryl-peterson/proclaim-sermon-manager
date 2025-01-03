@@ -14,7 +14,9 @@ namespace DRPPSM;
 
 defined( 'ABSPATH' ) || exit;
 
-if ( ! has_term( '', Tax::SERIES, $post->ID ) ) {
+$tax_series = DRPPSM_TAX_SERIES;
+
+if ( ! has_term( '', $tax_series, $post->ID ) ) {
 	return;
 }
 
@@ -22,5 +24,5 @@ if ( ! has_term( '', Tax::SERIES, $post->ID ) ) {
 
 <div class="drppsm-single-meta-item">
 	<div class="drppsm-single-meta-prefix"><?php echo ucwords( Settings::get( Settings::SERIES ) ); ?></div>
-	<div class="drppsm-single-meta-text"><?php echo get_the_term_list( $post->ID, Tax::SERIES ); ?></div>
+	<div class="drppsm-single-meta-text"><?php echo get_the_term_list( $post->ID, $tax_series ); ?></div>
 </div>

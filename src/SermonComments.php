@@ -13,7 +13,6 @@ namespace DRPPSM;
 
 defined( 'ABSPATH' ) || exit;
 
-use DRPPSM\Constants\PT;
 use DRPPSM\Interfaces\Executable;
 use DRPPSM\Interfaces\Registrable;
 
@@ -69,7 +68,7 @@ class SermonComments implements Registrable, Executable {
 			return $data;
 		}
 
-		if ( PT::SERMON === $data['post_type'] ) {
+		if ( DRPPSM_PT_SERMON === $data['post_type'] ) {
 			$data['comment_status'] = 0;
 		}
 

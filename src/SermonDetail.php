@@ -16,7 +16,6 @@ defined( 'ABSPATH' ) || exit;
 use CMB2;
 use DRPPSM\Constants\Actions;
 use DRPPSM\Constants\Meta;
-use DRPPSM\Constants\PT;
 use DRPPSM\Interfaces\Initable;
 use DRPPSM\Interfaces\Registrable;
 use WP_Error;
@@ -38,7 +37,7 @@ class SermonDetail implements Initable, Registrable {
 	 * @var string
 	 * @since 1.0.0
 	 */
-	private string $pt;
+	private string $pt_sermon;
 
 	/**
 	 * CMB2 id.
@@ -48,13 +47,22 @@ class SermonDetail implements Initable, Registrable {
 	private string $cmb_id;
 
 	/**
+	 * Service type taxonomy.
+	 *
+	 * @var string
+	 * @since 1.0.0
+	 */
+	private string $tax_service_type;
+
+	/**
 	 * Initialize object properties.
 	 *
 	 * @since 1.0.0
 	 */
 	protected function __construct() {
-		$this->pt     = PT::SERMON;
-		$this->cmb_id = 'drppsm_details';
+		$this->pt_sermon        = DRPPSM_PT_SERMON;
+		$this->tax_service_type = DRPPSM_TAX_SERVICE_TYPE;
+		$this->cmb_id           = 'drppsm_details';
 	}
 
 	/**
@@ -100,7 +108,7 @@ class SermonDetail implements Initable, Registrable {
 			array(
 				'id'           => $this->cmb_id,
 				'title'        => __( 'Sermon Details', 'drppsm' ),
-				'object_types' => array( $this->pt ),
+				'object_types' => array( $this->pt_sermon ),
 				'context'      => 'normal',
 				'priority'     => 'high',
 				'show_names'   => true,
@@ -125,7 +133,7 @@ class SermonDetail implements Initable, Registrable {
 	 */
 	public function save( int $post_ID, array $updated, CMB2 $cmb ): void {
 
-		if ( PT::SERMON !== get_post_type() ) {
+		if ( $this->pt_sermon !== get_post_type() ) {
 			return;
 		}
 		Logger::debug( $cmb->data_to_save );
@@ -145,15 +153,15 @@ class SermonDetail implements Initable, Registrable {
 
 		$term = get_term_by(
 			'id',
-			sanitize_text_field( $data[ Tax::SERVICE_TYPE ] ),
-			Tax::SERVICE_TYPE
+			sanitize_text_field( $data[ $this->tax_service_type ] ),
+			$this->tax_service_type
 		);
 
 		if ( $term ) {
 			$service_type = $term->slug;
 		}
 
-		$result = wp_set_object_terms( $post_ID, empty( $service_type ) ? null : $service_type, Tax::SERVICE_TYPE );
+		$result = wp_set_object_terms( $post_ID, empty( $service_type ) ? null : $service_type, $this->tax_service_type );
 		if ( $result instanceof WP_Error ) {
 			Logger::error( $result->get_error_message() );
 			return false;
@@ -198,20 +206,20 @@ class SermonDetail implements Initable, Registrable {
 		 */
 		$cmb->add_field(
 			array(
-				'name'             => TaxUtils::get_taxonomy_field( Tax::SERVICE_TYPE, 'singular_name' ),
+				'name'             => TaxUtils::get_taxonomy_field( $this->tax_service_type, 'singular_name' ),
 				'desc'             => wp_sprintf(
 					// translators: %1$s The singular label. Default Service Type.
 					// translators: %2$s The plural label. Default Service Types.
 					// translators: %3$s <a href="edit-tags.php?taxonomy=drppsm_service_type&post_type=drppsm" target="_blank">here</a>.
 					esc_html__( 'Select the %1$s. Modify the %2$s %3$s.', 'drppsm' ),
-					strtolower( TaxUtils::get_taxonomy_field( Tax::SERVICE_TYPE, 'singular_name' ) ),
-					strtolower( TaxUtils::get_taxonomy_field( Tax::SERVICE_TYPE, 'label' ) ),
+					strtolower( TaxUtils::get_taxonomy_field( $this->tax_service_type, 'singular_name' ) ),
+					strtolower( TaxUtils::get_taxonomy_field( $this->tax_service_type, 'label' ) ),
 					'<a href="' . admin_url( 'edit-tags.php?taxonomy=drppsm_service_type&post_type=drppsm' ) . '" target="_blank">here</a>'
 				),
-				'id'               => Tax::SERVICE_TYPE,
+				'id'               => $this->tax_service_type,
 				'type'             => 'select',
 				'show_option_none' => true,
-				'options'          => TaxUtils::get_term_options( Tax::SERVICE_TYPE ),
+				'options'          => TaxUtils::get_term_options( $this->tax_service_type ),
 			)
 		);
 	}

@@ -13,7 +13,6 @@ namespace DRPPSM;
 
 defined( 'ABSPATH' ) || exit;
 
-use DRPPSM\Constants\PT;
 use DRPPSM\Interfaces\Executable;
 use DRPPSM\Interfaces\Registrable;
 use WP_Query;
@@ -58,7 +57,7 @@ class QueryVars implements Executable, Registrable {
 	 */
 	protected function __construct() {
 
-		$this->list     = array_merge( Tax::LIST, array( PT::SERMON ) );
+		$this->list     = array_merge( array_values( DRPPSM_TAX_MAP ), array( DRPPSM_PT_SERMON ) );
 		$this->conflict = $this->get_conflict();
 	}
 
@@ -102,13 +101,13 @@ class QueryVars implements Executable, Registrable {
 
 		$query = $this->fix_attachment( $query );
 
-		if ( key_exists( PT::SERMON, $query ) ) {
-			$arg = $query[ PT::SERMON ];
+		if ( key_exists( DRPPSM_PT_SERMON, $query ) ) {
+			$arg = $query[ DRPPSM_PT_SERMON ];
 
 			switch ( $arg ) {
 				case 'series':
 					$query = array(
-						'taxonomy' => Tax::SERIES,
+						'taxonomy' => DRPPSM_TAX_SERIES,
 						'term'     => '',
 					);
 					break;
@@ -210,10 +209,10 @@ class QueryVars implements Executable, Registrable {
 		)
 
 		*/
-		if ( key_exists( PT::SERMON, $query ) ) {
-			$term = get_term_by( 'slug', $query[ PT::SERMON ] );
+		if ( key_exists( DRPPSM_PT_SERMON, $query ) ) {
+			$term = get_term_by( 'slug', $query[ DRPPSM_PT_SERMON ] );
 			Logger::debug( array( 'TERM' => $term ) );
-			$query['taxonomy'] = Tax::SERVICE_TYPE;
+			$query['taxonomy'] = DRPPSM_TAX_SERVICE_TYPE;
 			unset( $query['page'] );
 			unset( $query['name'] );
 		}

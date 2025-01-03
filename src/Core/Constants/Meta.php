@@ -35,7 +35,7 @@ class Meta {
 	public const DESCRIPTION     = 'drppsm_description';
 	public const DURATION        = 'drppsm_duration';
 	public const SIZE            = 'drppsm_size';
-	public const SERVICE_TYPE    = Tax::SERVICE_TYPE;
+	public const SERVICE_TYPE    = DRPPSM_TAX_SERVICE_TYPE;
 	public const VIDEO           = 'drppsm_video';
 	public const VIDEO_LINK      = 'drppsm_video_link';
 	public const SERIES_IMAGE_ID = 'drppsm_series_image_id';
