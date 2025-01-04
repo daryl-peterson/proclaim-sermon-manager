@@ -150,7 +150,7 @@ define(
  *
  * @since 1.0.0
  */
-define( 'DRPPSM_SC_LATEST_SERIES', 'drppsm_latest_series' );
+define( 'DRPPSM_SC_SERIES_LATEST', 'drppsm_series_latest' );
 
 /**
  * Latest sermon shortcode.
@@ -164,6 +164,8 @@ define( 'DRPPSM_SC_LATEST_SERIES', 'drppsm_latest_series' );
  * - **per_page** : Number of sermons to display. (10)
  * - **order** : "DESC" for descending; "ASC" for ascending. (DESC)
  * - **orderby** : Options "date", "id", "none", "title", "name", "rand", "comment_count"
+ *
+ * #### Pagination is disabled
  *
  * ```
  * // Example using all options.

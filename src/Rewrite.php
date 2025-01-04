@@ -130,7 +130,12 @@ class Rewrite implements RewriteInt {
 		$slug               = $wp_post_types[ DRPPSM_PT_SERMON ]->rewrite['slug'];
 		$rewrite[ $slug ][] = DRPPSM_PT_SERMON;
 		$tax                = array_values( DRPPSM_TAX_MAP );
+
 		foreach ( $tax as $type ) {
+
+			if ( ! isset( $wp_taxonomies[ $type ] ) ) {
+				continue;
+			}
 			$slug               = $wp_taxonomies[ $type ]->rewrite['slug'];
 			$rewrite[ $slug ][] = $type;
 		}

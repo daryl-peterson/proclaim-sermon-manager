@@ -175,11 +175,8 @@ class SettingsDisplay extends SettingsBase implements Executable, Registrable {
 				'type'             => 'select',
 				'show_option_none' => true,
 				'options'          => array(
-					'date_preached' => 'Date Preached',
-					'date'          => 'Date Published',
-					'title'         => 'Title',
-					'ID'            => 'ID',
-					'random'        => 'Random',
+					'desc' => 'Descending',
+					'asc'  => 'Ascending',
 				),
 				'default'          => Settings::get_default( Settings::ARCHIVE_ORDER ),
 				'after_row'        => $this->description( $desc ),
