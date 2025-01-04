@@ -32,6 +32,51 @@ use WP_Term;
  */
 class ShortCodes implements Executable, Registrable {
 
+	/**
+	 * Sermon post type.
+	 *
+	 * @var string
+	 * @since 1.0.0
+	 */
+	private string $pt_sermon;
+
+
+	/**
+	 * Lastest sermon shortcode
+	 *
+	 * @var string
+	 * @since 1.0.0
+	 */
+	private string $sc_latest_sermon;
+
+	/**
+	 * Terms short code.
+	 *
+	 * @var string
+	 * @since 1.0.0
+	 */
+	private string $sc_terms;
+
+	/**
+	 * Taxonomy mapping.
+	 *
+	 * @var array
+	 * @since 1.0.0
+	 */
+	private array $tax_map;
+
+	/**
+	 * Initialize object properties.
+	 *
+	 * @return void
+	 * @since 1.0.0
+	 */
+	protected function __construct() {
+		$this->pt_sermon        = DRPPSM_PT_SERMON;
+		$this->sc_latest_sermon = DRPPSM_SC_SERMON_LATEST;
+		$this->sc_terms         = DRPPSM_SC_TERMS;
+		$this->tax_map          = DRPPSM_TAX_MAP;
+	}
 
 	public static function exec(): Executable {
 		$obj = new self();
@@ -40,15 +85,16 @@ class ShortCodes implements Executable, Registrable {
 	}
 
 	public function register(): ?bool {
-		if ( shortcode_exists( DRPPSM_SC_LATEST_SERIES ) ) {
+		if ( shortcode_exists( $this->sc_latest_sermon ) ) {
 			return false;
 		}
 
-		add_shortcode( DRPPSM_SC_LATEST_SERIES, array( $this, 'latest_series_image' ) );
-		add_shortcode( DRPPSM_SC_LATEST_SERMON, array( $this, 'latest_sermon' ) );
+		// add_shortcode( $this->sc_latest_series, array( $this, 'latest_series' ) );
+
+		add_shortcode( $this->sc_latest_sermon, array( $this, 'display_sermon_latest' ) );
 
 		add_shortcode( DRPPSM_SC_LIST_PODCAST, array( $this, 'podcasts_list' ) );
-		add_shortcode( DRPPSM_SC_TERMS, array( $this, 'term_list' ) );
+		add_shortcode( $this->sc_terms, array( $this, 'term_list' ) );
 
 		add_shortcode( DRPPSM_SC_SERMON_IMAGES, array( $this, 'display_images' ) );
 		add_shortcode( DRPPSM_SC_SERMONS, array( $this, 'sermons' ) );
@@ -56,7 +102,7 @@ class ShortCodes implements Executable, Registrable {
 		return true;
 	}
 
-	public function latest_series_image( array $atts ): void {
+	public function series_image( array $atts ): void {
 		$atts = $this->fix_atts( $atts );
 
 		// Default options.
@@ -81,34 +127,53 @@ class ShortCodes implements Executable, Registrable {
 	 * @param array $atts
 	 * @return string
 	 * @since 1.0.0
+	 *
+	 *
+	 * #### Atts parameter
+	 * *defaults shown with ()*
+	 * - **filter_by** :Options "series", "preachers", "topics", "books", "service_type"
+	 * - **filter_value** : Use the "slug" related to the taxonomy field you want to filter by. ('')
+	 * - **image_size** : { sermon_small, sermon_medium, sermon_wide, thumbnail, medium, large, full } ect. (sermon_medium)
+	 * - **per_page** : Number of sermons to display. (10)
+	 * - **order** : "DESC" for descending; "ASC" for ascending. (DESC)
+	 * - **orderby** : Options "date", "id", "none", "title", "name", "rand", "comment_count"
+	 *
+	 * ```
+	 * // Example using all options.
+	 * [drppsm_sermon_latest orderby="date" order="desc" filter_by="series" filter_value="at-the-cross" image_size="sermon_medium" per_page="5"]
+	 * ```
 	 */
-	public function latest_sermon( array $atts ): string {
+	public function display_sermon_latest( array $atts ): string {
 
 		$atts = $this->fix_atts( $atts );
 
-		// order="DESC", orderby="post_modified"
 		// Default options.
 		$args = array(
-			'per_page'   => 10,
-			'order'      => 'ASC',
-			'orderby'    => '',
-			'image_size' => 'post-thumbnail',
+			'filter_by'    => '',
+			'filter_value' => '',
+			'order'        => 'DESC',
+			'orderby'      => '',
+			'per_page'     => 10,
+			'image_size'   => ImageSize::SERMON_MEDIUM,
 		);
 
 		// Merge default and user options.
-		$args            = shortcode_atts( $args, $atts, DRPPSM_SC_LATEST_SERMON );
+		$args = shortcode_atts( $args, $atts, $this->sc_latest_sermon );
+
+		// Make sure orderby is correct.
 		$args['orderby'] = $this->get_order_by( $args );
 
 		// Set query args.
 		$query_args = array(
-			'post_type'      => DRPPSM_PT_SERMON,
+			'post_type'      => $this->pt_sermon,
 			'posts_per_page' => $args['per_page'],
 			'order'          => $args['order'],
 			'orderby'        => $args['orderby'],
 			'post_status'    => 'publish',
 		);
 
-		$query = new WP_Query( $query_args );
+		$query_args = $this->set_filter( $args, $query_args );
+		$query      = new WP_Query( $query_args );
 
 		// Add query to the args.
 		$args['query'] = $query;
@@ -134,12 +199,12 @@ class ShortCodes implements Executable, Registrable {
 				 */
 				$override = apply_filters(
 					DRPPSMF_SC_OUTPUT_OVRD,
-					DRPPSM_SC_LATEST_SERMON,
+					DRPPSM_SC_SERMON_LATEST,
 					$post,
 					$args
 				);
 
-				if ( $override !== DRPPSM_SC_LATEST_SERMON ) {
+				if ( $override !== $this->sc_latest_sermon ) {
 					$output .= $override;
 					continue;
 				}
@@ -271,8 +336,8 @@ class ShortCodes implements Executable, Registrable {
 	 * - **sermons** : Use comma separated list of individual sermon IDs to show just them.
 	 * - **order** : "DESC" for descending; "ASC" for ascending
 	 * - **orderby** : Options "date" (default), "id", "none", "title", "name", "rand", "comment_count"
-	 * - **filter_by** : Options "series", "preachers", "topics", "books", "service_type"
-	 * - **filter_value** : Use the "slug" related to the taxonomy field you want to filter by.
+	 * - **filter_by** : Options "series", "preachers", "topics", "books", "service_type". ('')
+	 * - **filter_value** : Use the "slug" related to the taxonomy field you want to filter by. ('')
 	 * - **hide_pagination** : Set to 1 to hide.
 	 * - **image_size** : { sermon_small, sermon_medium, sermon_wide, thumbnail, medium, large, full } any added with add_image_size().
 	 * - **year** : Show only sermons created in the specified year.
@@ -363,8 +428,7 @@ class ShortCodes implements Executable, Registrable {
 	 * ```
 	 */
 	private function convert_taxonomy_name( string $name, bool $friendly = false ): string {
-		$tax_map = DRPPSM_TAX_MAP;
-		$result  = $name;
+		$result = $name;
 
 		// friendly => unfriendly
 		if ( $friendly ) {
@@ -374,14 +438,14 @@ class ShortCodes implements Executable, Registrable {
 				$name .= 's';
 			}
 
-			if ( key_exists( $name, $tax_map ) ) {
-				$result = $tax_map[ $name ];
+			if ( key_exists( $name, $this->tax_map ) ) {
+				$result = $this->tax_map[ $name ];
 			}
 
 			// unfriendly => friendly
 		} else {
 
-			$match = array_search( $name, $tax_map );
+			$match = array_search( $name, $this->tax_map );
 			if ( $match ) {
 				$result = $match;
 			}
@@ -389,4 +453,121 @@ class ShortCodes implements Executable, Registrable {
 
 		return $result;
 	}
+
+	/**
+	 * Set filter if needed.
+	 *
+	 * @param array $args
+	 * @param array $query_args
+	 * @return array
+	 */
+	private function set_filter( array $args, array $query_args ) {
+
+		// Check if there is anything to do !
+		if ( ! isset( $args['filter_by'] ) || ! isset( $args['filter_value'] ) ) {
+			return $query_args;
+		}
+
+		if ( empty( $args['filter_by'] ) || empty( $args['filter_value'] ) ) {
+			return $query_args;
+		}
+
+		// Term string to array.
+		$terms = explode( ',', $args['filter_value'] );
+		if ( empty( $terms ) ) {
+			return $query_args;
+		}
+
+		$field = 'slug';
+		if ( is_numeric( $terms[0] ) ) {
+			$field = 'id';
+		}
+
+		Logger::debug( 'HERE 3' );
+
+		foreach ( $terms as &$term ) {
+			$term = trim( $term );
+
+			if ( 'id' === $field ) {
+				// Remove if it's not an ID.
+				if ( ! is_numeric( $term ) ) {
+					unset( $term );
+					continue;
+				}
+
+				// Convert to int.
+				$term = intval( $term );
+			} else {
+
+				// It's a slug so sanitize it.
+				$term = sanitize_title( $term );
+			}
+		}
+
+		$query_args['tax_query'] = array(
+			array(
+				'taxonomy' => $this->convert_taxonomy_name( $args['filter_by'], true ),
+				'field'    => 'slug',
+				'terms'    => $terms,
+			),
+		);
+
+		$tax_list = array_values( $this->tax_map );
+		foreach ( $tax_list as $filter ) {
+			if ( ! empty( $_GET[ $filter ] ) ) {
+				if ( empty( $query_args['tax_query']['custom'] ) || empty( $query_args['tax_query'] ) ) {
+					$query_args['tax_query'] = array();
+				}
+
+				$query_args['tax_query'][0][] = array(
+					'taxonomy' => $filter,
+					'field'    => 'slug',
+					'terms'    => sanitize_title_for_query( $_GET[ $filter ] ),
+				);
+
+				$query_args['tax_query']['custom'] = true;
+			}
+
+			if ( ! empty( $_POST[ $filter ] ) ) {
+				if ( empty( $query_args['tax_query']['custom'] ) || empty( $query_args['tax_query'] ) ) {
+					$query_args['tax_query'] = array();
+				}
+
+				$query_args['tax_query'][0][] = array(
+					'taxonomy' => $filter,
+					'field'    => 'slug',
+					'terms'    => sanitize_title_for_query( $_POST[ $filter ] ),
+				);
+
+				$query_args['tax_query']['custom'] = true;
+			}
+		}
+
+		if ( ! empty( $query_args['tax_query'] ) && count( $query_args['tax_query'] ) > 1 && ! empty( $query_args['tax_query']['custom'] ) ) {
+			unset( $query_args['tax_query']['custom'] );
+		}
+
+		return $query_args;
+	}
+
+
+
+
+
+
+
+	/**
+	 *
+	 *
+	 * #### Atts parameter
+	 * *defaults shown with ()*
+	 *
+	 * - **image_class** : Opptions any CSS class you want applied to the image. ( latest-series-image )
+	 * - **image_size** : { sermon_small, sermon_medium, sermon_wide, thumbnail, medium, large, full } ect.
+	 * - **show_title** : Show or hide the series title. ( true )
+	 * - **title_wrapper** Any HTML tag p, h1, h2, h3, h4, h5, h6, div ( h3)
+	 * - **title_class** Any CSS class you want applied to the title wrapper. ( latest-series-title )
+	 * - **service_type** Use the service type slug to show the latest series from a particular service type.
+	 * - **show_desc** – Show or hide the series description. (false )
+	 * - **wrapper_class** : Any CSS class you want applied to the div which wraps the output. { default: latest-series }        */
 }

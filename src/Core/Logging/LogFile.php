@@ -72,7 +72,13 @@ class LogFile extends LogWritterAbs implements LogWritterInt {
 
 		$data       = $this->format( $record );
 		$this->file = $this->get_log_file( $record->level );
-		$this->check_file_size();
+
+		/*
+		if ( ! $this->check_file_size() ) {
+			return false;
+		}
+		*/
+
 		// phpcs:disable
 		if ( 'error' === $record->level ) {
 			error_log( $data );
@@ -91,12 +97,15 @@ class LogFile extends LogWritterAbs implements LogWritterInt {
 	private function check_file_size(): bool {
 		$result = false;
 		try {
+			if ( defined( 'DRPPSM_DOING_TRUNCATE' ) ) {
+				return false;
+			}
 
-			$fs = wp_filesize( $this->file );
-
+			$fs    = wp_filesize( $this->file );
 			$limit = $this->size * 1000000;
+
 			if ( ! $fs || ( $fs > $limit ) ) {
-				$this->truncate();
+				return $this->truncate();
 			}
 			$result = true;
 
@@ -134,22 +143,25 @@ class LogFile extends LogWritterAbs implements LogWritterInt {
 	/**
 	 * Truncate the log file.
 	 *
-	 * @return void
+	 * @return bool
 	 * @since 1.0.0
 	 */
-	public function truncate(): void {
+	public function truncate(): bool {
+		define( 'DRPPSM_DOING_TRUNCATE', true );
 		// @codeCoverageIgnoreStart
 		try {
 			// phpcs:disable
 			$fh = fopen( $this->file, 'w' );
 			if ( $fh ) {
 				fclose( $fh );
+				return true;
 			}
 			// phpcs:enable
 		} catch ( \Throwable $th ) {
 			unset( $th );
 		}
 		// @codeCoverageIgnoreEnd
+		return false;
 	}
 
 	/**

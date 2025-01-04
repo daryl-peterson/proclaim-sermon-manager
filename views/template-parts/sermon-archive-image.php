@@ -13,10 +13,13 @@ namespace DRPPSM;
 
 defined( 'ABSPATH' ) || exit;
 
-$image = get_sermon_image_url( true, ImageSize::SERMON_MEDIUM, true );
+if ( ! isset( $args['image_size'] ) ) {
+	$args['image_size'] = 'post-thumbnail';
+}
+
+$image = get_sermon_image_url( true, $args['image_size'], true );
 
 ?>
-
 
 <div class="drppsm-archive-image">
 

@@ -37,7 +37,6 @@ class Templates implements Executable, Registrable {
 	 */
 	private string $pt;
 
-
 	/**
 	 * Bible taxonomy.
 	 *

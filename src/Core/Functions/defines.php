@@ -156,8 +156,21 @@ define( 'DRPPSM_SC_LATEST_SERIES', 'drppsm_latest_series' );
  * Latest sermon shortcode.
  *
  * @since 1.0.0
- */
-define( 'DRPPSM_SC_LATEST_SERMON', 'drppsm_latest_sermon' );
+ * #### Atts parameter
+ * *defaults shown with ()*
+ * - **filter_by** :Options "series", "preachers", "topics", "books", "service_type"
+ * - **filter_value** : Use the "slug" related to the taxonomy field you want to filter by. ('')
+ * - **image_size** : { sermon_small, sermon_medium, sermon_wide, thumbnail, medium, large, full } ect. (sermon_medium)
+ * - **per_page** : Number of sermons to display. (10)
+ * - **order** : "DESC" for descending; "ASC" for ascending. (DESC)
+ * - **orderby** : Options "date", "id", "none", "title", "name", "rand", "comment_count"
+ *
+ * ```
+ * // Example using all options.
+ * [drppsm_sermon_latest orderby="date" order="desc" filter_by="series" filter_value="at-the-cross" image_size="sermon_medium" per_page="5"]
+ * ```
+*/
+define( 'DRPPSM_SC_SERMON_LATEST', 'drppsm_sermon_latest' );
 
 /**
  * Podcast list shortcode.

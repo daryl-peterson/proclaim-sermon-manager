@@ -145,6 +145,10 @@ function get_sermon_image_url( bool $fallback = true, string $image_size = 'post
 		global $post;
 	}
 
+	if ( empty( $image_size ) ) {
+		$image_size = 'post-thumbnail';
+	}
+
 	/**
 	 * Allows to filter the image size.
 	 *

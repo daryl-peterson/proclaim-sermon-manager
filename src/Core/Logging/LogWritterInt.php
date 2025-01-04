@@ -38,10 +38,10 @@ interface LogWritterInt extends Executable, Registrable {
 	/**
 	 * Truncate data.
 	 *
-	 * @return void
+	 * @return bool
 	 * @since 1.0.0
 	 */
-	public function truncate(): void;
+	public function truncate(): bool;
 
 		/**
 		 * Display debug log.

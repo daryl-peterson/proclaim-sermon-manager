@@ -11,6 +11,13 @@
 
 namespace DRPPSM;
 
+/**
+ * Make sure array exist. Other functions will need it.
+ */
+if ( ! isset( $args ) ) {
+	$args = array();
+}
+
 if ( ! did_action( 'get_header' ) ) {
 	get_header();
 }
@@ -24,7 +31,7 @@ if ( have_posts() ) :
 
 	while ( have_posts() ) :
 		the_post();
-		sermon_excerpt();
+		sermon_excerpt( $args );
 	endwhile;
 
 	// echo apply_filters( 'archive-wpfc_sermon-after-sermons', '' );

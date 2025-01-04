@@ -176,6 +176,8 @@ class SermonDetail implements Initable, Registrable {
 	 * @param CMB2 $cmb CMB object.
 	 * @return void
 	 * @since 1.0.0
+	 *
+	 * @todo fix $format.
 	 */
 	private function add_date_preached( CMB2 $cmb ): void {
 		$format = Settings::get( Settings::DATE_FORMAT, Settings::get_default( Settings::DATE_FORMAT ) );
@@ -186,8 +188,8 @@ class SermonDetail implements Initable, Registrable {
 				// translators: %1 Date preached.
 				'desc'         => '<br>' . wp_sprintf( esc_html__( 'format: %s', 'drppsm' ), $format ),
 				'id'           => Meta::DATE,
-				'type'         => 'text_date_timestamp',
-				'date_format'  => $format,
+				'type'         => 'text_datetime_timestamp',
+				// 'date_format'  => $format,
 				'autocomplete' => 'off',
 			)
 		);
