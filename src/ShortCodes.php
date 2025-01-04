@@ -459,8 +459,6 @@ class ShortCodes implements Executable, Registrable {
 		// Set filtering args.
 		$filtering_args = $this->init_sermon_filtering( $args );
 
-		$blah = '';
-
 		// Set query args.
 		$query_args = array(
 			'post_type'      => $this->pt_sermon,
