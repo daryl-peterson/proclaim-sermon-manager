@@ -257,7 +257,9 @@ class ShortCodes implements Executable, Registrable {
 		$args = shortcode_atts( $args, $atts, $this->sc_sermon_latest );
 
 		// Make sure orderby is correct.
-		$args['orderby'] = $this->set_order_by( $args );
+		if ( ! $this->is_valid_orderby( $args ) ) {
+			$args['orderby'] = 'post_date';
+		}
 
 		// Set query args.
 		$query_args = array(
@@ -465,7 +467,12 @@ class ShortCodes implements Executable, Registrable {
 			'paged'          => get_query_var( 'paged' ),
 		);
 
-		$this->set_order_by( $args, 'date_preached' );
+		if ( ! $this->is_valid_orderby( $args ) ) {
+			$args['orderby'] = 'date_preached';
+		}
+		if ( 'date' === $args['orderby'] ) {
+			$args['orderby'] = 'date' === get_archive_order_by( 'date' ) ? 'date_published' : 'date_preached';
+		}
 
 		switch ( $args['orderby'] ) {
 			case 'preached':
@@ -475,7 +482,7 @@ class ShortCodes implements Executable, Registrable {
 
 				$query_args['meta_query'] = array(
 					array(
-						'key'     => 'sermon_date',
+						'key'     => Meta::DATE,
 						'value'   => time(),
 						'type'    => 'numeric',
 						'compare' => '<=',
@@ -685,14 +692,13 @@ class ShortCodes implements Executable, Registrable {
 		return $atts;
 	}
 
-	private function set_order_by( array $args, string $default = 'date' ): void {
+	private function is_valid_orderby( array $args ): bool {
 		$orderby = strtolower( $args['orderby'] );
 
 		if ( ! in_array( $orderby, DRPPSM_SERMON_ORDER_BY ) ) {
-			$orderby = Settings::get( Settings::ARCHIVE_ORDER_BY, $default );
+			return false;
 		}
-
-		$args['orderby'] = $orderby;
+		return true;
 	}
 
 

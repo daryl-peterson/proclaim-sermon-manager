@@ -34,14 +34,16 @@ if ( ! defined( 'WPINC' ) ) {
 	exit;
 }
 
-if ( file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
-	require_once __DIR__ . '/vendor/autoload.php';
+
+
+if ( file_exists( __DIR__ . '/lib/autoload.php' ) ) {
+	require_once __DIR__ . '/lib/autoload.php';
 }
 
 /**
  * Include CMB2.
  */
-require_once __DIR__ . '/vendor/cmb2/cmb2/init.php';
+require_once __DIR__ . '/lib/cmb2/init.php';
 
 $ds = DIRECTORY_SEPARATOR;
 define( 'DRPPSM_FILE', __FILE__ );
