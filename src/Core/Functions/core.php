@@ -13,6 +13,14 @@ namespace DRPPSM;
 
 use WP_Taxonomy;
 
+function get_archive_order_by( string $default = 'date' ): string {
+	return Settings::get( Settings::ARCHIVE_ORDER_BY, 'date' );
+}
+
+function get_archive_order( string $default = 'DESC' ) {
+	return Settings::get( Settings::ARCHIVE_ORDER, $default );
+}
+
 function get_taxonomy_field( $taxonomy, $field_name ) {
 	$taxonomy = get_taxonomy( $taxonomy );
 

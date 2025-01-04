@@ -59,6 +59,14 @@ class ShortCodes implements Executable, Registrable {
 	private string $sc_sermon_latest;
 
 	/**
+	 * Sermons shortcode
+	 *
+	 * @var string
+	 * @since 1.0.0
+	 */
+	private string $sc_sermons;
+
+	/**
 	 * Terms short code.
 	 *
 	 * @var string
@@ -86,6 +94,7 @@ class ShortCodes implements Executable, Registrable {
 		$this->pt_sermon        = DRPPSM_PT_SERMON;
 		$this->sc_series_latest = DRPPSM_SC_SERIES_LATEST;
 		$this->sc_sermon_latest = DRPPSM_SC_SERMON_LATEST;
+		$this->sc_sermons       = DRPPSM_SC_SERMONS;
 		$this->sc_terms         = DRPPSM_SC_TERMS;
 		$this->tax_map          = DRPPSM_TAX_MAP;
 		$this->tax_series       = DRPPSM_TAX_SERIES;
@@ -102,8 +111,6 @@ class ShortCodes implements Executable, Registrable {
 			return false;
 		}
 
-		// add_shortcode( $this->sc_latest_series, array( $this, 'latest_series' ) );
-
 		add_shortcode( $this->sc_sermon_latest, array( $this, 'show_sermon_latest' ) );
 		add_shortcode( $this->sc_series_latest, array( $this, 'show_series_latest' ) );
 
@@ -111,7 +118,7 @@ class ShortCodes implements Executable, Registrable {
 		add_shortcode( $this->sc_terms, array( $this, 'term_list' ) );
 
 		add_shortcode( DRPPSM_SC_SERMON_IMAGES, array( $this, 'display_images' ) );
-		add_shortcode( DRPPSM_SC_SERMONS, array( $this, 'sermons' ) );
+		add_shortcode( $this->sc_sermons, array( $this, 'show_sermons' ) );
 		add_shortcode( DRPPSM_SC_SERMON_SORTING, array( $this, 'sermon_sorting' ) );
 		return true;
 	}
@@ -122,6 +129,18 @@ class ShortCodes implements Executable, Registrable {
 	 * @param array $atts
 	 * @return string
 	 * @since 1.0.0
+	 *
+	 * #### Attr parameter
+	 * *defaults shown with ()*
+	 *
+	 * - **image_class** : Any CSS class you want applied to the image. (drppsm-latest-series-image)
+	 * - **size** : Any size registered with add_image_size. The default is "large"
+	 * - **show_title** : True or false to show or hide the series title. (true)
+	 * - **title_wrapper** : Any of the following: p, h1, h2, h3, h4, h5, h6, div (h3)
+	 * - **title_class** : Any CSS class you want applied to the title wrapper. (drppsm-latest-series-title)
+	 * - **service_type** : Use the service type slug to show the latest series from a particular service type.
+	 * - **show_desc** : True or false to show or hide the series description (false)
+	 * - **wrapper_class** Any CSS class you want applied to the div which wraps the output. (drppsm-latest-series)
 	 */
 	public function show_series_latest( array $atts ): string {
 		$atts = $this->fix_atts( $atts );
@@ -238,7 +257,7 @@ class ShortCodes implements Executable, Registrable {
 		$args = shortcode_atts( $args, $atts, $this->sc_sermon_latest );
 
 		// Make sure orderby is correct.
-		$args['orderby'] = $this->get_order_by( $args );
+		$args['orderby'] = $this->set_order_by( $args );
 
 		// Set query args.
 		$query_args = array(
@@ -424,8 +443,142 @@ class ShortCodes implements Executable, Registrable {
 	 * - **after** : Show only sermons created after the specified date.
 	 * - **before** :Show only sermons created before the specified date.
 	 */
-	public function sermons( array $atts ): void {
+	public function show_sermons( array $atts ): string {
+		global $post_ID;
+
 		$atts = $this->fix_atts( $atts );
+		$args = $this->init_sermon_default_args();
+
+		// Merge default and user options.
+		$args = shortcode_atts( $args, $atts, 'sermons' );
+
+		$this->fix_sermon_includes_excludes( $args );
+
+		// Set filtering args.
+		$filtering_args = $this->init_sermon_filtering( $args );
+
+		// Set query args.
+		$query_args = array(
+			'post_type'      => $this->pt_sermon,
+			'posts_per_page' => $args['per_page'],
+			'order'          => $args['order'],
+			'paged'          => get_query_var( 'paged' ),
+		);
+
+		$this->set_order_by( $args, 'date_preached' );
+
+		switch ( $args['orderby'] ) {
+			case 'preached':
+			case 'date_preached':
+			case '':
+				$args['orderby'] = 'meta_value_num';
+
+				$query_args['meta_query'] = array(
+					array(
+						'key'     => 'sermon_date',
+						'value'   => time(),
+						'type'    => 'numeric',
+						'compare' => '<=',
+					),
+				);
+				break;
+			case 'published':
+			case 'date_published':
+				$args['orderby'] = 'date';
+				break;
+			case 'id':
+				$args['orderby'] = 'ID';
+				break;
+		}
+
+		$query_args['orderby'] = $args['orderby'];
+
+		// Add year month etc filter, adjusted for sermon date.
+		if ( 'meta_value_num' === $query_args['orderby'] ) {
+			$date_args = array(
+				'year',
+				'month',
+			);
+
+			foreach ( $date_args as $date_arg ) {
+				if ( ! isset( $args[ $date_arg ] ) || ! $args[ $date_arg ] ) {
+					continue;
+				}
+
+				// Reset the query.
+				$query_args['meta_query'] = array();
+
+				switch ( $date_arg ) {
+					case 'year':
+						$year = $args['year'];
+
+						$query_args['meta_query'][] = array(
+							'key'     => 'sermon_date',
+							'value'   => array(
+								strtotime( $year . '-01-01' ),
+								strtotime( $year . '-12-31' ),
+							),
+							'compare' => 'BETWEEN',
+						);
+						break;
+					case 'month':
+						$year  = $args['year'] ?: date( 'Y' );
+						$month = intval( $args['month'] ) ?: date( 'm' );
+
+						$query_args['meta_query'][] = array(
+							'key'     => 'sermon_date',
+							'value'   => array(
+								strtotime( $year . '-' . $args['month'] . '-' . '01' ),
+								strtotime( $year . '-' . $month . '-' . cal_days_in_month( CAL_GREGORIAN, $month, $year ) ),
+							),
+							'compare' => 'BETWEEN',
+						);
+						break;
+				}
+			}
+		}
+		Logger::debug(
+			array(
+				'QUERY ARGS' => $query_args,
+				'ARGS'       => $args,
+			)
+		);
+
+		// Add before and after parameters.
+		if ( 'meta_value_num' === $query_args['orderby'] && ( $args['before'] || $args['after'] ) ) {
+			if ( ! isset( $query_args['meta_query'] ) ) {
+				$query_args['meta_query'] = array();
+			}
+
+			if ( $args['before'] ) {
+				$before = strtotime( $args['before'] );
+
+				$query_args['meta_query'][] = array(
+					'key'     => 'sermon_date',
+					'value'   => $before,
+					'compare' => '<=',
+				);
+			}
+
+			if ( $args['after'] ) {
+				$after = strtotime( $args['after'] );
+
+				$query_args['meta_query'][] = array(
+					'key'     => 'sermon_date',
+					'value'   => $after,
+					'compare' => '>=',
+				);
+			}
+		}
+
+		// Use all meta queries.
+		if ( isset( $query_args['meta_query'] ) && count( $query_args['meta_query'] ) > 1 ) {
+			$query_args['meta_query']['relation'] = 'AND';
+		}
+
+		$query_args = $this->set_filter( $args, $query_args );
+
+		return '';
 	}
 
 	/**
@@ -532,14 +685,76 @@ class ShortCodes implements Executable, Registrable {
 		return $atts;
 	}
 
-	private function get_order_by( array $args ): string {
+	private function set_order_by( array $args, string $default = 'date' ): void {
 		$orderby = strtolower( $args['orderby'] );
 
 		if ( ! in_array( $orderby, DRPPSM_SERMON_ORDER_BY ) ) {
-			$orderby = Settings::get( Settings::ARCHIVE_ORDER_BY, 'date' );
+			$orderby = Settings::get( Settings::ARCHIVE_ORDER_BY, $default );
 		}
 
-		return $orderby;
+		$args['orderby'] = $orderby;
+	}
+
+
+	private function init_sermon_default_args() {
+		return array(
+			'per_page'           => get_option( 'posts_per_page' ) ?: 10,
+			'sermons'            => false, // Show only sermon IDs that are set here.
+			'order'              => get_archive_order(),
+			'orderby'            => get_archive_order_by(),
+			'disable_pagination' => 0,
+			'image_size'         => 'post-thumbnail',
+			'filter_by'          => '',
+			'filter_value'       => '',
+			'year'               => '',
+			'month'              => '',
+			'after'              => '',
+			'before'             => '',
+			'hide_filters'       => true,
+			'hide_topics'        => '',
+			'hide_series'        => '',
+			'hide_preachers'     => '',
+			'hide_books'         => '',
+			'hide_dates'         => '',
+			'include'            => '',
+			'exclude'            => '',
+			'hide_service_types' => '',
+		);
+	}
+
+	private function init_sermon_filtering( array $args ): array {
+		return array(
+			'hide_topics'        => $args['hide_topics'],
+			'hide_series'        => $args['hide_series'],
+			'hide_preachers'     => $args['hide_preachers'],
+			'hide_books'         => $args['hide_books'],
+			'hide_service_types' => $args['hide_service_types'],
+			'hide_dates'         => $args['hide_dates'],
+		);
+	}
+
+
+	/**
+	 * Explode csv values in args array for include & exclude keys.
+	 *
+	 * @param array &$args
+	 * @return void
+	 * @since 1.0.0
+	 */
+	private function fix_sermon_includes_excludes( array &$args ): void {
+		$search = array( 'include', 'exclude' );
+
+		foreach ( $search as $key ) {
+			$data   = explode( ',', $args[ $key ] );
+			$return = array();
+			foreach ( $data as $value ) {
+				if ( ! is_numeric( trim( $value ) ) ) {
+					continue;
+				}
+				$return[] = intval( trim( $value ) );
+			}
+			$args[ $key ] = $return;
+		}
 	}
 
 	/**
@@ -549,14 +764,12 @@ class ShortCodes implements Executable, Registrable {
 	 * @param bool   $friendly If true will convert friendly => unfriendly else unfriendly => friendly\
 	 *               In the event of no conversion orginal $name is returned.
 	 *
-	 * @return string \
-	 *               The converted taxonomy or orginal supplied argument.
+	 * @return string The converted taxonomy or orginal supplied argument.
 	 * @since 1.0.0
 	 *
 	 * ```
 	 * // Example friendly to unfriendly.
 	 * $this->convert_taxonomy_name('series',true); # returns drppms_series
-	 *
 	 * ```
 	 */
 	private function convert_taxonomy_name( string $name, bool $friendly = false ): string {
@@ -614,8 +827,6 @@ class ShortCodes implements Executable, Registrable {
 		if ( is_numeric( $terms[0] ) ) {
 			$field = 'id';
 		}
-
-		Logger::debug( 'HERE 3' );
 
 		foreach ( $terms as &$term ) {
 			$term = trim( $term );
@@ -681,25 +892,4 @@ class ShortCodes implements Executable, Registrable {
 
 		return $query_args;
 	}
-
-
-
-
-
-
-
-	/**
-	 *
-	 *
-	 * #### Atts parameter
-	 * *defaults shown with ()*
-	 *
-	 * - **image_class** : Opptions any CSS class you want applied to the image. ( latest-series-image )
-	 * - **image_size** : { sermon_small, sermon_medium, sermon_wide, thumbnail, medium, large, full } ect.
-	 * - **show_title** : Show or hide the series title. ( true )
-	 * - **title_wrapper** Any HTML tag p, h1, h2, h3, h4, h5, h6, div ( h3)
-	 * - **title_class** Any CSS class you want applied to the title wrapper. ( latest-series-title )
-	 * - **service_type** Use the service type slug to show the latest series from a particular service type.
-	 * - **show_desc** – Show or hide the series description. (false )
-	 * - **wrapper_class** : Any CSS class you want applied to the div which wraps the output. { default: latest-series }        */
 }

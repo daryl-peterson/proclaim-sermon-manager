@@ -50,6 +50,7 @@
 		"cmb2/cmb2": "^2.11"
 	},
 	"config": {
+		"vendor-dir": "lib",
 		"allow-plugins": {
 			"dealerdirect/phpcodesniffer-composer-installer": false
 		}
