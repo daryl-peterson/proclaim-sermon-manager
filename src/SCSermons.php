@@ -108,7 +108,7 @@ class SCSermons extends SCBase implements Executable, Registrable {
 			$args['orderby'] = 'date' === get_archive_order_by( 'date' ) ? 'date_published' : 'date_preached';
 		}
 
-		$this->fix_sermon_order_by( $args, $query_args );
+		$this->set_order_by( $args, $query_args );
 
 		// Add year month etc filter, adjusted for sermon date.
 		$this->set_date_ordering( $args, $query_args );
@@ -132,13 +132,71 @@ class SCSermons extends SCBase implements Executable, Registrable {
 
 		$query = new WP_Query( $query_args );
 
+		Logger::debug( array( 'QUERY' => $query ) );
+
 		// Add query to the args.
 		$args['query'] = $query;
+		$output        = '';
+		ob_start();
+		if ( $query->have_posts() ) {
 
-		return '';
+			while ( $query->have_posts() ) {
+				$query->the_post();
+				global $post;
+
+				if ( $args['include'] ) {
+					if ( ! in_array( $post->ID, $args['include'] ) ) {
+						continue;
+					}
+				}
+
+				/**
+				 * Allows for filtering shortcode output.
+				 * - Filters are prefixed with drppsmf_
+				 *
+				 * @param string $shortcode Shortcode name.
+				 * @param string $post Current post.
+				 * @param array $args Arguments from shortcode plus defaults.
+				 * @return string
+				 * @since 1.0.0
+				 */
+				$override = apply_filters(
+					DRPPSMF_SC_OUTPUT_OVRD,
+					$this->sc_sermons,
+					$post,
+					$args
+				);
+
+				if ( $override !== $this->sc_sermons ) {
+					$output .= $override;
+					continue;
+				}
+				get_partial( 'content-sermon-archive', $args );
+
+			}
+
+			wp_reset_postdata();
+		} else {
+			get_partial( 'content-sermon-none' );
+		}
+
+		$result = ob_get_clean();
+
+		if ( $output !== '' ) {
+			$result = $output;
+		}
+		return $result;
 	}
 
-	private function fix_sermon_order_by( array &$args, array &$query_args ): void {
+	/**
+	 * Set order by parameter.
+	 *
+	 * @param array &$args
+	 * @param array &$query_args
+	 * @return void
+	 * @since 1.0.0
+	 */
+	private function set_order_by( array &$args, array &$query_args ): void {
 		switch ( $args['orderby'] ) {
 			case 'preached':
 			case 'date_preached':
