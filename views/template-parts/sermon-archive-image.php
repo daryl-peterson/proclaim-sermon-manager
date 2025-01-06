@@ -14,7 +14,7 @@ namespace DRPPSM;
 defined( 'ABSPATH' ) || exit;
 
 if ( ! isset( $args['image_size'] ) ) {
-	$args['image_size'] = 'post-thumbnail';
+	$args['image_size'] = ImageSize::SERMON_WIDE;
 }
 
 $image = get_sermon_image_url( true, $args['image_size'], true );

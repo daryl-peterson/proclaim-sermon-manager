@@ -39,12 +39,9 @@ function get_partial( string $name, array $args = array() ) {
  * @return void
  * @since 1.0.0
  */
-function sermon_excerpt( $args = array() ): void {
+function sermon_excerpt( array $args = array() ): void {
 	if ( ! isset( $args['image_size'] ) ) {
-
-		$args += array(
-			'image_size' => ImageSize::SERMON_MEDIUM,
-		);
+		$args['image_size'] = ImageSize::SERMON_MEDIUM;
 	}
 
 	// Get the partial.

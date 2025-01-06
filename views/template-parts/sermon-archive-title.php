@@ -20,8 +20,3 @@ defined( 'ABSPATH' ) || exit;
 	<h4><?php the_title( '', '' ); ?> </h4>
 </a>
 
-
-
-
-
-
