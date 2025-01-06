@@ -15,6 +15,8 @@ global $post;
 
 $post_class = esc_attr( implode( ' ', get_post_class( 'drppsm-single-article', $post ) ) );
 
+$args['image_size'] = 'full';
+
 ?>
 
 <article id="sermon_single_<?php the_ID(); ?>" class="<?php echo $post_class; ?>">

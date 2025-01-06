@@ -162,21 +162,11 @@
     background-color: #fff;
   }
 }
-/*
-@media(max-width: 800px) {
-	.drppsm-archive {
-
-		&-image {
-			margin-right: 1em;
-		}
-
-		&-image-img {
-			padding-top: 56.25%;
-		}
-	}
-
+@media (max-width: 800px) {
+  .drppsm-archive-main {
+    margin-top: 1em;
+  }
 }
-*/
 #drppsm-sermons-pagination {
   margin-top: 1rem;
 }
@@ -204,7 +194,8 @@
   margin-bottom: 8px;
 }
 .drppsm-single-main {
-  padding: 1em 0;
+  padding: 1em 0 1em 1em;
+  background-color: #fff;
 }
 .drppsm-single-title {
   margin: 0;
@@ -324,6 +315,25 @@
   padding: 0 !important;
 }
 
+@media (min-width: 801px) {
+  .drppsm-archive-inner {
+    display: flex;
+    flex-flow: row wrap;
+  }
+  .drppsm-archive-image-img {
+    height: 100%;
+  }
+  .drppsm-archive-main {
+    flex: 1;
+    padding: 1em 0 1em 1em;
+  }
+}
+@media (max-width: 800px) {
+  .drppsm-archive-main {
+    margin-top: 1em;
+    padding: 1em 0 1em 1em;
+  }
+}
 ul#drppsm_images_grid {
   display: grid;
   grid-template-columns: 50% 50%;

@@ -39,7 +39,7 @@ return array(
 	LoggerInt::class           => Logger::class,
 	NoticeInt::class           => Notice::class,
 	OptionsInt::class          => Options::class,
-	Pagination::class          => Pagination::class,
+	// Pagination::class          => Pagination::class,
 	PermaLinkInt::class        => PermaLinks::class,
 	PluginInt::class           => Plugin::class,
 	PostTypeSetupInt::class    => PostTypeSetup::class,
