@@ -38,11 +38,12 @@ class App implements Initable {
 	private Container $container;
 
 	/**
-	 * Settings array.
+	 * Data storage array.
 	 *
 	 * @var array
+	 * @since 1.0.0
 	 */
-	private array $settings;
+	private array $data;
 
 	/**
 	 * Initialize object.
@@ -52,7 +53,7 @@ class App implements Initable {
 	protected function __construct() {
 		// @codeCoverageIgnoreStart
 		$this->container = new Container();
-		$this->settings  = array();
+		$this->data      = array();
 
 		$config = Helper::get_config( 'app-config.php' );
 
@@ -140,39 +141,42 @@ class App implements Initable {
 	}
 
 	/**
-	 * Set settings.
+	 * Set app data.
 	 *
-	 * @param array $settings Key value pairs.
+	 * @param string $item Item name.
 	 * @return void
 	 * @since 1.0.0
 	 */
-	public function set_setting( array $settings ): void {
-		foreach ( $settings as $key => $value ) {
-			$this->settings[ $key ] = $value;
-		}
+	public function set_item( string $item, mixed $value ): void {
+
+		$this->data[ $item ] = $value;
+		Logger::debug(
+			array(
+				'ITEM'  => $item,
+				'VALUE' => $value,
+			)
+		);
 	}
 
 	/**
-	 * Get setting.
+	 * Get set app data.
 	 *
-	 * @param string $key Setting name.
+	 * @param string $item Item name.
 	 * @param mixed  $default_value Default to return if it doesn't exist.
 	 * @return mixed
 	 * @since 1.0.0
 	 */
-	public function get_setting( string $key, mixed $default_value = null ): mixed {
-
+	public function get_item( string $item, mixed $default_value = null ): mixed {
 		Logger::debug(
 			array(
-				'SETTINGS' => $this->settings,
-				'KEY'      => $key,
+				'ITEM'    => $item,
+				'DEFAULT' => $default_value,
 			)
 		);
-
-		if ( ! isset( $this->settings[ $key ] ) ) {
+		if ( ! key_exists( $item, $this->data ) ) {
 			return $default_value;
 		}
 
-		return $this->settings[ $key ];
+		return $this->data[ $item ];
 	}
 }

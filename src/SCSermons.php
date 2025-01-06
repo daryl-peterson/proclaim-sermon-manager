@@ -88,6 +88,7 @@ class SCSermons extends SCBase implements Executable, Registrable {
 		 * - Filters are prefixed with drppsmf_
 		 *
 		 * @param array $atts
+		 *
 		 * @category filter
 		 * @since 1.0.0
 		 */
@@ -145,8 +146,7 @@ class SCSermons extends SCBase implements Executable, Registrable {
 		$query = new WP_Query( $query_args );
 
 		// Add query to the args.
-		$args['query'] = $query;
-
+		$args['query']   = $query;
 		$args['post_id'] = $post_id;
 
 		ob_start();

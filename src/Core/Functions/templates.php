@@ -68,9 +68,11 @@ function sermon_single( array $args = array() ): void {
  * @return void
  */
 function sermon_sorting( array $args = array() ): void {
-	Logger::debug( $args );
-	get_partial( 'content-sermon-sorting' );
+	get_partial( 'content-sermon-sorting', $args );
 }
+
+
+
 
 /**
  * Get sermon view count

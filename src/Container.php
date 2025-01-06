@@ -35,6 +35,8 @@ class Container implements ContainerInt {
 	 */
 	public array $services = array();
 
+	public array $data = array();
+
 	/**
 	 * Finds an entry of the container by its identifier and returns it.
 	 *

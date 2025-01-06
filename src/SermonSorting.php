@@ -163,13 +163,19 @@ class SermonSorting implements Executable {
 
 			$content = '';
 			if ( $do_filter ) {
+				$temp = array(
+					'filters'            => $filters,
+					'visibility_mapping' => $visibility_mapping,
+					'args'               => $args,
+				);
+
+				// Set container value
+				set_item( 'sermon_filtering_args', $temp );
+
+				Logger::debug( $args );
 				$content = get_partial(
 					'content-sermon-filtering',
-					array(
-						'filters'            => $filters,
-						'visibility_mapping' => $visibility_mapping,
-						'args'               => $args,
-					)
+					$temp
 				);
 			}
 

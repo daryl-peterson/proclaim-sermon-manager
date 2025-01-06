@@ -35,15 +35,26 @@ function app_get( string $item ): mixed {
 }
 
 /**
- * Get setting.
+ * Get app data.
  *
- * @param string $key Setting name.
+ * @param string $key Item name.
  * @param mixed  $default_value Value to use if it doesn't exist.
  * @return mixed
  * @since 1.0.0
  */
-function get_setting( string $key, mixed $default_value = null ): mixed {
-	return app()->get_setting( $key, $default_value );
+function get_item( string $key, mixed $default_value = null ): mixed {
+	return app()->get_item( $key, $default_value );
+}
+
+/**
+ * Set app data.
+ *
+ * @param string $key Item name.
+ * @param mixed  $value
+ * @return void
+ */
+function set_item( string $key, mixed $value ): void {
+	app()->set_item( $key, $value );
 }
 
 /**
