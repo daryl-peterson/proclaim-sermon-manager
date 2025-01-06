@@ -1,4 +1,4 @@
-.drppsm-sermon-single {
+.drppsm-single {
 	&-header {
 		text-align: center;
 	}
@@ -8,19 +8,35 @@
 	}
 
 	&-meta-item {
-		display: inline-block;
-		margin: 0 8px;
-		font-size: 14px;
-		opacity: .87;
+		display: flex;
+		flex-direction: row;
+	}
+
+	&-meta-prefix {
+		width: 30%;
+	}
+
+	&-meta-text {
+		width: 70%
 	}
 
 	&-meta-date {
 		margin-bottom: 8px;
 	}
 
+	&-main {
+		padding: 1em 0;
+
+	}
+
 	&-title {
 		margin: 0;
 		padding: 0;
+		text-align: center;
+	}
+
+	&-inner {
+		min-height: 70vh;
 	}
 
 	.wp-video {
@@ -159,4 +175,9 @@
 			text-align: right;
 		}
 	}
+
+	&-image-img {
+		width: 100%;
+	}
+
 }

@@ -12,6 +12,8 @@
 
 use DRPPSM\Templates;
 
+use function DRPPSM\sermon_excerpt;
+
 /**
  * Get partial template.
  *
@@ -36,5 +38,5 @@ function drppsm_get_partial( string $name, array $args = array() ): void {
  * @since 1.0.0
  */
 function drppsm_sermon_excerpt( $args = array() ): void {
-	Templates::exec()->sermon_excerpt( $args );
+	sermon_excerpt( $args );
 }

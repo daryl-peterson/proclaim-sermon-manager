@@ -11,26 +11,36 @@
 
 namespace DRPPSM;
 
-get_header();
+// Make sure args is defined.
+if ( ! isset( $args ) || ! is_array( $args ) ) {
+	$args = array();
+}
+
+if ( ! did_action( 'get_header' ) ) {
+	get_header();
+}
+
 get_partial( 'sermon-wrapper-start' );
 
-while ( have_posts() ) :
+while ( have_posts() ) {
 	global $post;
 	the_post();
 
-
-
 	if ( ! post_password_required( $post ) ) {
-		sermon_single();
+		get_partial( 'content-sermon-single', $args );
 	} else {
 		echo get_the_password_form( $post );
 	}
 
-	if ( comments_open() || get_comments_number() ) :
+	if ( comments_open() || get_comments_number() ) {
 		if ( isset( $comments ) ) {
 			comments_template();
 		}
-	endif;
-endwhile;
+	}
+}
+
 get_partial( 'sermon-wrapper-end' );
-get_footer();
+
+if ( ! did_action( 'get_footer' ) ) {
+	get_footer();
+}

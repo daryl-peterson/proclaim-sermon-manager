@@ -1,4 +1,4 @@
-.drppsm-sermon {
+.drppsm-archive {
 
 	&-shortcode {
 		margin-bottom: 2rem;
@@ -7,6 +7,7 @@
 	&-image {
 		height: auto;
 		position: relative;
+		flex: 0 40%;
 	}
 
 	&-image-img {
@@ -34,8 +35,17 @@
 	}
 
 	&-meta-item {
-		font-size: 14px;
-		opacity: .87;
+		display: flex;
+		flex-direction: row;
+	}
+
+	&-meta-prefix {
+		width: 35%;
+		padding-right: 1em;
+	}
+
+	&-meta-text {
+		/*width: 70%*/
 	}
 
 	&-meta-series {
@@ -68,7 +78,7 @@
 		padding-top: 24px;
 		border-top: 1px solid #ddd;
 
-		.drppsm-sermon-meta-item {
+		.drppsm-archive-meta-item {
 			display: inline-block;
 			position: relative;
 
@@ -102,13 +112,13 @@
 		vertical-align: middle;
 	}
 
-	>.drppsm-sermon-inner {
+	>.drppsm-archive-inner {
 		background: white;
 		border: 1px solid #ddd;
 	}
 
 	&-main {
-		padding: 24px;
+		padding: 1em 0;
 	}
 
 	&-att-audio,
@@ -123,14 +133,15 @@
 }
 
 @media (min-width: 801px) {
-	.drppsm-sermon {
+	.drppsm-archive {
 		&-inner {
 			display: flex;
 			flex-flow: row wrap;
 		}
 
 		&-image {
-			flex: 0 30%;
+			margin-right: 1em;
+
 		}
 
 		&-image-img {
@@ -139,12 +150,21 @@
 
 		&-main {
 			flex: 1;
+			align-items: center;
 		}
 	}
 }
 
 @media(max-width: 800px) {
-	.drppsm-sermon-image-img {
-		padding-top: 56.25%;
+	.drppsm-archive {
+
+		&-image {
+			margin-right: 1em;
+		}
+
+		&-image-img {
+			/*padding-top: 56.25%;*/
+		}
 	}
+
 }

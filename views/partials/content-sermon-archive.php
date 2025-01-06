@@ -21,19 +21,18 @@ $post_class = esc_attr( implode( ' ', get_post_class( 'drppsm-archive-article', 
 
 	<div class="drppsm-archive-inner">
 
-<?php
-get_partial( 'sermon-archive-image', $args );
-?>
+		<?php
+		get_partial( 'sermon-archive-image', $args );
+		?>
 
 		<div class="drppsm-archive-main">
-
-<?php
-get_partial( 'sermon-archive-meta-title', $args );
-get_partial( 'sermon-archive-meta-date', $args );
-get_partial( 'sermon-archive-meta-series', $args );
-get_partial( 'sermon-archive-meta-preacher', $args );
-get_partial( 'sermon-archive-meta-service-type', $args );
-?>
+			<?php
+			get_partial( 'sermon-archive-title' );
+			get_partial( 'sermon-archive-meta-date', $args );
+			get_partial( 'sermon-archive-meta-series', $args );
+			get_partial( 'sermon-archive-meta-preacher', $args );
+			get_partial( 'sermon-archive-meta-service-type', $args );
+			?>
 
 		</div>
 	</div>

@@ -206,36 +206,6 @@ class Templates implements Executable, Registrable {
 	}
 
 	/**
-	 * Get sermon single.
-	 *
-	 * @param null|WP_Post $post_new Post object.
-	 * @return void
-	 * @since 1.0.0
-	 */
-	public function sermon_single( ?WP_Post $post_new = null ): void {
-
-		// Get the partial.
-		$this->get_partial( 'content-sermon-single' );
-	}
-
-	/**
-	 * Get sermon excerpt
-	 *
-	 * @param array $args
-	 * @return void
-	 * @since 1.0.0
-	 */
-	public function sermon_excerpt( $args = array() ): void {
-
-		$args += array(
-			'image_size' => 'post-thumbnail',
-		);
-
-		// Get the partial.
-		$this->get_partial( 'content-sermon-archive', $args );
-	}
-
-	/**
 	 *
 	 * @param array $args
 	 * @return mixed

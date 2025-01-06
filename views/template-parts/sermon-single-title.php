@@ -15,14 +15,12 @@ namespace DRPPSM;
 defined( 'ABSPATH' ) || exit;
 
 ?>
-<div class="drppsm-single-meta-item">
-	<div class="drppsm-single-title-prefix"></div>
-	<div class="drppsm-single-title-text">
-		<a href="<?php the_permalink( $post->id ); ?>">
-			<h4><?php the_title( '', '' ); ?></h4>
-		</a>
-	</div>
-</div>
+
+<a href="<?php the_permalink( $post->id ); ?>" class="drppsm-single-title" title="<?php the_title(); ?>">
+	<h4><?php the_title( '', '' ); ?></h4>
+</a>
+
+
 
 
 

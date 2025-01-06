@@ -40,18 +40,28 @@ function get_partial( string $name, array $args = array() ) {
  * @since 1.0.0
  */
 function sermon_excerpt( $args = array() ): void {
-	Templates::exec()->sermon_excerpt( $args );
+	if ( ! isset( $args['image_size'] ) ) {
+
+		$args += array(
+			'image_size' => ImageSize::SERMON_MEDIUM,
+		);
+	}
+
+	// Get the partial.
+	get_partial( 'content-sermon-archive', $args );
 }
 
 /**
- * Get sermon single.
+ * Sermon single.
  *
- * @param null|WP_Post $post_new Post object.
+ * @param array $args
  * @return void
  * @since 1.0.0
  */
-function sermon_single( ?WP_Post $post_new = null ): void {
-	Templates::exec()->sermon_single( $post_new );
+function sermon_single( array $args = array() ): void {
+
+	// Get the partial.
+	get_partial( 'content-sermon-single', $args );
 }
 
 /**
@@ -207,10 +217,6 @@ function get_sermon_image_url( bool $fallback = true, string $image_size = 'post
 	}
 	*/
 
-	if ( ! $image ) {
-		$image = DRPPSM_URL . 'assets/images/spacer.png';
-	}
-	Logger::debug( array( 'IMAGE' => $image ) );
 	return $image;
 }
 
