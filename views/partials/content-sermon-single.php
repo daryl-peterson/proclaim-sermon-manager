@@ -19,7 +19,7 @@ $args['image_size'] = 'full';
 
 ?>
 
-<article id="sermon_single_<?php the_ID(); ?>" class="<?php echo $post_class; ?>">
+<article id="sermon-single-id-<?php the_ID(); ?>" class="<?php echo $post_class; ?>">
 	<div class="drppsm-single-inner">
 		<?php
 		get_partial( 'sermon-single-image', $args );

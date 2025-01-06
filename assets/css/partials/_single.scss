@@ -3,6 +3,11 @@
 		text-align: center;
 	}
 
+	&-main {
+		background-color: #fff;
+	}
+
+
 	&-meta {
 		margin: 8px -8px 0 -8px;
 	}
@@ -18,16 +23,6 @@
 
 	&-meta-text {
 		width: 70%
-	}
-
-	&-meta-date {
-		margin-bottom: 8px;
-	}
-
-	&-main {
-		padding: 1em 0 1em 1em;
-		background-color: #fff;
-
 	}
 
 	&-title {
@@ -183,12 +178,9 @@
 
 }
 
-[id^=sermon-single-id-] {
-	padding: 0 !important;
-}
-
 @media (min-width: 801px) {
-	.drppsm-archive {
+
+	.drppsm-single {
 		&-inner {
 			display: flex;
 			flex-flow: row wrap;
@@ -207,11 +199,11 @@
 }
 
 @media(max-width: 800px) {
-	.drppsm-archive {
+
+	.drppsm-single {
 
 		&-main {
 			margin-top: 1em;
-			padding: 1em 0 1em 1em;
 		}
 	}
 }
