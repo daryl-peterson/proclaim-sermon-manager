@@ -17,7 +17,6 @@ defined( 'ABSPATH' ) || exit;
 use DRPPSM\Interfaces\Executable;
 use DRPPSM\Interfaces\Registrable;
 use WP_Exception;
-use WP_Post;
 
 /**
  * Template class.
@@ -174,9 +173,10 @@ class Templates implements Executable, Registrable {
 		 * @param string $name File name.
 		 * @param array  $args Array of variables to pass to template.
 		 * @return string $name File name.
+		 * @category filter
 		 * @since 1.0.0
 		 */
-		$name = apply_filters( DRPPSMF_TPL_PARTIAL, $name, $args );
+		$name = apply_filters( 'drppsmf_tpl_partial', $name, $args );
 		if ( $name !== $name_org ) {
 			if ( file_exists( $name ) ) {
 				load_template( $name, false, $args );
@@ -215,9 +215,9 @@ class Templates implements Executable, Registrable {
 	 * @todo Finish
 	 */
 	public function render_sorting( array $args = array() ) {
-		// Filters HTML fields data.
+
 		$filters = apply_filters(
-			DRPPSMF_TAX_SORTING,
+			'drppsm_fltr_tax_sorting',
 			array(
 				array(
 					'className' => 'drppsm-sort-preacher',
@@ -272,9 +272,9 @@ class Templates implements Executable, Registrable {
 			'topics'                => '',
 			'books'                 => '',
 			'visibility'            => 'suggest',
-			Settings::TOPICS_SORT   => Settings::get( Settings::TOPICS_SORT, true ),
-			Settings::SERIES_SORT   => Settings::get( Settings::SERIES_SORT, true ),
-			Settings::PREACHER_SORT => Settings::get( Settings::PREACHER_SORT, true ),
+			Settings::HIDE_TOPICS   => Settings::get( Settings::HIDE_TOPICS, true ),
+			Settings::HIDE_SERIES   => Settings::get( Settings::HIDE_SERIES, true ),
+			Settings::HIDE_PREACHER => Settings::get( Settings::HIDE_PREACHER, true ),
 			Settings::BIBLE_BOOK    => Settings::get( Settings::BIBLE_BOOK, true ),
 			// 'hide_service_types'  => SermonManager::getOption( 'service_type_filtering' ) ? '' : 'yes',
 			'hide_dates'            => '',
@@ -438,12 +438,7 @@ class Templates implements Executable, Registrable {
 				break;
 			}
 		}
-		Logger::debug(
-			array(
-				'NAME'    => $name,
-				'PARTIAL' => $partial,
-			)
-		);
+
 		return $partial;
 	}
 

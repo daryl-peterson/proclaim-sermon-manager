@@ -17,7 +17,7 @@ $post_class = esc_attr( implode( ' ', get_post_class( 'drppsm-single-article', $
 
 ?>
 
-<article id="post-<?php the_ID(); ?>" class="<?php echo $post_class; ?>">
+<article id="sermon_single_<?php the_ID(); ?>" class="<?php echo $post_class; ?>">
 	<div class="drppsm-single-inner">
 		<?php
 		get_partial( 'sermon-single-image', $args );

@@ -17,7 +17,7 @@ defined( 'ABSPATH' ) or exit;
 $post_class = esc_attr( implode( ' ', get_post_class( 'drppsm-archive-article', $post ) ) );
 ?>
 
-<div id="post-<?php the_ID(); ?>" class="<?php echo $post_class; ?>">
+<div id="sermon-archive-id-<?php the_ID(); ?>" class="<?php echo $post_class; ?>">
 
 	<div class="drppsm-archive-inner">
 

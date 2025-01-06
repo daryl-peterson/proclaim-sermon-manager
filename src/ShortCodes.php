@@ -60,7 +60,7 @@ class ShortCodes implements Executable, Registrable {
 
 		add_shortcode( DRPPSM_SC_LIST_PODCAST, array( $this, 'podcasts_list' ) );
 		add_shortcode( DRPPSM_SC_SERMON_IMAGES, array( $this, 'display_images' ) );
-		add_shortcode( DRPPSM_SC_SERMON_SORTING, array( $this, 'sermon_sorting' ) );
+
 		return true;
 	}
 

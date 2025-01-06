@@ -25,30 +25,40 @@ class Settings {
 	public const ARCHIVE_ORDER         = 'archive_order';
 	public const ARCHIVE_ORDER_BY      = 'archive_order_by';
 	public const ARCHIVE_DISABLE_IMAGE = 'archive_disable_image';
-	public const BIBLE_BOOK            = 'book_label';
-	public const BIBLE_BOOK_SORT       = 'bible_sort';
-	public const BIBLE_BOOK_LOAD       = 'bible_book_load';
-	public const COMMENTS              = 'comments';
-	public const COMMON_BASE_SLUG      = 'common_base_slug';
-	public const DATE_FORMAT           = 'date_format';
-	public const DISABLE_CSS           = 'disable_css';
-	public const MENU_ICON             = 'menu_icon';
-	public const PLAYER                = 'player';
-	public const PREACHER              = 'preacher_label';
-	public const PREACHER_SORT         = 'preacher_sort';
-	public const SERIES                = 'series_label';
-	public const SERIES_SORT           = 'series_sort';
-	public const SERMON_COUNT          = 'sermon_count';
-	public const SERVICE_TYPE          = 'service_type_label';
-	public const SERVICE_TYPE_SORT     = 'service_type_sort';
-	public const TOPICS_SORT           = 'topics_sort';
+
+	public const BIBLE_BOOK      = 'book_label';
+	public const BIBLE_BOOK_LOAD = 'bible_book_load';
+
+	public const COMMENTS         = 'comments';
+	public const COMMON_BASE_SLUG = 'common_base_slug';
+	public const DATE_FORMAT      = 'date_format';
+	public const DISABLE_CSS      = 'disable_css';
+	public const MENU_ICON        = 'menu_icon';
+	public const PLAYER           = 'player';
+	public const PREACHER         = 'preacher_label';
+
+	public const HIDE_BIBLE_BOOK   = 'hide_bible_book';
+	public const HIDE_FILTERING    = 'hide_filtering';
+	public const HIDE_PREACHER     = 'hide_preacher';
+	public const HIDE_SERIES       = 'hide_series';
+	public const HIDE_SERVICE_TYPE = 'hide_service_type';
+	public const HIDE_TOPICS       = 'topics';
+
+	public const SERIES = 'series_label';
+
+	public const SERMON_COUNT = 'sermon_count';
+	public const SERVICE_TYPE = 'service_type_label';
 
 	public const OPTION_KEY_DISPLAY  = 'drppsm_option_display';
 	public const OPTION_KEY_GENERAL  = 'drppsm_option_general';
 	public const OPTION_KEY_ADVANCED = 'drppsm_option_advanced';
 
 
-
+	/**
+	 * Option key map, used to map option to page.
+	 *
+	 * @since 1.0.0
+	 */
 	public const OPTION_KEY_MAP = array(
 		self::ARCHIVE_SLUG          => self::OPTION_KEY_GENERAL,
 		self::BIBLE_BOOK            => self::OPTION_KEY_GENERAL,
@@ -65,13 +75,18 @@ class Settings {
 		self::ARCHIVE_ORDER         => self::OPTION_KEY_DISPLAY,
 		self::ARCHIVE_ORDER_BY      => self::OPTION_KEY_DISPLAY,
 		self::ARCHIVE_DISABLE_IMAGE => self::OPTION_KEY_DISPLAY,
-		self::BIBLE_BOOK_SORT       => self::OPTION_KEY_DISPLAY,
+
+
 		self::BIBLE_BOOK_LOAD       => self::OPTION_KEY_DISPLAY,
+
 		self::DISABLE_CSS           => self::OPTION_KEY_DISPLAY,
-		self::PREACHER_SORT         => self::OPTION_KEY_DISPLAY,
-		self::SERIES_SORT           => self::OPTION_KEY_DISPLAY,
-		self::SERVICE_TYPE_SORT     => self::OPTION_KEY_DISPLAY,
-		self::TOPICS_SORT           => self::OPTION_KEY_DISPLAY,
+
+		self::HIDE_BIBLE_BOOK       => self::OPTION_KEY_DISPLAY,
+		self::HIDE_FILTERING        => self::OPTION_KEY_DISPLAY,
+		self::HIDE_PREACHER         => self::OPTION_KEY_DISPLAY,
+		self::HIDE_SERIES           => self::OPTION_KEY_DISPLAY,
+		self::HIDE_SERVICE_TYPE     => self::OPTION_KEY_DISPLAY,
+		self::HIDE_TOPICS           => self::OPTION_KEY_DISPLAY,
 	);
 
 	private static array $option_default;
@@ -192,17 +207,20 @@ class Settings {
 				self::SERMON_COUNT     => 10,
 				self::SERVICE_TYPE     => 'Service Type',
 			),
+
 			self::OPTION_KEY_DISPLAY => array(
 				self::ARCHIVE_ORDER         => 'desc',
 				self::ARCHIVE_ORDER_BY      => 'date_preached',
 				self::ARCHIVE_DISABLE_IMAGE => false,
-				self::BIBLE_BOOK_SORT       => true,
 				self::BIBLE_BOOK_LOAD       => false,
 				self::DISABLE_CSS           => false,
-				self::PREACHER_SORT         => true,
-				self::SERIES_SORT           => true,
-				self::SERVICE_TYPE_SORT     => false,
-				self::TOPICS_SORT           => true,
+
+				self::HIDE_BIBLE_BOOK       => false,
+				self::HIDE_FILTERING        => false,
+				self::HIDE_PREACHER         => false,
+				self::HIDE_SERIES           => false,
+				self::HIDE_SERVICE_TYPE     => true,
+				self::HIDE_TOPICS           => true,
 			),
 
 		);

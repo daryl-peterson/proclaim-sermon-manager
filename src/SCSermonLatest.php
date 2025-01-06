@@ -73,6 +73,9 @@ class SCSermonLatest extends SCBase implements Executable, Registrable {
 	 * - **order** : "DESC" for descending; "ASC" for ascending. (DESC)
 	 * - **orderby** : Options "date", "id", "none", "title", "name", "rand", "comment_count"
 	 *
+	 * #### Filters
+	 * - **drppsmf_sc_sermon_single_output** : Allows for filtering sermon output.
+	 *
 	 *
 	 * ```
 	 * // Example using all options.
@@ -80,6 +83,8 @@ class SCSermonLatest extends SCBase implements Executable, Registrable {
 	 * ```
 	 */
 	public function show_sermon_latest( array $atts ): string {
+		global $wp_query;
+		$post_id = $wp_query->post->ID;
 
 		$atts = $this->fix_atts( $atts );
 
@@ -113,10 +118,9 @@ class SCSermonLatest extends SCBase implements Executable, Registrable {
 		$query_args = $this->set_filter( $args, $query_args );
 		$query      = new WP_Query( $query_args );
 
-		// Add query to the args.
-		$args['query'] = $query;
-
-		$output = '';
+		// Add query and post_id to the args.
+		$args['query']   = $query;
+		$args['post_id'] = $post_id;
 
 		ob_start();
 		if ( $query->have_posts() ) {
@@ -125,32 +129,27 @@ class SCSermonLatest extends SCBase implements Executable, Registrable {
 				$query->the_post();
 				global $post;
 
+				ob_start();
+				get_partial( 'content-sermon-archive', $args );
+				$output = ob_get_clean();
+
 				/**
-				 * Allows for filtering shortcode output.
-				 * - Filters are prefixed with drppsmf_
+				 * Filter single sermon output.
+				 * - Filters shoud be prefixed with drppsmf_
 				 *
-				 * @param string $shortcode Shortcode name.
-				 * @param string $post Current post.
-				 * @param array $args Arguments from shortcode plus defaults.
-				 * @return string
+				 * @param string $output Output from sermon rendering.
+				 * @param WP_Post $post
+				 * @param array $args Array of aguments.
+				 * @category filter
 				 * @since 1.0.0
 				 */
-				$override = apply_filters(
-					DRPPSMF_SC_OUTPUT_OVRD,
-					DRPPSM_SC_SERMON_LATEST,
-					$post,
-					$args
-				);
-
-				if ( $override !== $this->sc_sermon_latest ) {
-					$output .= $override;
-					continue;
-				}
-				get_partial( 'content-sermon-archive', $args );
+				echo apply_filters( 'drppsmf_sc_sermon_single_output', $output, $post, $args );
 
 			}
 
 			wp_reset_postdata();
+
+			get_partial( 'sermon-pagination', $args );
 		} else {
 			get_partial( 'content-sermon-none' );
 		}

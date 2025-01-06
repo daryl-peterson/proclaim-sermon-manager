@@ -118,7 +118,7 @@
 	}
 
 	&-main {
-		padding: 1em 0;
+		/*padding: 1em 0 1em 1em;*/
 	}
 
 	&-att-audio,
@@ -132,16 +132,16 @@
 	}
 }
 
+[id^=sermon-archive-id-] {
+	padding: 0 !important;
+	background-color: #efefef;
+}
+
 @media (min-width: 801px) {
 	.drppsm-archive {
 		&-inner {
 			display: flex;
 			flex-flow: row wrap;
-		}
-
-		&-image {
-			margin-right: 1em;
-
 		}
 
 		&-image-img {
@@ -150,11 +150,13 @@
 
 		&-main {
 			flex: 1;
-			align-items: center;
+			padding: 1em 0 1em 1em;
+			background-color: #fff;
 		}
 	}
 }
 
+/*
 @media(max-width: 800px) {
 	.drppsm-archive {
 
@@ -163,8 +165,9 @@
 		}
 
 		&-image-img {
-			/*padding-top: 56.25%;*/
+			padding-top: 56.25%;
 		}
 	}
 
 }
+*/

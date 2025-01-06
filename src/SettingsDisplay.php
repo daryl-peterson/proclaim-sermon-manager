@@ -30,7 +30,6 @@ class SettingsDisplay extends SettingsBase implements Executable, Registrable {
 
 	public string $option_key = Settings::OPTION_KEY_DISPLAY;
 
-
 	/**
 	 * Initailize and register hooks.
 	 *
@@ -84,14 +83,17 @@ class SettingsDisplay extends SettingsBase implements Executable, Registrable {
 		$this->add_default_image( $cmb );
 		$this->disable_css( $cmb );
 		$this->add_seperator( $cmb, __( 'Archive Settings', 'drppsm' ) );
+
 		$this->archive_order_by( $cmb );
 		$this->archive_order( $cmb );
 		$this->bible_books( $cmb );
-		$this->bible_book_sort( $cmb );
-		$this->preacher_sort( $cmb );
-		$this->series_sort( $cmb );
-		$this->service_type( $cmb );
-		$this->topic_sort( $cmb );
+
+		$this->add_seperator( $cmb, __( 'Sermon Filtering / Sorting', 'drppsm' ) );
+		$this->hide_bible( $cmb );
+		$this->hide_preacher( $cmb );
+		$this->hide_series( $cmb );
+		$this->hide_service_type( $cmb );
+		$this->hide_topic( $cmb );
 	}
 
 
@@ -123,7 +125,7 @@ class SettingsDisplay extends SettingsBase implements Executable, Registrable {
 		$cmb->add_field(
 			array(
 				'id'      => Settings::BIBLE_BOOK_LOAD,
-				'name'    => __( 'Bible Books', 'drppsm' ),
+				'name'    => __( 'Load Bible Books', 'drppsm' ),
 				'type'    => 'checkbox',
 				'default' => Settings::get_default( Settings::BIBLE_BOOK_LOAD ),
 			)
@@ -205,20 +207,38 @@ class SettingsDisplay extends SettingsBase implements Executable, Registrable {
 	}
 
 	/**
+	 * Add archive filtering.
+	 *
+	 * @param CMB2 $cmb
+	 * @return void
+	 * @since 1.0.0
+	 */
+	private function hide_filtering( CMB2 $cmb ) {
+		$cmb->add_field(
+			array(
+				'id'      => Settings::HIDE_FILTERING,
+				'name'    => __( 'Hide Filtering', 'drppsm' ),
+				'type'    => 'checkbox',
+				'default' => Settings::get_default( Settings::HIDE_FILTERING, false ),
+			)
+		);
+	}
+
+	/**
 	 * Add bible book archive filtering.
 	 *
 	 * @param CMB2 $cmb CMB2 Object.
 	 * @return void
 	 * @since 1.0.0
 	 */
-	private function bible_book_sort( CMB2 $cmb ): void {
+	private function hide_bible( CMB2 $cmb ): void {
 
 		$cmb->add_field(
 			array(
-				'id'      => Settings::BIBLE_BOOK_SORT,
-				'name'    => __( 'Bible Book', 'drppsm' ),
+				'id'      => Settings::HIDE_BIBLE_BOOK,
+				'name'    => __( 'Hide Bible', 'drppsm' ),
 				'type'    => 'checkbox',
-				'default' => Settings::get_default( Settings::BIBLE_BOOK_SORT ),
+				'default' => Settings::get_default( Settings::HIDE_BIBLE_BOOK ),
 			)
 		);
 	}
@@ -230,15 +250,15 @@ class SettingsDisplay extends SettingsBase implements Executable, Registrable {
 	 * @return void
 	 * @since 1.0.0
 	 */
-	private function preacher_sort( CMB2 $cmb ): void {
-		$label = Settings::get( Settings::PREACHER );
+	private function hide_preacher( CMB2 $cmb ): void {
+		$label = __( 'Hide', 'drppsm' ) . Settings::get( Settings::PREACHER );
 
 		$cmb->add_field(
 			array(
-				'id'      => Settings::PREACHER_SORT,
+				'id'      => Settings::HIDE_PREACHER,
 				'name'    => $label,
 				'type'    => 'checkbox',
-				'default' => Settings::get_default( Settings::PREACHER_SORT ),
+				'default' => Settings::get_default( Settings::HIDE_PREACHER ),
 			)
 		);
 	}
@@ -250,15 +270,15 @@ class SettingsDisplay extends SettingsBase implements Executable, Registrable {
 	 * @return void
 	 * @since 1.0.0
 	 */
-	private function series_sort( CMB2 $cmb ): void {
-		$label = __( 'Series', 'drppsm' );
+	private function hide_series( CMB2 $cmb ): void {
+		$label = __( 'Hide Series', 'drppsm' );
 
 		$cmb->add_field(
 			array(
-				'id'      => Settings::SERIES_SORT,
+				'id'      => Settings::HIDE_SERIES,
 				'name'    => $label,
 				'type'    => 'checkbox',
-				'default' => Settings::get_default( Settings::SERIES_SORT ),
+				'default' => Settings::get_default( Settings::HIDE_SERIES ),
 			)
 		);
 	}
@@ -270,15 +290,15 @@ class SettingsDisplay extends SettingsBase implements Executable, Registrable {
 	 * @return void
 	 * @since 1.0.0
 	 */
-	private function service_type( CMB2 $cmb ): void {
-		$label = __( 'Service Type', 'drppsm' );
+	private function hide_service_type( CMB2 $cmb ): void {
+		$label = __( 'Hide Service Type', 'drppsm' );
 
 		$cmb->add_field(
 			array(
-				'id'      => Settings::SERVICE_TYPE_SORT,
+				'id'      => Settings::HIDE_SERVICE_TYPE,
 				'name'    => $label,
 				'type'    => 'checkbox',
-				'default' => Settings::get_default( Settings::SERVICE_TYPE_SORT ),
+				'default' => Settings::get_default( Settings::HIDE_SERVICE_TYPE ),
 			)
 		);
 	}
@@ -290,15 +310,15 @@ class SettingsDisplay extends SettingsBase implements Executable, Registrable {
 	 * @return void
 	 * @since 1.0.0
 	 */
-	private function topic_sort( CMB2 $cmb ): void {
-		$label = __( 'Topic', 'drppsm' );
+	private function hide_topic( CMB2 $cmb ): void {
+		$label = __( 'Hide Topic', 'drppsm' );
 
 		$cmb->add_field(
 			array(
-				'id'      => Settings::TOPICS_SORT,
+				'id'      => Settings::HIDE_TOPICS,
 				'name'    => $label,
 				'type'    => 'checkbox',
-				'default' => Settings::get_default( Settings::TOPICS_SORT ),
+				'default' => Settings::get_default( Settings::HIDE_TOPICS ),
 			)
 		);
 	}

@@ -126,9 +126,10 @@ class LogDatabase extends LogWritterAbs implements LogWritterInt {
 	 * @return void
 	 * @since 1.0.0
 	 */
-	public function truncate(): void {
+	public function truncate(): bool {
 		$this->db->get_results( "DELETE FROM $this->table" );
 		$this->db->query( 'ALTER TABLE ' . $this->table . ' AUTO_INCREMENT=1' );
+		return true;
 	}
 
 	/**

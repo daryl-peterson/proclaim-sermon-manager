@@ -213,6 +213,8 @@ define( 'DRPPSM_SC_SERMON_SORTING', 'drppsm_sermon_sorting' );
 
 
 
+
+
 /*
 |------------------------------------------------------------------------------
 | MESSAGES
@@ -255,18 +257,6 @@ define(
 | This sections begins the list of defined filters.
 */
 
-/**
- * Allows for filtering shortcode output.
- * - Filters are prefixed with drppsmf_
- *
- * @param string $shortcode Shortcode name.
- * @param string $post Current post.
- * @param array $args Arguments from shortcode plus defaults.
- * @return string
- * @since 1.0.0
- */
-define( 'DRPPSMF_SC_OUTPUT_OVRD', 'drppsmf_sc_output_ovrd' );
-
 
 /**
  * Allows for filtering admin sermon inputs.
@@ -276,20 +266,6 @@ define( 'DRPPSMF_SC_OUTPUT_OVRD', 'drppsmf_sc_output_ovrd' );
  * @since 1.0.0
  */
 define( 'DRPPSMF_ADMIN_SERMON', 'drppsmf_admin_sermons' );
-
-
-/**
- * Allows for filtering the name of the template with path.
- * - Filters are prefixed with drppsmf_
- * - Used in Templates class.
- *
- * @param string $name File name.
- * @param array  $args Array of variables to pass to template.
- * @return string $name File name.
- * @since 1.0.0
- */
-define( 'DRPPSMF_TPL_PARTIAL', 'drppsm_tpl_partial' );
-
 
 /**
  * Filters for remove submenus of admin menu.
@@ -316,7 +292,7 @@ define( 'DRPPSMF_SETTINGS_MM', 'drppsmf_settings_mm' );
  * @return string
  * @since 1.0.0
  */
-define( 'DRPPSMF_PAGINATION_GET', 'drppsm_pagination_get' );
+define( 'DRPPSMF_PAGINATION_GET', 'drppsmf_pagination_get' );
 
 
 
@@ -330,31 +306,6 @@ define( 'DRPPSMF_PAGINATION_GET', 'drppsm_pagination_get' );
  * @since 1.0.0
  */
 define( 'DRPPSMF_SERMON_DATES', 'drppsmf_sermon_dates' );
-
-
-/**
- * Allows for filtering taxonomy sorting.
- * - Filters are prefixed with drppsmf_
- * - Used in Templates.php
- *
- * ```php
- * # Example parameters
- * array(
- *      array(
- *          'className' => 'drppsm-sort-preacher',
- *          'taxonomy'  => Tax::PREACHER,
- *          'title'     => get_taxonomy_field( Tax::PREACHER, 'singular_name' ),
- *      ),
- * );
- *
- * ```
- *
- * @param array $args Array of arrays.
- * @since 1.0.0
- */
-define( 'DRPPSMF_TAX_SORTING', 'drppsm_fltr_tax_sorting' );
-
-
 
 /*
 |--------------------------------------------------------------------------

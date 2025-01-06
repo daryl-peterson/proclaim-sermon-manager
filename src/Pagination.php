@@ -27,6 +27,7 @@ use DRPPSM\Interfaces\Registrable;
  */
 class Pagination implements Executable, Registrable {
 
+
 	/**
 	 * Initialize and register settings.
 	 *

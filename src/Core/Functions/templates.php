@@ -62,6 +62,17 @@ function sermon_single( array $args = array() ): void {
 }
 
 /**
+ * Sermon shorting.
+ *
+ * @param array $args
+ * @return void
+ */
+function sermon_sorting( array $args = array() ): void {
+	Logger::debug( $args );
+	get_partial( 'content-sermon-sorting' );
+}
+
+/**
  * Get sermon view count
  *
  * @param int  $post_id

@@ -1,6 +1,6 @@
 <?php
 /**
- * Shortcodes for latest sermon.
+ * Sermon shortcode.
  *
  * @package     Proclaim Sermon Manager
  * @author      Daryl Peterson <@gmail.com>
@@ -19,7 +19,7 @@ use DRPPSM\Interfaces\Registrable;
 use WP_Query;
 
 /**
- * Shortcodes for latest sermon.
+ * Sermon shortcode.
  *
  * @package     Proclaim Sermon Manager
  * @author      Daryl Peterson <@gmail.com>
@@ -70,7 +70,7 @@ class SCSermons extends SCBase implements Executable, Registrable {
 	 * - **orderby** : Options "date" (default), "id", "none", "title", "name", "rand", "comment_count"
 	 * - **filter_by** : Options "series", "preachers", "topics", "books", "service_type". ('')
 	 * - **filter_value** : Use the "slug" related to the taxonomy field you want to filter by. ('')
-	 * - **hide_pagination** : Set to 1 to hide.
+	 * - **disable_pagination** : Set to 1 to hide.
 	 * - **image_size** : { sermon_small, sermon_medium, sermon_wide, thumbnail, medium, large, full } any added with add_image_size().
 	 * - **year** : Show only sermons created in the specified year.
 	 * - **month** : Show only sermons created in the specified month, regardless of year.
@@ -80,18 +80,30 @@ class SCSermons extends SCBase implements Executable, Registrable {
 	 * - **before** :Show only sermons created before the specified date.
 	 */
 	public function show_sermons( array $atts ): string {
-		global $post_ID;
+		global $wp_query;
+		$post_id = $wp_query->post->ID;
 
+		/**
+		 * Allows for short code attribute filtering. A bit redundant but here it is.
+		 * - Filters are prefixed with drppsmf_
+		 *
+		 * @param array $atts
+		 * @category filter
+		 * @since 1.0.0
+		 */
+		$atts = apply_filters( 'drppsmf_sc_sermon_atts', $atts );
+
+		// Fix atts and get defaults.
 		$atts = $this->fix_atts( $atts );
 		$args = $this->get_sermon_default_args();
 
 		// Merge default and user options.
-		$args = shortcode_atts( $args, $atts, 'sermons' );
+		$args = shortcode_atts( $args, $atts, $this->sc_sermons );
 
 		$this->set_includes_excludes( $args );
 
 		// Set filtering args.
-		$filtering_args = $this->get_sermon_filtering( $args );
+		$filtering_args = $this->get_sermon_filtering_defaults( $args );
 
 		// Set query args.
 		$query_args = array(
@@ -132,61 +144,59 @@ class SCSermons extends SCBase implements Executable, Registrable {
 
 		$query = new WP_Query( $query_args );
 
-		Logger::debug( array( 'QUERY' => $query ) );
-
 		// Add query to the args.
 		$args['query'] = $query;
-		$output        = '';
+
+		$args['post_id'] = $post_id;
+
 		ob_start();
 		if ( $query->have_posts() ) {
+
+			$sorting = SCSermonSorting::exec();
+			$sorting->show_sermon_sorting( $filtering_args );
 
 			while ( $query->have_posts() ) {
 				$query->the_post();
 				global $post;
 
-				if ( $args['include'] ) {
+				// Check includes and excludes.
+				if ( $args['include'] || $args['exclude'] ) {
 					if ( ! in_array( $post->ID, $args['include'] ) ) {
+						continue;
+					}
+
+					if ( ! in_array( $post->ID, $args['exclude'] ) ) {
 						continue;
 					}
 				}
 
+				ob_start();
+				get_partial( 'content-sermon-archive', $args );
+				$output = ob_get_clean();
+
 				/**
-				 * Allows for filtering shortcode output.
-				 * - Filters are prefixed with drppsmf_
+				 * Filter single sermon output.
+				 * - Filters shoud be prefixed with drppsmf_
 				 *
-				 * @param string $shortcode Shortcode name.
-				 * @param string $post Current post.
-				 * @param array $args Arguments from shortcode plus defaults.
-				 * @return string
+				 * @param string $output Output from sermon rendering.
+				 * @param WP_Post $post
+				 * @param array $args Array of aguments.
+				 * @category filter
 				 * @since 1.0.0
 				 */
-				$override = apply_filters(
-					DRPPSMF_SC_OUTPUT_OVRD,
-					$this->sc_sermons,
-					$post,
-					$args
-				);
-
-				if ( $override !== $this->sc_sermons ) {
-					$output .= $override;
-					continue;
-				}
-				get_partial( 'content-sermon-archive', $args );
-
+				echo apply_filters( 'drppsmf_sc_sermon_single_output', $output, $post, $args );
 			}
-
+			get_partial( 'sermon-pagination', $args );
 			wp_reset_postdata();
 		} else {
 			get_partial( 'content-sermon-none' );
 		}
 
 		$result = ob_get_clean();
-
-		if ( $output !== '' ) {
-			$result = $output;
-		}
 		return $result;
 	}
+
+
 
 	/**
 	 * Set order by parameter.
@@ -280,6 +290,14 @@ class SCSermons extends SCBase implements Executable, Registrable {
 		}
 	}
 
+	/**
+	 * Set after and before arguments.
+	 *
+	 * @param array $args
+	 * @param array &$query_args
+	 * @return void
+	 * @since 1.0.0
+	 */
 	private function set_before_after( array $args, array &$query_args ): void {
 		if ( 'meta_value_num' !== $query_args['orderby'] && ( ! $args['before'] || ! $args['after'] ) ) {
 			return;
@@ -334,12 +352,12 @@ class SCSermons extends SCBase implements Executable, Registrable {
 		}
 	}
 
-		/**
-		 * Get sermon default arguments.
-		 *
-		 * @return array
-		 * @since 1.0.0
-		 */
+	/**
+	 * Get sermon default arguments.
+	 *
+	 * @return array
+	 * @since 1.0.0
+	 */
 	private function get_sermon_default_args(): array {
 		return array(
 			'per_page'           => get_option( 'posts_per_page' ) ?: 10,
@@ -360,13 +378,20 @@ class SCSermons extends SCBase implements Executable, Registrable {
 			'hide_preachers'     => '',
 			'hide_books'         => '',
 			'hide_dates'         => '',
+			'hide_service_types' => '',
 			'include'            => '',
 			'exclude'            => '',
-			'hide_service_types' => '',
 		);
 	}
 
-	private function get_sermon_filtering( array $args ): array {
+	/**
+	 * Get sermon filtering defaults.
+	 *
+	 * @param array $args
+	 * @return array
+	 * @since 1.0.0
+	 */
+	private function get_sermon_filtering_defaults( array $args ): array {
 		return array(
 			'hide_topics'        => $args['hide_topics'],
 			'hide_series'        => $args['hide_series'],
