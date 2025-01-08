@@ -32,6 +32,10 @@ function get_partial( string $name, array $args = array() ) {
 	Templates::exec()->get_partial( $name, $args );
 }
 
+function locate_partial( string $name, array $args = array() ) {
+	return Templates::exec()->locate_partial( $name, $args );
+}
+
 /**
  * Get sermon excerpt
  *
@@ -65,14 +69,77 @@ function sermon_single( array $args = array() ): void {
  * Sermon shorting.
  *
  * @param array $args
- * @return void
+ * @since 1.0.0
  */
-function sermon_sorting( array $args = array() ): void {
-	get_partial( 'content-sermon-sorting', $args );
+function sermon_sorting( array $args = array() ): string {
+	return SermonSorting::render_sorting( $args );
 }
 
+/**
+ * Get visibility settings
+ *
+ * @return array
+ * @since 1.0.0
+ */
+function get_visibility_settings(): array {
+	$visibility = array(
+		Settings::HIDE_TOPICS,
+		Settings::HIDE_SERIES,
+		Settings::HIDE_PREACHER,
+		Settings::HIDE_BOOKS,
+		Settings::HIDE_SERVICE_TYPES,
+		Settings::HIDE_FILTERS,
+	);
 
+	$result = array();
+	foreach ( $visibility as $option ) {
+		$result[ $option ] = filter_var( Settings::get( $option ), FILTER_VALIDATE_BOOLEAN );
+	}
+	return $result;
+}
 
+/**
+ * Check if filters is shown for taxonomy.
+ *
+ * @param array  $args Arguments array.
+ * @param string $taxonomy Taxonomy.
+ * @return boolean Returns true if filtering for taxonomy is hidden.
+ * @since 1.0.0
+ */
+function is_tax_hidden( array $args, string $taxonomy ): bool {
+	$visibility_mapping = DRPPSM_TAX_VISIBILITY_MAP;
+
+	if ( empty( $taxonomy ) ) {
+		return true;
+	}
+
+	if ( ! key_exists( $taxonomy, $visibility_mapping ) ) {
+		return true;
+	}
+
+	$map_field = $visibility_mapping[ $taxonomy ];
+	if ( ! key_exists( $map_field, $args ) ) {
+		return true;
+	}
+
+	return filter_var( $args[ $map_field ], FILTER_VALIDATE_BOOLEAN );
+}
+
+/**
+ * Check if filtering is disabled for taxonomies.
+ *
+ * @param array $args
+ * @return bool
+ * @since 1.0.0
+ */
+function is_tax_filtering_disabled( array $args ): bool {
+
+	if ( ! key_exists( 'hide_filters', $args ) ) {
+		return false;
+	}
+
+	return filter_var( $args['hide_filters'], FILTER_VALIDATE_BOOLEAN );
+}
 
 /**
  * Get sermon view count

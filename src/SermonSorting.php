@@ -12,6 +12,7 @@
 namespace DRPPSM;
 
 use DRPPSM\Interfaces\Executable;
+use DRPPSM\Interfaces\Registrable;
 use WP_Exception;
 
 defined( 'ABSPATH' ) || exit;
@@ -82,10 +83,12 @@ class SermonSorting implements Executable {
 		$this->tax_topics       = DRPPSM_TAX_TOPICS;
 	}
 
+
 	public static function exec(): self {
 		$obj = new self();
 		return $obj;
 	}
+
 
 	/**
 	 * Render sermon sorting / filtering.
@@ -94,7 +97,12 @@ class SermonSorting implements Executable {
 	 * @return null|string Return null on error string on success.
 	 * @since 1.0.0
 	 */
-	public function render_sorting( array $args = array() ): ?string {
+	public static function render_sorting( array $args = array() ): ?string {
+		$obj = self::exec();
+
+		Logger::debug( 'RENDER SORTING HERE' );
+
+		Logger::debug( array( 'ARGS' => $args ) );
 
 		try {
 			/**
@@ -106,7 +114,7 @@ class SermonSorting implements Executable {
 			 * @category filter
 			 * @since 1.0.0
 			 */
-			$filters = apply_filters( 'drppsmf_sorting_filters_styles', $this->get_filter_data_atts() );
+			$filters = apply_filters( 'drppsmf_sorting_filters_styles', $obj->get_filter_data_atts() );
 
 			/**
 			 * Allows for filting taxonomy sorting / filtering visibility.
@@ -118,16 +126,16 @@ class SermonSorting implements Executable {
 			 * @category filter
 			 * @since 1.0.0
 			 */
-			$visibility_mapping = apply_filters( 'drppsmf_sorting_visibility_mapping', $this->get_visibility_mapping() );
+			$visibility_mapping = apply_filters( 'drppsmf_sorting_visibility_mapping', DRPPSM_TAX_VISIBILITY_MAP );
 
 			// Save orig args for filters.
 			$orig_args = $args;
 
-			$default = $this->get_defaults();
-			$args    = $args + $default;
+			$default = $obj->get_defaults();
+			$args    = $default + $args;
 
 			// Populate the action field for the form.
-			$this->set_action( $args );
+			$obj->set_action( $args );
 
 			/**
 			 * Allows to filter filtering args.
@@ -159,24 +167,23 @@ class SermonSorting implements Executable {
 			 * @category filter
 			 * @since 1.0.0
 			 */
-			$do_filter = apply_filters( 'drppsmf_do_sorting', $hide_filters, $args, $orig_args, $filters, $visibility_mapping );
+			$skip_filter = apply_filters( 'drppsmf_do_sorting', $hide_filters, $args, $orig_args, $filters, $visibility_mapping );
+
+			Logger::debug( array( 'DO_FILTER' => $skip_filter ) );
 
 			$content = '';
-			if ( $do_filter ) {
+
+			if ( ! $skip_filter ) {
 				$temp = array(
+					'action'             => $args['action'],
 					'filters'            => $filters,
 					'visibility_mapping' => $visibility_mapping,
 					'args'               => $args,
 				);
-
-				// Set container value
-				set_item( 'sermon_filtering_args', $temp );
-
-				Logger::debug( $args );
-				$content = get_partial(
-					'content-sermon-filtering',
-					$temp
-				);
+				Logger::debug( array( 'TEMP' => $temp ) );
+				ob_start();
+				get_partial( 'content-sermon-sorting', $temp );
+				$content .= ob_get_clean();
 			}
 
 			/**
@@ -248,7 +255,9 @@ class SermonSorting implements Executable {
 	 * @since 1.0.0
 	 */
 	private function get_defaults(): array {
-		return array(
+
+		$visibility = get_visibility_settings();
+		$default    = array(
 			'id'                  => 'drppsm_sermon_sorting',
 			'classes'             => '',
 			'series_filter'       => '',
@@ -258,35 +267,12 @@ class SermonSorting implements Executable {
 			'topics'              => '',
 			'books'               => '',
 			'visibility'          => 'suggest',
-			'hide_filtering'      => Settings::get( Settings::HIDE_FILTERING, false ),
-			'hide_book'           => Settings::get( Settings::HIDE_BIBLE_BOOK, true ),
-			'hide_preacher'       => Settings::get( Settings::HIDE_PREACHER, false ),
-			'hide_series'         => Settings::get( Settings::HIDE_SERIES, false ),
-			'hide_service_type'   => Settings::get( Settings::HIDE_SERVICE_TYPE, true ),
-			'hide_topics'         => Settings::get( Settings::HIDE_TOPICS, true ),
-
-			'hide_dates'          => '',
-			// 'hide_filters'        => ! SermonManager::getOption( 'hide_filters' ),
 			'action'              => 'none',
 		);
+		$default   += $visibility;
+		return $default;
 	}
 
-	/**
-	 * Get visibility mapping.
-	 *
-	 * @return array
-	 * @since 1.0.0
-	 */
-	private function get_visibility_mapping(): array {
-		return array(
-			$this->tax_topics       => 'hide_topics',
-			$this->tax_series       => 'hide_series',
-			$this->tax_preacher     => 'hide_preachers',
-			$this->tax_bible        => 'hide_books',
-			$this->tax_service_type => 'hide_service_types',
-			'drppsm_dates'          => 'hide_dates',
-		);
-	}
 
 	/**
 	 * Set form action.

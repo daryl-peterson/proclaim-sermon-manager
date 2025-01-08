@@ -11,8 +11,15 @@
  */
 
 use DRPPSM\Templates;
+use DRPPSM\Logger;
 
 use function DRPPSM\sermon_excerpt;
+
+
+function drppsm_extract( mixed $args ) {
+	Logger::debug( array( 'ARGS' => $args ) );
+	extract( $args, EXTR_OVERWRITE );
+}
 
 /**
  * Get partial template.

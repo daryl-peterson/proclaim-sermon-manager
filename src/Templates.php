@@ -158,10 +158,66 @@ class Templates implements Executable, Registrable {
 	 *
 	 * @param string $name File name.
 	 * @param array  $args Array of variables to pass to template.
-	 * @return void
+	 * @return mixed
 	 * @since 1.0.0
 	 */
 	public function get_partial( string $name, array $args = array() ): void {
+
+		// Save orginal name.
+		$name_org = $name;
+
+		$partial = $this->locate_partial( $name, $args );
+		if ( $partial ) {
+			load_template( $partial, false, $args );
+		}
+
+		/**
+		 * Allows for filtering the name of the template with path.
+		 * - Filters are prefixed with drppsmf_
+		 *
+		 * @param string $name File name.
+		 * @param array  $args Array of variables to pass to template.
+		 * @return string $name File name.
+		 * @category filter
+		 * @since 1.0.0
+		 */
+
+		/*
+		$name = apply_filters( 'drppsmf_tpl_partial', $name, $args );
+
+		if ( $name !== $name_org ) {
+			if ( file_exists( $name ) ) {
+				load_template( $name, false, $args );
+
+			}
+			$name = $name_org;
+		}
+
+		$name    = $this->fix_template_name( $name );
+		$partial = $this->get_partial_theme( $name );
+
+		if ( ! $partial ) {
+			$partial = $this->get_partial_plugin( $name );
+		}
+
+		if ( $partial ) {
+			if ( $return_name ) {
+				return $partial;
+			}
+			load_template( $partial, false, $args );
+		} else {
+			$this->template_error( $name );
+			Logger::error(
+				array(
+					'NAME' => $name,
+					'ARGS' => $args,
+				)
+			);
+		}
+		*/
+	}
+
+	public function locate_partial( string $name, array $args = array() ): ?string {
 
 		// Save orginal name.
 		$name_org = $name;
@@ -177,32 +233,20 @@ class Templates implements Executable, Registrable {
 		 * @since 1.0.0
 		 */
 		$name = apply_filters( 'drppsmf_tpl_partial', $name, $args );
-		if ( $name !== $name_org ) {
-			if ( file_exists( $name ) ) {
-				load_template( $name, false, $args );
-				return;
-			}
-			$name = $name_org;
+
+		$partial = $this->get_parial_filter( $name, $args );
+		if ( $partial ) {
+			return $partial;
 		}
 
 		$name    = $this->fix_template_name( $name );
 		$partial = $this->get_partial_theme( $name );
-
-		if ( ! $partial ) {
-			$partial = $this->get_partial_plugin( $name );
-		}
-
 		if ( $partial ) {
-			load_template( $partial, false, $args );
-		} else {
-			$this->template_error( $name );
-			Logger::error(
-				array(
-					'NAME' => $name,
-					'ARGS' => $args,
-				)
-			);
+			return $partial;
 		}
+
+		$partial = $this->get_partial_plugin( $name );
+		return $partial;
 	}
 
 	/**
@@ -308,6 +352,31 @@ class Templates implements Executable, Registrable {
 			}
 		}
 		return $partial;
+	}
+
+
+	private function get_parial_filter( string $name, $args ) {
+		// Save orginal name.
+		$name_org = $name;
+
+		/**
+		 * Allows for filtering the name of the template with path.
+		 * - Filters are prefixed with drppsmf_
+		 *
+		 * @param string $name File name.
+		 * @param array  $args Array of variables to pass to template.
+		 * @return string $name File name.
+		 * @category filter
+		 * @since 1.0.0
+		 */
+		$name = apply_filters( 'drppsmf_tpl_partial', $name, $args );
+
+		if ( $name !== $name_org ) {
+			if ( ! file_exists( $name ) ) {
+				return $name;
+			}
+		}
+		return null;
 	}
 
 	/**

@@ -37,12 +37,12 @@ class Settings {
 	public const PLAYER           = 'player';
 	public const PREACHER         = 'preacher_label';
 
-	public const HIDE_BIBLE_BOOK   = 'hide_bible_book';
-	public const HIDE_FILTERING    = 'hide_filtering';
-	public const HIDE_PREACHER     = 'hide_preacher';
-	public const HIDE_SERIES       = 'hide_series';
-	public const HIDE_SERVICE_TYPE = 'hide_service_type';
-	public const HIDE_TOPICS       = 'topics';
+	public const HIDE_BOOKS         = 'hide_books';
+	public const HIDE_FILTERS       = 'hide_filters';
+	public const HIDE_PREACHER      = 'hide_preacher';
+	public const HIDE_SERIES        = 'hide_series';
+	public const HIDE_SERVICE_TYPES = 'hide_service_types';
+	public const HIDE_TOPICS        = 'topics';
 
 	public const SERIES = 'series_label';
 
@@ -81,13 +81,16 @@ class Settings {
 
 		self::DISABLE_CSS           => self::OPTION_KEY_DISPLAY,
 
-		self::HIDE_BIBLE_BOOK       => self::OPTION_KEY_DISPLAY,
-		self::HIDE_FILTERING        => self::OPTION_KEY_DISPLAY,
+		self::HIDE_BOOKS            => self::OPTION_KEY_DISPLAY,
+		self::HIDE_FILTERS          => self::OPTION_KEY_DISPLAY,
 		self::HIDE_PREACHER         => self::OPTION_KEY_DISPLAY,
 		self::HIDE_SERIES           => self::OPTION_KEY_DISPLAY,
-		self::HIDE_SERVICE_TYPE     => self::OPTION_KEY_DISPLAY,
+		self::HIDE_SERVICE_TYPES    => self::OPTION_KEY_DISPLAY,
 		self::HIDE_TOPICS           => self::OPTION_KEY_DISPLAY,
 	);
+
+
+
 
 	private static array $option_default;
 
@@ -181,7 +184,6 @@ class Settings {
 		return \update_option( $option_key, $option_key );
 	}
 
-
 	/**
 	 * Initialize private static variables.
 	 *
@@ -215,11 +217,11 @@ class Settings {
 				self::BIBLE_BOOK_LOAD       => false,
 				self::DISABLE_CSS           => false,
 
-				self::HIDE_BIBLE_BOOK       => false,
-				self::HIDE_FILTERING        => false,
+				self::HIDE_BOOKS            => false,
+				self::HIDE_FILTERS          => false,
 				self::HIDE_PREACHER         => false,
 				self::HIDE_SERIES           => false,
-				self::HIDE_SERVICE_TYPE     => true,
+				self::HIDE_SERVICE_TYPES    => true,
 				self::HIDE_TOPICS           => true,
 			),
 

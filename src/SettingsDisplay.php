@@ -89,6 +89,7 @@ class SettingsDisplay extends SettingsBase implements Executable, Registrable {
 		$this->bible_books( $cmb );
 
 		$this->add_seperator( $cmb, __( 'Sermon Filtering / Sorting', 'drppsm' ) );
+		$this->hide_filtering( $cmb );
 		$this->hide_bible( $cmb );
 		$this->hide_preacher( $cmb );
 		$this->hide_series( $cmb );
@@ -216,10 +217,10 @@ class SettingsDisplay extends SettingsBase implements Executable, Registrable {
 	private function hide_filtering( CMB2 $cmb ) {
 		$cmb->add_field(
 			array(
-				'id'      => Settings::HIDE_FILTERING,
+				'id'      => Settings::HIDE_FILTERS,
 				'name'    => __( 'Hide Filtering', 'drppsm' ),
 				'type'    => 'checkbox',
-				'default' => Settings::get_default( Settings::HIDE_FILTERING, false ),
+				'default' => Settings::get_default( Settings::HIDE_FILTERS, false ),
 			)
 		);
 	}
@@ -235,10 +236,10 @@ class SettingsDisplay extends SettingsBase implements Executable, Registrable {
 
 		$cmb->add_field(
 			array(
-				'id'      => Settings::HIDE_BIBLE_BOOK,
+				'id'      => Settings::HIDE_BOOKS,
 				'name'    => __( 'Hide Bible', 'drppsm' ),
 				'type'    => 'checkbox',
-				'default' => Settings::get_default( Settings::HIDE_BIBLE_BOOK ),
+				'default' => Settings::get_default( Settings::HIDE_BOOKS ),
 			)
 		);
 	}
@@ -251,7 +252,7 @@ class SettingsDisplay extends SettingsBase implements Executable, Registrable {
 	 * @since 1.0.0
 	 */
 	private function hide_preacher( CMB2 $cmb ): void {
-		$label = __( 'Hide', 'drppsm' ) . Settings::get( Settings::PREACHER );
+		$label = __( 'Hide ', 'drppsm' ) . Settings::get( Settings::PREACHER );
 
 		$cmb->add_field(
 			array(
@@ -271,7 +272,7 @@ class SettingsDisplay extends SettingsBase implements Executable, Registrable {
 	 * @since 1.0.0
 	 */
 	private function hide_series( CMB2 $cmb ): void {
-		$label = __( 'Hide Series', 'drppsm' );
+		$label = __( 'Hide ', 'drppsm' ) . Settings::get( Settings::HIDE_SERIES );
 
 		$cmb->add_field(
 			array(
@@ -291,14 +292,14 @@ class SettingsDisplay extends SettingsBase implements Executable, Registrable {
 	 * @since 1.0.0
 	 */
 	private function hide_service_type( CMB2 $cmb ): void {
-		$label = __( 'Hide Service Type', 'drppsm' );
+		$label = __( 'Hide ', 'drppsm' ) . Settings::get( Settings::SERVICE_TYPE );
 
 		$cmb->add_field(
 			array(
-				'id'      => Settings::HIDE_SERVICE_TYPE,
+				'id'      => Settings::HIDE_SERVICE_TYPES,
 				'name'    => $label,
 				'type'    => 'checkbox',
-				'default' => Settings::get_default( Settings::HIDE_SERVICE_TYPE ),
+				'default' => Settings::get_default( Settings::HIDE_SERVICE_TYPES ),
 			)
 		);
 	}

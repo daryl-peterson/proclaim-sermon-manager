@@ -24,6 +24,8 @@ function get_archive_order( string $default = 'DESC' ) {
 function get_taxonomy_field( $taxonomy, $field_name ) {
 	$taxonomy = get_taxonomy( $taxonomy );
 
+	Logger::debug( $taxonomy );
+
 	if ( ! $taxonomy instanceof WP_Taxonomy ) {
 		return null;
 	}

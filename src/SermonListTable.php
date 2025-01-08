@@ -251,7 +251,6 @@ class SermonListTable implements Executable, Registrable {
 	 * @since 1.0.0
 	 */
 	public function set_sortable_columns( array $columns ): array {
-
 		$custom = array(
 			'title'             => 'title',
 			$this->tax_series   => $this->tax_series,

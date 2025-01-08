@@ -35,6 +35,7 @@ return array(
 	'show_ui'      => true,
 	'query_var'    => true,
 	'show_in_rest' => true,
+	// 'show_admin_column' => true,
 	'rewrite'      => array(
 		'slug'       => $permalinks[ DRPPSM_TAX_SERIES ],
 		'with_front' => false,

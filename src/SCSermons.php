@@ -64,20 +64,23 @@ class SCSermons extends SCBase implements Executable, Registrable {
 	 * @since 1.0.0
 	 *
 	 * #### Atts Parameters
-	 * - **per_page** : Define how many sermons to show per page. Overrides the WordPress setting.
-	 * - **sermons** : Use comma separated list of individual sermon IDs to show just them.
-	 * - **order** : "DESC" for descending; "ASC" for ascending
-	 * - **orderby** : Options "date" (default), "id", "none", "title", "name", "rand", "comment_count"
-	 * - **filter_by** : Options "series", "preachers", "topics", "books", "service_type". ('')
-	 * - **filter_value** : Use the "slug" related to the taxonomy field you want to filter by. ('')
-	 * - **disable_pagination** : Set to 1 to hide.
-	 * - **image_size** : { sermon_small, sermon_medium, sermon_wide, thumbnail, medium, large, full } any added with add_image_size().
-	 * - **year** : Show only sermons created in the specified year.
-	 * - **month** : Show only sermons created in the specified month, regardless of year.
-	 * - **week** : Show only sermons created in the specified week.
-	 * - **day** : Show only sermons created on the specified day.
-	 * - **after** : Show only sermons created after the specified date.
-	 * - **before** :Show only sermons created before the specified date.
+	 * - **per_page** Define how many sermons to show per page. Overrides the WordPress setting.
+	 * - **sermons** Use comma separated list of individual sermon IDs to show just them.
+	 * - **order** "DESC" for descending; "ASC" for ascending
+	 * - **orderby** Options "date" (default), "id", "none", "title", "name", "rand", "comment_count"
+	 * - **filter_by** Options "series", "preachers", "topics", "books", "service_type". ('')
+	 * - **filter_value** Use the "slug" related to the taxonomy field you want to filter by. ('')
+	 * - **disable_pagination**  Set to 1 to hide pagination.
+	 * - **image_size** { sermon_small, sermon_medium, sermon_wide, thumbnail, medium, large, full } any added with add_image_size().
+	 * - **year** Show only sermons created in the specified year.
+	 * - **month** Show only sermons created in the specified month, regardless of year.
+	 * - **week** Show only sermons created in the specified week.
+	 * - **day** Show only sermons created on the specified day.
+	 * - **after**  Show only sermons created after the specified date.
+	 * - **before** Show only sermons created before the specified date.
+	 * - **hide_filters** Hide sermon filters. (false)
+	 * - **hide_books** Hide book filter. ('')
+	 * - **
 	 */
 	public function show_sermons( array $atts ): string {
 		global $wp_query;
@@ -149,11 +152,11 @@ class SCSermons extends SCBase implements Executable, Registrable {
 		$args['query']   = $query;
 		$args['post_id'] = $post_id;
 
-		ob_start();
+		$output = '';
+
 		if ( $query->have_posts() ) {
 
-			$sorting = SCSermonSorting::exec();
-			$sorting->show_sermon_sorting( $filtering_args );
+			$output .= sermon_sorting( $filtering_args );
 
 			while ( $query->have_posts() ) {
 				$query->the_post();
@@ -172,7 +175,7 @@ class SCSermons extends SCBase implements Executable, Registrable {
 
 				ob_start();
 				get_partial( 'content-sermon-archive', $args );
-				$output = ob_get_clean();
+				$output .= ob_get_clean();
 
 				/**
 				 * Filter single sermon output.
@@ -184,16 +187,20 @@ class SCSermons extends SCBase implements Executable, Registrable {
 				 * @category filter
 				 * @since 1.0.0
 				 */
-				echo apply_filters( 'drppsmf_sc_sermon_single_output', $output, $post, $args );
+				$output = apply_filters( 'drppsmf_sc_sermon_single_output', $output, $post, $args );
 			}
+			ob_start();
 			get_partial( 'sermon-pagination', $args );
+			$output .= ob_get_clean();
+
 			wp_reset_postdata();
 		} else {
+			ob_start();
 			get_partial( 'content-sermon-none' );
+			$output .= ob_get_clean();
 		}
 
-		$result = ob_get_clean();
-		return $result;
+		return $output;
 	}
 
 
@@ -359,7 +366,7 @@ class SCSermons extends SCBase implements Executable, Registrable {
 	 * @since 1.0.0
 	 */
 	private function get_sermon_default_args(): array {
-		return array(
+		$defaults = array(
 			'per_page'           => get_option( 'posts_per_page' ) ?: 10,
 			'sermons'            => false, // Show only sermon IDs that are set here.
 			'order'              => get_archive_order(),
@@ -372,16 +379,14 @@ class SCSermons extends SCBase implements Executable, Registrable {
 			'month'              => '',
 			'after'              => '',
 			'before'             => '',
-			'hide_filters'       => true,
-			'hide_topics'        => '',
-			'hide_series'        => '',
-			'hide_preachers'     => '',
-			'hide_books'         => '',
 			'hide_dates'         => '',
-			'hide_service_types' => '',
 			'include'            => '',
 			'exclude'            => '',
 		);
+
+		$filters   = get_visibility_settings();
+		$defaults += $filters;
+		return $defaults;
 	}
 
 	/**
@@ -393,6 +398,7 @@ class SCSermons extends SCBase implements Executable, Registrable {
 	 */
 	private function get_sermon_filtering_defaults( array $args ): array {
 		return array(
+			'hide_filters'       => $args['hide_filters'],
 			'hide_topics'        => $args['hide_topics'],
 			'hide_series'        => $args['hide_series'],
 			'hide_preachers'     => $args['hide_preachers'],

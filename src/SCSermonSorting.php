@@ -83,14 +83,11 @@ class SCSermonSorting extends SCBase implements Executable, Registrable {
 			'topics'              => '',
 			'books'               => '',
 			'visibility'          => 'suggest',
-			'hide_topics'         => '',
-			'hide_series'         => '',
-			'hide_preachers'      => '',
-			'hide_books'          => '',
-			'hide_service_types'  => Settings::get_default( Settings::HIDE_SERVICE_TYPE ),
-			'hide_dates'          => '',
 			'action'              => 'none',
 		);
+
+		$visibility = get_visibility_settings();
+		$args      += $visibility;
 
 		// Merge default and user options.
 		$args = shortcode_atts( $args, $atts, $this->sc );
