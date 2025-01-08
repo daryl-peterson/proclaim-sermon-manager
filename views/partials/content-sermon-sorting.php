@@ -13,13 +13,14 @@ namespace DRPPSM;
 
 defined( 'ABSPATH' ) or exit;
 
-$failure = '<p><b>' . DRPPSM_TITLE . '</b>: Partial "<i>' . str_replace( '.php', '', basename( __FILE__ ) ) . '</i>" loaded incorrectly.</p>';
+$template = str_replace( '.php', '', basename( __FILE__ ) );
+$failure  = '<p><b>' . DRPPSM_TITLE . '</b>: Partial "<i>' . $template . '</i>" loaded incorrectly.</p>';
 if ( ! isset( $args ) ) {
+	Logger::error( 'Args variable does not exist. Template : ' . $template );
 	echo $failure;
 	return;
 }
 
-Logger::debug( array( 'ARGS' => $args ) );
 extract( $args );
 
 
@@ -36,6 +37,7 @@ $hide_values  = array( 'yes', 'hide', 1, '1', true, 'on' );
 foreach ( $requirements as $required_variable ) {
 	if ( ! isset( $$required_variable ) ) {
 		echo $failure;
+		Logger::error( 'Requirements not met : ' . $required_variable );
 		return;
 	}
 }
@@ -70,7 +72,7 @@ foreach ( $filters as $filter ) {
 	$options    = get_term_dropdown( $taxonomy, '' );
 	Logger::debug( $options );
 
-	/*
+
 	$html = <<<HTML
 	<div class="$class_name" style="display: inline-block">
 		<form action="$action" method="get">
@@ -81,14 +83,17 @@ foreach ( $filters as $filter ) {
 				onchange="if(this.options[this.selectedIndex].value !== ''){return this.form.submit()}else{window.location = window.location.href.split('?')[0];}"
 				autocomplete="off"
 				$disabled>
+
 				<option value="">$title</option>
 				$options
 			</select>
 		</form>
 	</div>
 	HTML;
-	// echo $html;
-	*/
+	echo $html;
+	Logger::debug( PHP_EOL . $html );
+	continue;
+
 	?>
 	<div class="<?php echo $filter['className']; ?>" style="display: inline-block">
 		<form action="<?php echo $args['action']; ?>" method="get">

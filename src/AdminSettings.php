@@ -50,6 +50,7 @@ class AdminSettings implements Executable, Registrable {
 	public static function exec(): AdminSettings {
 		$obj = new self();
 		$obj->register();
+
 		return $obj;
 	}
 
@@ -60,10 +61,12 @@ class AdminSettings implements Executable, Registrable {
 	 * @since 1.0.0
 	 */
 	public function register(): ?bool {
+
 		if ( ! is_admin() || has_action( 'cmb2_admin_init', array( $this, 'register_metaboxes' ) ) ) {
 			return false;
 		}
 
+		Settings::set_defaults();
 		add_action( 'cmb2_admin_init', array( $this, 'register_metaboxes' ) );
 		add_filter( 'submenu_file', array( $this, 'remove_submenus' ) );
 
@@ -80,7 +83,6 @@ class AdminSettings implements Executable, Registrable {
 	 * @since 1.0.0
 	 */
 	public function register_metaboxes() {
-
 		$cb = array( $this, 'display_with_tabs' );
 		do_action( Actions::SETTINGS_REGISTER_FORM, $cb );
 	}

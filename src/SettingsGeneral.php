@@ -164,7 +164,6 @@ class SettingsGeneral extends SettingsBase implements Executable, Registrable {
 					'WordPress'    => 'Old WordPress player',
 					'none'         => 'Browser HTML5',
 				),
-				'default'          => Settings::get_default( Settings::PLAYER ),
 				'after_row'        => $this->description( $desc ),
 			)
 		);
@@ -201,7 +200,6 @@ class SettingsGeneral extends SettingsBase implements Executable, Registrable {
 					'dashicons-drppsm-sermon-inv'  => __( 'Sermon Alt', 'drppsm' ),
 					'dashicons-drppsm-holy-spirit' => __( 'Holy Spirit', 'drppsm' ),
 				),
-				'default'          => Settings::get_default( Settings::MENU_ICON ),
 				'after_row'        => $this->description( $desc ),
 			)
 		);
@@ -228,7 +226,6 @@ class SettingsGeneral extends SettingsBase implements Executable, Registrable {
 					'YY/mm/dd' => 'YY/mm/dd',
 					'YY/dd/mm' => 'YY/dd/mm',
 				),
-				'default'          => Settings::get_default( Settings::DATE_FORMAT ),
 				'after_row'        => $this->description( $desc ),
 			)
 		);
@@ -244,10 +241,9 @@ class SettingsGeneral extends SettingsBase implements Executable, Registrable {
 	private function add_sermon_comments( CMB2 $cmb ): void {
 		$cmb->add_field(
 			array(
-				'id'      => Settings::COMMENTS,
-				'name'    => DRPPSM_SETTINGS_COMMENTS_NAME,
-				'type'    => 'checkbox',
-				'default' => Settings::get_default( Settings::COMMENTS ),
+				'id'   => Settings::COMMENTS,
+				'name' => DRPPSM_SETTINGS_COMMENTS_NAME,
+				'type' => 'checkbox',
 			)
 		);
 	}
@@ -270,7 +266,6 @@ class SettingsGeneral extends SettingsBase implements Executable, Registrable {
 					'type'    => 'number',
 					'pattern' => '\d*',
 				),
-				'default'    => Settings::get_default( Settings::SERMON_COUNT ),
 				'after_row'  => $this->description( $desc ),
 			)
 		);
@@ -307,7 +302,6 @@ class SettingsGeneral extends SettingsBase implements Executable, Registrable {
 				'id'        => Settings::ARCHIVE_SLUG,
 				'name'      => __( 'Archive Page Slug', 'drppsm' ),
 				'type'      => 'text',
-				'default'   => Settings::get_default( Settings::ARCHIVE_SLUG ),
 				'after_row' => $this->description( $desc ),
 			)
 		);
@@ -340,7 +334,6 @@ class SettingsGeneral extends SettingsBase implements Executable, Registrable {
 				'id'        => Settings::COMMON_BASE_SLUG,
 				'name'      => __( 'Common Base Slug', 'drppsm' ),
 				'type'      => 'checkbox',
-				'default'   => Settings::get_default( Settings::COMMON_BASE_SLUG ),
 				'after_row' => $this->description( $desc ),
 			)
 		);
@@ -374,7 +367,6 @@ class SettingsGeneral extends SettingsBase implements Executable, Registrable {
 				'id'        => Settings::SERIES,
 				'name'      => __( 'Series Label', 'drppsm' ),
 				'type'      => 'text',
-				'default'   => Settings::get_default( Settings::SERIES ),
 				'after_row' => $this->description( $desc ),
 			)
 		);
@@ -411,7 +403,6 @@ class SettingsGeneral extends SettingsBase implements Executable, Registrable {
 				'id'        => Settings::PREACHER,
 				'name'      => __( 'Preacher Label', 'drppsm' ),
 				'type'      => 'text',
-				'default'   => Settings::get_default( Settings::PREACHER ),
 				'after_row' => $this->description( $desc ),
 			)
 		);
@@ -446,7 +437,6 @@ class SettingsGeneral extends SettingsBase implements Executable, Registrable {
 				'id'        => Settings::SERVICE_TYPE,
 				'name'      => __( 'Service Type Label', 'drppsm' ),
 				'type'      => 'text',
-				'default'   => Settings::get_default( Settings::SERVICE_TYPE ),
 				'after_row' => $this->description( $desc ),
 			)
 		);

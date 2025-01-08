@@ -148,6 +148,7 @@ class SCSermons extends SCBase implements Executable, Registrable {
 		}
 
 		$query_args = $this->set_filter( $args, $query_args );
+		Logger::debug( array( 'QUERY ARGS' => $query_args ) );
 
 		$query = new WP_Query( $query_args );
 

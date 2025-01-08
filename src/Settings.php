@@ -12,6 +12,7 @@
 namespace DRPPSM;
 
 use Exception;
+use WP_Exception;
 
 /**
  * Settings constants.
@@ -57,12 +58,20 @@ class Settings {
 	public const OPTION_KEY_ADVANCED = 'drppsm_option_advanced';
 
 
+	public const OPTION_KEYS = array(
+		self::OPTION_KEY_GENERAL,
+		self::OPTION_KEY_DISPLAY,
+		self::OPTION_KEY_ADVANCED,
+	);
+
+
 	/**
 	 * Option key map, used to map option to page.
 	 *
 	 * @since 1.0.0
 	 */
 	public const OPTION_KEY_MAP = array(
+
 		self::ARCHIVE_SLUG          => self::OPTION_KEY_GENERAL,
 		self::BIBLE_BOOK            => self::OPTION_KEY_GENERAL,
 		self::COMMENTS              => self::OPTION_KEY_GENERAL,
@@ -87,7 +96,6 @@ class Settings {
 		self::HIDE_SERIES           => self::OPTION_KEY_DISPLAY,
 		self::HIDE_SERVICE_TYPES    => self::OPTION_KEY_DISPLAY,
 		self::HIDE_TOPICS           => self::OPTION_KEY_DISPLAY,
-
 
 		self::BIBLE_BOOK_LOAD       => self::OPTION_KEY_ADVANCED,
 		self::BIBLE_BOOK_SORT       => self::OPTION_KEY_ADVANCED,
@@ -169,7 +177,7 @@ class Settings {
 	 * @since 1.0.0
 	 */
 	public static function set( string $key, mixed $value ): bool {
-
+		self::init_defaults();
 		try {
 			$option_key = self::get_option_key( $key );
 			if ( ! $option_key ) {
@@ -195,6 +203,25 @@ class Settings {
 			);
 		}
 		return false;
+	}
+
+	/**
+	 * Set default options.
+	 *
+	 * @return void
+	 * @since 1.0.0
+	 */
+	public static function set_defaults() {
+
+		foreach ( self::OPTION_KEYS as $option_key ) {
+			$result = get_option( $option_key, false );
+
+			Logger::debug( array( 'RESULT' => $result ) );
+			if ( ! $result ) {
+				$defauls = self::get_defaults( $option_key );
+				add_option( $option_key, $defauls );
+			}
+		}
 	}
 
 	/**
@@ -235,7 +262,7 @@ class Settings {
 				self::HIDE_PREACHERS        => false,
 				self::HIDE_SERIES           => false,
 				self::HIDE_SERVICE_TYPES    => true,
-				self::HIDE_TOPICS           => true,
+				self::HIDE_TOPICS           => false,
 			),
 			self::OPTION_KEY_ADVANCED => array(
 				self::BIBLE_BOOK_LOAD => true,

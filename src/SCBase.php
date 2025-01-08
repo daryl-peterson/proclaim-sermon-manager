@@ -62,52 +62,43 @@ class SCBase {
 	 */
 	protected function set_filter( array $args, array $query_args ) {
 
-		// Check if there is anything to do !
-		if ( ! isset( $args['filter_by'] ) || ! isset( $args['filter_value'] ) ) {
-			return $query_args;
-		}
+		if ( $args['filter_by'] && $args['filter_value'] ) {
+			// Term string to array.
+			$terms = explode( ',', $args['filter_value'] );
 
-		if ( empty( $args['filter_by'] ) || empty( $args['filter_value'] ) ) {
-			return $query_args;
-		}
+			if ( ! empty( $terms ) ) {
+				$field = 'slug';
 
-		// Term string to array.
-		$terms = explode( ',', $args['filter_value'] );
-		if ( empty( $terms ) ) {
-			return $query_args;
-		}
-
-		$field = 'slug';
-		if ( is_numeric( $terms[0] ) ) {
-			$field = 'id';
-		}
-
-		foreach ( $terms as &$term ) {
-			$term = trim( $term );
-
-			if ( 'id' === $field ) {
-				// Remove if it's not an ID.
-				if ( ! is_numeric( $term ) ) {
-					unset( $term );
-					continue;
+				if ( is_numeric( $terms[0] ) ) {
+					$field = 'id';
 				}
 
-				// Convert to int.
-				$term = intval( $term );
-			} else {
+				foreach ( $terms as &$term ) {
+					$term = trim( $term );
 
-				// It's a slug so sanitize it.
-				$term = sanitize_title( $term );
+					if ( 'id' === $field ) {
+						// Remove if it's not an ID.
+						if ( ! is_numeric( $term ) ) {
+							unset( $term );
+							continue;
+						}
+
+						// Convert to int.
+						$term = intval( $term );
+					}
+				}
+
+				$query_args['tax_query'] = array(
+					array(
+						'taxonomy' => $this->convert_taxonomy_name( $args['filter_by'], false ),
+						'field'    => 'slug',
+						'terms'    => $terms,
+					),
+				);
 			}
 		}
 
-		$query_args['tax_query'] = array(
-			array(
-				'taxonomy' => $this->convert_taxonomy_name( $args['filter_by'], true ),
-				'field'    => 'slug',
-				'terms'    => $terms,
-			),
-		);
+		Logger::debug( $query_args );
 
 		$tax_list = array_values( $this->tax_map );
 		foreach ( $tax_list as $filter ) {
@@ -139,6 +130,8 @@ class SCBase {
 				$query_args['tax_query']['custom'] = true;
 			}
 		}
+
+		Logger::debug( $query_args );
 
 		if ( ! empty( $query_args['tax_query'] ) && count( $query_args['tax_query'] ) > 1 && ! empty( $query_args['tax_query']['custom'] ) ) {
 			unset( $query_args['tax_query']['custom'] );

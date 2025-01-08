@@ -281,7 +281,7 @@ function get_series_image( null|int|WP_Post $post = null, string $image_size = '
 function get_term_dropdown( string $taxonomy, string $default ): string {
 
 	// Reset var.
-	$html = PHP_EOL;
+	$html = "\n" . PHP_EOL;
 
 	$terms = get_terms(
 		array(

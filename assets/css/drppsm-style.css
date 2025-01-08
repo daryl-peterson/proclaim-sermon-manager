@@ -15,13 +15,13 @@
   flex-grow: 1;
   min-width: 100px;
   flex-shrink: 0;
-  max-width: 150px;
+  /*max-width: 150px;*/
 }
 #drppsm_sermon_sorting > div select {
   width: 100%;
 }
 #drppsm_sermon_sorting > div:last-child {
-  margin: 0 0 4px 0;
+  /*margin: 0 0 4px 0;*/
 }
 #drppsm_sermon_sorting form {
   margin: 0;
@@ -70,6 +70,7 @@
 .drppsm-archive-title {
   margin: 0;
   padding: 0;
+  text-decoration: none !important;
 }
 .drppsm-archive-meta-item {
   display: flex;
