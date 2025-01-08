@@ -41,22 +41,12 @@ class SermonEdit implements Executable, Registrable {
 	protected string $post_type;
 
 	/**
-	 * Options Interface.
-	 *
-	 * @var OptionsInt
-	 * @since 1.0.0
-	 */
-	protected OptionsInt $options;
-
-	/**
 	 * Initialize object.
 	 *
-	 * @var OptionsInt $options Options interface.
 	 * @since 1.0.0
 	 */
 	protected function __construct() {
 		$this->post_type = DRPPSM_PT_SERMON;
-		$this->options   = options();
 	}
 
 	/**
@@ -150,9 +140,9 @@ class SermonEdit implements Executable, Registrable {
 			return;
 		}
 
-		$opts    = $this->options;
-		$orderby = $opts->get( 'archive_orderby', '' );
-		$order   = $opts->get( 'archive_order', 'desc' );
+		$per_page = Settings::get( Settings::SERMON_COUNT, get_option( 'posts_per_page' ) );
+		$orderby  = Settings::get( Settings::ARCHIVE_ORDER_BY, '' );
+		$order    = Settings::get( Settings::ARCHIVE_ORDER, 'desc' );
 
 		switch ( $orderby ) {
 			case 'date_preached':
@@ -172,8 +162,7 @@ class SermonEdit implements Executable, Registrable {
 		}
 
 		$query->set( 'order', strtoupper( $order ) );
-
-		$query->set( 'posts_per_page', $opts->get( 'sermon_count', get_option( 'posts_per_page' ) ) );
+		$query->set( 'posts_per_page', $per_page );
 	}
 
 	/**

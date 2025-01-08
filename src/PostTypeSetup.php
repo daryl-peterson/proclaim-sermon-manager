@@ -141,8 +141,8 @@ class PostTypeSetup implements PostTypeSetupInt {
 					'TRACE' => $th->getTrace(),
 				)
 			);
-			throw new Exception( 'This is bad' );
-			// throw new PluginException( wp_kses( $th->getMessage(), allowed_html() ) );
+
+			throw new PluginException( wp_kses( $th->getMessage(), allowed_html() ) );
 			// @codeCoverageIgnoreEnd
 		}
 	}
