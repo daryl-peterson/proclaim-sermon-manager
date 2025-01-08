@@ -216,7 +216,6 @@ class Settings {
 		foreach ( self::OPTION_KEYS as $option_key ) {
 			$result = get_option( $option_key, false );
 
-			Logger::debug( array( 'RESULT' => $result ) );
 			if ( ! $result ) {
 				$defauls = self::get_defaults( $option_key );
 				add_option( $option_key, $defauls );
@@ -263,6 +262,7 @@ class Settings {
 				self::HIDE_SERIES           => false,
 				self::HIDE_SERVICE_TYPES    => true,
 				self::HIDE_TOPICS           => false,
+
 			),
 			self::OPTION_KEY_ADVANCED => array(
 				self::BIBLE_BOOK_LOAD => true,
