@@ -11,6 +11,8 @@
 
 namespace DRPPSM;
 
+use Exception;
+
 /**
  * Settings constants.
  *
@@ -28,6 +30,7 @@ class Settings {
 
 	public const BIBLE_BOOK      = 'book_label';
 	public const BIBLE_BOOK_LOAD = 'bible_book_load';
+	public const BIBLE_BOOK_SORT = 'bible_book_sort';
 
 	public const COMMENTS         = 'comments';
 	public const COMMON_BASE_SLUG = 'common_base_slug';
@@ -76,9 +79,6 @@ class Settings {
 		self::ARCHIVE_ORDER_BY      => self::OPTION_KEY_DISPLAY,
 		self::ARCHIVE_DISABLE_IMAGE => self::OPTION_KEY_DISPLAY,
 
-
-		self::BIBLE_BOOK_LOAD       => self::OPTION_KEY_DISPLAY,
-
 		self::DISABLE_CSS           => self::OPTION_KEY_DISPLAY,
 
 		self::HIDE_BOOKS            => self::OPTION_KEY_DISPLAY,
@@ -87,10 +87,12 @@ class Settings {
 		self::HIDE_SERIES           => self::OPTION_KEY_DISPLAY,
 		self::HIDE_SERVICE_TYPES    => self::OPTION_KEY_DISPLAY,
 		self::HIDE_TOPICS           => self::OPTION_KEY_DISPLAY,
+
+
+		self::BIBLE_BOOK_LOAD       => self::OPTION_KEY_ADVANCED,
+		self::BIBLE_BOOK_SORT       => self::OPTION_KEY_ADVANCED,
+
 	);
-
-
-
 
 	private static array $option_default;
 
@@ -167,21 +169,32 @@ class Settings {
 	 * @since 1.0.0
 	 */
 	public static function set( string $key, mixed $value ): bool {
-		$option_key = self::get_option_key( $key );
 
-		if ( ! $option_key ) {
-			return false;
-		}
+		try {
+			$option_key = self::get_option_key( $key );
+			if ( ! $option_key ) {
+				throw new Exception( 'Option key not found : ' . $key );
+			}
 
-		$options = get_option( $option_key, false );
-		if ( ! $options ) {
-			$options         = array();
+			$options = get_option( $option_key, false );
+			if ( ! $options || ! is_array( $options ) ) {
+				$options         = array();
+				$options[ $key ] = $value;
+				\delete_option( $option_key );
+				return \add_option( $option_key, $options );
+			}
+
 			$options[ $key ] = $value;
-			return \add_option( $option_key, $options );
+			return \update_option( $option_key, $options );
+		} catch ( \Throwable $th ) {
+			Logger::error(
+				array(
+					'ERROR' => $th->getMessage(),
+					'TRACE' => $th->getTrace(),
+				)
+			);
 		}
-
-		$options[ $key ] = $value;
-		return \update_option( $option_key, $option_key );
+		return false;
 	}
 
 	/**
@@ -196,7 +209,7 @@ class Settings {
 		}
 		self::$option_default = array(
 
-			self::OPTION_KEY_GENERAL => array(
+			self::OPTION_KEY_GENERAL  => array(
 				self::ARCHIVE_SLUG     => 'Sermons',
 				self::BIBLE_BOOK       => 'book',
 				self::COMMENTS         => false,
@@ -210,11 +223,11 @@ class Settings {
 				self::SERVICE_TYPE     => 'Service Type',
 			),
 
-			self::OPTION_KEY_DISPLAY => array(
+			self::OPTION_KEY_DISPLAY  => array(
 				self::ARCHIVE_ORDER         => 'desc',
 				self::ARCHIVE_ORDER_BY      => 'date_preached',
 				self::ARCHIVE_DISABLE_IMAGE => false,
-				self::BIBLE_BOOK_LOAD       => false,
+
 				self::DISABLE_CSS           => false,
 
 				self::HIDE_BOOKS            => false,
@@ -223,6 +236,10 @@ class Settings {
 				self::HIDE_SERIES           => false,
 				self::HIDE_SERVICE_TYPES    => true,
 				self::HIDE_TOPICS           => true,
+			),
+			self::OPTION_KEY_ADVANCED => array(
+				self::BIBLE_BOOK_LOAD => true,
+				self::BIBLE_BOOK_SORT => true,
 			),
 
 		);

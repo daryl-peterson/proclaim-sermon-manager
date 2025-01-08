@@ -11,7 +11,9 @@
 
 namespace DRPPSM;
 
+use DRPPSM\Constants\Bible;
 use DRPPSM\Constants\Meta;
+use WP_Exception;
 use WP_Post;
 
 defined( 'ABSPATH' ) || exit;
@@ -161,63 +163,6 @@ function get_sermon_view_count( int $post_id, bool $update = false ): int {
 }
 
 /**
- * Build html option elements for select element.
- *
- * @param string $taxonomy
- * @param string $default
- * @return string
- * @since 1.0.0
- *
- * @todo fix
- */
-function get_term_dropdown( string $taxonomy, string $default = '' ): string {
-	return '';
-
-	$terms = get_terms(
-		array(
-			'taxonomy'   => $taxonomy,
-			'orderby'    => 'taxonomy',
-			'order'      => 'ASC',
-			'hide_empty' => false,
-		)
-	);
-
-	$current_slug = get_query_var( $taxonomy ) ?: ( isset( $_GET[ $taxonomy ] ) ? $_GET[ $taxonomy ] : '' );
-	$label        = '';
-	$html         = PHP_EOL;
-	$html        .= "<option value=\"$label\">$label</option>" . PHP_EOL;
-
-	foreach ( $terms as $term ) {
-		$selected = ( ( '' === $default ? $current_slug === $term->slug : $default === $term->slug ) ? ' selected' : '' );
-		$html    .= "<option value=\"$term->slug\"$selected>$term->name</option>" . PHP_EOL;
-
-	}
-
-	Logger::debug(
-		array(
-			'LABEL'        => $label,
-			'TAXONOMY'     => $taxonomy,
-			'TERMS'        => $terms,
-			'CURRENT SLUG' => $current_slug,
-			'HTML'         => $html,
-		)
-	);
-
-	/**
-	 * Allows you to filter the dropdown options (HTML).
-	 *
-	 * @var string $html         The existing HTML.
-	 * @var array  $taxonomy     The taxonomy that is being used.
-	 * @var string $default      The forced default value. See function PHPDoc.
-	 * @var array  $terms        The array of terms, books will already be ordered.
-	 * @var string $current_slug The term that is being requested.
-	 *
-	 * @since 1.0.0
-	 */
-	return apply_filters( 'drppsm_get_term_dropdown', $html, $taxonomy, $default, $terms, $current_slug );
-}
-
-/**
  * Get sermon image
  *
  * @param bool             $fallback
@@ -322,4 +267,74 @@ function get_series_image( null|int|WP_Post $post = null, string $image_size = '
 	}
 
 	return $url;
+}
+
+
+/**
+ * Get term dropdown.
+ *
+ * @param string $taxonomy
+ * @param string $default
+ * @return string
+ * @since 1.0.0
+ */
+function get_term_dropdown( string $taxonomy, string $default ): string {
+
+	// Reset var.
+	$html = PHP_EOL;
+
+	$terms = get_terms(
+		array(
+			'taxonomy'   => $taxonomy,
+			'hide_empty' => false, // todo: add option to disable/enable this globally.
+		)
+	);
+
+	if ( DRPPSM_TAX_BIBLE === $taxonomy && Settings::get( Settings::BIBLE_BOOK_SORT, true ) ) {
+		// Book order.
+		$books = Bible::BOOKS;
+
+		$ordered_terms   = array();
+		$unordered_terms = array();
+
+		// Assign every book a number.
+		foreach ( $terms as $term ) {
+			if ( array_search( $term->name, $books ) !== false ) {
+				$ordered_terms[ array_search( $term->name, $books ) ] = $term;
+			} else {
+				$unordered_terms[] = $term;
+			}
+		}
+
+		// Order the numbers (books).
+		// ksort( $ordered_terms );
+
+		$terms = array_merge( $ordered_terms, $unordered_terms );
+		sort( $terms );
+	}
+
+	$current_slug = get_query_var( $taxonomy ) ?: ( isset( $_GET[ $taxonomy ] ) ? $_GET[ $taxonomy ] : '' );
+
+	foreach ( $terms as $term ) {
+
+		if ( $current_slug === $term->slug ) {
+			$html .= "<option value=\"$term->slug\" selected>$term->name</option>" . PHP_EOL;
+		} else {
+			$html .= "<option value=\"$term->slug\">$term->name</option>" . PHP_EOL;
+		}
+	}
+
+	/**
+	 * Allows you to filter the dropdown options (HTML).
+	 *
+	 * @var string $html         The existing HTML.
+	 * @var array  $taxonomy     The taxonomy that is being used.
+	 * @var string $default      The forced default value. See function PHPDoc.
+	 * @var array  $terms        The array of terms, books will already be ordered.
+	 * @var string $current_slug The term that is being requested.
+	 *
+	 * @category filter
+	 * @since 1.0.0
+	 */
+	return apply_filters( 'drppsmf_get_term_dropdown', $html, $taxonomy, $default, $terms, $current_slug );
 }

@@ -70,6 +70,7 @@ class SermonSorting implements Executable {
 	 */
 	private string $tax_topics;
 
+
 	/**
 	 * Initialize object properties.
 	 *
@@ -99,10 +100,6 @@ class SermonSorting implements Executable {
 	 */
 	public static function render_sorting( array $args = array() ): ?string {
 		$obj = self::exec();
-
-		Logger::debug( 'RENDER SORTING HERE' );
-
-		Logger::debug( array( 'ARGS' => $args ) );
 
 		try {
 			/**
@@ -208,7 +205,7 @@ class SermonSorting implements Executable {
 					$th->getTrace(),
 				)
 			);
-			return null;
+			return '';
 		}
 	}
 

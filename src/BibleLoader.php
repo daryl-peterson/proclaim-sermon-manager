@@ -78,28 +78,15 @@ class BibleLoader implements BibleLoaderInt {
 		$result = false;
 
 		try {
-			$key  = $this->tax_bible . '_loaded';
+
 			$load = Settings::get( Settings::BIBLE_BOOK_LOAD, false );
 
-			if ( $load ) {
-				Logger::debug( 'DELETING OPTION ' . $key );
-				\delete_option( $key );
-			}
-
-			$key = $this->tax_bible . '_loaded';
-			$ran = \get_option( $key, false );
-
-			if ( $ran && ! defined( DRPPSM_TESTING ) ) {
-				// @codeCoverageIgnoreStart
+			if ( ! $load ) {
 				return false;
-				// @codeCoverageIgnoreEnd
-			}
+			} else {
 
-			$result = $this->load();
-
-			if ( $result ) {
-				\delete_option( $key );
-				\add_option( $key, true );
+				$result = $this->load();
+				Settings::set( Settings::BIBLE_BOOK_LOAD, false );
 			}
 		} catch ( \Throwable $th ) {
 			Logger::error(
@@ -108,9 +95,9 @@ class BibleLoader implements BibleLoaderInt {
 					'TRACE' => $th->getTrace(),
 				)
 			);
+			$result = false;
 		}
 
-		Settings::set( Settings::BIBLE_BOOK_LOAD, false );
 		return $result;
 	}
 
@@ -131,6 +118,7 @@ class BibleLoader implements BibleLoaderInt {
 				$term = term_exists( $slug, $this->tax_bible );
 
 				if ( isset( $term ) ) {
+					$result = true;
 					// @codeCoverageIgnoreStart
 					continue;
 					// @codeCoverageIgnoreEnd

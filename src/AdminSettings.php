@@ -69,6 +69,7 @@ class AdminSettings implements Executable, Registrable {
 
 		SettingsGeneral::exec();
 		SettingsDisplay::exec();
+		SettingsAdvanced::exec();
 		return true;
 	}
 
