@@ -39,10 +39,10 @@ class Settings {
 
 	public const HIDE_BOOKS         = 'hide_books';
 	public const HIDE_FILTERS       = 'hide_filters';
-	public const HIDE_PREACHER      = 'hide_preacher';
+	public const HIDE_PREACHERS     = 'hide_preachers';
 	public const HIDE_SERIES        = 'hide_series';
 	public const HIDE_SERVICE_TYPES = 'hide_service_types';
-	public const HIDE_TOPICS        = 'topics';
+	public const HIDE_TOPICS        = 'hide_topics';
 
 	public const SERIES = 'series_label';
 
@@ -83,7 +83,7 @@ class Settings {
 
 		self::HIDE_BOOKS            => self::OPTION_KEY_DISPLAY,
 		self::HIDE_FILTERS          => self::OPTION_KEY_DISPLAY,
-		self::HIDE_PREACHER         => self::OPTION_KEY_DISPLAY,
+		self::HIDE_PREACHERS        => self::OPTION_KEY_DISPLAY,
 		self::HIDE_SERIES           => self::OPTION_KEY_DISPLAY,
 		self::HIDE_SERVICE_TYPES    => self::OPTION_KEY_DISPLAY,
 		self::HIDE_TOPICS           => self::OPTION_KEY_DISPLAY,
@@ -219,7 +219,7 @@ class Settings {
 
 				self::HIDE_BOOKS            => false,
 				self::HIDE_FILTERS          => false,
-				self::HIDE_PREACHER         => false,
+				self::HIDE_PREACHERS        => false,
 				self::HIDE_SERIES           => false,
 				self::HIDE_SERVICE_TYPES    => true,
 				self::HIDE_TOPICS           => true,

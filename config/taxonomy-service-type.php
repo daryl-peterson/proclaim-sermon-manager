@@ -16,29 +16,32 @@ defined( 'ABSPATH' ) || exit;
 $permalinks = app()->permalinks();
 $label      = Settings::get( Settings::SERVICE_TYPE );
 
+$single = ucwords( $label );
+$plural = ucwords( $single . 's' );
+
 return array(
 	'hierarchical' => false,
 	'label'        => ucwords( $label ),
 	'labels'       => array(
-		'name'              => ucwords( $label . 's' ),
-		'singular_name'     => ucwords( $label ),
-		'menu_name'         => ucwords( $label . 's' ),
-		/* translators: %s: Search */
-		'search_items'      => wp_sprintf( __( 'Search %s', 'drppsm' ), $label ),
-		/* translators: %s: All service types */
-		'all_items'         => wp_sprintf( __( 'All %s', 'drppsm' ), $label ),
+		'name'              => $plural,
+		'singular_name'     => $single,
+		'menu_name'         => $plural,
 		'parent_item'       => null,
 		'parent_item_colon' => null,
-		/* translators: %s: Edit service type */
-		'edit_item'         => wp_sprintf( __( 'Edit %s', 'drppsm' ), $label ),
-		/* translators: %s: Update service type */
-		'update_item'       => wp_sprintf( __( 'Update %s', 'drppsm' ), $label ),
-		/* translators: %s: Add service type */
-		'add_new_item'      => wp_sprintf( __( 'Add new %s', 'drppsm' ), $label ),
-		/* translators: %s: New service type */
-		'new_item_name'     => wp_sprintf( __( 'New %s name', 'drppsm' ), $label ),
-		/* translators: %s: No service type found */
-		'not_found'         => wp_sprintf( __( 'No %s found', 'drppsm' ), $label ),
+		/* translators: %s: service type */
+		'search_items'      => wp_sprintf( __( 'Search %s', 'drppsm' ), $plural ),
+		/* translators: %s: service type */
+		'all_items'         => wp_sprintf( __( 'All %s', 'drppsm' ), $plural ),
+		/* translators: %s: service type */
+		'edit_item'         => wp_sprintf( __( 'Edit %s', 'drppsm' ), $single ),
+		/* translators: %s: service type */
+		'update_item'       => wp_sprintf( __( 'Update %s', 'drppsm' ), $single ),
+		/* translators: %s: service type */
+		'add_new_item'      => wp_sprintf( __( 'Add new %s', 'drppsm' ), $single ),
+		/* translators: %s: service type */
+		'new_item_name'     => wp_sprintf( __( 'New %s name', 'drppsm' ), $single ),
+		/* translators: %s: service type */
+		'not_found'         => wp_sprintf( __( 'No %s found', 'drppsm' ), $single ),
 	),
 	'show_ui'      => true,
 	'query_var'    => true,

@@ -1,374 +1,844 @@
+# Copyright (C) 2025 Daryl Peterson
+# This file is distributed under the GPL-2.0+.
 msgid ""
 msgstr ""
-"Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-08-14T02:18:07+00:00\n"
-"PO-Revision-Date: 2024-08-13 21:41-0500\n"
+"Project-Id-Version: Proclaim Sermon Manager 1.0.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/drp-proclaim-"
+"sermon-manager\n"
+"POT-Creation-Date: 2025-01-08T04:16:35+00:00\n"
+"PO-Revision-Date: 2025-01-07 22:18-0600\n"
 "Last-Translator: \n"
 "Language-Team: \n"
-"Language: en\n"
+"Language: en_US\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.0.1\n"
+"X-Generator: Poedit 3.5\n"
 "X-Domain: drppsm\n"
 
-#: AdminMenu.php:78
-msgid "All Sermons"
-msgstr ""
+#. Plugin Name of the plugin
+#: drp-proclaim-sermon-manager.php drp-proclaim-sermon-manager.php:53
+msgid "Proclaim Sermon Manager"
+msgstr "Proclaim Sermon Manager"
 
-#: AdminSettings.php:89 OptGeneral.php:104
-msgid "Sermon Manager Settings"
-msgstr ""
+#. Description of the plugin
+#: drp-proclaim-sermon-manager.php
+msgid "Proclaim Sermon Manager for wordpess"
+msgstr "Proclaim Sermon Manager for wordpess"
 
-#: OptAdvance.php:71 OptGeneral.php:103
-msgid "Settings"
-msgstr ""
+#. Author of the plugin
+#: drp-proclaim-sermon-manager.php
+msgid "Daryl Peterson"
+msgstr "Daryl Peterson"
 
-#: OptGeneral.php:131 OptGeneral.php:158
-msgid "Menu Icon"
-msgstr ""
-
-#: OptGeneral.php:136
-msgid "Bible"
-msgstr ""
-
-#: OptGeneral.php:137
-msgid "Bible Alt"
-msgstr ""
-
-#: OptGeneral.php:138 OptGeneral.php:139
-msgid "Church"
-msgstr ""
-
-#: OptGeneral.php:140
-msgid "Cross"
-msgstr ""
-
-#: OptGeneral.php:141
-msgid "Cross Alt"
-msgstr ""
-
-#: OptGeneral.php:142
-msgid "Fish"
-msgstr ""
-
-#: OptGeneral.php:143
-msgid "Fish Alt"
-msgstr ""
-
-#: OptGeneral.php:144
-msgid "Megaphone"
-msgstr ""
-
-#: OptGeneral.php:145
-msgid "Pulpit"
-msgstr ""
-
-#: OptGeneral.php:146
-msgid "Pulpit Alt"
-msgstr ""
-
-#: OptGeneral.php:147
+#: config/post-type-sermon.php:27 src/SettingsGeneral.php:200
 msgid "Sermon"
-msgstr ""
+msgstr "Sermon"
 
-#: OptGeneral.php:148
-msgid "Sermon Alt"
-msgstr ""
+#. translators: %s: Search Sermons
+#: config/post-type-sermon.php:28 config/post-type-sermon.php:34
+#: config/post-type-sermon.php:45
+msgid "Sermons"
+msgstr "Sermons"
 
-#: OptGeneral.php:149
-msgid "Holy Spirit"
-msgstr ""
+#: config/post-type-sermon.php:32
+msgid "Proclaim Sermons"
+msgstr "Proclaim Sermons"
 
-#: OptGeneral.php:174
+#: config/post-type-sermon.php:35
+msgctxt "menu"
+msgid "Sermons"
+msgstr "Sermons"
+
+#: config/post-type-sermon.php:36
+msgid "Add New"
+msgstr "Add New"
+
+#: config/post-type-sermon.php:37
+msgid "Add New Sermon"
+msgstr "Add New Sermon"
+
+#: config/post-type-sermon.php:38
+msgid "Edit"
+msgstr "Edit"
+
+#: config/post-type-sermon.php:39
+msgid "Edit Sermon"
+msgstr "Edit Sermon"
+
+#: config/post-type-sermon.php:40
+msgid "New Sermon"
+msgstr "New Sermon"
+
+#: config/post-type-sermon.php:41 config/post-type-sermon.php:42
+msgid "View Sermon"
+msgstr "View Sermon"
+
+#. translators: %s: Search Sermons
+#. translators: %s: Search Preachers
+#. translators: %s: Search
+#: config/post-type-sermon.php:45 config/taxonomy-preacher.php:28
+#: config/taxonomy-service-type.php:27
+msgid "Search %s"
+msgstr "Search %s"
+
+#. translators: No %s found: No %s found
+#: config/post-type-sermon.php:51
+msgctxt "No sermons found"
+msgid "No %s found"
+msgstr "No %s found"
+
+#. translators: No %s found in trash: No %s found in trash
+#: config/post-type-sermon.php:54
+msgctxt "No % found in trash"
+msgid "No %s found in trash"
+msgstr "No %s found in trash"
+
+#: config/post-type-sermon.php:55
+msgid "Sermon image"
+msgstr "Sermon image"
+
+#: config/post-type-sermon.php:56
+msgid "Set Sermon Image"
+msgstr "Set Sermon Image"
+
+#: config/post-type-sermon.php:57
+msgid "Remove Sermon Image"
+msgstr "Remove Sermon Image"
+
+#: config/post-type-sermon.php:58
+msgid "Use as Sermon Image"
+msgstr "Use as Sermon Image"
+
+#: config/post-type-sermon.php:59
+msgid "Insert to sermon"
+msgstr "Insert to sermon"
+
+#: config/post-type-sermon.php:60
+msgid "Uploaded to this sermon"
+msgstr "Uploaded to this sermon"
+
+#: config/post-type-sermon.php:61
+msgid "Filter Sermons"
+msgstr "Filter Sermons"
+
+#: config/post-type-sermon.php:62
+msgid "Sermon Navigation"
+msgstr "Sermon Navigation"
+
+#: config/post-type-sermon.php:63
+msgid "Sermon List"
+msgstr "Sermon List"
+
+#: config/taxonomy-bible-book.php:21
+msgid "Books"
+msgstr "Books"
+
+#: config/taxonomy-bible-book.php:23
+msgid "Bible books"
+msgstr "Bible books"
+
+#: config/taxonomy-bible-book.php:24 src/SermonSorting.php:241
+msgid "Book"
+msgstr "Book"
+
+#: config/taxonomy-bible-book.php:25
+msgctxt "menu"
+msgid "Books"
+msgstr "Books"
+
+#: config/taxonomy-bible-book.php:26
+msgid "Search books"
+msgstr "Search books"
+
+#: config/taxonomy-bible-book.php:27
+msgid "All books"
+msgstr "All books"
+
+#: config/taxonomy-bible-book.php:30
+msgid "Edit book"
+msgstr "Edit book"
+
+#: config/taxonomy-bible-book.php:31
+msgid "Update book"
+msgstr "Update book"
+
+#: config/taxonomy-bible-book.php:32
+msgid "Add new book"
+msgstr "Add new book"
+
+#: config/taxonomy-bible-book.php:33
+msgid "New book name"
+msgstr "New book name"
+
+#: config/taxonomy-bible-book.php:34
+msgid "No books found"
+msgstr "No books found"
+
+#. translators: %s: All Preachers
+#. translators: %s: All service types
+#: config/taxonomy-preacher.php:31 config/taxonomy-service-type.php:29
+msgid "All %s"
+msgstr "All %s"
+
+#. translators: %s: Edit preacher
+#. translators: %s: Edit service type
+#: config/taxonomy-preacher.php:37 config/taxonomy-service-type.php:33
+msgid "Edit %s"
+msgstr "Edit %s"
+
+#. translators: %s: Update preacher
+#. translators: %s: Update service type
+#: config/taxonomy-preacher.php:40 config/taxonomy-service-type.php:35
+msgid "Update %s"
+msgstr "Update %s"
+
+#. translators: %s: Add new preacher
+#. translators: %s: Add service type
+#: config/taxonomy-preacher.php:43 config/taxonomy-service-type.php:37
+msgid "Add new %s"
+msgstr "Add new %s"
+
+#. translators: %s: New preacher
+#. translators: %s: New service type
+#: config/taxonomy-preacher.php:46 config/taxonomy-service-type.php:39
+msgid "New %s name"
+msgstr "New %s name"
+
+#. translators: %s: No preachers found
+#. translators: %s: No service type found
+#: config/taxonomy-preacher.php:49 config/taxonomy-service-type.php:41
+msgid "No %s found"
+msgstr "No %s found"
+
+#: config/taxonomy-series.php:20 config/taxonomy-series.php:22
+#: config/taxonomy-series.php:23 src/SermonSorting.php:231
+msgid "Series"
+msgstr "Series"
+
+#: config/taxonomy-series.php:24
+msgctxt "menu"
+msgid "Series"
+msgstr "Series"
+
+#: config/taxonomy-series.php:25
+msgid "Search series"
+msgstr "Search series"
+
+#: config/taxonomy-series.php:26
+msgid "All series"
+msgstr "All series"
+
+#: config/taxonomy-series.php:29
+msgid "Edit series"
+msgstr "Edit series"
+
+#: config/taxonomy-series.php:30
+msgid "Update series"
+msgstr "Update series"
+
+#: config/taxonomy-series.php:31
+msgid "Add new series"
+msgstr "Add new series"
+
+#: config/taxonomy-series.php:32
+msgid "New series name"
+msgstr "New series name"
+
+#: config/taxonomy-series.php:33
+msgid "No series found"
+msgstr "No series found"
+
+#: config/taxonomy-topics.php:22 config/taxonomy-topics.php:24
+#: src/SermonListTable.php:96
+msgid "Topics"
+msgstr "Topics"
+
+#: config/taxonomy-topics.php:25 src/SermonSorting.php:236
+msgid "Topic"
+msgstr "Topic"
+
+#: config/taxonomy-topics.php:26
+msgctxt "menu"
+msgid "Topics"
+msgstr "Topics"
+
+#: config/taxonomy-topics.php:27
+msgid "Search topics"
+msgstr "Search topics"
+
+#: config/taxonomy-topics.php:28
+msgid "All topics"
+msgstr "All topics"
+
+#: config/taxonomy-topics.php:31
+msgid "Edit topic"
+msgstr "Edit topic"
+
+#: config/taxonomy-topics.php:32
+msgid "Update topic"
+msgstr "Update topic"
+
+#: config/taxonomy-topics.php:33
+msgid "Add new topic"
+msgstr "Add new topic"
+
+#: config/taxonomy-topics.php:34
+msgid "New topic name"
+msgstr "New topic name"
+
+#: config/taxonomy-topics.php:35
+msgid "No topics found"
+msgstr "No topics found"
+
+#: src/AdminMenu.php:77
+msgid "All Sermons"
+msgstr "All Sermons"
+
+#: src/AdminSettings.php:96
+msgid "Proclaim Sermon Manager Settings"
+msgstr "Proclaim Sermon Manager Settings"
+
+#: src/Core/Functions/defines.php:244
+msgid "File does not exist."
+msgstr "File does not exist."
+
+#: src/Core/Functions/defines.php:254
+msgid "Failed loading partial file."
+msgstr "Failed loading partial file."
+
+#: src/Core/Functions/defines.php:260
+msgid "The label should be in the singular form."
+msgstr "The label should be in the singular form."
+
+#: src/Core/Functions/defines.php:368
+msgid "Allow Comments"
+msgstr "Allow Comments"
+
+#: src/Core/Functions/defines.php:374
+msgid "Audio & Video Player"
+msgstr "Audio & Video Player"
+
+#: src/Core/Functions/defines.php:379
+msgid "Menu Icon"
+msgstr "Menu Icon"
+
+#: src/Core/Functions/defines.php:384
+msgid "Sermon Date Format"
+msgstr "Sermon Date Format"
+
+#: src/Core/Functions/defines.php:389
 msgid "Sermons Per Page"
-msgstr ""
+msgstr "Sermons Per Page"
 
-#: OptGeneral.php:175
-msgid "Affects only the default number"
-msgstr ""
+#: src/Core/Functions/defines.php:394
+msgid "Preacher"
+msgstr "Preacher"
 
-#: OptGeneral.php:190
-msgid "Common Base Slug"
-msgstr ""
+#: src/Core/Logging/LogDatabase.php:115
+msgid "Proclaim Debug"
+msgstr "Proclaim Debug"
 
-#: OptGeneral.php:239
-msgid "/sermons"
-msgstr ""
+#: src/Core/Logging/LogDatabase.php:116
+msgid "Debug"
+msgstr "Debug"
 
-#: OptGeneral.php:240
-msgid "/sermons/god"
-msgstr ""
+#: src/PermaLinks.php:164
+msgctxt "slug"
+msgid "Service Type"
+msgstr "Service Type"
 
-#: OptGeneral.php:242
-msgid ""
-"This controls the page where sermons will be located, which includes single "
-"sermons."
-msgstr ""
-
-#: OptGeneral.php:245
-msgid ""
-"By default all sermons would be located under %1$s, and a single sermon with "
-"slug “god” would be under %2$s."
-msgstr ""
-
-#: OptGeneral.php:253
-msgid "Does not apply if \"pretty permalinks\" are not turned on."
-msgstr ""
-
-#: OptGeneral.php:258
-msgid "Archive Page Slug"
-msgstr ""
-
-#: OptGeneral.php:267
-msgid "/preacher/mark"
-msgstr ""
-
-#: OptGeneral.php:268
-msgid "/reverend/mark"
-msgstr ""
-
-#: OptGeneral.php:269
-msgid ""
-"Label in singular form. You change the default Preacher to anything you like."
-msgstr ""
-
-#: OptGeneral.php:270
-msgid "\"Reverend\", for example). Note: This also change the slugs."
-msgstr ""
-
-#: OptGeneral.php:275
-msgid "For example, %1$s would become %2$s."
-msgstr ""
-
-#: OptGeneral.php:286
-msgid "Preacher Label"
-msgstr ""
-
-#: OptGeneral.php:302
-msgid "Put the label in singular form. "
-msgstr ""
-
-#: OptGeneral.php:303
-msgid "You change the default Service Type label to anything you wish."
-msgstr ""
-
-#: OptGeneral.php:304
-msgid "(\"Congregation\", for example).\tNote: it will also change the slugs."
-msgstr ""
-
-#: OptGeneral.php:306
-msgid "/service-type/mark"
-msgstr ""
-
-#: OptGeneral.php:307
-msgid "/congregation/mark"
-msgstr ""
-
-#: OptGeneral.php:310
-msgid ""
-"Note: it will also change the slugs. For example, %1$s would become %2$s."
-msgstr ""
-
-#: OptGeneral.php:318
-msgid "Service Type Label"
-msgstr ""
-
-#: PermaLinks.php:103
+#: src/PermaLinks.php:176
 msgctxt "slug"
 msgid "preacher"
-msgstr ""
+msgstr "preacher"
 
-#: PermaLinks.php:114
-msgctxt "slug"
-msgid "service-type"
-msgstr ""
-
-#: PermaLinks.php:122 PermaLinks.php:143
+#: src/PermaLinks.php:189 src/PermaLinks.php:240
 msgctxt "slug"
 msgid "sermons"
-msgstr ""
+msgstr "sermons"
 
-#: PermaLinks.php:134
+#: src/PermaLinks.php:231
 msgctxt "slug"
 msgid "series"
-msgstr ""
+msgstr "series"
 
-#: PermaLinks.php:137
+#: src/PermaLinks.php:234
 msgctxt "slug"
 msgid "topics"
-msgstr ""
+msgstr "topics"
 
-#: PermaLinks.php:140
+#: src/PermaLinks.php:237
 msgctxt "slug"
 msgid "book"
-msgstr ""
+msgstr "book"
 
-#: PostTypeReg.php:93
+#: src/PostTypeReg.php:93
 msgid "Failed to add post type : "
-msgstr ""
+msgstr "Failed to add post type : "
 
-#: PostTypeReg.php:131
+#: src/PostTypeReg.php:131
 msgid "Failed to remove post type : "
-msgstr ""
+msgstr "Failed to remove post type : "
 
-#: RequirementCheck.php:71
+#: src/Requirements.php:103
 msgid "This Plugin requires PHP : "
-msgstr ""
+msgstr "This Plugin requires PHP : "
 
-#: RequirementCheck.php:94
+#: src/Requirements.php:126
 msgid "Requiment Not Met"
-msgstr ""
+msgstr "Requiment Not Met"
 
-#: RequirementCheck.php:95
+#: src/Requirements.php:127
 msgid "This Plugin requires WP : "
-msgstr ""
+msgstr "This Plugin requires WP : "
 
-#: SermonDetail.php:91
+#: src/SermonDetail.php:110
 msgid "Sermon Details"
-msgstr ""
+msgstr "Sermon Details"
 
-#: SermonDetail.php:104
+#: src/SermonDetail.php:187
 msgid "Date Preached"
-msgstr ""
+msgstr "Date Preached"
 
 #. translators: %1 Date preached.
-#: SermonDetail.php:106
+#: src/SermonDetail.php:189
 msgid "format: %s"
-msgstr ""
+msgstr "format: %s"
 
 #. translators: %3$s <a href="edit-tags.php?taxonomy=drppsm_service_type&post_type=drppsm" target="_blank">here</a>.
-#: SermonDetail.php:124
+#: src/SermonDetail.php:216
 msgid "Select the %1$s. Modify the %2$s %3$s."
-msgstr ""
+msgstr "Select the %1$s. Modify the %2$s %3$s."
 
 #. translators: %2$s The plural label. Bible books.
-#: SermonDetail.php:141
+#: src/SermonDetail.php:242
 msgid ""
 "Enter the Bible passage with the full book names, e.g. %1$s Or multiple "
 "books like %2$s"
 msgstr ""
+"Enter the Bible passage with the full book names, e.g. %1$s Or multiple "
+"books like %2$s"
 
-#: SermonDetail.php:142
+#: src/SermonDetail.php:243
 msgid "John 3:16-18"
-msgstr ""
+msgstr "John 3:16-18"
 
-#: SermonDetail.php:144
+#: src/SermonDetail.php:245
 msgid "John 3:16-18, Luke 2:1-3"
-msgstr ""
+msgstr "John 3:16-18, Luke 2:1-3"
 
-#: SermonDetail.php:149
+#: src/SermonDetail.php:250
 msgid "Main Bible Passage"
-msgstr ""
+msgstr "Main Bible Passage"
 
-#: SermonDetail.php:162
+#: src/SermonDetail.php:274
 msgid "Description"
-msgstr ""
+msgstr "Description"
 
-#: SermonDetail.php:163
+#: src/SermonDetail.php:275
 msgid ""
 "Type a brief description about this sermon, an outline, or a full manuscript"
 msgstr ""
+"Type a brief description about this sermon, an outline, or a full manuscript"
 
-#: SermonFiles.php:43
+#: src/SermonFiles.php:69
 msgid "Sermon Files"
-msgstr ""
+msgstr "Sermon Files"
 
-#: SermonFiles.php:52
+#: src/SermonFiles.php:78
 msgid "Location of MP3"
-msgstr ""
+msgstr "Location of MP3"
 
-#: SermonFiles.php:53
+#: src/SermonFiles.php:79
 msgid "Upload an audio file or enter an URL."
-msgstr ""
+msgstr "Upload an audio file or enter an URL."
 
-#: SermonFiles.php:63
+#: src/SermonFiles.php:89
 msgid "MP3 Duration"
-msgstr ""
+msgstr "MP3 Duration"
 
 #. translators: %s see msgid "hh:mm:ss", effectively <code>hh:mm:ss</code>.
-#: SermonFiles.php:66
+#: src/SermonFiles.php:92
 msgid ""
 "Length in %s format (fill out only for remote files, local files will get "
 "data calculated by default)"
 msgstr ""
+"Length in %s format (fill out only for remote files, local files will get "
+"data calculated by default)"
 
-#: SermonFiles.php:67
+#: src/SermonFiles.php:93
 msgid "hh:mm:ss"
-msgstr ""
+msgstr "hh:mm:ss"
 
-#: SermonFiles.php:75
+#: src/SermonFiles.php:101
 msgid "Video Embed Code"
-msgstr ""
+msgstr "Video Embed Code"
 
-#: SermonFiles.php:76
+#: src/SermonFiles.php:102
 msgid ""
 "Paste your embed code for Vimeo, Youtube, Facebook, or direct video file here"
 msgstr ""
+"Paste your embed code for Vimeo, Youtube, Facebook, or direct video file here"
 
-#: SermonFiles.php:83
+#: src/SermonFiles.php:109
 msgid "Video Link"
-msgstr ""
+msgstr "Video Link"
 
-#: SermonFiles.php:84
+#: src/SermonFiles.php:110
 msgid "Paste your link for Vimeo, Youtube, Facebook, or direct video file here"
 msgstr ""
+"Paste your link for Vimeo, Youtube, Facebook, or direct video file here"
 
-#: SermonFiles.php:92
+#: src/SermonFiles.php:118
 msgid "Sermon Notes"
-msgstr ""
+msgstr "Sermon Notes"
 
-#: SermonFiles.php:93
+#: src/SermonFiles.php:119
 msgid "Upload  pdf files."
-msgstr ""
+msgstr "Upload  pdf files."
 
-#: SermonFiles.php:97 SermonFiles.php:113
+#: src/SermonFiles.php:123 src/SermonFiles.php:139
 msgid "Add File"
-msgstr ""
+msgstr "Add File"
 
-#: SermonFiles.php:108
+#: src/SermonFiles.php:134
 msgid "Bulletin"
-msgstr ""
+msgstr "Bulletin"
 
-#: SermonFiles.php:109
+#: src/SermonFiles.php:135
 msgid "Upload pdf files."
-msgstr ""
+msgstr "Upload pdf files."
 
-#: SermonListTable.php:58
+#: src/SermonListTable.php:93
 msgid "Sermon Title"
-msgstr ""
+msgstr "Sermon Title"
 
-#: SermonListTable.php:60
+#: src/SermonListTable.php:95
 msgid "Sermon Series"
-msgstr ""
+msgstr "Sermon Series"
 
-#: SermonListTable.php:61
-msgid "Topics"
-msgstr ""
-
-#: SermonListTable.php:62
+#: src/SermonListTable.php:97
+#: views/template-parts/sermon-single-meta-views.php:16
 msgid "Views"
-msgstr ""
+msgstr "Views"
 
-#: SermonListTable.php:63
+#: src/SermonListTable.php:98
 msgid "Comments"
-msgstr ""
+msgstr "Comments"
 
-#: SermonListTable.php:64
+#: src/SermonListTable.php:99
 msgid "Preached"
-msgstr ""
+msgstr "Preached"
 
 #. translators: %s: Filter by service type.
-#: SermonListTable.php:374
+#: src/SermonListTable.php:439
 msgid "Filter by %s"
-msgstr ""
+msgstr "Filter by %s"
 
-#: TaxonomyListTable.php:157
+#: src/SettingsDisplay.php:65 src/SettingsGeneral.php:109
+msgid "Sermon Manager Settings"
+msgstr "Sermon Manager Settings"
+
+#: src/SettingsDisplay.php:82
+msgid "Display Settings"
+msgstr "Display Settings"
+
+#: src/SettingsDisplay.php:85
+msgid "Archive Settings"
+msgstr "Archive Settings"
+
+#: src/SettingsDisplay.php:91
+msgid "Sermon Filtering / Sorting"
+msgstr "Sermon Filtering / Sorting"
+
+#: src/SettingsDisplay.php:109
+msgid ""
+"Sets the default sermon image that would show up if there is no sermon or "
+"series image set."
+msgstr ""
+"Sets the default sermon image that would show up if there is no sermon or "
+"series image set."
+
+#: src/SettingsDisplay.php:116
+msgid "Default Image"
+msgstr "Default Image"
+
+#: src/SettingsDisplay.php:129
+msgid "Load Bible Books"
+msgstr "Load Bible Books"
+
+#: src/SettingsDisplay.php:144
+msgid "Changes the way sermons are ordered by default."
+msgstr "Changes the way sermons are ordered by default."
+
+#: src/SettingsDisplay.php:145
+msgid "Affects the RSS feed and shown date as well. Default \"Date Preached\"."
+msgstr ""
+"Affects the RSS feed and shown date as well. Default \"Date Preached\"."
+
+#: src/SettingsDisplay.php:149
+msgid "Order sermons by"
+msgstr "Order sermons by"
+
+#: src/SettingsDisplay.php:173
+msgid "Related to the setting above. Default descending."
+msgstr "Related to the setting above. Default descending."
+
+#: src/SettingsDisplay.php:177
+msgid "Order direction"
+msgstr "Order direction"
+
+#: src/SettingsDisplay.php:198
+msgid "Disable Proclaim Sermon Manager's CSS."
+msgstr "Disable Proclaim Sermon Manager's CSS."
+
+#: src/SettingsDisplay.php:202
+msgid "Sermon styles"
+msgstr "Sermon styles"
+
+#: src/SettingsDisplay.php:221
+msgid "Hide Filtering"
+msgstr "Hide Filtering"
+
+#: src/SettingsDisplay.php:240
+msgid "Hide Bible"
+msgstr "Hide Bible"
+
+#: src/SettingsDisplay.php:257 src/SettingsDisplay.php:277
+msgid "Hide "
+msgstr "Hide "
+
+#. translators: Hide %s Service Type : Service Types
+#: src/SettingsDisplay.php:299
+msgctxt "Service Types"
+msgid "Hide %s Service Type"
+msgid_plural "Hide %s Service Types"
+msgstr[0] "Hide %s Service Type"
+msgstr[1] "Hide %s Service Types"
+
+#. translators: %s topic : Hide topic
+#: src/SettingsDisplay.php:323
+msgctxt "sermon topics"
+msgid "%s topic"
+msgid_plural "%s topics"
+msgstr[0] "%s topic"
+msgstr[1] "%s topics"
+
+#: src/SettingsGeneral.php:108
+msgid "Settings"
+msgstr "Settings"
+
+#: src/SettingsGeneral.php:131
+msgid "General Settings"
+msgstr "General Settings"
+
+#: src/SettingsGeneral.php:138
+msgid "Links"
+msgstr "Links"
+
+#: src/SettingsGeneral.php:154
+msgid "Select which player to use for playing Sermons."
+msgstr "Select which player to use for playing Sermons."
+
+#: src/SettingsGeneral.php:181
+msgid "Allows for changing the admin menu icon."
+msgstr "Allows for changing the admin menu icon."
+
+#: src/SettingsGeneral.php:189
+msgid "Bible"
+msgstr "Bible"
+
+#: src/SettingsGeneral.php:190
+msgid "Bible Alt"
+msgstr "Bible Alt"
+
+#: src/SettingsGeneral.php:191 src/SettingsGeneral.php:192
+msgid "Church"
+msgstr "Church"
+
+#: src/SettingsGeneral.php:193
+msgid "Cross"
+msgstr "Cross"
+
+#: src/SettingsGeneral.php:194
+msgid "Cross Alt"
+msgstr "Cross Alt"
+
+#: src/SettingsGeneral.php:195
+msgid "Fish"
+msgstr "Fish"
+
+#: src/SettingsGeneral.php:196
+msgid "Fish Alt"
+msgstr "Fish Alt"
+
+#: src/SettingsGeneral.php:197
+msgid "Megaphone"
+msgstr "Megaphone"
+
+#: src/SettingsGeneral.php:198
+msgid "Pulpit"
+msgstr "Pulpit"
+
+#: src/SettingsGeneral.php:199
+msgid "Pulpit Alt"
+msgstr "Pulpit Alt"
+
+#: src/SettingsGeneral.php:201
+msgid "Sermon Alt"
+msgstr "Sermon Alt"
+
+#: src/SettingsGeneral.php:202
+msgid "Holy Spirit"
+msgstr "Holy Spirit"
+
+#: src/SettingsGeneral.php:218
+msgid "Used only in admin area, when creating a new Sermon"
+msgstr "Used only in admin area, when creating a new Sermon"
+
+#: src/SettingsGeneral.php:263
+msgid "Affects only the default number, other settings will override it"
+msgstr "Affects only the default number, other settings will override it"
+
+#: src/SettingsGeneral.php:287
+msgid "/sermons"
+msgstr "/sermons"
+
+#: src/SettingsGeneral.php:288
+msgid "/sermons/jesus"
+msgstr "/sermons/jesus"
+
+#: src/SettingsGeneral.php:290
+msgid ""
+"This setting determines the page where sermons will be found, including each "
+"sermon."
+msgstr ""
+"This setting determines the page where sermons will be found, including each "
+"sermon."
+
+#. translators: %2$s Example single sermon path, effectively <code>/sermons/jesus</code>.
+#: src/SettingsGeneral.php:296
+msgid ""
+"By default, all sermons will be under %1$s, and a single sermon with slug of "
+"“jesus” will be under %2$s."
+msgstr ""
+"By default, all sermons will be under %1$s, and a single sermon with slug of "
+"“jesus” will be under %2$s."
+
+#: src/SettingsGeneral.php:303
+msgid "However, this does not apply if \"pretty permalinks\" are not enabled."
+msgstr "However, this does not apply if \"pretty permalinks\" are not enabled."
+
+#: src/SettingsGeneral.php:308
+msgid "Archive Page Slug"
+msgstr "Archive Page Slug"
+
+#: src/SettingsGeneral.php:325
+msgid ""
+"If this option is checked, the taxonomies would also be under the slug set "
+"above."
+msgstr ""
+"If this option is checked, the taxonomies would also be under the slug set "
+"above."
+
+#: src/SettingsGeneral.php:327
+msgid "/sermons/series/jesus"
+msgstr "/sermons/series/jesus"
+
+#: src/SettingsGeneral.php:328
+msgid "/sermons/preacher/mark"
+msgstr "/sermons/preacher/mark"
+
+#. translators: %2$s Example preacher path, effectively <code>/sermons/preacher/mark</code>.
+#: src/SettingsGeneral.php:333
+msgid ""
+"For example, by default, series named “Jesus” would be under %1$s, preacher "
+"“Mark” would be under %2$s, and so on."
+msgstr ""
+"For example, by default, series named “Jesus” would be under %1$s, preacher "
+"“Mark” would be under %2$s, and so on."
+
+#: src/SettingsGeneral.php:341
+msgid "Common Base Slug"
+msgstr "Common Base Slug"
+
+#: src/SettingsGeneral.php:357
+msgid "/series/open-doors"
+msgstr "/series/open-doors"
+
+#: src/SettingsGeneral.php:358
+msgid "/list/open-doors"
+msgstr "/list/open-doors"
+
+#. translators: %2$s Example reverend slug/path. Effectively <code>/reverend/mark</code>.
+#: src/SettingsGeneral.php:366
+msgid "Changing \"Series\" to \"List\" would result in %1$s becoming %2$s."
+msgstr "Changing \"Series\" to \"List\" would result in %1$s becoming %2$s."
+
+#: src/SettingsGeneral.php:375
+msgid "Series Label"
+msgstr "Series Label"
+
+#: src/SettingsGeneral.php:391
+msgid "/preacher/mark"
+msgstr "/preacher/mark"
+
+#: src/SettingsGeneral.php:392
+msgid "/reverend/mark"
+msgstr "/reverend/mark"
+
+#. translators: %2$s Example reverend slug/path. Effectively <code>/reverend/mark</code>.
+#: src/SettingsGeneral.php:400
+msgid ""
+"Changing \"Preacher\" to \"Reverend\" would result in %1$s becoming %2$s."
+msgstr ""
+"Changing \"Preacher\" to \"Reverend\" would result in %1$s becoming %2$s."
+
+#: src/SettingsGeneral.php:412
+msgid "Preacher Label"
+msgstr "Preacher Label"
+
+#: src/SettingsGeneral.php:428
+msgid "The label should be in singular form."
+msgstr "The label should be in singular form."
+
+#: src/SettingsGeneral.php:429
+msgid ""
+"You can change the default value of \"Service Type\" to anything you prefer."
+msgstr ""
+"You can change the default value of \"Service Type\" to anything you prefer."
+
+#: src/SettingsGeneral.php:432
+msgid "/service-type/morning"
+msgstr "/service-type/morning"
+
+#: src/SettingsGeneral.php:433
+msgid "/congregation/monring"
+msgstr "/congregation/monring"
+
+#. translators: %2$s Example changed slug/path. Effectively <code>/congregation/morning</code>.
+#: src/SettingsGeneral.php:438
+msgid ""
+"Changing \"Service Type\" to \"Congregation\" would result in %1$s becomimg "
+"%2$s."
+msgstr ""
+"Changing \"Service Type\" to \"Congregation\" would result in %1$s becomimg "
+"%2$s."
+
+#: src/SettingsGeneral.php:442
+msgid "Note that this also changes the slugs."
+msgstr "Note that this also changes the slugs."
+
+#: src/SettingsGeneral.php:447
+msgid "Service Type Label"
+msgstr "Service Type Label"
+
+#: src/TaxonomyListTable.php:172
 msgid "Category Metabox"
-msgstr ""
+msgstr "Category Metabox"
 
-#: TaxonomyListTable.php:165
+#: src/TaxonomyListTable.php:180
 msgid "Image"
-msgstr ""
+msgstr "Image"

@@ -26,6 +26,15 @@ function get_taxonomy_field( $taxonomy, $field_name ) {
 
 	Logger::debug( $taxonomy );
 
+	$labels = get_taxonomy_labels( $taxonomy );
+
+	Logger::debug(
+		array(
+			'TAXONOMY' => $taxonomy,
+			'LABELS'   => $labels,
+		)
+	);
+
 	if ( ! $taxonomy instanceof WP_Taxonomy ) {
 		return null;
 	}

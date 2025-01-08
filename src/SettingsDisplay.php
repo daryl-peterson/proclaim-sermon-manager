@@ -91,10 +91,10 @@ class SettingsDisplay extends SettingsBase implements Executable, Registrable {
 		$this->add_seperator( $cmb, __( 'Sermon Filtering / Sorting', 'drppsm' ) );
 		$this->hide_filtering( $cmb );
 		$this->hide_bible( $cmb );
-		$this->hide_preacher( $cmb );
+		$this->hide_preachers( $cmb );
 		$this->hide_series( $cmb );
-		$this->hide_service_type( $cmb );
-		$this->hide_topic( $cmb );
+		$this->hide_service_types( $cmb );
+		$this->hide_topics( $cmb );
 	}
 
 
@@ -251,15 +251,17 @@ class SettingsDisplay extends SettingsBase implements Executable, Registrable {
 	 * @return void
 	 * @since 1.0.0
 	 */
-	private function hide_preacher( CMB2 $cmb ): void {
-		$label = __( 'Hide ', 'drppsm' ) . Settings::get( Settings::PREACHER );
+	private function hide_preachers( CMB2 $cmb ): void {
+		$name = get_taxonomy_field( DRPPSM_TAX_PREACHER, 'menu_name' );
+
+		$label = __( 'Hide ', 'drppsm' ) . $name;
 
 		$cmb->add_field(
 			array(
-				'id'      => Settings::HIDE_PREACHER,
+				'id'      => Settings::HIDE_PREACHERS,
 				'name'    => $label,
 				'type'    => 'checkbox',
-				'default' => Settings::get_default( Settings::HIDE_PREACHER ),
+				'default' => Settings::get_default( Settings::HIDE_PREACHERS ),
 			)
 		);
 	}
@@ -272,7 +274,7 @@ class SettingsDisplay extends SettingsBase implements Executable, Registrable {
 	 * @since 1.0.0
 	 */
 	private function hide_series( CMB2 $cmb ): void {
-		$label = __( 'Hide ', 'drppsm' ) . Settings::get( Settings::HIDE_SERIES );
+		$label = __( 'Hide ', 'drppsm' ) . get_taxonomy_field( DRPPSM_TAX_SERIES, 'menu_name' );
 
 		$cmb->add_field(
 			array(
@@ -291,8 +293,12 @@ class SettingsDisplay extends SettingsBase implements Executable, Registrable {
 	 * @return void
 	 * @since 1.0.0
 	 */
-	private function hide_service_type( CMB2 $cmb ): void {
-		$label = __( 'Hide ', 'drppsm' ) . Settings::get( Settings::SERVICE_TYPE );
+	private function hide_service_types( CMB2 $cmb ): void {
+
+		/* translators: Hide %s Service Type : Service Types */
+		$label = _nx( 'Hide %s Service Type', 'Hide %s Service Types', 2, 'Service Types', 'drppsm' );
+
+		// $label = __( 'Hide ', 'drppsm' ) . get_taxonomy_field( DRPPSM_TAX_SERVICE_TYPE, 'menu_name' );
 
 		$cmb->add_field(
 			array(
@@ -311,8 +317,12 @@ class SettingsDisplay extends SettingsBase implements Executable, Registrable {
 	 * @return void
 	 * @since 1.0.0
 	 */
-	private function hide_topic( CMB2 $cmb ): void {
-		$label = __( 'Hide Topic', 'drppsm' );
+	private function hide_topics( CMB2 $cmb ): void {
+
+		/* translators: %s topic : Hide topic */
+		$label = _nx( '%s topic', '%s topics', 5, 'sermon topics', 'drppsm' );
+
+		// $label = wp_sprintf( __( 'Hide %s', 'drppsm' ), $label );
 
 		$cmb->add_field(
 			array(

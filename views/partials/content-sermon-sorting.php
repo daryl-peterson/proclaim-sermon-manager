@@ -50,8 +50,6 @@ if ( $args['visibility'] === 'none' || is_tax_filtering_disabled( $args ) ) {
 <div id="<?php echo $args['id']; ?>" class="<?php echo $args['classes']; ?>">
 <?php
 
-$html .= '';
-
 foreach ( $filters as $filter ) {
 
 	if ( ! isset( $filter['taxonomy'] ) ) {

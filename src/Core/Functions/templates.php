@@ -85,7 +85,7 @@ function get_visibility_settings(): array {
 	$visibility = array(
 		Settings::HIDE_TOPICS,
 		Settings::HIDE_SERIES,
-		Settings::HIDE_PREACHER,
+		Settings::HIDE_PREACHERS,
 		Settings::HIDE_BOOKS,
 		Settings::HIDE_SERVICE_TYPES,
 		Settings::HIDE_FILTERS,

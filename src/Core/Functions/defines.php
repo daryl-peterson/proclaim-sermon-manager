@@ -143,7 +143,7 @@ define(
 	array(
 		'drppsm_bible'    => 'hide_books',
 		'drppsm_dates'    => 'hide_dates',
-		'drppsm_preacher' => 'hide_preacher',
+		'drppsm_preacher' => 'hide_preachers',
 		'drppsm_series'   => 'hide_series',
 		'drppsm_stype'    => 'hide_service_types',
 		'drppsm_topics'   => 'hide_topics',

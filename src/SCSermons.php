@@ -78,9 +78,12 @@ class SCSermons extends SCBase implements Executable, Registrable {
 	 * - **day** Show only sermons created on the specified day.
 	 * - **after**  Show only sermons created after the specified date.
 	 * - **before** Show only sermons created before the specified date.
+	 *
+	 * #### These can be set from settings
 	 * - **hide_filters** Hide sermon filters. (false)
-	 * - **hide_books** Hide book filter. ('')
-	 * - **
+	 * - **hide_topics** Hide topics filter. ('')
+	 * - **hide_series** Hide series filter. ('')
+	 * - **hide_service_types** Hide service types filter. ('')
 	 */
 	public function show_sermons( array $atts ): string {
 		global $wp_query;
@@ -379,13 +382,13 @@ class SCSermons extends SCBase implements Executable, Registrable {
 			'month'              => '',
 			'after'              => '',
 			'before'             => '',
-			'hide_dates'         => '',
 			'include'            => '',
 			'exclude'            => '',
 		);
 
 		$filters   = get_visibility_settings();
 		$defaults += $filters;
+		Logger::debug( array( 'DEFAULTS' => $defaults ) );
 		return $defaults;
 	}
 
@@ -404,7 +407,6 @@ class SCSermons extends SCBase implements Executable, Registrable {
 			'hide_preachers'     => $args['hide_preachers'],
 			'hide_books'         => $args['hide_books'],
 			'hide_service_types' => $args['hide_service_types'],
-			'hide_dates'         => $args['hide_dates'],
 		);
 	}
 }

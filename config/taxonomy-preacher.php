@@ -16,29 +16,33 @@ defined( 'ABSPATH' ) || exit;
 $permalinks = App::init()->permalinks();
 $label      = Settings::get( Settings::PREACHER, Settings::get_default( Settings::PREACHER ) );
 
+$single = ucwords( $label );
+$plural = ucwords( $label . 's' );
+
 return array(
 	'hierarchical' => false,
-	'label'        => ucwords( $label ),
+	'label'        => $single,
 	'labels'       => array(
-		'name'              => ucwords( $label . 's' ),
-		'singular_name'     => ucwords( $label ),
-		'menu_name'         => ucwords( $label . 's' ),
-		/* translators: %s: Search by preacher */
-		'search_items'      => wp_sprintf( __( 'Search %s', 'drppsm' ), $label ),
-		/* translators: %s: All preachers */
-		'all_items'         => wp_sprintf( __( 'All %s', 'drppsm' ), $label ),
+		'name'              => $plural,
+		'singular_name'     => $single,
+		'menu_name'         => $plural,
 		'parent_item'       => null,
 		'parent_item_colon' => null,
-		/* translators: %s: Edit preacher */
-		'edit_item'         => wp_sprintf( __( 'Edit %s', 'drppsm' ), $label ),
-		/* translators: %s: Update preacher */
-		'update_item'       => wp_sprintf( __( 'Update %s', 'drppsm' ), $label ),
-		/* translators: %s: Add new preacher */
-		'add_new_item'      => wp_sprintf( __( 'Add new %s', 'drppsm' ), $label ),
-		/* translators: %s: New preacher */
-		'new_item_name'     => wp_sprintf( __( 'New %s name', 'drppsm' ), $label ),
-		/* translators: %s: No preachers found */
-		'not_found'         => wp_sprintf( __( 'No %s found', 'drppsm' ), $label ),
+
+		/* translators: %s preacher */
+		'search_items'      => wp_sprintf( _x( 'Search %s', 'Search %s', 'drppsm' ), $plural ),
+		/* translators: %s preacher */
+		'all_items'         => wp_sprintf( __( 'All %s', 'drppsm' ), $plural ),
+		/* translators: %s preacher */
+		'edit_item'         => wp_sprintf( __( 'Edit %s', 'drppsm' ), $single ),
+		/* translators: %s preacher */
+		'update_item'       => wp_sprintf( __( 'Update %s', 'drppsm' ), $single ),
+		/* translators: %s preacher */
+		'add_new_item'      => wp_sprintf( __( 'Add New %s', 'drppsm' ), $single ),
+		/* translators: %s preacher */
+		'new_item_name'     => wp_sprintf( __( 'New %s name', 'drppsm' ), $single ),
+		/* translators: %s preacher */
+		'not_found'         => wp_sprintf( __( 'No %s found', 'drppsm' ), $single ),
 	),
 	'show_ui'      => true,
 	'query_var'    => true,
