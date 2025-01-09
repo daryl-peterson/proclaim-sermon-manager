@@ -13,9 +13,18 @@ namespace DRPPSM;
 
 defined( 'ABSPATH' ) || exit;
 
-$permalinks = app()->permalinks();
 use DRPPSM\Constants\Caps;
 
+$timer     = Timer::get_instance();
+$timer_key = $timer->start( '', __FILE__ );
+$trans_key = 'drppsm_sermon_post_def';
+$trans     = get_transient( $trans_key );
+if ( $trans ) {
+	$timer->stop( $timer_key );
+	return $trans;
+}
+
+$permalinks = app()->permalinks();
 
 $capabilities = array(
 	Caps::MANAGE_SETTINGS   => Caps::MANAGE_SETTINGS,
@@ -30,7 +39,7 @@ $single = __( 'Sermon', 'drppsm' );
 /* translators: sermon plural */
 $plural = __( 'Sermons', 'drppsm' );
 
-return array(
+$result = array(
 	'labels'              => array(
 		'name'                  => __( 'Proclaim Sermons', 'drppsm' ),
 		'singular_name'         => $single,
@@ -99,3 +108,7 @@ return array(
 		// 'editor',
 	),
 );
+
+set_transient( $trans_key, $result, WEEK_IN_SECONDS );
+$timer->stop( $timer_key );
+return $result;

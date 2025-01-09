@@ -102,8 +102,9 @@ class PostTypeSetup implements PostTypeSetupInt {
 	 * @throws PluginException If error ooccures add post type or taxonomy.
 	 * @since 1.0.0
 	 */
-	public function add(): array {
+	public function add(): ?array {
 		try {
+
 			$list   = $this->get_post_type_list();
 			$status = array();
 

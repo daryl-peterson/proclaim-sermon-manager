@@ -131,6 +131,8 @@ class Plugin implements PluginInt {
 	 * @since 1.0.0
 	 */
 	public function shutdown(): bool {
+		$timer = Timer::get_instance();
+		$timer->shutdown();
 		return true;
 	}
 

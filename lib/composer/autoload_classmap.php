@@ -118,6 +118,7 @@ return array(
     'DRPPSM\\Tests\\TaxonomyRegTest' => $baseDir . '/tests/TaxonomyRegTest.php',
     'DRPPSM\\Tests\\TextDomainTest' => $baseDir . '/tests/TextDomainTest.php',
     'DRPPSM\\TextDomain' => $baseDir . '/src/TextDomain.php',
+    'DRPPSM\\Timer' => $baseDir . '/src/Timer.php',
     'DRPPSM\\Traits\\OverLoadTrait' => $baseDir . '/src/Core/Traits/OverLoadTrait.php',
     'DRPPSM\\Traits\\SingletonTrait' => $baseDir . '/src/Core/Traits/SingletonTrait.php',
 );

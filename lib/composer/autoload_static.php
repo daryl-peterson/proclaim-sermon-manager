@@ -179,6 +179,7 @@ class ComposerStaticInit672fe16c65cc53aa8b66e730cdfce0de
         'DRPPSM\\Tests\\TaxonomyRegTest' => __DIR__ . '/../..' . '/tests/TaxonomyRegTest.php',
         'DRPPSM\\Tests\\TextDomainTest' => __DIR__ . '/../..' . '/tests/TextDomainTest.php',
         'DRPPSM\\TextDomain' => __DIR__ . '/../..' . '/src/TextDomain.php',
+        'DRPPSM\\Timer' => __DIR__ . '/../..' . '/src/Timer.php',
         'DRPPSM\\Traits\\OverLoadTrait' => __DIR__ . '/../..' . '/src/Core/Traits/OverLoadTrait.php',
         'DRPPSM\\Traits\\SingletonTrait' => __DIR__ . '/../..' . '/src/Core/Traits/SingletonTrait.php',
     );

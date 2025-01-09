@@ -28,10 +28,10 @@ interface PostTypeSetupInt extends Executable, Registrable {
 	/**
 	 * Add post types and taxonomy.
 	 *
-	 * @return array Post and taxonomies registered.
+	 * @return null|array Post and taxonomies registered.
 	 * @since 1.0.0
 	 */
-	public function add(): array;
+	public function add(): ?array;
 
 	/**
 	 * Remove post types and taxonomy.

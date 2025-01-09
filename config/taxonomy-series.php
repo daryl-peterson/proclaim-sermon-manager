@@ -13,9 +13,18 @@ namespace DRPPSM;
 
 defined( 'ABSPATH' ) || exit;
 
+$timer     = Timer::get_instance();
+$timer_key = $timer->start( '', __FILE__ );
+$trans_key = 'drppsm_tax_series_def';
+$trans     = get_transient( $trans_key );
+if ( $trans ) {
+	$timer->stop( $timer_key );
+	return $trans;
+}
+
 $permalinks = App::init()->permalinks();
 
-return array(
+$result = array(
 	'hierarchical'      => false,
 	'label'             => __( 'Series', 'drppsm' ),
 	'labels'            => array(
@@ -42,3 +51,7 @@ return array(
 	),
 	'capabilities'      => DRPPSM_TAX_CAPS,
 );
+
+set_transient( $trans_key, $result, WEEK_IN_SECONDS );
+$timer->stop( $timer_key );
+return $result;

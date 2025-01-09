@@ -17,6 +17,7 @@ use DRPPSM\Constants\Actions;
 use DRPPSM\Constants\Meta;
 use DRPPSM\Interfaces\Executable;
 use DRPPSM\Interfaces\Registrable;
+use WP_Exception;
 
 /**
  * Sermon list table.
@@ -37,45 +38,19 @@ class SermonListTable implements Executable, Registrable {
 	private string $pt = DRPPSM_PT_SERMON;
 
 	/**
-	 * Preacher taxonomy.
-	 *
-	 * @var string
-	 * @since 1.0.0
-	 */
-	private string $tax_preacher;
-
-	/**
-	 * Series taxonomy.
-	 *
-	 * @var string
-	 * @since 1.0.0
-	 */
-	private string $tax_series;
-
-	/**
-	 * Service type taxonomy.
-	 *
-	 * @var string
-	 * @since 1.0.0
-	 */
-	private string $tax_service_type;
-
-
-	/**
-	 * Topic taxonomy
-	 *
-	 * @var string
-	 * @since 1.0.0
-	 */
-	private string $tax_topic;
-
-	/**
 	 * Columns array.
 	 *
 	 * @var array
+	 * @since 1.0.0
 	 */
 	private array $columns;
 
+	/**
+	 * Sortable columns
+	 *
+	 * @var array
+	 * @since 1.0.0
+	 */
 	private array $sortable;
 
 	/**
@@ -84,11 +59,7 @@ class SermonListTable implements Executable, Registrable {
 	 * @since 1.0.0
 	 */
 	protected function __construct() {
-		$this->pt               = DRPPSM_PT_SERMON;
-		$this->tax_preacher     = DRPPSM_TAX_PREACHER;
-		$this->tax_series       = DRPPSM_TAX_SERIES;
-		$this->tax_service_type = DRPPSM_TAX_SERVICE_TYPE;
-		$this->tax_topic        = DRPPSM_TAX_TOPICS;
+		$this->pt = DRPPSM_PT_SERMON;
 	}
 
 	/**
@@ -124,12 +95,24 @@ class SermonListTable implements Executable, Registrable {
 		add_filter( 'list_table_primary_column', array( $this, 'set_table_primary_column' ), 10, 2 );
 		add_filter( 'post_row_actions', array( $this, 'row_actions' ), 100, 2 );
 		add_filter( 'parse_query', array( $this, 'sermon_filters_query' ), 10, 1 );
-
 		add_action( 'manage_posts_extra_tablenav', array( $this, 'extra_nav' ), 10, 1 );
+
 		return true;
 	}
 
-	public function init() {
+	/**
+	 * Initialize column headings.
+	 *
+	 * @return void
+	 * @since 1.0.0
+	 */
+	public function init(): void {
+		/**
+		 * @var Timer $timer
+		 */
+		$timer     = Timer::get_instance();
+		$timer_key = $timer->start( __FUNCTION__, __FILE__ );
+
 		$tax   = DRPPSM_TAX_LIST;
 		$trans = 'drppsm_sermon_list_table_init';
 
@@ -137,6 +120,7 @@ class SermonListTable implements Executable, Registrable {
 		if ( $init ) {
 			$this->columns  = $init['columns'];
 			$this->sortable = $init['sortable'];
+			$timer->stop( $timer_key );
 			return;
 		}
 
@@ -151,18 +135,21 @@ class SermonListTable implements Executable, Registrable {
 			$this->sortable[ 'taxonomy-' . $taxonomy ] = $taxonomy;
 		}
 
-		$this->sortable[ Meta::DATE ]     = Meta::DATE;
-		$this->sortable['drppsm_views']   = __( 'Views', 'drppsm' );
 		$this->columns['drppsm_views']    = __( 'Views', 'drppsm' );
 		$this->columns['comments']        = __( 'Comments', 'drppsm' );
 		$this->columns['drppsm_preached'] = __( 'Preached', 'drppsm' );
 		$this->columns['date']            = __( 'Published' );
 
+		$this->sortable[ Meta::DATE ]      = Meta::DATE;
+		$this->sortable['drppsm_views']    = __( 'Views', 'drppsm' );
+		$this->sortable['drppsm_preached'] = $this->columns['drppsm_preached'];
+
 		$data = array(
 			'columns'  => $this->columns,
 			'sortable' => $this->sortable,
 		);
-		set_transient( $trans, $data, DAY_IN_SECONDS );
+		set_transient( $trans, $data, WEEK_IN_SECONDS );
+		$timer->stop( $timer_key );
 	}
 
 	/**
@@ -319,22 +306,23 @@ class SermonListTable implements Executable, Registrable {
 
 		try {
 
-			$qv = &$query->query_vars;
+			$qv        = &$query->query_vars;
+			$tax_stype = DRPPSM_TAX_SERVICE_TYPE;
 
 			if ( ! $this->post_type_match() ) {
 				return;
 			}
 
-			if ( ! isset( $qv[ $this->tax_service_type ] ) || empty( $qv[ $this->tax_service_type ] ) ) {
+			if ( ! isset( $qv[ $tax_stype ] ) || empty( $qv[ $tax_stype ] ) ) {
 				return;
 			}
 
 			// phpcs:disable
 			$qv['tax_query'] = array(
 				array(
-					'taxonomy' => $this->tax_service_type,
+					'taxonomy' => $tax_stype,
 					'field'    => 'slug',
-					'terms'    => $query->query_vars[ $this->tax_service_type ],
+					'terms'    => $query->query_vars[ $tax_stype ],
 				),
 			);
 			// phpcs:enable
@@ -422,10 +410,10 @@ class SermonListTable implements Executable, Registrable {
 	 */
 	public function sermon_filters(): string {
 
-		$output[] = $this->select_filter( $this->tax_service_type );
-		$output[] = $this->select_filter( $this->tax_preacher );
-		$output[] = $this->select_filter( $this->tax_series );
-		$output[] = $this->select_filter( $this->tax_topic );
+		$output[] = $this->select_filter( DRPPSM_TAX_PREACHER );
+		$output[] = $this->select_filter( DRPPSM_TAX_SERIES );
+		$output[] = $this->select_filter( DRPPSM_TAX_TOPICS );
+		$output[] = $this->select_filter( DRPPSM_TAX_SERVICE_TYPE );
 
 		$output = apply_filters( DRPPSMF_ADMIN_SERMON, $output );
 		return implode( "\n", $output );
