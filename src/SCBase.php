@@ -59,6 +59,7 @@ class SCBase {
 	 * @param array $args
 	 * @param array $query_args
 	 * @return array
+	 * @since 1.0.0
 	 */
 	protected function set_filter( array $args, array $query_args ) {
 
@@ -98,8 +99,6 @@ class SCBase {
 			}
 		}
 
-		Logger::debug( $query_args );
-
 		$tax_list = array_values( $this->tax_map );
 		foreach ( $tax_list as $filter ) {
 			if ( ! empty( $_GET[ $filter ] ) ) {
@@ -130,8 +129,6 @@ class SCBase {
 				$query_args['tax_query']['custom'] = true;
 			}
 		}
-
-		Logger::debug( $query_args );
 
 		if ( ! empty( $query_args['tax_query'] ) && count( $query_args['tax_query'] ) > 1 && ! empty( $query_args['tax_query']['custom'] ) ) {
 			unset( $query_args['tax_query']['custom'] );

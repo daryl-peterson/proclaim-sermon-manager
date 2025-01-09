@@ -48,6 +48,8 @@ define(
 
 define( 'DRPPSM_PT_SERMON', 'drppsm_sermon' );
 
+
+
 /*
 |------------------------------------------------------------------------------
 | TAXONOMY DEFINES
@@ -130,10 +132,10 @@ define(
 define(
 	'DRPPSM_TAX_LIST',
 	array(
-		'drppsm_bible',
 		'drppsm_preacher',
 		'drppsm_series',
 		'drppsm_stype',
+		'drppsm_bible',
 		'drppsm_topics',
 	)
 );

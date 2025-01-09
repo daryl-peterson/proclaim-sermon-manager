@@ -22,18 +22,18 @@ function get_archive_order( string $default = 'DESC' ) {
 }
 
 function get_taxonomy_field( $taxonomy, $field_name ) {
-	$taxonomy = get_taxonomy( $taxonomy );
+	$tax = get_taxonomy( $taxonomy );
 
-	if ( ! $taxonomy instanceof WP_Taxonomy ) {
+	if ( ! $tax instanceof WP_Taxonomy ) {
 		return null;
 	}
 
-	if ( isset( $taxonomy->$field_name ) ) {
-		return $taxonomy->$field_name;
+	if ( isset( $tax->$field_name ) ) {
+		return $tax->$field_name;
 	}
 
-	if ( isset( $taxonomy->labels->$field_name ) ) {
-		return $taxonomy->labels->$field_name;
+	if ( isset( $tax->labels->$field_name ) ) {
+		return $tax->labels->$field_name;
 	}
 
 	return null;

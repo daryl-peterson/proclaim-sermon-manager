@@ -20,9 +20,9 @@ $single = ucwords( $label );
 $plural = ucwords( $label . 's' );
 
 return array(
-	'hierarchical' => false,
-	'label'        => $single,
-	'labels'       => array(
+	'hierarchical'      => false,
+	'label'             => $single,
+	'labels'            => array(
 		'name'              => $plural,
 		'singular_name'     => $single,
 		'menu_name'         => $plural,
@@ -44,13 +44,15 @@ return array(
 		/* translators: %s preacher */
 		'not_found'         => wp_sprintf( __( 'No %s found', 'drppsm' ), $single ),
 	),
-	'show_ui'      => true,
-	'query_var'    => true,
-	'show_in_rest' => true,
+	'show_ui'           => true,
+	'query_var'         => true,
+	'show_in_rest'      => true,
+	'show_in_menu'      => true,
+	'show_admin_column' => true,
 	// 'show_admin_column' => true,
-	'rewrite'      => array(
+	'rewrite'           => array(
 		'slug'       => $permalinks[ DRPPSM_TAX_PREACHER ],
 		'with_front' => false,
 	),
-	'capabilities' => DRPPSM_TAX_CAPS,
+	'capabilities'      => DRPPSM_TAX_CAPS,
 );

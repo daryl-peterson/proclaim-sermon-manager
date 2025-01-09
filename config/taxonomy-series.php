@@ -16,9 +16,9 @@ defined( 'ABSPATH' ) || exit;
 $permalinks = App::init()->permalinks();
 
 return array(
-	'hierarchical' => false,
-	'label'        => __( 'Series', 'drppsm' ),
-	'labels'       => array(
+	'hierarchical'      => false,
+	'label'             => __( 'Series', 'drppsm' ),
+	'labels'            => array(
 		'name'              => __( 'Series', 'drppsm' ),
 		'singular_name'     => __( 'Series', 'drppsm' ),
 		'menu_name'         => _x( 'Series', 'menu', 'drppsm' ),
@@ -32,13 +32,13 @@ return array(
 		'new_item_name'     => __( 'New series name', 'drppsm' ),
 		'not_found'         => __( 'No series found', 'drppsm' ),
 	),
-	'show_ui'      => true,
-	'query_var'    => true,
-	'show_in_rest' => true,
-	// 'show_admin_column' => true,
-	'rewrite'      => array(
+	'show_ui'           => true,
+	'query_var'         => true,
+	'show_in_rest'      => true,
+	'show_admin_column' => true,
+	'rewrite'           => array(
 		'slug'       => $permalinks[ DRPPSM_TAX_SERIES ],
 		'with_front' => false,
 	),
-	'capabilities' => DRPPSM_TAX_CAPS,
+	'capabilities'      => DRPPSM_TAX_CAPS,
 );

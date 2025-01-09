@@ -18,9 +18,9 @@ $slug         = DRPPSM_TAX_TOPICS;
 $capabilities = DRPPSM_TAX_CAPS;
 
 return array(
-	'hierarchical' => false,
-	'label'        => __( 'Topics', 'drppsm' ),
-	'labels'       => array(
+	'hierarchical'      => false,
+	'label'             => __( 'Topics', 'drppsm' ),
+	'labels'            => array(
 		'name'              => __( 'Topics', 'drppsm' ),
 		'singular_name'     => __( 'Topic', 'drppsm' ),
 		'menu_name'         => _x( 'Topics', 'menu', 'drppsm' ),
@@ -34,12 +34,13 @@ return array(
 		'new_item_name'     => __( 'New topic name', 'drppsm' ),
 		'not_found'         => __( 'No topics found', 'drppsm' ),
 	),
-	'show_ui'      => true,
-	'query_var'    => true,
-	'show_in_rest' => true,
-	'rewrite'      => array(
+	'show_ui'           => true,
+	'query_var'         => true,
+	'show_in_rest'      => true,
+	'show_admin_column' => true,
+	'rewrite'           => array(
 		'slug'       => $permalinks[ $slug ],
 		'with_front' => false,
 	),
-	'capabilities' => $capabilities,
+	'capabilities'      => $capabilities,
 );

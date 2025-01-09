@@ -20,9 +20,9 @@ $single = ucwords( $label );
 $plural = ucwords( $single . 's' );
 
 return array(
-	'hierarchical' => false,
-	'label'        => ucwords( $label ),
-	'labels'       => array(
+	'hierarchical'      => false,
+	'label'             => ucwords( $label ),
+	'labels'            => array(
 		'name'              => $plural,
 		'singular_name'     => $single,
 		'menu_name'         => $plural,
@@ -43,12 +43,13 @@ return array(
 		/* translators: %s: service type */
 		'not_found'         => wp_sprintf( __( 'No %s found', 'drppsm' ), $single ),
 	),
-	'show_ui'      => true,
-	'query_var'    => true,
-	'show_in_rest' => true,
-	'rewrite'      => array(
+	'show_ui'           => true,
+	'query_var'         => true,
+	'show_in_rest'      => true,
+	'show_admin_column' => true,
+	'rewrite'           => array(
 		'slug'       => $permalinks[ DRPPSM_TAX_SERVICE_TYPE ],
 		'with_front' => false,
 	),
-	'capabilities' => DRPPSM_TAX_CAPS,
+	'capabilities'      => DRPPSM_TAX_CAPS,
 );

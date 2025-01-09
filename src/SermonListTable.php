@@ -13,6 +13,7 @@ namespace DRPPSM;
 
 defined( 'ABSPATH' ) || exit;
 
+use DRPPSM\Constants\Actions;
 use DRPPSM\Constants\Meta;
 use DRPPSM\Interfaces\Executable;
 use DRPPSM\Interfaces\Registrable;
@@ -61,12 +62,12 @@ class SermonListTable implements Executable, Registrable {
 
 
 	/**
-	 * Topics taxonomy.
+	 * Topic taxonomy
 	 *
 	 * @var string
 	 * @since 1.0.0
 	 */
-	private string $tax_topics;
+	private string $tax_topic;
 
 	/**
 	 * Columns array.
@@ -75,29 +76,19 @@ class SermonListTable implements Executable, Registrable {
 	 */
 	private array $columns;
 
+	private array $sortable;
+
 	/**
 	 * Set object properties.
 	 *
 	 * @since 1.0.0
 	 */
 	protected function __construct() {
-		$preacher = Settings::get( Settings::PREACHER );
-
 		$this->pt               = DRPPSM_PT_SERMON;
 		$this->tax_preacher     = DRPPSM_TAX_PREACHER;
 		$this->tax_series       = DRPPSM_TAX_SERIES;
 		$this->tax_service_type = DRPPSM_TAX_SERVICE_TYPE;
-		$this->tax_topics       = DRPPSM_TAX_TOPICS;
-
-		$this->columns['cb']                  = '<input type="checkbox" />';
-		$this->columns['title']               = __( 'Sermon Title', 'drppsm' );
-		$this->columns[ $this->tax_preacher ] = $preacher;
-		$this->columns[ $this->tax_series ]   = __( 'Sermon Series', 'drppsm' );
-		$this->columns[ $this->tax_topics ]   = __( 'Topics', 'drppsm' );
-		$this->columns['drppsm_views']        = __( 'Views', 'drppsm' );
-		$this->columns['comments']            = __( 'Comments', 'drppsm' );
-		$this->columns['drppsm_preached']     = __( 'Preached', 'drppsm' );
-		$this->columns['date']                = __( 'Published' );
+		$this->tax_topic        = DRPPSM_TAX_TOPICS;
 	}
 
 	/**
@@ -119,12 +110,14 @@ class SermonListTable implements Executable, Registrable {
 	 * @since 1.0.0
 	 */
 	public function register(): ?bool {
+
 		// @codeCoverageIgnoreStart
 		if ( ! is_admin() && ! defined( 'PHPUNIT_TESTING' ) ) {
 			return false;
 		}
 		// @codeCoverageIgnoreEnd
 
+		add_action( Actions::AFTER_POST_SETUP, array( $this, 'init' ) );
 		add_filter( "manage_edit-{$this->pt}_sortable_columns", array( $this, 'set_sortable_columns' ) );
 		add_action( "manage_{$this->pt}_posts_custom_column", array( $this, 'render_columns' ), 2 );
 		add_filter( "manage_edit-{$this->pt}_columns", array( $this, 'set_columns' ), 10, 1 );
@@ -134,6 +127,42 @@ class SermonListTable implements Executable, Registrable {
 
 		add_action( 'manage_posts_extra_tablenav', array( $this, 'extra_nav' ), 10, 1 );
 		return true;
+	}
+
+	public function init() {
+		$tax   = DRPPSM_TAX_LIST;
+		$trans = 'drppsm_sermon_list_table_init';
+
+		$init = \get_transient( $trans );
+		if ( $init ) {
+			$this->columns  = $init['columns'];
+			$this->sortable = $init['sortable'];
+			return;
+		}
+
+		$this->columns['cb']     = '<input type="checkbox" />';
+		$this->columns['title']  = __( 'Sermon Title', 'drppsm' );
+		$this->sortable['title'] = 'title';
+
+		foreach ( $tax as $taxonomy ) {
+			$label = get_taxonomy_field( $taxonomy, 'label' );
+
+			$this->columns[ 'taxonomy-' . $taxonomy ]  = $label;
+			$this->sortable[ 'taxonomy-' . $taxonomy ] = $taxonomy;
+		}
+
+		$this->sortable[ Meta::DATE ]     = Meta::DATE;
+		$this->sortable['drppsm_views']   = __( 'Views', 'drppsm' );
+		$this->columns['drppsm_views']    = __( 'Views', 'drppsm' );
+		$this->columns['comments']        = __( 'Comments', 'drppsm' );
+		$this->columns['drppsm_preached'] = __( 'Preached', 'drppsm' );
+		$this->columns['date']            = __( 'Published' );
+
+		$data = array(
+			'columns'  => $this->columns,
+			'sortable' => $this->sortable,
+		);
+		set_transient( $trans, $data, DAY_IN_SECONDS );
 	}
 
 	/**
@@ -180,15 +209,6 @@ class SermonListTable implements Executable, Registrable {
 			}
 
 			switch ( $column ) {
-				case $this->tax_preacher:
-					$data = get_the_term_list( $post->ID, $this->tax_preacher, '', ', ', '' );
-					break;
-				case $this->tax_series:
-					$data = get_the_term_list( $post->ID, $this->tax_series, '', ', ', '' );
-					break;
-				case $this->tax_topics:
-					$data = get_the_term_list( $post->ID, $this->tax_topics, '', ', ', '' );
-					break;
 				case 'drppsm_views':
 					$data = PostTypeUtils::get_view_count( array( 'post_id' => $post->ID ) );
 					break;
@@ -251,13 +271,7 @@ class SermonListTable implements Executable, Registrable {
 	 * @since 1.0.0
 	 */
 	public function set_sortable_columns( array $columns ): array {
-		$custom = array(
-			'title'             => 'title',
-			$this->tax_series   => $this->tax_series,
-			$this->tax_preacher => $this->tax_preacher,
-			Meta::DATE          => Meta::DATE,
-			'drppsm_views'      => 'views',
-		);
+		$custom = $this->sortable;
 
 		return wp_parse_args( $custom, $columns );
 	}
@@ -411,6 +425,7 @@ class SermonListTable implements Executable, Registrable {
 		$output[] = $this->select_filter( $this->tax_service_type );
 		$output[] = $this->select_filter( $this->tax_preacher );
 		$output[] = $this->select_filter( $this->tax_series );
+		$output[] = $this->select_filter( $this->tax_topic );
 
 		$output = apply_filters( DRPPSMF_ADMIN_SERMON, $output );
 		return implode( "\n", $output );
@@ -433,7 +448,7 @@ class SermonListTable implements Executable, Registrable {
 			)
 		);
 
-		$field = TaxUtils::get_taxonomy_field( $tax, 'singular_name' );
+		$field = get_taxonomy_field( $tax, 'singular_name' );
 
 		/* translators: %s: Filter by service type. */
 		$label   = wp_sprintf( __( 'Filter by %s', 'drppsm' ), $field );

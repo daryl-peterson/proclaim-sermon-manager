@@ -68,12 +68,12 @@ return array(
 	),
 	'public'              => true,
 	'show_ui'             => true,
+	'show_admin_column'   => true,
 	'capability_type'     => DRPPSM_PT_SERMON,
 	'capabilities'        => $capabilities,
 	'map_meta_cap'        => true,
 	'publicly_queryable'  => true,
 	'exclude_from_search' => false,
-	'show_in_menu'        => true,
 	'menu_icon'           => $menu_icon,
 	'hierarchical'        => false,
 	'rewrite'             => array(
