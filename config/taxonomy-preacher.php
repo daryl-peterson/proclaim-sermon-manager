@@ -49,7 +49,6 @@ return array(
 	'show_in_rest'      => true,
 	'show_in_menu'      => true,
 	'show_admin_column' => true,
-	// 'show_admin_column' => true,
 	'rewrite'           => array(
 		'slug'       => $permalinks[ DRPPSM_TAX_PREACHER ],
 		'with_front' => false,

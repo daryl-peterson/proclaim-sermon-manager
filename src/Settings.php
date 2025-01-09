@@ -189,7 +189,7 @@ class Settings {
 				$options         = array();
 				$options[ $key ] = $value;
 				\delete_option( $option_key );
-				return \add_option( $option_key, $options );
+				return \add_option( $option_key, $options, '', true );
 			}
 
 			$options[ $key ] = $value;
