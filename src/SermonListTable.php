@@ -96,7 +96,6 @@ class SermonListTable implements Executable, Registrable {
 		add_filter( 'post_row_actions', array( $this, 'row_actions' ), 100, 2 );
 		add_filter( 'parse_query', array( $this, 'sermon_filters_query' ), 10, 1 );
 		add_action( 'manage_posts_extra_tablenav', array( $this, 'extra_nav' ), 10, 1 );
-
 		return true;
 	}
 

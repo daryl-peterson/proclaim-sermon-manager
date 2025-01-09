@@ -13,8 +13,6 @@ namespace DRPPSM;
 
 defined( 'ABSPATH' ) || exit;
 
-use DRPPSM\Interfaces\RewriteInt;
-
 /**
  * Check if any rewrite conflicts exist.
  *
@@ -24,7 +22,7 @@ use DRPPSM\Interfaces\RewriteInt;
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
  * @since       1.0.0
  */
-class Rewrite implements RewriteInt {
+class Rewrite {
 
 	/**
 	 * Transients.

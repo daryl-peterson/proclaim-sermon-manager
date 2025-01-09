@@ -24,7 +24,6 @@ use DRPPSM\Interfaces\RolesInt;
 use DRPPSM\Interfaces\TextDomainInt;
 use DRPPSM\Interfaces\ImageSizeInt;
 use DRPPSM\Interfaces\NoticeInt;
-use DRPPSM\Interfaces\RewriteInt;
 use DRPPSM\Logging\LogFile;
 use DRPPSM\Logging\LoggerInt;
 use DRPPSM\Logging\LogWritterInt;
@@ -46,7 +45,7 @@ return array(
 	QueryVars::class           => QueryVars::class,
 	QueueScripts::class        => QueueScripts::class,
 	RequirementsInt::class     => Requirements::class,
-	RewriteInt::class          => Rewrite::class,
+	Rewrite::class             => Rewrite::class,
 	RolesInt::class            => Roles::class,
 	SermonComments::class      => SermonComments::class,
 	SermonEdit::class          => SermonEdit::class,

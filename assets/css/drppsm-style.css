@@ -170,6 +170,10 @@
   margin: 0 4px;
 }
 
+#drppsm_views {
+  max-width: 100px;
+}
+
 .drppsm-single-header {
   text-align: center;
 }
