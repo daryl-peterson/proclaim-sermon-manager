@@ -194,13 +194,11 @@ class Rewrite {
 	 * @since 1.0.0
 	 */
 	private function has_conflicts( array $rewrite ): bool {
-		$conflict = false;
 		foreach ( $rewrite as $types ) {
 			if ( count( $types ) > 1 ) {
-				$conflict = true;
-				break;
+				return true;
 			}
 		}
-		return $conflict;
+		return false;
 	}
 }
