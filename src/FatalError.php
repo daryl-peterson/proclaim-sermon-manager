@@ -11,6 +11,8 @@
 
 namespace DRPPSM;
 
+use WP_Exception;
+
 defined( 'ABSPATH' ) || exit;
 
 /**
@@ -26,6 +28,12 @@ class FatalError {
 
 	private static $key = 'drppsm_fatal_error';
 
+	/**
+	 * Check if a fatal error exist.
+	 *
+	 * @return bool
+	 * @since 1.0.0
+	 */
 	public static function exist(): bool {
 		return (bool) \get_option( self::$key, false );
 	}
