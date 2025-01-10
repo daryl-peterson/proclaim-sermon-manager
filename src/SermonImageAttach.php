@@ -189,7 +189,8 @@ class SermonImageAttach implements Executable, Registrable {
 
 		if ( 0 === $attachment->post_parent ) {
 			$attachment->post_parent = $sermon->ID;
-			$result                  = wp_update_post( $attachment );
+
+			$result = wp_update_post( $attachment );
 
 			if ( $result instanceof WP_Error ) {
 				return false;
@@ -219,7 +220,8 @@ class SermonImageAttach implements Executable, Registrable {
 		}
 
 		$attachment->post_parent = 0;
-		$result                  = wp_update_post( $attachment );
+
+		$result = wp_update_post( $attachment );
 
 		if ( $result instanceof WP_Error ) {
 			return false;

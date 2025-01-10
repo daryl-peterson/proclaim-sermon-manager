@@ -233,6 +233,17 @@ class SCBase {
 			}
 		}
 
+		if ( ! $result ) {
+			// Lets go ahead and pluralize it.
+			if ( substr( $tax, -1 ) !== 's' ) {
+				$tax .= 's';
+			}
+
+			if ( key_exists( $tax, $this->tax_map ) ) {
+				$result = $this->tax_map[ $tax ];
+			}
+		}
+
 		return $result;
 	}
 }
