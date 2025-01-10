@@ -66,6 +66,7 @@ return array(
     'DRPPSM\\Roles' => $baseDir . '/src/Roles.php',
     'DRPPSM\\SCBase' => $baseDir . '/src/SCBase.php',
     'DRPPSM\\SCSeriesLatest' => $baseDir . '/src/SCSeriesLatest.php',
+    'DRPPSM\\SCSermonImages' => $baseDir . '/src/SCSermonImages.php',
     'DRPPSM\\SCSermonLatest' => $baseDir . '/src/SCSermonLatest.php',
     'DRPPSM\\SCSermonSorting' => $baseDir . '/src/SCSermonSorting.php',
     'DRPPSM\\SCSermons' => $baseDir . '/src/SCSermons.php',

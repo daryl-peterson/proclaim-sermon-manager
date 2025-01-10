@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Sermon bible series
+ * Sermon no records.
  *
  * @package     DRPPSM/Views/Partials
  * @author      Daryl Peterson <@gmail.com>
@@ -19,7 +19,7 @@ if ( ! did_action( 'get_header' ) ) {
 }
 
 get_partial( 'sermon-wrapper-start' );
-get_partial( 'content-sermon-filtering' );
+
 
 if ( have_posts() ) :
 
@@ -30,11 +30,6 @@ if ( have_posts() ) :
 		sermon_excerpt();
 	endwhile;
 
-	// echo apply_filters( 'archive-wpfc_sermon-after-sermons', '' );
-
-	echo '<div class="sm-pagination ast-pagination">';
-	// sm_pagination();
-	echo '</div>';
 else :
 	echo __( 'Sorry, but there aren\'t any posts matching your query.' );
 endif;

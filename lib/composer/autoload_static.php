@@ -127,6 +127,7 @@ class ComposerStaticInit672fe16c65cc53aa8b66e730cdfce0de
         'DRPPSM\\Roles' => __DIR__ . '/../..' . '/src/Roles.php',
         'DRPPSM\\SCBase' => __DIR__ . '/../..' . '/src/SCBase.php',
         'DRPPSM\\SCSeriesLatest' => __DIR__ . '/../..' . '/src/SCSeriesLatest.php',
+        'DRPPSM\\SCSermonImages' => __DIR__ . '/../..' . '/src/SCSermonImages.php',
         'DRPPSM\\SCSermonLatest' => __DIR__ . '/../..' . '/src/SCSermonLatest.php',
         'DRPPSM\\SCSermonSorting' => __DIR__ . '/../..' . '/src/SCSermonSorting.php',
         'DRPPSM\\SCSermons' => __DIR__ . '/../..' . '/src/SCSermons.php',

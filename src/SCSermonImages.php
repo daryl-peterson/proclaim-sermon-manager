@@ -18,6 +18,7 @@ use DRPPSM\Constants\Meta;
 use DRPPSM\Interfaces\Executable;
 use DRPPSM\Interfaces\Registrable;
 use WP_Error;
+use WP_Query;
 
 /**
  * Shortcodes for sermon images.
@@ -35,11 +36,11 @@ class SCSermonImages extends SCBase implements Executable, Registrable {
 	 *
 	 * @var string
 	 */
-	private string $sc;
+	private string $sc_images;
 
 	protected function __construct() {
 		parent::__construct();
-		$this->sc = DRPPSM_SC_SERMON_IMAGES;
+		$this->sc_images = DRPPSM_SC_SERMON_IMAGES;
 	}
 
 	public static function exec(): self {
@@ -49,10 +50,10 @@ class SCSermonImages extends SCBase implements Executable, Registrable {
 	}
 
 	public function register(): ?bool {
-		if ( shortcode_exists( $this->sc ) ) {
+		if ( shortcode_exists( $this->sc_images ) ) {
 			return false;
 		}
-		add_shortcode( $this->sc, array( $this, 'show_images' ) );
+		add_shortcode( $this->sc_images, array( $this, 'show_images' ) );
 		return true;
 	}
 
@@ -69,20 +70,16 @@ class SCSermonImages extends SCBase implements Executable, Registrable {
 
 		$atts = $this->fix_atts( $atts );
 		$args = $this->get_default_args();
-
-		// Join default and user options.
-		$args = shortcode_atts( $args, $atts, $this->sc );
+		$args = shortcode_atts( $args, $atts, $this->sc_images );
 
 		$tax = $this->get_taxonomy_name( $args['display'] );
 		if ( ! $tax ) {
 			return '<strong>Error: Invalid "list" parameter.</strong><br> Possible values are: "series", "preachers", "topics" and "books".<br> You entered: "<em>' . $args['display'] . '</em>"';
 		}
+
 		$args['display'] = $tax;
-
-		$query_args = $this->get_query_args( $args );
-
-		// Get items.
-		$terms = get_terms( $query_args );
+		$query_args      = $this->get_query_args( $args );
+		$terms           = get_terms( $query_args );
 
 		if ( $terms instanceof WP_Error ) {
 			Logger::error(
@@ -95,13 +92,17 @@ class SCSermonImages extends SCBase implements Executable, Registrable {
 			return 'Shortcode Error';
 		}
 
+		$args['query'] = $terms;
+		$meta_key      = $this->get_meta_key( $args );
 		if ( count( $terms ) > 0 ) {
-			Logger::debug( $terms );
-
+			foreach ( $terms as $term ) {
+				$result = get_term_meta( $term->term_id, $meta_key, true );
+				Logger::debug( $result );
+			}
 		} else {
 
 		}
-
+		$timer->stop( $timer_key );
 		return '';
 	}
 
@@ -116,19 +117,58 @@ class SCSermonImages extends SCBase implements Executable, Registrable {
 		);
 	}
 
+	/**
+	 * Get query args.
+	 *
+	 * @param array $args
+	 * @return array
+	 */
 	private function get_query_args( array $args ): array {
+
 		$query_args = array(
 			'taxonomy' => $args['display'],
-			'orderby'  => $args['orderby'],
 			'order'    => $args['order'],
+			'orderby'  => $args['orderby'],
 		);
 
-		if ( 'date' === $query_args['orderby'] ) {
-			$query_args['orderby']        = 'meta_value_num';
-			$query_args['meta_key']       = Meta::DATE;
-			$query_args['meta_compare']   = '<=';
-			$query_args['meta_value_num'] = time();
+		switch ( $args['display'] ) {
+			case DRPPSM_TAX_SERIES:
+				$meta_key = Meta::SERIES_IMAGE_ID;
+				break;
+			case DRPPSM_TAX_PREACHER;
+				$meta_key = Meta::PREACHER_IMAGE_ID;
+			default:
+				// code...
+				break;
 		}
+
+		$query_args['meta_query'][] = array(
+			'meta_key'     => $meta_key,
+			'meta_value'   => ' ',
+			'meta_compare' => '!=',
+		);
+
 		return $query_args;
+	}
+
+	/**
+	 * Get the meta key needed.
+	 *
+	 * @param array $args
+	 * @return null|string
+	 */
+	private function get_meta_key( array $args ): ?string {
+		$meta_key = null;
+		switch ( $args['display'] ) {
+			case DRPPSM_TAX_SERIES:
+				$meta_key = Meta::SERIES_IMAGE_ID;
+				break;
+			case DRPPSM_TAX_PREACHER;
+				$meta_key = Meta::PREACHER_IMAGE_ID;
+			default:
+				// code...
+				break;
+		}
+		return $meta_key;
 	}
 }

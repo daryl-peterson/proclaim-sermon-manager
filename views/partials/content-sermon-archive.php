@@ -14,7 +14,11 @@ namespace DRPPSM;
 
 defined( 'ABSPATH' ) or exit;
 
-$post_class = esc_attr( implode( ' ', get_post_class( 'drppsm-archive-article', $post ) ) );
+$post_class   = esc_attr( implode( ' ', get_post_class( 'drppsm-archive-article', $post ) ) );
+$tax_series   = DRPPSM_TAX_SERIES;
+$tax_preacher = DRPPSM_TAX_PREACHER;
+$tax_stype    = DRPPSM_TAX_SERVICE_TYPE;
+
 ?>
 
 <div id="sermon-archive-id-<?php the_ID(); ?>" class="<?php echo $post_class; ?>">
@@ -28,10 +32,43 @@ $post_class = esc_attr( implode( ' ', get_post_class( 'drppsm-archive-article', 
 		<div class="drppsm-archive-main">
 			<?php
 			get_partial( 'sermon-archive-title' );
-			get_partial( 'sermon-archive-meta-date', $args );
-			get_partial( 'sermon-archive-meta-series', $args );
-			get_partial( 'sermon-archive-meta-preacher', $args );
-			get_partial( 'sermon-archive-meta-service-type', $args );
+
+			// Get date meta.
+			$args_date = array(
+				'meta_label' => __( 'Date', 'drppsm' ),
+				'meta_value' => get_the_date(),
+			);
+			get_partial( 'sermon-archive-meta', $args_date );
+
+			// Get series meta.
+			if ( has_term( '', $tax_series, $post->ID ) ) {
+				$args_series = array(
+					'meta_label' => ucwords( Settings::get( Settings::SERIES ) ),
+					'meta_value' => get_the_term_list( $post->ID, $tax_series ),
+				);
+
+				get_partial( 'sermon-archive-meta', $args_series );
+			}
+
+			// Get preacher meta.
+			if ( has_term( '', $tax_preacher, $post->ID ) ) {
+				$args_preacher = array(
+					'meta_label' => ucwords( Settings::get( Settings::PREACHER ) ),
+					'meta_value' => get_the_term_list( $post->ID, $tax_preacher ),
+				);
+
+				get_partial( 'sermon-archive-meta', $args_preacher );
+			}
+
+			// Get service type meta.
+			if ( has_term( '', $tax_stype, $post->ID ) ) {
+				$args_stype = array(
+					'meta_label' => ucwords( Settings::get( Settings::SERVICE_TYPE ) ),
+					'meta_value' => get_the_term_list( $post->ID, $tax_stype ),
+				);
+
+				get_partial( 'sermon-archive-meta', $args_stype );
+			}
 			?>
 
 		</div>

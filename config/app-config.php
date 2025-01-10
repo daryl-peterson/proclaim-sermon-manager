@@ -52,6 +52,7 @@ return array(
 	SCSeriesLatest::class      => SCSeriesLatest::class,
 	SCSermonLatest::class      => SCSermonLatest::class,
 	SCSermons::class           => SCSermons::class,
+	SCSermonImages::class      => SCSermonImages::class,
 	SCSermonSorting::class     => SCSermonSorting::class,
 	SCTerms::class             => SCTerms::class,
 	TaxonomyImageAttach::class => TaxonomyImageAttach::class,
