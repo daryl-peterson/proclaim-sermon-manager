@@ -11,6 +11,8 @@
 
 namespace DRPPSM;
 
+use WP_Exception;
+
 defined( 'ABSPATH' ) || exit;
 
 /**
@@ -128,6 +130,12 @@ class ImageSize {
 		return $result;
 	}
 
+	/**
+	 * Get all image sizes.
+	 *
+	 * @return mixed|array
+	 * @since 1.0.0
+	 */
 	public function get_all_image_sizes() {
 		global $_wp_additional_image_sizes;
 
