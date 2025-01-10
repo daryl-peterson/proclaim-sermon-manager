@@ -16,7 +16,6 @@ defined( 'ABSPATH' ) || exit;
 
 use DRPPSM\Interfaces\Executable;
 use DRPPSM\Interfaces\Registrable;
-use WP_Exception;
 
 /**
  * Template class.
@@ -33,50 +32,17 @@ class Templates implements Executable, Registrable {
 	 * Post type
 	 *
 	 * @var string
+	 * @since 1.0.0
 	 */
 	private string $pt;
 
 	/**
-	 * Bible taxonomy.
+	 * Path for plugin templates.
 	 *
-	 * @var string
+	 * @var array
 	 * @since 1.0.0
 	 */
-	private string $tax_bible;
-
-	/**
-	 * Preacher taxonomy.
-	 *
-	 * @var string
-	 * @since 1.0.0
-	 */
-	private string $tax_preacher;
-
-	/**
-	 * Series taxonomy.
-	 *
-	 * @var string
-	 * @since 1.0.0
-	 */
-	private string $tax_series;
-
-
-	/**
-	 * Service type taxonomy.
-	 *
-	 * @var string
-	 * @since 1.0.0
-	 */
-	private string $tax_service_type;
-
-
-	/**
-	 * Topics taxonomy.
-	 *
-	 * @var string
-	 * @since 1.0.0
-	 */
-	private string $tax_topics;
+	private array $path_plugin;
 
 	/**
 	 * Initialize object properties.
@@ -84,12 +50,12 @@ class Templates implements Executable, Registrable {
 	 * @since 1.0.0
 	 */
 	protected function __construct() {
-		$this->pt               = DRPPSM_PT_SERMON;
-		$this->tax_bible        = DRPPSM_TAX_BIBLE;
-		$this->tax_preacher     = DRPPSM_TAX_PREACHER;
-		$this->tax_series       = DRPPSM_TAX_SERIES;
-		$this->tax_service_type = DRPPSM_TAX_SERVICE_TYPE;
-		$this->tax_topics       = DRPPSM_TAX_TOPICS;
+		$this->pt          = DRPPSM_PT_SERMON;
+		$this->path_plugin = array(
+			DRPPSM_PATH . 'views/partials/',
+			DRPPSM_PATH . 'views/template-parts/',
+			DRPPSM_PATH . 'views/',
+		);
 	}
 
 	/**
@@ -167,85 +133,54 @@ class Templates implements Executable, Registrable {
 		$name_org = $name;
 
 		$partial = $this->locate_partial( $name, $args );
+
 		if ( $partial ) {
 			load_template( $partial, false, $args );
 		}
-
-		/**
-		 * Allows for filtering the name of the template with path.
-		 * - Filters are prefixed with drppsmf_
-		 *
-		 * @param string $name File name.
-		 * @param array  $args Array of variables to pass to template.
-		 * @return string $name File name.
-		 * @category filter
-		 * @since 1.0.0
-		 */
-
-		/*
-		$name = apply_filters( 'drppsmf_tpl_partial', $name, $args );
-
-		if ( $name !== $name_org ) {
-			if ( file_exists( $name ) ) {
-				load_template( $name, false, $args );
-
-			}
-			$name = $name_org;
-		}
-
-		$name    = $this->fix_template_name( $name );
-		$partial = $this->get_partial_theme( $name );
-
-		if ( ! $partial ) {
-			$partial = $this->get_partial_plugin( $name );
-		}
-
-		if ( $partial ) {
-			if ( $return_name ) {
-				return $partial;
-			}
-			load_template( $partial, false, $args );
-		} else {
-			$this->template_error( $name );
-			Logger::error(
-				array(
-					'NAME' => $name,
-					'ARGS' => $args,
-				)
-			);
-		}
-		*/
 	}
 
+	/**
+	 * Locate the path to the template.
+	 *
+	 * @param string $name
+	 * @param array  $args
+	 * @return null|string
+	 * @since 1.0.0
+	 */
 	public function locate_partial( string $name, array $args = array() ): ?string {
 
 		// Save orginal name.
 		$name_org = $name;
+		$eol1     = PHP_EOL;
+		$eol2     = str_repeat( PHP_EOL, 2 );
 
 		/**
-		 * Allows for filtering the name of the template with path.
-		 * - Filters are prefixed with drppsmf_
+		 * Allows for changing the name.
 		 *
 		 * @param string $name File name.
 		 * @param array  $args Array of variables to pass to template.
 		 * @return string $name File name.
+		 *
 		 * @category filter
 		 * @since 1.0.0
 		 */
 		$name = apply_filters( 'drppsmf_tpl_partial', $name, $args );
+		$name = $this->fix_template_name( $name );
 
 		$partial = $this->get_parial_filter( $name, $args );
 		if ( $partial ) {
 			return $partial;
 		}
 
-		$name    = $this->fix_template_name( $name );
 		$partial = $this->get_partial_theme( $name );
 		if ( $partial ) {
 			return $partial;
 		}
 
 		$partial = $this->get_partial_plugin( $name );
+		if ( is_null( $partial ) ) {
+			Logger::debug( $eol2 . "NAME    : $name{$eol1}PARTIAL : $partial" );
+		}
 		return $partial;
 	}
 
@@ -341,11 +276,7 @@ class Templates implements Executable, Registrable {
 	private function get_partial_plugin( string $name ): ?string {
 		$partial = null;
 
-		$search = array(
-			DRPPSM_PATH . 'views/partials/',
-			DRPPSM_PATH . 'views/template-parts/',
-		);
-		foreach ( $search as $path ) {
+		foreach ( $this->path_plugin as $path ) {
 			if ( file_exists( $path . $name ) ) {
 				$partial = $path . $name;
 				break;
@@ -360,12 +291,12 @@ class Templates implements Executable, Registrable {
 		$name_org = $name;
 
 		/**
-		 * Allows for filtering the name of the template with path.
-		 * - Filters are prefixed with drppsmf_
+		 * Filter to allow changing the name of the template file.
 		 *
 		 * @param string $name File name.
 		 * @param array  $args Array of variables to pass to template.
 		 * @return string $name File name.
+		 *
 		 * @category filter
 		 * @since 1.0.0
 		 */

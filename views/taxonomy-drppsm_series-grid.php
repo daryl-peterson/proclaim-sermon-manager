@@ -13,11 +13,11 @@ namespace DRPPSM;
 
 defined( 'ABSPATH' ) || exit;
 
+
+
 if ( ! did_action( 'get_header' ) ) {
 	get_header();
 }
-
-get_partial( 'sermon-sc-start' );
 
 $template     = str_replace( '.php', '', basename( __FILE__ ) );
 $failure      = '<p><b>' . DRPPSM_TITLE . '</b>: Partial "<i>' . $template . '</i>" loaded incorrectly.</p>';
@@ -34,6 +34,11 @@ if ( ! isset( $args ) ) {
 
 extract( $args );
 
+get_partial( 'sc-wrapper-start' );
+
+
+extract( $args );
+
 // Check if requirements are met.
 foreach ( $requirements as $required_variable ) {
 	if ( ! isset( $$required_variable ) ) {
@@ -45,10 +50,14 @@ foreach ( $requirements as $required_variable ) {
 
 
 foreach ( $terms as $term ) {
-	get_partial( '' );
+	$grid = array(
+		'term'     => $term,
+		'taxonomy' => DRPPSM_TAX_SERIES,
+	);
+	get_partial( 'content-series-grid', $grid );
 
 }
 
 
 
-get_partial( 'sermon-sc-end' );
+get_partial( 'sc-wrapper-end' );

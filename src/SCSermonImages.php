@@ -18,7 +18,6 @@ use DRPPSM\Constants\Meta;
 use DRPPSM\Interfaces\Executable;
 use DRPPSM\Interfaces\Registrable;
 use WP_Error;
-use WP_Query;
 
 /**
  * Shortcodes for sermon images.
@@ -92,18 +91,23 @@ class SCSermonImages extends SCBase implements Executable, Registrable {
 			return 'Shortcode Error';
 		}
 
-		$args['query'] = $terms;
-		$meta_key      = $this->get_meta_key( $args );
+		$output = '';
 		if ( count( $terms ) > 0 ) {
-			foreach ( $terms as $term ) {
-				$result = get_term_meta( $term->term_id, $meta_key, true );
-				Logger::debug( $result );
-			}
+			ob_start();
+			get_partial(
+				"taxonomy-{$tax}-grid",
+				array(
+					'terms'      => $terms,
+					'image_size' => $args['image_size'],
+					'taxonomy'   => $tax,
+				)
+			);
+			$output .= ob_get_clean();
 		} else {
 
 		}
 		$timer->stop( $timer_key );
-		return '';
+		return $output;
 	}
 
 	private function get_default_args(): array {
@@ -114,6 +118,7 @@ class SCSermonImages extends SCBase implements Executable, Registrable {
 			'size'             => 'sermon_medium',
 			'hide_title'       => false,
 			'show_description' => false,
+			'image_size'       => 'sermon_medium',
 		);
 	}
 
@@ -122,6 +127,7 @@ class SCSermonImages extends SCBase implements Executable, Registrable {
 	 *
 	 * @param array $args
 	 * @return array
+	 * @since 1.0.0
 	 */
 	private function get_query_args( array $args ): array {
 

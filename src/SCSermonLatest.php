@@ -137,7 +137,7 @@ class SCSermonLatest extends SCBase implements Executable, Registrable {
 		if ( $query->have_posts() ) {
 
 			ob_start();
-			get_partial( 'sermon-sc-start', $args );
+			get_partial( 'sc-wrapper-start', $args );
 			$output .= ob_get_clean();
 
 			while ( $query->have_posts() ) {
@@ -150,11 +150,11 @@ class SCSermonLatest extends SCBase implements Executable, Registrable {
 
 				/**
 				 * Filter single sermon output.
-				 * - Filters shoud be prefixed with drppsmf_
 				 *
 				 * @param string $output Output from sermon rendering.
 				 * @param WP_Post $post
 				 * @param array $args Array of aguments.
+				 *
 				 * @category filter
 				 * @since 1.0.0
 				 */
@@ -169,7 +169,7 @@ class SCSermonLatest extends SCBase implements Executable, Registrable {
 			$output .= ob_get_clean();
 
 			ob_start();
-			get_partial( 'sermon-sc-end', $args );
+			get_partial( 'sc-wrapper-end', $args );
 			$output .= ob_get_clean();
 
 		} else {
