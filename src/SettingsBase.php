@@ -128,7 +128,7 @@ class SettingsBase {
 			'type'          => 'heading',
 			'repeatable'    => true,
 			'render_row_cb' => function () use ( $title ) {
-				echo "<h3 class='drppsm-seperator'>$title</h3><hr>";
+				echo "<h3 class='seperator'>$title</h3><hr>";
 			},
 		);
 

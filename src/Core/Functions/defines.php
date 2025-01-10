@@ -167,7 +167,7 @@ define(
  * *defaults shown with ()*
  * - **filter_by** :Options "series", "preachers", "topics", "books", "service_type"
  * - **filter_value** : Use the "slug" related to the taxonomy field you want to filter by. ('')
- * - **image_size** : { sermon_small, sermon_medium, sermon_wide, thumbnail, medium, large, full } ect. (sermon_medium)
+ * - **image_size** : { proclaim_small, proclaim_medium, proclaim_wide, thumbnail, medium, large, full } ect.
  * - **per_page** : Number of sermons to display. (10)
  * - **order** : "DESC" for descending; "ASC" for ascending. (DESC)
  * - **orderby** : Options "date", "id", "none", "title", "name", "rand", "comment_count"
@@ -182,7 +182,7 @@ define( 'DRPPSM_SC_SERIES_LATEST', 'drppsm_series_latest' );
  * *defaults shown with ()*
  * - **filter_by** :Options "series", "preachers", "topics", "books", "service_type"
  * - **filter_value** : Use the "slug" related to the taxonomy field you want to filter by. ('')
- * - **image_size** : { sermon_small, sermon_medium, sermon_wide, thumbnail, medium, large, full } ect. (sermon_medium)
+ * - **image_size** : { proclaim_small, proclaim_medium, proclaim_wide, thumbnail, medium, large, full } ect.
  * - **per_page** : Number of sermons to display. (10)
  * - **order** : "DESC" for descending; "ASC" for ascending. (DESC)
  * - **orderby** : Options "date", "id", "none", "title", "name", "rand", "comment_count"

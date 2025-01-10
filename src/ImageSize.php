@@ -29,9 +29,9 @@ class ImageSize implements ImageSizeInt {
 	/**
 	 * Image sizes.
 	 */
-	public const SERMON_SMALL  = 'sermon_small';
-	public const SERMON_MEDIUM = 'sermon_medium';
-	public const SERMON_WIDE   = 'sermon_wide';
+	public const SERMON_SMALL  = 'proclaim_small';
+	public const SERMON_MEDIUM = 'proclaim_medium';
+	public const SERMON_WIDE   = 'proclaim_wide';
 
 	/**
 	 * Size arrarrys.
@@ -50,17 +50,17 @@ class ImageSize implements ImageSizeInt {
 			self::SERMON_SMALL  => array(
 				75,
 				75,
-				true,
+				false,
 			),
 			self::SERMON_MEDIUM => array(
 				300,
 				200,
-				true,
+				false,
 			),
 			self::SERMON_WIDE   => array(
 				940,
 				350,
-				true,
+				false,
 			),
 		);
 	}
@@ -98,7 +98,9 @@ class ImageSize implements ImageSizeInt {
 	 * @since 1.0.0
 	 */
 	public function run(): bool {
-		$result = true;
+		$timer     = Timer::get_instance();
+		$timer_key = $timer->start( __FUNCTION__, __FILE__ );
+		$result    = true;
 
 		// @codeCoverageIgnoreStart
 		if ( ! function_exists( '\add_image_size' ) ) {
@@ -110,6 +112,8 @@ class ImageSize implements ImageSizeInt {
 			add_image_size( $name, ...$settings );
 		}
 
+		Logger::debug( $this->get_all_image_sizes() );
+
 		foreach ( $this->sizes as $name => $settings ) {
 			$result = has_image_size( $name );
 
@@ -119,8 +123,26 @@ class ImageSize implements ImageSizeInt {
 			}
 			// @codeCoverageIgnoreEnd
 		}
-
+		$timer->stop( $timer_key );
 		return $result;
+	}
+
+	public function get_all_image_sizes() {
+		global $_wp_additional_image_sizes;
+
+		$default_image_sizes = get_intermediate_image_sizes();
+
+		foreach ( $default_image_sizes as $size ) {
+			$image_sizes[ $size ]['width']  = intval( get_option( "{$size}_size_w" ) );
+			$image_sizes[ $size ]['height'] = intval( get_option( "{$size}_size_h" ) );
+			$image_sizes[ $size ]['crop']   = get_option( "{$size}_crop" ) ? get_option( "{$size}_crop" ) : false;
+		}
+
+		if ( isset( $_wp_additional_image_sizes ) && count( $_wp_additional_image_sizes ) ) {
+			$image_sizes = array_merge( $image_sizes, $_wp_additional_image_sizes );
+		}
+
+		return $image_sizes;
 	}
 
 	/**

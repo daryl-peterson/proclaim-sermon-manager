@@ -300,12 +300,10 @@ class TaxonomyListTable implements Executable, Registrable {
 	 */
 	private function get_image_url( int $term_id ): ?string {
 
-		$temp = wp_get_registered_image_subsizes();
-
 		$name     = $this->get_tax_name();
 		$image_id = get_term_meta( $term_id, $name . '_image_id', true );
 		if ( $image_id && ! empty( $image_id ) ) {
-			return wp_get_attachment_image_url( $image_id, 'sermon_small' );
+			return wp_get_attachment_image_url( $image_id, 'thumbnail' );
 		}
 
 		$url = get_term_meta( $term_id, $name . '_image', true );

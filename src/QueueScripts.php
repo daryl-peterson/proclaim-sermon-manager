@@ -99,7 +99,7 @@ class QueueScripts implements Registrable, Executable {
 	public function init_script_styles() {
 		$url = Helper::get_url() . 'assets';
 
-		$file = $url . '/css/drppsm-admin.min.css';
+		$file = $url . '/css/drppsm-admin.css';
 		wp_register_style(
 			'drppsm-admin-style',
 			$file,

@@ -170,7 +170,7 @@ class SermonListTable implements Executable, Registrable {
 		$html    = <<<EOT
 			<input id="drppsm-custom-filters" name="drppsm-custom-filters" type="button" class="button toggle" value="More" data-item="#drppsm-filter">
 			<input id="drppsm-filter-reset" name="drppsm-filter-reset" type="button" class="button" value="Reset" data-url="$url">
-			<div id="drppsm-filter" class="drppsm-wrap display-none">
+			<div id="drppsm-filter" class="drppsm-wrap drppsm-dnone">
 				<div id="drppsm-content" class="drppsm-content">
 					$filters
 				</div>
@@ -273,7 +273,7 @@ class SermonListTable implements Executable, Registrable {
 	 */
 	public function set_table_primary_column( string $existing, string $screen_id ): string {
 		if ( "edit-{$this->pt}" === $screen_id ) {
-			return 'title';
+			return 'drpms-pt-title';
 		}
 
 		return $existing;

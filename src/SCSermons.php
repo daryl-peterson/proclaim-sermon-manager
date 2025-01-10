@@ -71,7 +71,7 @@ class SCSermons extends SCBase implements Executable, Registrable {
 	 * - **filter_by** Options "series", "preachers", "topics", "books", "service_type". ('')
 	 * - **filter_value** Use the "slug" related to the taxonomy field you want to filter by. ('')
 	 * - **disable_pagination**  Set to 1 to hide pagination.
-	 * - **image_size** { sermon_small, sermon_medium, sermon_wide, thumbnail, medium, large, full } any added with add_image_size().
+	 * - **image_size** : { proclaim_small, proclaim_medium, proclaim_wide, thumbnail, medium, large, full } ect.
 	 * - **year** Show only sermons created in the specified year.
 	 * - **month** Show only sermons created in the specified month, regardless of year.
 	 * - **week** Show only sermons created in the specified week.

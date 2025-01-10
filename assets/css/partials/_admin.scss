@@ -1,0 +1,176 @@
+#drppsm {
+
+	min-width: none;
+
+	&-content {
+		display: block;
+		width: auto;
+	}
+
+	&-custom-filters {
+		margin-right: 5px;
+	}
+
+	.settings-main {
+		display: flex;
+		margin-top: 5px;
+	}
+
+	.wrap-heading {
+		font-size: 24px;
+		padding-bottom: 10px;
+		display: inline-block;
+		vertical-align: middle;
+	}
+
+	.settings-content {
+		width: 100%;
+		background: white;
+		border: 1px solid #c3c4c7;
+		box-shadow: 0 1px 1px rgba(0, 0, 0, .04);
+	}
+
+	.settings-content .inside {
+		padding: .2rem 1rem .01rem 1rem;
+	}
+
+	.settings-side {
+		width: 30%;
+		max-width: 300px;
+		margin-left: 1rem;
+	}
+
+	.settings-content .nav-tab-wrapper {
+		background: white;
+		padding: 0;
+		border-bottom: 1px solid #e8e8e8;
+	}
+
+	.settings-content .nav-tab-wrapper .nav-tab {
+		float: none;
+		border: none;
+		margin: 0;
+		padding: 20px 20px;
+		display: inline-block;
+		background: none;
+	}
+
+	.settings-content .nav-tab-wrapper .nav-tab-active,
+	.settings-content .nav-tab-wrapper .nav-tab-active:focus,
+	.settings-content .nav-tab-wrapper .nav-tab-active:focus:active,
+	.settings-content .nav-tab-wrapper .nav-tab-active:hover {
+		border-bottom: 2px solid #4abcf0;
+		font-weight: bold;
+	}
+
+	.cmb-row.cmb-type-checkbox .cmb-th {
+		padding: 16px 10px 10px 0;
+	}
+
+	.cmb-th label {
+
+		padding: 0px;
+	}
+
+	.spacer {
+		margin-right: 8px;
+	}
+
+	.description {
+		max-width: 850px;
+		margin-bottom: 10px;
+	}
+
+	.bg-debug {
+		background: white;
+		border: 1px solid #c3c4c7;
+		box-shadow: 0 1px 1px rgba(0, 0, 0, .04);
+		border-radius: 5px;
+		min-height: 100px;
+	}
+
+	.seperator {
+		margin: 2.5em 0 .4em 0;
+		font-size: 1.1em;
+
+	}
+
+}
+
+.drppsm {
+	&-wrap {
+		width: 100%;
+		margin: 20px 0px 5px 0px;
+		display: table;
+		clear: both;
+	}
+
+	&-dnone {
+		display: none !important;
+	}
+
+	&-tax-thumb {
+		width: 75px;
+		height: 75px;
+	}
+
+	&-tax-thumb>img {
+		display: block;
+		border: none;
+		width: 75px;
+		height: 75px;
+		object-fit: fill;
+	}
+
+}
+
+#drppsm_views {
+	width: 5%;
+}
+
+#taxonomy-drppsm_preacher,
+#taxonomy-drppsm_series {
+	min-width: 15%
+}
+
+@media(max-width: 800px) {
+
+	#drppsm {
+
+		.settings-side {
+			display: none;
+		}
+
+		.cmb-td,
+		.cmb-th,
+		.cmb-th+.cmb-td {
+			display: block;
+			float: none !important;
+			width: auto !important;
+			padding: 0 0 8px 0;
+		}
+
+		.cmb-type-group .cmb-th,
+		.cmb2-postbox .cmb-th {
+			width: 100% !important;
+			padding: 0 2% 0 0;
+		}
+
+		.cmb-type-group .cmb-th+.cmb-td,
+		.cmb2-postbox .cmb-th+.cmb-td {
+			width: 100% !important;
+			float: none !important;
+		}
+
+		.cmb2-wrap input.cmb2-upload-file {
+			width: 100% !important;
+		}
+
+		.cmb2-wrap input:not([type="hidden"])+.button-secondary,
+		.cmb2-wrap input:not([type="hidden"])+input,
+		.cmb2-wrap input:not([type="hidden"])+select {
+			margin-left: 0px !important;
+		}
+
+	}
+}
