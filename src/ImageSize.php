@@ -85,7 +85,7 @@ class ImageSize {
 		if ( has_action( 'after_setup_theme', array( $this, 'run' ) ) ) {
 			return false;
 		}
-		add_action( 'after_setup_theme', array( $this, 'run' ) );
+		add_action( 'after_setup_theme', array( $this, 'run' ), 100, 1 );
 		return true;
 	}
 
