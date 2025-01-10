@@ -104,7 +104,6 @@ class ComposerStaticInit672fe16c65cc53aa8b66e730cdfce0de
         'DRPPSM\\Interfaces\\RequirementsInt' => __DIR__ . '/../..' . '/src/Core/Interfaces/RequirementsInt.php',
         'DRPPSM\\Interfaces\\RolesInt' => __DIR__ . '/../..' . '/src/Core/Interfaces/RolesInt.php',
         'DRPPSM\\Interfaces\\Runable' => __DIR__ . '/../..' . '/src/Core/Interfaces/Runable.php',
-        'DRPPSM\\Interfaces\\TaxonomyRegInt' => __DIR__ . '/../..' . '/src/Core/Interfaces/TaxonomyRegInt.php',
         'DRPPSM\\Interfaces\\TextDomainInt' => __DIR__ . '/../..' . '/src/Core/Interfaces/TextDomainInt.php',
         'DRPPSM\\Loader' => __DIR__ . '/../..' . '/src/Loader.php',
         'DRPPSM\\Logger' => __DIR__ . '/../..' . '/src/Logger.php',

@@ -20,7 +20,6 @@ use DRPPSM\PostTypeReg;
 use DRPPSM\Exceptions\PluginException;
 use DRPPSM\Interfaces\Executable;
 use DRPPSM\Interfaces\Registrable;
-use DRPPSM\Interfaces\TaxonomyRegInt;
 use DRPPSM\TaxonomyReg;
 
 /**
@@ -116,7 +115,7 @@ class PostTypeSetup implements Executable, Registrable {
 				/**
 				 * Taxonomy registration interface.
 				 *
-				 * @var TaxonomyRegInt $taxonomy
+				 * @var TaxonomyReg $taxonomy
 				 */
 				foreach ( $taxonomies as $taxonomy ) {
 					$taxonomy->add();
@@ -156,7 +155,7 @@ class PostTypeSetup implements Executable, Registrable {
 				/**
 				 * Taxonomy registration interface.
 				 *
-				 * @var TaxonomyRegInt $taxonomy
+				 * @var TaxonomyReg $taxonomy
 				 */
 				foreach ( $taxonomies as $taxonomy ) {
 					$taxonomy->remove();

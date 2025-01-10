@@ -43,7 +43,6 @@ return array(
     'DRPPSM\\Interfaces\\RequirementsInt' => $baseDir . '/src/Core/Interfaces/RequirementsInt.php',
     'DRPPSM\\Interfaces\\RolesInt' => $baseDir . '/src/Core/Interfaces/RolesInt.php',
     'DRPPSM\\Interfaces\\Runable' => $baseDir . '/src/Core/Interfaces/Runable.php',
-    'DRPPSM\\Interfaces\\TaxonomyRegInt' => $baseDir . '/src/Core/Interfaces/TaxonomyRegInt.php',
     'DRPPSM\\Interfaces\\TextDomainInt' => $baseDir . '/src/Core/Interfaces/TextDomainInt.php',
     'DRPPSM\\Loader' => $baseDir . '/src/Loader.php',
     'DRPPSM\\Logger' => $baseDir . '/src/Logger.php',

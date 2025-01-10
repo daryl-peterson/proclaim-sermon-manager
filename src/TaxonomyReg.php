@@ -15,7 +15,6 @@ defined( 'ABSPATH' ) || exit;
 
 use DRPPSM\Exceptions\PluginException;
 use DRPPSM\Helper;
-use DRPPSM\Interfaces\TaxonomyRegInt;
 
 /**
  * Taxonomy Registration.
@@ -26,7 +25,7 @@ use DRPPSM\Interfaces\TaxonomyRegInt;
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
  * @since       1.0.0
  */
-class TaxonomyReg implements TaxonomyRegInt {
+class TaxonomyReg {
 
 	/**
 	 * Taxonomy.
