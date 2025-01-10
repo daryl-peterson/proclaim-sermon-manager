@@ -291,7 +291,9 @@ class SermonListTable implements Executable, Registrable {
 		if ( ! $this->post_type_match() ) {
 			return $actions;
 		}
-		return array_merge( array( 'id' => 'ID: ' . $post->ID ), $actions );
+		unset( $actions['inline hide-if-no-js'] );
+
+		return array_merge( array( 'id' => $post->ID ), $actions );
 	}
 
 	/**

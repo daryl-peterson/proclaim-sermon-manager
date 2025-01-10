@@ -69,7 +69,7 @@ class SCSermonLatest extends SCBase implements Executable, Registrable {
 	 * - **filter_by** :Options "series", "preachers", "topics", "books", "service_type"
 	 * - **filter_value** : Use the "slug" related to the taxonomy field you want to filter by. ('')
 	 * - **image_size** : { proclaim_small, proclaim_medium, proclaim_wide, thumbnail, medium, large, full } ect.
-	 * - **per_page** : Number of sermons to display. (10)
+	 * - **per_page** : Number of sermons to display. (5)
 	 * - **order** : "DESC" for descending; "ASC" for ascending. (DESC)
 	 * - **orderby** : Options "date", "id", "none", "title", "name", "rand", "comment_count"
 	 *
@@ -84,6 +84,10 @@ class SCSermonLatest extends SCBase implements Executable, Registrable {
 	 */
 	public function show_sermon_latest( array $atts ): string {
 		global $wp_query;
+
+		if ( ! isset( $wp_query->post->ID ) ) {
+			return '';
+		}
 		$post_id = $wp_query->post->ID;
 
 		$atts = $this->fix_atts( $atts );
@@ -93,8 +97,8 @@ class SCSermonLatest extends SCBase implements Executable, Registrable {
 			'filter_by'    => '',
 			'filter_value' => '',
 			'order'        => 'DESC',
-			'orderby'      => '',
-			'per_page'     => 10,
+			'orderby'      => 'post_modified',
+			'per_page'     => 5,
 			'image_size'   => ImageSize::SERMON_MEDIUM,
 		);
 
@@ -116,14 +120,25 @@ class SCSermonLatest extends SCBase implements Executable, Registrable {
 		);
 
 		$query_args = $this->set_filter( $args, $query_args );
-		$query      = new WP_Query( $query_args );
+
+		Logger::debug(
+			array(
+				'QUERY ARGS' => $query_args,
+				'ARGS'       => $args,
+			)
+		);
+		$query = new WP_Query( $query_args );
 
 		// Add query and post_id to the args.
 		$args['query']   = $query;
 		$args['post_id'] = $post_id;
+		$output          = '';
 
-		ob_start();
 		if ( $query->have_posts() ) {
+
+			ob_start();
+			get_partial( 'sermon-sc-start', $args );
+			$output .= ob_get_clean();
 
 			while ( $query->have_posts() ) {
 				$query->the_post();
@@ -131,7 +146,7 @@ class SCSermonLatest extends SCBase implements Executable, Registrable {
 
 				ob_start();
 				get_partial( 'content-sermon-archive', $args );
-				$output = ob_get_clean();
+				$output .= ob_get_clean();
 
 				/**
 				 * Filter single sermon output.
@@ -143,22 +158,27 @@ class SCSermonLatest extends SCBase implements Executable, Registrable {
 				 * @category filter
 				 * @since 1.0.0
 				 */
-				echo apply_filters( 'drppsmf_sc_sermon_single_output', $output, $post, $args );
+				$output = apply_filters( 'drppsmf_sc_sermon_single_output', $output, $post, $args );
 
 			}
 
 			wp_reset_postdata();
 
+			ob_start();
 			get_partial( 'sermon-pagination', $args );
+			$output .= ob_get_clean();
+
+			ob_start();
+			get_partial( 'sermon-sc-end', $args );
+			$output .= ob_get_clean();
+
 		} else {
+			Logger::debug( 'NO POSTS' );
+			ob_start();
 			get_partial( 'content-sermon-none' );
+			$output .= ob_get_clean();
 		}
 
-		$result = ob_get_clean();
-
-		if ( $output !== '' ) {
-			$result = $output;
-		}
-		return $result;
+		return $output;
 	}
 }

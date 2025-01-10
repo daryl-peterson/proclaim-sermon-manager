@@ -94,3 +94,14 @@ $overcast-color : #ff8800;
 		}
 	}
 }
+
+#drppsm {
+	&-sc-wrapper {
+		padding: 1.5em;
+		min-height: 70vh;
+	}
+
+	&-sc-wrapper:first-child {
+		margin-top: 2.5em;
+	}
+}

@@ -67,6 +67,8 @@ class SCBase {
 			// Term string to array.
 			$terms = explode( ',', $args['filter_value'] );
 
+			Logger::debug( array( 'TERMS' => $terms ) );
+
 			if ( ! empty( $terms ) ) {
 				$field = 'slug';
 
@@ -91,11 +93,12 @@ class SCBase {
 
 				$query_args['tax_query'] = array(
 					array(
-						'taxonomy' => $this->convert_taxonomy_name( $args['filter_by'], false ),
+						'taxonomy' => $this->convert_taxonomy_name( $args['filter_by'], true ),
 						'field'    => 'slug',
 						'terms'    => $terms,
 					),
 				);
+
 			}
 		}
 
@@ -162,6 +165,8 @@ class SCBase {
 			if ( substr( $name, -1 ) !== 's' ) {
 				$name .= 's';
 			}
+
+			Logger::debug( $this->tax_map );
 
 			if ( key_exists( $name, $this->tax_map ) ) {
 				$result = $this->tax_map[ $name ];

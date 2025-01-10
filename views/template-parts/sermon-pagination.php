@@ -15,11 +15,11 @@ use WP_Error;
 
 defined( 'ABSPATH' ) or exit;
 
-if ( ! isset( $args['query'] ) || ! isset( $args['post_id'] ) || ! isset( $args['disable_pagination'] ) ) {
+if ( ! isset( $args['query'] ) || ! isset( $args['post_id'] ) ) {
 	return;
 }
 
-if ( $args['disable_pagination'] === 1 ) {
+if ( key_exists( 'disable_pagination', $args ) && $args['disable_pagination'] === 1 ) {
 	return;
 }
 
