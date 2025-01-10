@@ -198,6 +198,13 @@ class SCBase {
 		return $atts;
 	}
 
+	/**
+	 * Check if the order by is valid.
+	 *
+	 * @param array $args
+	 * @return bool
+	 * @since 1.0.0
+	 */
 	protected function is_valid_orderby( array $args ): bool {
 		$orderby = strtolower( $args['orderby'] );
 
@@ -205,5 +212,27 @@ class SCBase {
 			return false;
 		}
 		return true;
+	}
+
+	/**
+	 * Get the actual name of the taxonomy.
+	 *
+	 * @param string $tax
+	 * @return null|string
+	 * @since 1.0.0
+	 */
+	protected function get_taxonomy_name( string $tax ): ?string {
+
+		$result = null;
+		if ( key_exists( $tax, $this->tax_map ) ) {
+			$result = $this->tax_map[ $tax ];
+		} else {
+			$match = array_search( $tax, $this->tax_map );
+			if ( $match ) {
+				$result = $tax;
+			}
+		}
+
+		return $result;
 	}
 }
