@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Template class.
+ * Template class for locating templates and loading them.
  *
  * @package     Proclaim Sermon Manager
  * @author      Daryl Peterson <@gmail.com>
@@ -18,7 +18,7 @@ use DRPPSM\Interfaces\Executable;
 use DRPPSM\Interfaces\Registrable;
 
 /**
- * Template class.
+ * Template class for locating templates and loading them.
  *
  * @package     Proclaim Sermon Manager
  * @author      Daryl Peterson <@gmail.com>
