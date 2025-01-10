@@ -13,8 +13,6 @@ namespace DRPPSM;
 
 defined( 'ABSPATH' ) || exit;
 
-use DRPPSM\Interfaces\ImageSizeInt;
-
 /**
  * Image sizes.
  *
