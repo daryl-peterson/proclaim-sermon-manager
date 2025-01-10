@@ -90,6 +90,10 @@ class Rewrite {
 	 * @since 1.0.0
 	 */
 	public function find_conflicts(): void {
+		if ( FatalError::exist() ) {
+			return;
+		}
+
 		$trans = get_transient( self::TRANS_NAME );
 		if ( $trans ) {
 			return;

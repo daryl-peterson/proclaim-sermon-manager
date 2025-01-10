@@ -79,12 +79,8 @@ class PostTypeReg implements PostTypeRegInt {
 
 			// @codeCoverageIgnoreStart
 		} catch ( \Throwable $th ) {
-			Logger::error(
-				array(
-					'MESSAGE' => $th->getMessage(),
-					'TRACE'   => $th->getTrace(),
-				)
-			);
+			FatalError::set( $th );
+			return;
 			// @codeCoverageIgnoreEnd
 		}
 
@@ -117,12 +113,8 @@ class PostTypeReg implements PostTypeRegInt {
 			$result = unregister_post_type( $this->pt );
 			// @codeCoverageIgnoreStart
 		} catch ( \Throwable $th ) {
-			Logger::error(
-				array(
-					'MESSAGE' => $th->getMessage(),
-					'TRACE'   => $th->getTrace(),
-				)
-			);
+			FatalError::set( $th );
+			return;
 			// @codeCoverageIgnoreEnd
 		}
 

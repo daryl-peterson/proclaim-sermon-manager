@@ -14,7 +14,6 @@ namespace DRPPSM;
 defined( 'ABSPATH' ) || exit;
 
 use DRPPSM\Interfaces\Initable;
-use DRPPSM\Interfaces\PluginInt;
 use DRPPSM\Traits\SingletonTrait;
 
 /**
@@ -123,11 +122,11 @@ class App implements Initable {
 	/**
 	 * Get plugin interface.
 	 *
-	 * @return PluginInt
+	 * @return Plugin
 	 * @since 1.0.0
 	 */
-	public function plugin(): PluginInt {
-		return $this->get( PluginInt::class );
+	public function plugin(): Plugin {
+		return $this->get( Plugin::class );
 	}
 
 	/**

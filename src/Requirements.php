@@ -84,7 +84,7 @@ class Requirements implements RequirementsInt {
 			$this->check_php_ver();
 			$this->check_wp_ver();
 		} catch ( \Throwable $th ) {
-			FatalError::set( $th->getMessage(), $th );
+			FatalError::set( $th );
 		}
 		return true;
 	}

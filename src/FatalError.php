@@ -26,6 +26,12 @@ use DRPPSM\Interfaces\OptionsInt;
  */
 class FatalError {
 
+	private static $key = 'drppsm_fatal_error';
+
+	public static function exist(): bool {
+		return (bool) \get_option( self::$key, false );
+	}
+
 	/**
 	 * Check if any fatal errors occured.
 	 *
@@ -34,14 +40,10 @@ class FatalError {
 	 */
 	public static function check(): void {
 
-		/**
-		 * Options interface.
-		 *
-		 * @var OptionsInt
-		 */
-		$opts  = App::init()->get( OptionsInt::class );
-		$error = $opts->get( 'fatal_error' );
-		if ( ! isset( $error ) ) {
+		$error = \get_option( self::$key, false );
+		Logger::debug( $error );
+
+		if ( ! $error ) {
 			return;
 		}
 
@@ -53,7 +55,7 @@ class FatalError {
 			Back to the WordPress <a href="$admin">Plugins page</a>.
 		EOT;
 
-		$opts->delete( 'fatal_error' );
+		\delete_option( self::$key );
 		Deactivator::run();
 
 		// @codeCoverageIgnoreStart
@@ -71,15 +73,10 @@ class FatalError {
 	 * @return void
 	 * @since 1.0.0
 	 */
-	public static function set( string $message, \Throwable $th ): void {
+	public static function set( \Throwable $th ): void {
 
-		/**
-		 * Options interface.
-		 *
-		 * @var OptionsInt
-		 */
-		$opts = App::init()->get( OptionsInt::class );
-		$opts->set( 'fatal_error', $message );
+		delete_option( self::$key );
+		add_option( self::$key, $th->getMessage() );
 
 		Logger::error(
 			array(

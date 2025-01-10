@@ -67,12 +67,6 @@ const LOG_FILE = 'drppsm';
 
 try {
 	app()->plugin();
-
 } catch ( \Throwable $th ) {
-	Logger::debug(
-		array(
-			'MESSAGE' => $th->getMessage(),
-			'TRACE'   => $th->getTrace(),
-		)
-	);
+	FatalError::set( $th );
 }

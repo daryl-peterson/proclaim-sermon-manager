@@ -96,6 +96,9 @@ class AdminSettings implements Executable, Registrable {
 	 */
 	public function display_with_tabs( CMB2_Options_Hookup $cmb_options ) {
 
+		$timer     = Timer::get_instance();
+		$timer_key = $timer->start( __FUNCTION__, __FILE__ );
+
 		$title   = __( 'Proclaim Sermon Manager Settings', 'drppsm' );
 		$action  = esc_url( admin_url( 'admin-post.php' ), false );
 		$form_id = $cmb_options->cmb->cmb_id;
@@ -132,6 +135,7 @@ class AdminSettings implements Executable, Registrable {
 				</div>
 			</div>
 		EOT;
+		$timer->stop( $timer_key );
 		echo $html; //phpcs:ignore
 	}
 

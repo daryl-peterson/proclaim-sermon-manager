@@ -11,14 +11,14 @@
 
 namespace DRPPSM\Tests;
 
-use DRPPSM\Interfaces\PluginInt;
+use DRPPSM\Plugin;
 
 /**
  * Plugin test.
  */
 class PluginTest extends BaseTest {
 
-	public PluginInt $obj;
+	public Plugin $obj;
 
 	public function setup(): void {
 		$this->obj = $this->app->plugin();

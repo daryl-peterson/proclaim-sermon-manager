@@ -76,7 +76,9 @@ class SCTerms extends SCBase implements Executable, Registrable {
 	 * ```
 	 */
 	public function show_term_list( array $atts ): string {
-		$atts = $this->fix_atts( $atts );
+		$timer     = Timer::get_instance();
+		$timer_key = $timer->start( __FUNCTION__, __FILE__ );
+		$atts      = $this->fix_atts( $atts );
 
 		// Default options.
 		$defaults = array(
@@ -114,6 +116,7 @@ class SCTerms extends SCBase implements Executable, Registrable {
 					$terms->get_error_data(),
 				)
 			);
+			$timer->stop( $timer_key );
 			return 'Shortcode Error';
 		}
 
@@ -138,9 +141,10 @@ class SCTerms extends SCBase implements Executable, Registrable {
 				$list .= '<li><a href="' . esc_url( get_term_link( $term, $term->taxonomy ) ) . '" title="' . $term->name . '">' . $term->name . '</a></li>';
 			}
 			$list .= '</ul>';
-
+			$timer->stop( $timer_key );
 			return $list;
 		} else {
+			$timer->stop( $timer_key );
 			// If nothing has been found.
 			return 'No ' . $this->convert_taxonomy_name( $args['display'], true ) . ' found.';
 		}

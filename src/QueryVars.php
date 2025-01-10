@@ -15,6 +15,7 @@ defined( 'ABSPATH' ) || exit;
 
 use DRPPSM\Interfaces\Executable;
 use DRPPSM\Interfaces\Registrable;
+use Exception;
 use WP_Query;
 
 /**
@@ -96,35 +97,31 @@ class QueryVars implements Executable, Registrable {
 	 * @since 1.0.0
 	 */
 	public function overwrite_query_vars( array $query ): array {
+		try {
+			$query_org = $query;
+			$query     = $this->fix_attachment( $query );
 
-		$query_org = $query;
+			throw new Exception( 'BLAH' );
 
-		$query = $this->fix_attachment( $query );
+			if ( key_exists( DRPPSM_PT_SERMON, $query ) ) {
+				$arg = $query[ DRPPSM_PT_SERMON ];
 
-		if ( key_exists( DRPPSM_PT_SERMON, $query ) ) {
-			$arg = $query[ DRPPSM_PT_SERMON ];
-
-			switch ( $arg ) {
-				case 'series':
-					$query = array(
-						'taxonomy' => DRPPSM_TAX_SERIES,
-						'term'     => '',
-					);
-					break;
-				default:
-					// code
-					break;
+				switch ( $arg ) {
+					case 'series':
+						$query = array(
+							'taxonomy' => DRPPSM_TAX_SERIES,
+							'term'     => '',
+						);
+						break;
+					default:
+						// code
+						break;
+				}
 			}
+		} catch ( \Throwable $th ) {
+			FatalError::set( $th );
+			$query = $query_org;
 		}
-
-		/*
-		$msg = array(
-			'QUERY ORG' => $query_org,
-			'QUERY'     => $query,
-			'CONFLICTS' => $this->conflict,
-		);
-		Logger::debug( $msg );
-		*/
 		return $query;
 	}
 

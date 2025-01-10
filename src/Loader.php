@@ -15,7 +15,6 @@ defined( 'ABSPATH' ) || exit;
 
 use DRPPSM\Constants\Actions;
 use DRPPSM\Interfaces\Executable;
-use DRPPSM\Interfaces\PluginInt;
 use DRPPSM\Interfaces\Runable;
 
 /**
@@ -52,24 +51,31 @@ class Loader implements Executable, Runable {
 	 * Load classes.
 	 *
 	 * @return boolean|null Return true if classes were loaded, otherwise false.
+	 * @throws Exception
 	 * @since 1.0.0
 	 */
 	public function run(): bool {
-		if ( did_action( Actions::AFTER_INIT ) && ! ( defined( DRPPSM_TESTING ) ) ) {
-			// @codeCoverageIgnoreStart
-			return false;
-			// @codeCoverageIgnoreEnd
+		try {
+			Logger::debug( 'HERE' );
+			if ( did_action( Actions::AFTER_INIT ) && ! ( defined( DRPPSM_TESTING ) ) ) {
+				// @codeCoverageIgnoreStart
+				return false;
+				// @codeCoverageIgnoreEnd
 
-		}
-		$this->classes = app()->container()->keys();
-		foreach ( $this->classes as $class ) {
-			if ( PluginInt::class === $class ) {
-				continue;
 			}
-			// Logger::debug( "LOADING $class" );
-			app()->get( $class );
+			$this->classes = app()->container()->keys();
+			foreach ( $this->classes as $class ) {
+				if ( Plugin::class === $class ) {
+					continue;
+				}
+				// Logger::debug( "LOADING $class" );
+				app()->get( $class );
+			}
+			do_action( Actions::AFTER_INIT );
+
+		} catch ( \Throwable $th ) {
+			throw $th;
 		}
-		do_action( Actions::AFTER_INIT );
 
 		return true;
 	}

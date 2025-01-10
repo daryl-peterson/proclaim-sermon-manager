@@ -14,6 +14,7 @@ namespace DRPPSM;
 defined( 'ABSPATH' ) || exit;
 
 use DRPPSM\Interfaces\ImageSizeInt;
+use Exception;
 
 /**
  * Image sizes.
@@ -98,32 +99,35 @@ class ImageSize implements ImageSizeInt {
 	 * @since 1.0.0
 	 */
 	public function run(): bool {
-		$timer     = Timer::get_instance();
-		$timer_key = $timer->start( __FUNCTION__, __FILE__ );
-		$result    = true;
-
-		// @codeCoverageIgnoreStart
-		if ( ! function_exists( '\add_image_size' ) ) {
-			return false;
-		}
-		// @codeCoverageIgnoreEnd
-
-		foreach ( $this->sizes as $name => $settings ) {
-			add_image_size( $name, ...$settings );
-		}
-
-		Logger::debug( $this->get_all_image_sizes() );
-
-		foreach ( $this->sizes as $name => $settings ) {
-			$result = has_image_size( $name );
+		$result = false;
+		try {
+			$timer     = Timer::get_instance();
+			$timer_key = $timer->start( __FUNCTION__, __FILE__ );
 
 			// @codeCoverageIgnoreStart
-			if ( ! $result ) {
-				break;
+			if ( ! function_exists( '\add_image_size' ) ) {
+				return false;
 			}
 			// @codeCoverageIgnoreEnd
+
+			foreach ( $this->sizes as $name => $settings ) {
+				add_image_size( $name, ...$settings );
+			}
+
+			foreach ( $this->sizes as $name => $settings ) {
+				$result = has_image_size( $name );
+
+				// @codeCoverageIgnoreStart
+				if ( ! $result ) {
+					break;
+				}
+				// @codeCoverageIgnoreEnd
+			}
+			$timer->stop( $timer_key );
+
+		} catch ( \Throwable $th ) {
+			FatalError::set( $th );
 		}
-		$timer->stop( $timer_key );
 		return $result;
 	}
 

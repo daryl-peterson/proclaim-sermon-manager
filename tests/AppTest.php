@@ -15,8 +15,7 @@ use DRPPSM\BibleLoader;
 use DRPPSM\Exceptions\NotfoundException;
 use DRPPSM\Interfaces\NoticeInt;
 use DRPPSM\Interfaces\OptionsInt;
-use DRPPSM\Interfaces\PluginInt;
-use DRPPSM\Notice;
+use DRPPSM\Plugin;
 use stdClass;
 
 use function DRPPSM\allowed_html;
@@ -61,7 +60,7 @@ class AppTest extends BaseTest {
 
 	public function test_plugin() {
 		$plugin = $this->app->plugin();
-		$this->assertInstanceOf( PluginInt::class, $plugin );
+		$this->assertInstanceOf( Plugin::class, $plugin );
 	}
 
 	public function test_app_get() {

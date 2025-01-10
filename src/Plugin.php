@@ -14,7 +14,9 @@ namespace DRPPSM;
 defined( 'ABSPATH' ) || exit;
 
 use DRPPSM\Constants\Actions;
-use DRPPSM\Interfaces\PluginInt;
+use DRPPSM\Exceptions\PluginException;
+use Exception;
+use WP_Exception;
 
 /**
  * Plugin main class.
@@ -25,7 +27,7 @@ use DRPPSM\Interfaces\PluginInt;
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
  * @since       1.0.0
  */
-class Plugin implements PluginInt {
+class Plugin {
 
 	/**
 	 * String for CMB version.
@@ -35,22 +37,25 @@ class Plugin implements PluginInt {
 	 */
 	private string $cmb2_version;
 
+	private string $act_key;
+
 	/**
 	 * Set object properties.
 	 *
 	 * @since 1.0.0
 	 */
 	protected function __construct() {
+		$this->act_key      = 'drppsm_activated';
 		$this->cmb2_version = '?.?.?';
 	}
 
 	/**
 	 * Initializale and register hooks.
 	 *
-	 * @return PluginInt
+	 * @return self
 	 * @since 1.0.0
 	 */
-	public static function exec(): PluginInt {
+	public static function exec(): self {
 		$obj = new self();
 		$obj->register();
 		return $obj;
@@ -74,16 +79,15 @@ class Plugin implements PluginInt {
 			register_deactivation_hook( FILE, array( $this, 'deactivate' ) );
 			add_action( 'shutdown', array( $this, 'shutdown' ) );
 			add_action( 'cmb2_init', array( $this, 'cmb2_init' ) );
-
 			Loader::exec();
-			return true;
 
 			// @codeCoverageIgnoreStart
 		} catch ( \Throwable $th ) {
-			FatalError::set( $th->getMessage(), $th );
+			FatalError::set( $th );
 			// @codeCoverageIgnoreEnd
 			return false;
 		}
+		return true;
 	}
 
 	/**
@@ -92,22 +96,19 @@ class Plugin implements PluginInt {
 	 * @return bool Return true if activated with no errors. If errors false.
 	 * @since 1.0.0
 	 */
-	public function activate(): bool {
+	public function activate(): ?bool {
 		try {
-			options()->set( 'activated', time() );
+			delete_option( $this->act_key );
+			PostTypeSetup::exec()->add();
+			add_option( 'activated', time() );
 			flush_rewrite_rules();
-			Logger::debug( 'ACTIVATED' );
 			// @codeCoverageIgnoreStart
+
 		} catch ( \Throwable $th ) {
-			Logger::error(
-				array(
-					'MESSAGE' => $th->getMessage(),
-					'TRACE'   => $th->getTrace(),
-				)
-			);
+			FatalError::set( $th );
 			return false;
-			// @codeCoverageIgnoreEnd
 		}
+
 		return true;
 	}
 

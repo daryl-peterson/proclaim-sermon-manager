@@ -100,6 +100,9 @@ class SermonDetail implements Initable, Registrable {
 	 * @since 1.0.0
 	 */
 	public function show(): bool {
+		if ( FatalError::exist() ) {
+			return false;
+		}
 
 		/**
 		 * Initiate the metabox.

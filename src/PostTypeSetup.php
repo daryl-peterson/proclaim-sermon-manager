@@ -99,7 +99,6 @@ class PostTypeSetup implements PostTypeSetupInt {
 	 * Add post types and taxonomy.
 	 *
 	 * @return array
-	 * @throws PluginException If error ooccures add post type or taxonomy.
 	 * @since 1.0.0
 	 */
 	public function add(): ?array {
@@ -136,16 +135,9 @@ class PostTypeSetup implements PostTypeSetupInt {
 
 			// @codeCoverageIgnoreStart
 		} catch ( \Throwable $th ) {
-			Logger::error(
-				array(
-					'ERROR' => $th->getMessage(),
-					'TRACE' => $th->getTrace(),
-				)
-			);
-
-			throw new PluginException( wp_kses( $th->getMessage(), allowed_html() ) );
-			// @codeCoverageIgnoreEnd
+			FatalError::set( $th );
 		}
+		return null;
 	}
 
 	/**
