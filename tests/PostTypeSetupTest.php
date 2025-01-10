@@ -13,7 +13,7 @@ namespace DRPPSM\Tests;
 
 use DRPPSM\Exceptions\PluginException;
 use DRPPSM\Interfaces\PostTypeRegInt;
-use DRPPSM\Interfaces\PostTypeSetupInt;
+use DRPPSM\PostTypeSetup;
 
 /**
  * Post type setup test.
@@ -29,9 +29,10 @@ class PostTypeSetupTest extends BaseTest {
 	/**
 	 * Post type setup interface.
 	 *
-	 * @var PostTypeSetupInt
+	 * @var PostTypeSetup
+	 * @since 1.0.0
 	 */
-	public PostTypeSetupInt $obj;
+	public PostTypeSetup $obj;
 
 	/**
 	 * This method is called before each test.
@@ -39,7 +40,7 @@ class PostTypeSetupTest extends BaseTest {
 	 * @return void
 	 */
 	public function setup(): void {
-		$this->obj = $this->app->get( PostTypeSetupInt::class );
+		$this->obj = PostTypeSetup::exec();
 	}
 
 	/**

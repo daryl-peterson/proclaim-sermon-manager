@@ -18,11 +18,11 @@ defined( 'ABSPATH' ) || exit;
 use DRPPSM\Constants\Actions;
 use DRPPSM\PostTypeReg;
 use DRPPSM\Exceptions\PluginException;
+use DRPPSM\Interfaces\Executable;
 use DRPPSM\Interfaces\PostTypeRegInt;
-use DRPPSM\Interfaces\PostTypeSetupInt;
+use DRPPSM\Interfaces\Registrable;
 use DRPPSM\Interfaces\TaxonomyRegInt;
 use DRPPSM\TaxonomyReg;
-use Exception;
 
 /**
  * Register post types and taxonomies.
@@ -35,7 +35,7 @@ use Exception;
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
  * @since       1.0.0
  */
-class PostTypeSetup implements PostTypeSetupInt {
+class PostTypeSetup implements Executable, Registrable {
 
 	/**
 	 * Taxonomies indexed on post type.
@@ -69,10 +69,10 @@ class PostTypeSetup implements PostTypeSetupInt {
 	/**
 	 * Initialize and register.
 	 *
-	 * @return PostTypeSetupInt
+	 * @return self
 	 * @since 1.0.0
 	 */
-	public static function exec(): PostTypeSetupInt {
+	public static function exec(): self {
 		$obj = new self();
 		$obj->register();
 		return $obj;

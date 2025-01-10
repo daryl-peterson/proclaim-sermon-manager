@@ -17,7 +17,6 @@ use DRPPSM\DB\DbUpdates;
 use DRPPSM\Interfaces\BibleLoaderInt;
 use DRPPSM\Interfaces\OptionsInt;
 use DRPPSM\Interfaces\PermaLinkInt;
-use DRPPSM\Interfaces\PostTypeSetupInt;
 use DRPPSM\Interfaces\RequirementsInt;
 use DRPPSM\Interfaces\RolesInt;
 use DRPPSM\Interfaces\TextDomainInt;
@@ -39,7 +38,7 @@ return array(
 	// Pagination::class          => Pagination::class,
 	PermaLinkInt::class        => PermaLinks::class,
 	Plugin::class              => Plugin::class,
-	PostTypeSetupInt::class    => PostTypeSetup::class,
+	PostTypeSetup::class       => PostTypeSetup::class,
 	QueryVars::class           => QueryVars::class,
 	QueueScripts::class        => QueueScripts::class,
 	RequirementsInt::class     => Requirements::class,
