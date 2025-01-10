@@ -99,7 +99,6 @@ class ComposerStaticInit672fe16c65cc53aa8b66e730cdfce0de
         'DRPPSM\\Interfaces\\OptionsInt' => __DIR__ . '/../..' . '/src/Core/Interfaces/OptionsInt.php',
         'DRPPSM\\Interfaces\\PermaLinkInt' => __DIR__ . '/../..' . '/src/Core/Interfaces/PermaLinkInt.php',
         'DRPPSM\\Interfaces\\PluginInt' => __DIR__ . '/../..' . '/src/Core/Interfaces/PluginInt.php',
-        'DRPPSM\\Interfaces\\PostTypeRegInt' => __DIR__ . '/../..' . '/src/Core/Interfaces/PostTypeRegInt.php',
         'DRPPSM\\Interfaces\\Registrable' => __DIR__ . '/../..' . '/src/Core/Interfaces/Registrable.php',
         'DRPPSM\\Interfaces\\Removable' => __DIR__ . '/../..' . '/src/Core/Interfaces/Removable.php',
         'DRPPSM\\Interfaces\\RequirementsInt' => __DIR__ . '/../..' . '/src/Core/Interfaces/RequirementsInt.php',

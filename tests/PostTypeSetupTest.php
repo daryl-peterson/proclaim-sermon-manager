@@ -12,7 +12,7 @@
 namespace DRPPSM\Tests;
 
 use DRPPSM\Exceptions\PluginException;
-use DRPPSM\Interfaces\PostTypeRegInt;
+use DRPPSM\PostTypeReg;
 use DRPPSM\PostTypeSetup;
 
 /**
@@ -66,7 +66,7 @@ class PostTypeSetupTest extends BaseTest {
 			$type = $types[0];
 
 			$objPostType = $this->obj->get_post_type( $type );
-			$this->assertInstanceOf( PostTypeRegInt::class, $objPostType );
+			$this->assertInstanceOf( PostTypeReg::class, $objPostType );
 
 			$taxonomies = $this->obj->get_post_type_taxonomies( $type );
 			if ( isset( $taxonomies ) ) {
@@ -119,7 +119,7 @@ class PostTypeSetupTest extends BaseTest {
 			$type = $types[0];
 
 			$objPostType = $this->obj->get_post_type( $type );
-			$this->assertInstanceOf( PostTypeRegInt::class, $objPostType );
+			$this->assertInstanceOf( PostTypeReg::class, $objPostType );
 
 		}
 	}

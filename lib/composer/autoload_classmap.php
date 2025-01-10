@@ -38,7 +38,6 @@ return array(
     'DRPPSM\\Interfaces\\OptionsInt' => $baseDir . '/src/Core/Interfaces/OptionsInt.php',
     'DRPPSM\\Interfaces\\PermaLinkInt' => $baseDir . '/src/Core/Interfaces/PermaLinkInt.php',
     'DRPPSM\\Interfaces\\PluginInt' => $baseDir . '/src/Core/Interfaces/PluginInt.php',
-    'DRPPSM\\Interfaces\\PostTypeRegInt' => $baseDir . '/src/Core/Interfaces/PostTypeRegInt.php',
     'DRPPSM\\Interfaces\\Registrable' => $baseDir . '/src/Core/Interfaces/Registrable.php',
     'DRPPSM\\Interfaces\\Removable' => $baseDir . '/src/Core/Interfaces/Removable.php',
     'DRPPSM\\Interfaces\\RequirementsInt' => $baseDir . '/src/Core/Interfaces/RequirementsInt.php',

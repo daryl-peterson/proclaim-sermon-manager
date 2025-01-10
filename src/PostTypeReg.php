@@ -15,7 +15,6 @@ defined( 'ABSPATH' ) || exit;
 
 use DRPPSM\Exceptions\PluginException;
 use DRPPSM\Helper;
-use DRPPSM\Interfaces\PostTypeRegInt;
 
 /**
  * Post type registration.
@@ -26,7 +25,7 @@ use DRPPSM\Interfaces\PostTypeRegInt;
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
  * @since       1.0.0
  */
-class PostTypeReg implements PostTypeRegInt {
+class PostTypeReg {
 
 	/**
 	 * Post type.

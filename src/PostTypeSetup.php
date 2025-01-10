@@ -19,7 +19,6 @@ use DRPPSM\Constants\Actions;
 use DRPPSM\PostTypeReg;
 use DRPPSM\Exceptions\PluginException;
 use DRPPSM\Interfaces\Executable;
-use DRPPSM\Interfaces\PostTypeRegInt;
 use DRPPSM\Interfaces\Registrable;
 use DRPPSM\Interfaces\TaxonomyRegInt;
 use DRPPSM\TaxonomyReg;
@@ -108,11 +107,6 @@ class PostTypeSetup implements Executable, Registrable {
 			$status = array();
 
 			foreach ( $list as $post_type ) {
-				/**
-				 * Post type registation.
-				 *
-				 * @var PostTypeRegInt $obj
-				 */
 				$obj = $this->get_post_type( $post_type );
 				$obj->add();
 				$taxonomies = (array) $this->get_post_type_taxonomies( $post_type );
@@ -153,13 +147,8 @@ class PostTypeSetup implements Executable, Registrable {
 			$status = array();
 
 			foreach ( $list as $post_type ) {
-				/**
-				 * Post type registration interface.
-				 *
-				 * @var PostTypeRegInt $obj
-				 */
-				$obj = $this->get_post_type( $post_type );
 
+				$obj        = $this->get_post_type( $post_type );
 				$taxonomies = (array) $this->get_post_type_taxonomies( $post_type );
 				$obj->remove();
 				$status[ $post_type ]['status'] = $obj->exist();
@@ -216,7 +205,7 @@ class PostTypeSetup implements Executable, Registrable {
 	 * @throws PluginException Throws exception if type does not exist in setup array.
 	 * @since 1.0.0
 	 */
-	public function get_post_type( string $post_type ): PostTypeRegInt {
+	public function get_post_type( string $post_type ): PostTypeReg {
 		if ( ! is_array( $this->post_types ) || ! isset( $this->post_types[ $post_type ] ) ) {
 			throw new PluginException( esc_html( "Invalid post type : $post_type" ) );
 		}
