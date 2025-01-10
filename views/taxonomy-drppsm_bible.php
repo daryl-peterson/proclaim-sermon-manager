@@ -1,9 +1,9 @@
 <?php
-
 /**
  * Sermon no records.
  *
- * @package     DRPPSM/Views/Partials
+ * @package     DRPPSM
+ * @subpackage  Template
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
@@ -20,19 +20,15 @@ if ( ! did_action( 'get_header' ) ) {
 
 get_partial( 'sermon-wrapper-start' );
 
-
-if ( have_posts() ) :
-
-	// echo apply_filters( 'archive-wpfc_sermon-before-sermons', '' );
-
-	while ( have_posts() ) :
+if ( have_posts() ) {
+	while ( have_posts() ) {
 		the_post();
 		sermon_excerpt();
-	endwhile;
-
-else :
-	echo __( 'Sorry, but there aren\'t any posts matching your query.' );
-endif;
+	}
+	wp_reset_postdata();
+} else {
+	get_partial( 'no-posts' );
+}
 
 get_partial( 'sermon-wrapper-end' );
 

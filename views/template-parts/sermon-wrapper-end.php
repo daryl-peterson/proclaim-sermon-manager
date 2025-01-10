@@ -9,13 +9,11 @@
  * @since       1.0.0
  */
 
-defined( 'ABSPATH' ) or exit;
+defined( 'ABSPATH' ) || exit;
 
-$wrapper = <<<EOT
+?>
+
 		</main>
 		<!-- #main -->
 	</div>
 	<!-- #primary -->
-EOT;
-
-echo $wrapper;

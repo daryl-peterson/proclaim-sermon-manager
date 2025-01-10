@@ -32,16 +32,16 @@ $tax_stype          = DRPPSM_TAX_SERVICE_TYPE;
 			<?php
 			// Get date meta.
 			$args_date = array(
-				'meta_label' => __( 'Date', 'drppsm' ),
-				'meta_value' => get_the_date(),
+				'item_label' => __( 'Date', 'drppsm' ),
+				'item_value' => get_the_date(),
 			);
 			get_partial( 'sermon-single-meta', $args_date );
 
 			// Get series meta.
 			if ( has_term( '', $tax_series, $post->ID ) ) {
 				$args_series = array(
-					'meta_label' => ucwords( Settings::get( Settings::SERIES ) ),
-					'meta_value' => get_the_term_list( $post->ID, $tax_series ),
+					'item_label' => ucwords( Settings::get( Settings::SERIES ) ),
+					'item_value' => get_the_term_list( $post->ID, $tax_series ),
 				);
 
 				get_partial( 'sermon-single-meta', $args_series );
@@ -50,8 +50,8 @@ $tax_stype          = DRPPSM_TAX_SERVICE_TYPE;
 			// Get preacher meta.
 			if ( has_term( '', $tax_preacher, $post->ID ) ) {
 				$args_preacher = array(
-					'meta_label' => ucwords( Settings::get( Settings::PREACHER ) ),
-					'meta_value' => get_the_term_list( $post->ID, $tax_preacher ),
+					'item_label' => ucwords( Settings::get( Settings::PREACHER ) ),
+					'item_value' => get_the_term_list( $post->ID, $tax_preacher ),
 				);
 
 				get_partial( 'sermon-single-meta', $args_preacher );
@@ -60,16 +60,16 @@ $tax_stype          = DRPPSM_TAX_SERVICE_TYPE;
 			// Get service type meta.
 			if ( has_term( '', $tax_stype, $post->ID ) ) {
 				$args_stype = array(
-					'meta_label' => ucwords( Settings::get( Settings::SERVICE_TYPE ) ),
-					'meta_value' => get_the_term_list( $post->ID, $tax_stype ),
+					'item_label' => ucwords( Settings::get( Settings::SERVICE_TYPE ) ),
+					'item_value' => get_the_term_list( $post->ID, $tax_stype ),
 				);
 
 				get_partial( 'sermon-single-meta', $args_stype );
 			}
 
 			$args_views = array(
-				'meta_label' => __( 'Views', 'drppsm' ),
-				'meta_value' => get_sermon_view_count( (int) $post->ID ),
+				'item_label' => __( 'Views', 'drppsm' ),
+				'item_value' => get_sermon_view_count( (int) $post->ID ),
 			);
 			get_partial( 'sermon-single-meta', $args_views );
 

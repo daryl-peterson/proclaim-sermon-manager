@@ -1,1 +1,1 @@
-/usr/bin/phpcbf  -p . --standard=WordPress --ignore=**/vendor/*,.misc/*
+/usr/bin/phpcbf  -p . --standard=WordPress --ignore=**/vendor/*,.misc/*,**/lib/*

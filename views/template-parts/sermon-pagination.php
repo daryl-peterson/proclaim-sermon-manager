@@ -13,7 +13,7 @@ namespace DRPPSM;
 
 use WP_Error;
 
-defined( 'ABSPATH' ) or exit;
+defined( 'ABSPATH' ) || exit;
 
 if ( ! isset( $args['query'] ) || ! isset( $args['post_id'] ) ) {
 	return;

@@ -1,15 +1,5 @@
 <?php
 
-/**
- * Template class for locating templates and loading them.
- *
- * @package     Proclaim Sermon Manager
- * @author      Daryl Peterson <@gmail.com>
- * @copyright   Copyright (c) 2024, Daryl Peterson
- * @license     https://www.gnu.org/licenses/gpl-3.0.txt
- * @since       1.0.0
- */
-
 namespace DRPPSM;
 
 defined( 'ABSPATH' ) || exit;
@@ -20,7 +10,7 @@ use DRPPSM\Interfaces\Registrable;
 /**
  * Template class for locating templates and loading them.
  *
- * @package     Proclaim Sermon Manager
+ * @package     DRPPSM\Templates
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
@@ -286,6 +276,14 @@ class Templates implements Executable, Registrable {
 	}
 
 
+	/**
+	 * Allows for changing the name of the template file.
+	 *
+	 * @param string $name
+	 * @param mixed  $args
+	 * @return mixed
+	 * @since 1.0.0
+	 */
 	private function get_parial_filter( string $name, $args ) {
 		// Save orginal name.
 		$name_org = $name;

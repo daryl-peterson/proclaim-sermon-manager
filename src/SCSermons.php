@@ -191,7 +191,7 @@ class SCSermons extends SCBase implements Executable, Registrable {
 			wp_reset_postdata();
 		} else {
 			ob_start();
-			get_partial( 'content-sermon-none' );
+			get_partial( 'no-posts' );
 			$output .= ob_get_clean();
 		}
 

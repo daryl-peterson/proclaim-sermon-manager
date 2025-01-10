@@ -2,7 +2,7 @@
 /**
  * Sermon archive image.
  *
- * @package     DRPPSM/Views/Partials
+ * @package     DRPPSM
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
@@ -25,7 +25,7 @@ $image = get_sermon_image_url( true, $args['image_size'], true );
 <div class="drppsm-archive-image">
 
 	<a href="<?php the_permalink( $post->id ); ?>">
-	<img class="drppsm-archive-image-img" alt="<?php the_title(); ?>" src="<?php echo $image; ?>">
+	<img class="drppsm-archive-image-img" alt="<?php the_title(); ?>" src="<?php echo parse_html_image( $image ); ?>">
 	</a>
 
 </div>

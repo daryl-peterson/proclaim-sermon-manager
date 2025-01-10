@@ -1,4 +1,4 @@
-<?php // phpcs:ignore
+<?php
 /**
  * Sermon archive template.
  *
@@ -27,20 +27,13 @@ get_partial( 'content-sermon-filtering' );
 
 if ( have_posts() ) {
 
-	// echo apply_filters( 'archive-wpfc_sermon-before-sermons', '' );
-
 	while ( have_posts() ) {
 		the_post();
 		sermon_excerpt( $args );
 	}
-
-	// echo apply_filters( 'archive-wpfc_sermon-after-sermons', '' );
-
-	echo '<div class="sm-pagination ast-pagination">';
-	// sm_pagination();
-	echo '</div>';
+	wp_reset_postdata();
 } else {
-	echo __( 'Sorry, but there aren\'t any posts matching your query.' );
+	get_partial( 'no-posts' );
 }
 
 get_partial( 'sermon-wrapper-end' );

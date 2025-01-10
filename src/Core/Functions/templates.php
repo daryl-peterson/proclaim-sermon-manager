@@ -38,6 +38,10 @@ function locate_partial( string $name, array $args = array() ) {
 	return Templates::exec()->locate_partial( $name, $args );
 }
 
+function parse_html_image( string $string ) {
+	return esc_html( $string );
+}
+
 /**
  * Get sermon excerpt
  *

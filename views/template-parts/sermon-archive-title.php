@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Sermon archive title
  *

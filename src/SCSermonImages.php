@@ -3,7 +3,7 @@
 /**
  * Shortcodes for sermon images.
  *
- * @package     Proclaim Sermon Manager
+ * @package     DRPPSM\SCSermonImages
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
@@ -22,7 +22,8 @@ use WP_Error;
 /**
  * Shortcodes for sermon images.
  *
- * @package     Proclaim Sermon Manager
+ * @package     Proclaim-Sermon-Manager
+ * @subpackage  SCSermonImages
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
@@ -100,6 +101,7 @@ class SCSermonImages extends SCBase implements Executable, Registrable {
 					'terms'      => $terms,
 					'image_size' => $args['image_size'],
 					'taxonomy'   => $tax,
+					'meta_key'   => $this->get_meta_key( $args ),
 				)
 			);
 			$output .= ob_get_clean();
@@ -110,6 +112,12 @@ class SCSermonImages extends SCBase implements Executable, Registrable {
 		return $output;
 	}
 
+	/**
+	 * Get default arguments.
+	 *
+	 * @return array
+	 * @since 1.0.0
+	 */
 	private function get_default_args(): array {
 		return array(
 			'display'          => 'series',

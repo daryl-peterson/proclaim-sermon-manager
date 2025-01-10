@@ -13,6 +13,7 @@ namespace DRPPSM;
 
 use DRPPSM\Interfaces\Executable;
 use DRPPSM\Interfaces\Registrable;
+use WP_Exception;
 use WP_Query;
 
 defined( 'ABSPATH' ) || exit;
@@ -36,17 +37,35 @@ class SCSermonLatest extends SCBase implements Executable, Registrable {
 	 */
 	private string $sc_sermon_latest;
 
+	/**
+	 * Initialize object.
+	 *
+	 * @return void
+	 * @since 1.0.0
+	 */
 	protected function __construct() {
 		parent::__construct();
 		$this->sc_sermon_latest = DRPPSM_SC_SERMON_LATEST;
 	}
 
+	/**
+	 * Initialize object and preform hooks registration if needed.
+	 *
+	 * @return Executable
+	 * @since 1.0.0
+	 */
 	public static function exec(): Executable {
 		$obj = new self();
 		$obj->register();
 		return $obj;
 	}
 
+	/**
+	 * Register hooks.
+	 *
+	 * @return null|bool
+	 * @since 1.0.0
+	 */
 	public function register(): ?bool {
 		if ( shortcode_exists( $this->sc_sermon_latest ) ) {
 			return false;
@@ -175,7 +194,7 @@ class SCSermonLatest extends SCBase implements Executable, Registrable {
 		} else {
 			Logger::debug( 'NO POSTS' );
 			ob_start();
-			get_partial( 'content-sermon-none' );
+			get_partial( 'no-posts' );
 			$output .= ob_get_clean();
 		}
 

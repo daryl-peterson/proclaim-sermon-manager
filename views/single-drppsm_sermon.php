@@ -2,7 +2,7 @@
 /**
  * Single sermon template.
  *
- * @package     DRPPSM/Views
+ * @package     DRPPSM
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
@@ -29,6 +29,7 @@ while ( have_posts() ) {
 	if ( ! post_password_required( $post ) ) {
 		get_partial( 'content-sermon-single', $args );
 	} else {
+		// phpcs:ignore
 		echo get_the_password_form( $post );
 	}
 
@@ -38,6 +39,7 @@ while ( have_posts() ) {
 		}
 	}
 }
+wp_reset_postdata();
 
 get_partial( 'sermon-wrapper-end' );
 

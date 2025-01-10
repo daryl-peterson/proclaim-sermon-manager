@@ -1,7 +1,6 @@
 <?php
-
 /**
- * Sermon single series meta
+ * Sermon single title
  *
  * @package     DRPPSM/Views/Partials
  * @author      Daryl Peterson <@gmail.com>

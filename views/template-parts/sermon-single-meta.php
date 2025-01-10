@@ -14,14 +14,15 @@ namespace DRPPSM;
 defined( 'ABSPATH' ) || exit;
 
 $requirements = array(
-	'meta_label',
-	'meta_value',
+	'item_label',
+	'item_value',
 );
 
 if ( ! isset( $args ) ) {
 	return;
 }
 
+// phpcs:ignore
 extract( $args );
 
 // Check if requirements are met.
@@ -33,8 +34,8 @@ foreach ( $requirements as $required_variable ) {
 
 ?>
 <div class="drppsm-single-meta-item">
-	<div class="drppsm-single-meta-prefix"><?php echo $meta_label; ?></div>
+	<div class="drppsm-single-meta-prefix"><?php echo esc_html( $item_label ); ?></div>
 	<div class="drppsm-single-meta-text">
-		<?php echo $meta_value; ?>
+		<?php echo esc_html( $item_value ); ?>
 	</div>
 </div>

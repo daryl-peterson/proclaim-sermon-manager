@@ -25,7 +25,7 @@ $image = get_sermon_image_url( true, $args['image_size'], true );
 	<?php if ( $image ) { ?>
 
 	<a href="<?php the_permalink( $post->id ); ?>">
-	<img class="drppsm-single-image-img" alt="<?php the_title(); ?>" src="<?php echo $image; ?>">
+	<img class="drppsm-single-image-img" alt="<?php the_title(); ?>" src="<?php echo esc_html( $image ); ?>">
 	</a>
 
 	<?php } ?>

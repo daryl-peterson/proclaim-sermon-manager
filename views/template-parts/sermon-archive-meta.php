@@ -1,9 +1,8 @@
 <?php
-
 /**
  * Sermon archive meta
  *
- * @package     DRPPSM/Views/Partials
+ * @package     DRPPSM
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
@@ -15,14 +14,15 @@ namespace DRPPSM;
 defined( 'ABSPATH' ) || exit;
 
 $requirements = array(
-	'meta_label',
-	'meta_value',
+	'item_label',
+	'item_value',
 );
 
 if ( ! isset( $args ) ) {
 	return;
 }
 
+// phpcs:ignore
 extract( $args );
 
 // Check if requirements are met.
@@ -34,9 +34,9 @@ foreach ( $requirements as $required_variable ) {
 
 ?>
 <div class="drppsm-archive-meta-item">
-	<div class="drppsm-archive-meta-prefix"><?php echo $meta_label; ?></div>
+	<div class="drppsm-archive-meta-prefix"><?php echo esc_html( $item_label ); ?></div>
 	<div class="drppsm-archive-meta-text">
-		<?php echo $meta_value; ?>
+		<?php echo esc_html( $item_value ); ?>
 	</div>
 </div>
 

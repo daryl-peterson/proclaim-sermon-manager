@@ -3,7 +3,7 @@
         'name' => 'daryl-peterson/drp-proclaim-sermon-manager',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => 'a92e643e2e2e32c120536adb2b5302a03fdadcbc',
+        'reference' => '4619019fd440356b296c147387a6a4b6da117cc5',
         'type' => 'wordpress-plugin',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -22,7 +22,7 @@
         'daryl-peterson/drp-proclaim-sermon-manager' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => 'a92e643e2e2e32c120536adb2b5302a03fdadcbc',
+            'reference' => '4619019fd440356b296c147387a6a4b6da117cc5',
             'type' => 'wordpress-plugin',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

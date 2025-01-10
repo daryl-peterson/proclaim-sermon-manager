@@ -2,7 +2,7 @@
 /**
  * Series image grid
  *
- * @package     DRPPSM/Views/Partials
+ * @package     DRPPSM
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
@@ -13,14 +13,12 @@ namespace DRPPSM;
 
 defined( 'ABSPATH' ) || exit;
 
-
-
 if ( ! did_action( 'get_header' ) ) {
 	get_header();
 }
 
 $template     = str_replace( '.php', '', basename( __FILE__ ) );
-$failure      = '<p><b>' . DRPPSM_TITLE . '</b>: Partial "<i>' . $template . '</i>" loaded incorrectly.</p>';
+$failure      = '<p><b>' . DRPPSM_TITLE . '</b>: Partial "<i>' . esc_html( $template ) . '</i>" loaded incorrectly.</p>';
 $requirements = array(
 	'terms',
 	'image_size',
@@ -32,12 +30,9 @@ if ( ! isset( $args ) ) {
 	return;
 }
 
+// phpcs:ignore
 extract( $args );
-
 get_partial( 'sc-wrapper-start' );
-
-
-extract( $args );
 
 // Check if requirements are met.
 foreach ( $requirements as $required_variable ) {
@@ -48,16 +43,12 @@ foreach ( $requirements as $required_variable ) {
 	}
 }
 
-
 foreach ( $terms as $term ) {
 	$grid = array(
 		'term'     => $term,
 		'taxonomy' => DRPPSM_TAX_SERIES,
 	);
 	get_partial( 'content-series-grid', $grid );
-
 }
-
-
 
 get_partial( 'sc-wrapper-end' );

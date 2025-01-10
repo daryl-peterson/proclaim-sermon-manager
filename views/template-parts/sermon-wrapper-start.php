@@ -9,12 +9,10 @@
  * @since       1.0.0
  */
 
-defined( 'ABSPATH' ) or exit;
+defined( 'ABSPATH' ) || exit;
 
-$wrapper = <<<EOT
-	<div id="primary" class="content-area">
-		<main id="main" class="site-main drppsm-wrapper">
+?>
+<div id="primary" class="content-area">
+	<main id="main" class="site-main drppsm-wrapper">
 
-EOT;
 
-echo $wrapper;
