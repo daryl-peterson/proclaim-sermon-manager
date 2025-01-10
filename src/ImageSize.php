@@ -14,7 +14,6 @@ namespace DRPPSM;
 defined( 'ABSPATH' ) || exit;
 
 use DRPPSM\Interfaces\ImageSizeInt;
-use Exception;
 
 /**
  * Image sizes.
@@ -25,7 +24,7 @@ use Exception;
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
  * @since       1.0.0
  */
-class ImageSize implements ImageSizeInt {
+class ImageSize {
 
 	/**
 	 * Image sizes.
@@ -69,10 +68,10 @@ class ImageSize implements ImageSizeInt {
 	/**
 	 * Initialize and register hooks.
 	 *
-	 * @return ImageSizeInt
+	 * @return self
 	 * @since 1.0.0
 	 */
-	public static function exec(): ImageSizeInt {
+	public static function exec(): self {
 		$obj = new self();
 		$obj->register();
 		return $obj;

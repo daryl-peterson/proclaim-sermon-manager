@@ -164,9 +164,7 @@ class SermonSorting implements Executable {
 			 * @category filter
 			 * @since 1.0.0
 			 */
-			$skip_filter = apply_filters( 'drppsmf_do_sorting', $hide_filters, $args, $orig_args, $filters, $visibility_mapping );
-
-			Logger::debug( array( 'DO_FILTER' => $skip_filter ) );
+			$skip_filter = apply_filters( 'drppsmf_skip_sorting', $hide_filters, $args, $orig_args, $filters, $visibility_mapping );
 
 			$content = '';
 
@@ -177,7 +175,6 @@ class SermonSorting implements Executable {
 					'visibility_mapping' => $visibility_mapping,
 					'args'               => $args,
 				);
-				Logger::debug( array( 'TEMP' => $temp ) );
 				ob_start();
 				get_partial( 'content-sermon-sorting', $temp );
 				$content .= ob_get_clean();

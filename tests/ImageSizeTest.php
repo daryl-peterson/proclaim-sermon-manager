@@ -15,8 +15,6 @@ use DRPPSM\HooksUtils;
 use DRPPSM\ImageSize;
 use DRPPSM\Logger;
 
-use function DRPPSM\imagesize;
-
 /**
  * Image sizes test.
  *
@@ -42,7 +40,7 @@ class ImageSizeTest extends BaseTest {
 	 * @since 1.0.0
 	 */
 	public function setup(): void {
-		$this->obj = imagesize();
+		$this->obj = ImageSize::exec();
 	}
 
 	/**

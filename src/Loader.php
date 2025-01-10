@@ -51,12 +51,10 @@ class Loader implements Executable, Runable {
 	 * Load classes.
 	 *
 	 * @return boolean|null Return true if classes were loaded, otherwise false.
-	 * @throws Exception
 	 * @since 1.0.0
 	 */
 	public function run(): bool {
 		try {
-			Logger::debug( 'HERE' );
 			if ( did_action( Actions::AFTER_INIT ) && ! ( defined( DRPPSM_TESTING ) ) ) {
 				// @codeCoverageIgnoreStart
 				return false;

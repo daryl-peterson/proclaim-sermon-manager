@@ -115,8 +115,6 @@ class Rewrite {
 			$info,
 			self::TRANS_TIMEOUT
 		);
-
-		Logger::debug( $info );
 	}
 
 	/**

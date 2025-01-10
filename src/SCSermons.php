@@ -132,13 +132,6 @@ class SCSermons extends SCBase implements Executable, Registrable {
 		// Add year month etc filter, adjusted for sermon date.
 		$this->set_date_ordering( $args, $query_args );
 
-		Logger::debug(
-			array(
-				'QUERY ARGS' => $query_args,
-				'ARGS'       => $args,
-			)
-		);
-
 		// Add before and after parameters.
 		$this->set_before_after( $args, $query_args );
 
@@ -148,9 +141,7 @@ class SCSermons extends SCBase implements Executable, Registrable {
 		}
 
 		$query_args = $this->set_filter( $args, $query_args );
-		Logger::debug( array( 'QUERY ARGS' => $query_args ) );
-
-		$query = new WP_Query( $query_args );
+		$query      = new WP_Query( $query_args );
 
 		// Add query to the args.
 		$args['query']   = $query;
@@ -389,7 +380,6 @@ class SCSermons extends SCBase implements Executable, Registrable {
 
 		$filters   = get_visibility_settings();
 		$defaults += $filters;
-		Logger::debug( array( 'DEFAULTS' => $defaults ) );
 		return $defaults;
 	}
 

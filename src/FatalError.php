@@ -13,8 +13,6 @@ namespace DRPPSM;
 
 defined( 'ABSPATH' ) || exit;
 
-use DRPPSM\Interfaces\OptionsInt;
-
 /**
  * Fatal error handling.
  *
@@ -41,7 +39,6 @@ class FatalError {
 	public static function check(): void {
 
 		$error = \get_option( self::$key, false );
-		Logger::debug( $error );
 
 		if ( ! $error ) {
 			return;

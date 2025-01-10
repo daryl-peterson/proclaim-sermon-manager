@@ -70,8 +70,6 @@ foreach ( $filters as $filter ) {
 	$title      = $filter['title'];
 	$disabled   = ! empty( $args[ $filter['taxonomy'] ] ) && 'disable' === $args['visibility'] ? 'disabled' : '';
 	$options    = get_term_dropdown( $taxonomy, '' );
-	Logger::debug( $options );
-
 
 	$html = <<<HTML
 	<div class="$class_name" style="display: inline-block">
@@ -91,7 +89,6 @@ foreach ( $filters as $filter ) {
 	</div>
 	HTML;
 	echo $html;
-	Logger::debug( PHP_EOL . $html );
 	continue;
 
 	?>

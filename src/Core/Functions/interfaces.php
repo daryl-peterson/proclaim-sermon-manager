@@ -18,7 +18,6 @@ use DRPPSM\Interfaces\OptionsInt;
 use DRPPSM\Interfaces\RequirementsInt;
 use DRPPSM\Interfaces\RolesInt;
 use DRPPSM\Interfaces\TextDomainInt;
-use DRPPSM\Interfaces\ImageSizeInt;
 use DRPPSM\Interfaces\NoticeInt;
 use DRPPSM\Interfaces\PermaLinkInt;
 use DRPPSM\Logging\LogWritterInt;
@@ -61,16 +60,6 @@ function options(): OptionsInt {
  */
 function textdomain(): TextDomainInt {
 	return app()->get( TextDomainInt::class );
-}
-
-/**
- * Get image size interface.
- *
- * @return ImageSizeInt
- * @since 1.0.0
- */
-function imagesize(): ImageSizeInt {
-	return app()->get( ImageSizeInt::class );
 }
 
 /**

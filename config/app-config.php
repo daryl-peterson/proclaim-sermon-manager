@@ -21,7 +21,6 @@ use DRPPSM\Interfaces\PostTypeSetupInt;
 use DRPPSM\Interfaces\RequirementsInt;
 use DRPPSM\Interfaces\RolesInt;
 use DRPPSM\Interfaces\TextDomainInt;
-use DRPPSM\Interfaces\ImageSizeInt;
 use DRPPSM\Interfaces\NoticeInt;
 use DRPPSM\Logging\LogFile;
 use DRPPSM\Logging\LoggerInt;
@@ -32,7 +31,7 @@ return array(
 	AdminSettings::class       => AdminSettings::class,
 	BibleLoaderInt::class      => BibleLoader::class,
 	DbUpdates::class           => DbUpdates::class,
-	ImageSizeInt::class        => ImageSize::class,
+	ImageSize::class           => ImageSize::class,
 	LogWritterInt::class       => LogFile::class,
 	LoggerInt::class           => Logger::class,
 	NoticeInt::class           => Notice::class,
