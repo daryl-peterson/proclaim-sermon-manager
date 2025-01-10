@@ -178,7 +178,12 @@ class PostTypeSetup implements PostTypeSetupInt {
 			return $status;
 			// @codeCoverageIgnoreStart
 		} catch ( \Throwable $th ) {
-			throw new PluginException( wp_kses( $th->getMessage(), allowed_html() ) );
+			Logger::error(
+				array(
+					'ERROR' => $th->getMessage(),
+					'TRACE' => $th->getTrace(),
+				)
+			);
 			// @codeCoverageIgnoreEnd
 		}
 	}

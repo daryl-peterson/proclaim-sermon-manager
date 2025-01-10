@@ -74,7 +74,7 @@ class Loader implements Executable, Runable {
 			do_action( Actions::AFTER_INIT );
 
 		} catch ( \Throwable $th ) {
-			throw $th;
+			FatalError::set( $th );
 		}
 
 		return true;

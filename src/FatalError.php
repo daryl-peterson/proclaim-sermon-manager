@@ -47,19 +47,26 @@ class FatalError {
 			return;
 		}
 
-		$name    = DRPPSM_TITLE;
-		$admin   = get_admin_url( null, 'plugins.php' );
+		$name = DRPPSM_TITLE;
+		if ( is_admin() ) {
+			$link = get_admin_url( null, 'plugins.php' );
+			$text = "Back to the WordPress <a href=\"$link\">Plugins page</a>.";
+		} else {
+			$link = get_home_url();
+			$text = "Back <a href=\"$link\">Home</a>.";
+		}
+
 		$message = <<<EOT
 			<h2>$name</h2>
 			<strong>Fatal Error - $error</strong><br>
-			Back to the WordPress <a href="$admin">Plugins page</a>.
+			$text
 		EOT;
 
 		\delete_option( self::$key );
 		Deactivator::run();
 
 		// @codeCoverageIgnoreStart
-		if ( ! defined( 'PHPUNIT_TESTING' ) ) {
+		if ( ! defined( DRPPSM_TESTING ) ) {
 			wp_die( wp_kses( $message, allowed_html() ), wp_kses_data( DRPPSM_TITLE ) );
 		}
 		// @codeCoverageIgnoreEnd

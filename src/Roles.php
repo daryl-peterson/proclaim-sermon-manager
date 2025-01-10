@@ -97,31 +97,37 @@ class Roles implements RolesInt {
 	 * @since 1.0.0
 	 */
 	public function add(): array {
-		$status = array();
-		foreach ( $this->role_list as $role_name ) {
-			$role = get_role( $role_name );
+		try {
+			$status = array();
+			foreach ( $this->role_list as $role_name ) {
+				$role = get_role( $role_name );
 
-			// @codeCoverageIgnoreStart
-			if ( ! $this->is_valid_role( $role ) ) {
-				continue;
-			}
-			// @codeCoverageIgnoreEnd
-
-			$status[ $role_name ]['status'] = 'valid';
-
-			foreach ( $this->caps as $capability ) {
-				$role->remove_cap( $capability );
-				if ( ! key_exists( $capability, $this->privileges ) ) {
-					$role->add_cap( $capability );
-					$status[ $role_name ]['cap'][] = $capability;
+				// @codeCoverageIgnoreStart
+				if ( ! $this->is_valid_role( $role ) ) {
 					continue;
 				}
+				// @codeCoverageIgnoreEnd
 
-				if ( in_array( $role_name, $this->privileges[ $capability ], true ) ) {
-					$role->add_cap( $capability );
-					$status[ $role_name ]['cap'][] = $capability;
+				$status[ $role_name ]['status'] = 'valid';
+
+				foreach ( $this->caps as $capability ) {
+					$role->remove_cap( $capability );
+					if ( ! key_exists( $capability, $this->privileges ) ) {
+						$role->add_cap( $capability );
+						$status[ $role_name ]['cap'][] = $capability;
+						continue;
+					}
+
+					if ( in_array( $role_name, $this->privileges[ $capability ], true ) ) {
+						$role->add_cap( $capability );
+						$status[ $role_name ]['cap'][] = $capability;
+					}
 				}
 			}
+			return $status;
+		} catch ( \Throwable $th ) {
+			FatalError::set( $th );
+			$status = array();
 		}
 		return $status;
 	}
@@ -133,22 +139,26 @@ class Roles implements RolesInt {
 	 * @since 1.0.0
 	 */
 	public function remove(): array {
-		$status = array();
-		foreach ( $this->role_list as $role_name ) {
-			$role = get_role( $role_name );
+		try {
+			$status = array();
+			foreach ( $this->role_list as $role_name ) {
+				$role = get_role( $role_name );
 
-			// @codeCoverageIgnoreStart
-			if ( ! $this->is_valid_role( $role ) ) {
-				continue;
+				// @codeCoverageIgnoreStart
+				if ( ! $this->is_valid_role( $role ) ) {
+					continue;
+				}
+				// @codeCoverageIgnoreEnd
+
+				$status[ $role_name ]['status'] = 'valid';
+
+				foreach ( $this->caps as $capability ) {
+					$role->remove_cap( $capability );
+					$status[ $role_name ]['cap'][] = $capability;
+				}
 			}
-			// @codeCoverageIgnoreEnd
-
-			$status[ $role_name ]['status'] = 'valid';
-
-			foreach ( $this->caps as $capability ) {
-				$role->remove_cap( $capability );
-				$status[ $role_name ]['cap'][] = $capability;
-			}
+		} catch ( \Throwable $th ) {
+			FatalError::set( $th );
 		}
 		return $status;
 	}

@@ -101,8 +101,6 @@ class QueryVars implements Executable, Registrable {
 			$query_org = $query;
 			$query     = $this->fix_attachment( $query );
 
-			throw new Exception( 'BLAH' );
-
 			if ( key_exists( DRPPSM_PT_SERMON, $query ) ) {
 				$arg = $query[ DRPPSM_PT_SERMON ];
 
