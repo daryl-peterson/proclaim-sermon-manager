@@ -25,21 +25,23 @@ class Meta {
 	/**
 	 * Add comments.
 	 */
-	public const AUDIO           = 'drppsm_audio';
-	public const AUDIO_ID        = 'drppsm_audio_id';
-	public const BIBLE_PASSAGE   = 'drppsm_bible_passage';
-	public const BULLETIN        = 'drppsm_bulletin';
-	public const DATE            = 'drppsm_date';
-	public const DATE_AUTO       = 'drppsm_date_auto';
-	public const NOTES           = 'drppsm_notes';
-	public const DESCRIPTION     = 'drppsm_description';
-	public const DURATION        = 'drppsm_duration';
-	public const SIZE            = 'drppsm_size';
-	public const SERVICE_TYPE    = DRPPSM_TAX_SERVICE_TYPE;
-	public const VIDEO           = 'drppsm_video';
-	public const VIDEO_LINK      = 'drppsm_video_link';
-	public const SERIES_IMAGE_ID = 'drppsm_series_image_id';
-	public const SERIES_IMAGE    = 'drppsm_series_image';
+	public const AUDIO             = 'drppsm_audio';
+	public const AUDIO_ID          = 'drppsm_audio_id';
+	public const BIBLE_PASSAGE     = 'drppsm_bible_passage';
+	public const BULLETIN          = 'drppsm_bulletin';
+	public const DATE              = 'drppsm_date';
+	public const DATE_AUTO         = 'drppsm_date_auto';
+	public const NOTES             = 'drppsm_notes';
+	public const DESCRIPTION       = 'drppsm_description';
+	public const DURATION          = 'drppsm_duration';
+	public const SIZE              = 'drppsm_size';
+	public const SERVICE_TYPE      = DRPPSM_TAX_SERVICE_TYPE;
+	public const VIDEO             = 'drppsm_video';
+	public const VIDEO_LINK        = 'drppsm_video_link';
+	public const SERIES_IMAGE_ID   = 'drppsm_series_image_id';
+	public const SERIES_IMAGE      = 'drppsm_series_image';
+	public const PREACHER_IMAGE_ID = 'drppsm_preacher_image_id';
+	public const PREACHER_IMAGE    = 'drppsm_preacher';
 
 	public const META_LIST = array(
 		self::AUDIO,

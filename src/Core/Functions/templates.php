@@ -270,6 +270,33 @@ function get_series_image( null|int|WP_Post $post = null, string $image_size = '
 }
 
 
+function get_preacher_image( null|int|WP_Post $post = null, string $image_size = 'post-thumbnail' ) {
+	if ( null === $post ) {
+		global $post;
+	}
+
+	$terms = get_the_terms( $post, DRPPSM_TAX_PREACHER );
+	$url   = null;
+
+	if ( ! is_array( $terms ) ) {
+		return $url;
+	}
+
+	foreach ( $terms as $term ) {
+		$meta = get_term_meta( $term->term_id, Meta::PREACHER_IMAGE_ID, true );
+		$url  = null;
+		if ( ! empty( $meta ) && false !== $meta ) {
+			$url = wp_get_attachment_image_url( $meta, $image_size );
+		}
+		if ( $url ) {
+			break;
+		}
+	}
+
+	return $url;
+}
+
+
 /**
  * Get term dropdown.
  *
