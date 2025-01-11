@@ -54,7 +54,7 @@ class Timer {
 	 * @return string Key to use for ending the timer.
 	 * @since 1.0.0
 	 */
-	public function start( string $name = '', string $file ): string {
+	public function start( string $name, string $file ): string {
 
 		if ( empty( $name ) ) {
 			$name = 'none';

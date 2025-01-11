@@ -106,13 +106,6 @@ class SermonListTable implements Executable, Registrable {
 	 * @since 1.0.0
 	 */
 	public function init(): void {
-		/**
-		 * Use to time execution.
-		 *
-		 * @var Timer $timer
-		 */
-		$timer     = Timer::get_instance();
-		$timer_key = $timer->start( __FUNCTION__, __FILE__ );
 
 		$tax   = DRPPSM_TAX_LIST;
 		$trans = 'drppsm_sermon_list_table_init';
@@ -121,7 +114,6 @@ class SermonListTable implements Executable, Registrable {
 		if ( $init ) {
 			$this->columns  = $init['columns'];
 			$this->sortable = $init['sortable'];
-			$timer->stop( $timer_key );
 			return;
 		}
 
@@ -150,7 +142,6 @@ class SermonListTable implements Executable, Registrable {
 			'sortable' => $this->sortable,
 		);
 		set_transient( $trans, $data, WEEK_IN_SECONDS );
-		$timer->stop( $timer_key );
 	}
 
 	/**

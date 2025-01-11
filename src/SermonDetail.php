@@ -136,7 +136,7 @@ class SermonDetail implements Initable, Registrable {
 	 */
 	public function save( int $post_ID, array $updated, CMB2 $cmb ): void {
 
-		if ( $this->pt_sermon !== get_post_type() ) {
+		if ( get_post_type() !== $this->pt_sermon ) {
 			return;
 		}
 		Logger::debug( $cmb->data_to_save );

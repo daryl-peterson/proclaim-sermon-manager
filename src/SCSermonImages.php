@@ -81,8 +81,6 @@ class SCSermonImages extends SCBase implements Executable, Registrable {
 	 * @since 1.0.0
 	 */
 	public function show_images( array $atts ): string {
-		$timer     = Timer::get_instance();
-		$timer_key = $timer->start( __FUNCTION__, __FILE__ );
 
 		$atts = $this->fix_atts( $atts );
 		$args = $this->get_default_args();
@@ -104,7 +102,6 @@ class SCSermonImages extends SCBase implements Executable, Registrable {
 					$terms->get_error_data(),
 				)
 			);
-			$timer->stop( $timer_key );
 			return 'Shortcode Error';
 		}
 
@@ -126,7 +123,6 @@ class SCSermonImages extends SCBase implements Executable, Registrable {
 			get_partial( 'no-posts' );
 			$output .= ob_get_clean();
 		}
-		$timer->stop( $timer_key );
 		return $output;
 	}
 

@@ -3,7 +3,7 @@
  * Taxonomy list table.
  * - Adds images to specific taxonomy.
  *
- * @package     Proclaim Sermon Manager
+ * @package     DRPPSM\TaxonomyListTable
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
@@ -22,7 +22,7 @@ use WP_Term;
  * Taxonomy list table.
  * - Adds images to specific taxonomy.
  *
- * @package     Proclaim Sermon Manager
+ * @package     DRPPSM\TaxonomyListTable
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
@@ -45,7 +45,6 @@ class TaxonomyListTable implements Executable, Registrable {
 	 */
 	private array $tax;
 
-
 	/**
 	 * Bible taxonomy.
 	 *
@@ -66,7 +65,6 @@ class TaxonomyListTable implements Executable, Registrable {
 			'cb'           => '<input type="checkbox" />',
 			'drppsm-image' => 'Image',
 			'name'         => 'Name',
-			// 'drppsm-description' => 'Description',
 			'slug'         => 'Slug',
 			'posts'        => 'Count',
 		);
@@ -76,10 +74,10 @@ class TaxonomyListTable implements Executable, Registrable {
 	/**
 	 * Initialize and register.
 	 *
-	 * @return TaxonomyListTable
+	 * @return self
 	 * @since 1.0.0
 	 */
-	public static function exec(): TaxonomyListTable {
+	public static function exec(): self {
 		$obj = new self();
 		$obj->register();
 		return $obj;
@@ -130,6 +128,7 @@ class TaxonomyListTable implements Executable, Registrable {
 	 * @since 1.0.0
 	 */
 	public function set_columns( array $columns ): array {
+		unset( $columns );
 		if ( $this->get_tax_name() === $this->tax_bible ) {
 			unset( $this->columns['drppsm-image'] );
 		}

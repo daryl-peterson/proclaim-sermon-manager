@@ -53,7 +53,7 @@ class SettingsBase {
 	/**
 	 * Set this menu as the main.
 	 *
-	 * @param mixed $menu Main menu.
+	 * @param mixed $submenus Submenus.
 	 * @return string
 	 * @since 1.0.0
 	 */
@@ -68,7 +68,7 @@ class SettingsBase {
 	/**
 	 * Set defaults.
 	 *
-	 * @param null|boolean|null $force
+	 * @param null|boolean|null $force Force default reset.
 	 * @return boolean
 	 * @since 1.0.0
 	 */
@@ -77,7 +77,7 @@ class SettingsBase {
 		$options  = \get_option( $this->option_key, array() );
 		$defaults = Settings::get_defaults( $this->option_key );
 
-		if ( ! $defaults ) {
+		if ( ! $defaults && ! $force ) {
 			return false;
 		}
 
@@ -125,8 +125,8 @@ class SettingsBase {
 	/**
 	 * Add heading seperator.
 	 *
-	 * @param CMB2   $cmb
-	 * @param string $title
+	 * @param CMB2   $cmb CMB2 object
+	 * @param string $title Title for separator.
 	 * @return void
 	 * @since 1.0.0
 	 */
@@ -139,21 +139,6 @@ class SettingsBase {
 			'repeatable'    => true,
 			'render_row_cb' => function () use ( $title ) {
 				echo "<h3 class='seperator'>$title</h3><hr>";
-			},
-		);
-
-		$cmb->add_field( $args );
-	}
-
-	protected function add_html( CMB2 $cmb, string $html ) {
-		++$this->separator_count;
-		$args = array(
-			'id'            => 'heading_' . $this->separator_count,
-			'name'          => 'heading_' . $this->separator_count,
-			'type'          => 'heading',
-			'repeatable'    => true,
-			'render_row_cb' => function () use ( $html ) {
-				echo "$html";
 			},
 		);
 

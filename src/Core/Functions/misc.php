@@ -35,29 +35,6 @@ function app_get( string $item ): mixed {
 }
 
 /**
- * Get app data.
- *
- * @param string $key Item name.
- * @param mixed  $default_value Value to use if it doesn't exist.
- * @return mixed
- * @since 1.0.0
- */
-function get_item( string $key, mixed $default_value = null ): mixed {
-	return app()->get_item( $key, $default_value );
-}
-
-/**
- * Set app data.
- *
- * @param string $key Item name.
- * @param mixed  $value
- * @return void
- */
-function set_item( string $key, mixed $value ): void {
-	app()->set_item( $key, $value );
-}
-
-/**
  * Create a key for options ect.. with the DRPSM_KEY_PREFIX.
  *
  * @param string $name Name of key to create.

@@ -2,7 +2,7 @@
 /**
  * Settings constants.
  *
- * @package     Proclaim Sermon Manager
+ * @package     DRPPSM\Settings
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
@@ -12,12 +12,11 @@
 namespace DRPPSM;
 
 use Exception;
-use WP_Exception;
 
 /**
  * Settings constants.
  *
- * @package     Proclaim Sermon Manager
+ * @package     DRPPSM\Settings
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
@@ -107,8 +106,8 @@ class Settings {
 	/**
 	 * Get options value
 	 *
-	 * @param string $key
-	 * @param mixed  $default_value
+	 * @param string $key Options key.
+	 * @param mixed  $default_value Default value to return if not found.
 	 * @return mixed
 	 * @since 1.0.0
 	 */
@@ -131,8 +130,8 @@ class Settings {
 	/**
 	 * Get default value.
 	 *
-	 * @param string     $key
-	 * @param mixed|null $default_value
+	 * @param string     $key Options key.
+	 * @param mixed|null $default_value Default value to return if not found.
 	 * @return mixed
 	 * @since 1.0.0
 	 */
@@ -155,7 +154,7 @@ class Settings {
 	/**
 	 * Get defaults for an option page.
 	 *
-	 * @param string $option_key
+	 * @param string $option_key Options key.
 	 * @return null|array
 	 * @since 1.0.0
 	 */
@@ -171,9 +170,10 @@ class Settings {
 	/**
 	 * Set option value
 	 *
-	 * @param string $key
-	 * @param mixed  $value
+	 * @param string $key Options key.
+	 * @param mixed  $value Option value.
 	 * @return boolean
+	 * @throws Exception
 	 * @since 1.0.0
 	 */
 	public static function set( string $key, mixed $value ): bool {
@@ -275,7 +275,7 @@ class Settings {
 	/**
 	 * Get primary option key based on search key.
 	 *
-	 * @param string $key
+	 * @param string $key Options key.
 	 * @return null|string
 	 * @since 1.0.0
 	 */

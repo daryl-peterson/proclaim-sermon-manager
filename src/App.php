@@ -143,18 +143,13 @@ class App implements Initable {
 	 * Set app data.
 	 *
 	 * @param string $item Item name.
+	 * @param string $value Item value.
 	 * @return void
 	 * @since 1.0.0
 	 */
 	public function set_item( string $item, mixed $value ): void {
-
+		// phpcs:ignore
 		$this->data[ $item ] = $value;
-		Logger::debug(
-			array(
-				'ITEM'  => $item,
-				'VALUE' => $value,
-			)
-		);
 	}
 
 	/**

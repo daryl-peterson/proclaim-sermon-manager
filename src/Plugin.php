@@ -112,7 +112,6 @@ class Plugin {
 	 */
 	public function deactivate(): bool {
 		options()->delete( 'activated' );
-		Logger::debug( 'DEACTIVATED' );
 		do_action( Actions::REWRITE_FLUSH );
 		return true;
 	}
@@ -124,8 +123,6 @@ class Plugin {
 	 * @since 1.0.0
 	 */
 	public function shutdown(): bool {
-		$timer = Timer::get_instance();
-		$timer->shutdown();
 		return true;
 	}
 }

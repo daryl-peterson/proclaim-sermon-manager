@@ -100,8 +100,6 @@ class ImageSize {
 	public function run(): bool {
 		$result = false;
 		try {
-			$timer     = Timer::get_instance();
-			$timer_key = $timer->start( __FUNCTION__, __FILE__ );
 
 			// @codeCoverageIgnoreStart
 			if ( ! function_exists( '\add_image_size' ) ) {
@@ -122,8 +120,6 @@ class ImageSize {
 				}
 				// @codeCoverageIgnoreEnd
 			}
-			$timer->stop( $timer_key );
-
 		} catch ( \Throwable $th ) {
 			FatalError::set( $th );
 		}
