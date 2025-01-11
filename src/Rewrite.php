@@ -80,7 +80,9 @@ class Rewrite {
 	 * @since 1.0.0
 	 */
 	public function reset( string $plugin, bool $network_wide ) {
-		delete_transient( self::TRANS_NAME );
+		if ( $plugin || $network_wide ) {
+			delete_transient( self::TRANS_NAME );
+		}
 	}
 
 	/**

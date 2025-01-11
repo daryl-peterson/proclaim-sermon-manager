@@ -46,7 +46,6 @@ return array(
 	SermonEdit::class          => SermonEdit::class,
 	SermonImageAttach::class   => SermonImageAttach::class,
 	SermonListTable::class     => SermonListTable::class,
-	ShortCodes::class          => ShortCodes::class,
 	SCSeriesLatest::class      => SCSeriesLatest::class,
 	SCSermonLatest::class      => SCSermonLatest::class,
 	SCSermons::class           => SCSermons::class,

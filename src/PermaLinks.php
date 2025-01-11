@@ -36,8 +36,6 @@ class PermaLinks implements PermaLinkInt {
 	 */
 	private array $permalinks;
 
-
-
 	/**
 	 * Sermon post type.
 	 *
@@ -94,6 +92,12 @@ class PermaLinks implements PermaLinkInt {
 	 */
 	private TextDomain $text;
 
+	/**
+	 * Initialize object.
+	 *
+	 * @return void
+	 * @since 1.0.0
+	 */
 	protected function __construct() {
 		$this->pt_sermon        = DRPPSM_PT_SERMON;
 		$this->tax_bible        = DRPPSM_TAX_BIBLE;
@@ -146,7 +150,6 @@ class PermaLinks implements PermaLinkInt {
 	 * @since 1.0.0
 	 */
 	public static function fix_permalink( string $slug, string $default_value = '' ): string {
-		// $value = OptGeneral::get( $slug, $default_value );
 		$value = Settings::get( $slug, $default_value );
 		$value = trim( sanitize_title( $value ) );
 		return untrailingslashit( $value );

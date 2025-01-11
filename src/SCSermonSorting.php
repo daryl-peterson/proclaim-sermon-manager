@@ -2,7 +2,7 @@
 /**
  * Sermon sorting shortcode.
  *
- * @package     Proclaim Sermon Manager
+ * @package     DRPPSM\SCSermonSorting
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
@@ -19,7 +19,7 @@ defined( 'ABSPATH' ) || exit;
 /**
  * Sermon sorting shortcode.
  *
- * @package     Proclaim Sermon Manager
+ * @package     DRPPSM\SCSermonSorting
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
@@ -34,17 +34,35 @@ class SCSermonSorting extends SCBase implements Executable, Registrable {
 	 */
 	private string $sc;
 
+	/**
+	 * Initialize object.
+	 *
+	 * @return void
+	 * @since 1.0.0
+	 */
 	protected function __construct() {
 		parent::__construct();
 		$this->sc = DRPPSM_SC_SERMON_SORTING;
 	}
 
+	/**
+	 * Initialize object and preform hooks registration if needed.
+	 *
+	 * @return self
+	 * @since 1.0.0
+	 */
 	public static function exec(): self {
 		$obj = new self();
 		$obj->register();
 		return $obj;
 	}
 
+	/**
+	 * Register hooks.
+	 *
+	 * @return null|bool
+	 * @since 1.0.0
+	 */
 	public function register(): ?bool {
 		if ( shortcode_exists( $this->sc ) ) {
 			return false;
@@ -60,6 +78,7 @@ class SCSermonSorting extends SCBase implements Executable, Registrable {
 	 * @return string Sorting HTML.
 	 * @since 1.0.0
 	 *
+	 *
 	 * #### Atts parameters
 	 * - **series_filter** Do filtering in this specific series (slug)
 	 * - **service_type_filter**
@@ -72,7 +91,7 @@ class SCSermonSorting extends SCBase implements Executable, Registrable {
 	 * - **hide_series**  Hides the series dropdown if set to "yes"
 	 * - **hide_preachers**  Hides the preachers dropdown if set to "yes" hide_books - Hides the books dropdown if set to "yes"
 	 */
-	public function show_sermon_sorting( $atts = array() ) {
+	public function show_sermon_sorting( $atts = array() ): string {
 
 		// Default shortcode options.
 		$args = array(
@@ -92,6 +111,6 @@ class SCSermonSorting extends SCBase implements Executable, Registrable {
 		// Merge default and user options.
 		$args = shortcode_atts( $args, $atts, $this->sc );
 
-		sermon_sorting( $args );
+		return sermon_sorting( $args );
 	}
 }

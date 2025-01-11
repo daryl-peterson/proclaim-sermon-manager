@@ -2,7 +2,7 @@
 /**
  * Base settings.
  *
- * @package     Proclaim Sermon Manager
+ * @package     DRPPSM\SettingsBase
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
@@ -16,15 +16,29 @@ use CMB2;
 /**
  * Base settings.
  *
- * @package     Proclaim Sermon Manager
+ * @package     DRPPSM\SettingsBase
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
  * @since       1.0.0
  */
 class SettingsBase {
+
+	/**
+	 * Count for separtor so it can be reused.
+	 *
+	 * @var integer
+	 * @since 1.0.0
+	 */
 	protected int $separator_count = 0;
-	public string $option_key      = 'NOT SET';
+
+	/**
+	 * Option key - should be changed in child class.
+	 *
+	 * @var string
+	 * @since 1.0.0
+	 */
+	public string $option_key = 'NOT SET';
 
 
 	/**
@@ -34,10 +48,6 @@ class SettingsBase {
 	 */
 	public function __construct() {
 		$this->set_defaults();
-	}
-
-	public function get_option_key() {
-		return $this->option_key;
 	}
 
 	/**
