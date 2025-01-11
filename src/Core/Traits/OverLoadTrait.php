@@ -22,7 +22,19 @@ namespace DRPPSM\Traits;
  */
 trait OverLoadTrait {
 
+	/**
+	 * Used to store list of protected variables.
+	 *
+	 * @var array
+	 * @since 1.0.0
+	 */
 	protected array $protect = array();
+
+	/**
+	 * Array used to store dynamic properties.
+	 *
+	 * @var array
+	 */
 	protected array $data;
 
 	/**
@@ -59,7 +71,7 @@ trait OverLoadTrait {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param string $name  The private member to unset
+	 * @param string $name  The private member to unset.
 	 */
 	public function __unset( $name ) {
 		unset( $this->$name );

@@ -108,9 +108,6 @@ class QueryVars implements Executable, Registrable {
 							'term'     => '',
 						);
 						break;
-					default:
-						// code
-						break;
 				}
 			}
 		} catch ( \Throwable $th ) {
@@ -173,7 +170,7 @@ class QueryVars implements Executable, Registrable {
 		$request = $wp->request;
 		$term    = $query['attachment'];
 		$request = trim( str_replace( '/' . $term, '', $request ) );
-		$key     = array_search( $request, $links );
+		$key     = array_search( $request, $links, true );
 		Logger::debug(
 			array(
 				'REQUEST'    => $request,
@@ -240,18 +237,14 @@ class QueryVars implements Executable, Registrable {
 			return $query;
 		}
 
-		$name = sanitize_text_field( $query['name'] );
+		$name = $query['name'];
 
-		$sql = <<<EOT
-			SELECT
+		$sql = $wpdb->prepare(
+			"SELECT
 				*
 			FROM {$wpdb->prefix}posts
 			WHERE post_name = %s
-			LIMIT 1
-		EOT;
-
-		$sql = $wpdb->prepare(
-			$sql,
+			LIMIT 1",
 			array(
 				sanitize_text_field( $name ),
 			)
