@@ -143,7 +143,7 @@ class App implements Initable {
 	 * Set app data.
 	 *
 	 * @param string $item Item name.
-	 * @param string $value Item value.
+	 * @param mixed  $value Item value.
 	 * @return void
 	 * @since 1.0.0
 	 */

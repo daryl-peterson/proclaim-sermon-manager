@@ -125,7 +125,7 @@ class SettingsBase {
 	/**
 	 * Add heading seperator.
 	 *
-	 * @param CMB2   $cmb CMB2 object
+	 * @param CMB2   $cmb CMB2 object.
 	 * @param string $title Title for separator.
 	 * @return void
 	 * @since 1.0.0
@@ -138,7 +138,7 @@ class SettingsBase {
 			'type'          => 'heading',
 			'repeatable'    => true,
 			'render_row_cb' => function () use ( $title ) {
-				echo "<h3 class='seperator'>$title</h3><hr>";
+				echo "<h3 class='seperator'>" . esc_html( $title ) . '</h3><hr>';
 			},
 		);
 

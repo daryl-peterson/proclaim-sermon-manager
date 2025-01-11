@@ -25,7 +25,7 @@ $image = get_sermon_image_url( true, $args['image_size'], true );
 <div class="drppsm-archive-image">
 
 	<a href="<?php the_permalink( $post->id ); ?>">
-	<img class="drppsm-archive-image-img" alt="<?php the_title(); ?>" src="<?php echo parse_html_image( $image ); ?>">
+	<img class="drppsm-archive-image-img" alt="<?php the_title(); ?>" src="<?php echo esc_html( $image ); ?>">
 	</a>
 
 </div>

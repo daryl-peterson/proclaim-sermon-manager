@@ -34,12 +34,28 @@ function get_partial( string $name, array $args = array() ) {
 	Templates::exec()->get_partial( $name, $args );
 }
 
-function locate_partial( string $name, array $args = array() ) {
+/**
+ * Location template file.
+ *
+ * @param string $name Template name.
+ * @param array  $args Argument array for locating templates.
+ * @return null|string
+ * @since 1.0.0
+ */
+function locate_partial( string $name, array $args = array() ): ?string {
 	return Templates::exec()->locate_partial( $name, $args );
 }
 
-function parse_html_image( string $string ) {
-	return esc_html( $string );
+/**
+ * Render already process html.
+ *
+ * @param string $html HTML string.
+ * @return void
+ * @since 1.0.0
+ */
+function render_html( string $html ): void {
+	// phpcs:ignore
+	echo $html;
 }
 
 /**

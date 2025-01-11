@@ -101,6 +101,12 @@ class Settings {
 
 	);
 
+	/**
+	 * Used to store default option values.
+	 *
+	 * @var array
+	 * @since 1.0.0
+	 */
 	private static array $option_default;
 
 	/**
@@ -173,7 +179,7 @@ class Settings {
 	 * @param string $key Options key.
 	 * @param mixed  $value Option value.
 	 * @return boolean
-	 * @throws Exception
+	 * @throws Exception Throws exception when option is not found.
 	 * @since 1.0.0
 	 */
 	public static function set( string $key, mixed $value ): bool {

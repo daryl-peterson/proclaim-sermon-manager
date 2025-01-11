@@ -36,7 +36,7 @@ foreach ( $requirements as $required_variable ) {
 <div class="drppsm-archive-meta-item">
 	<div class="drppsm-archive-meta-prefix"><?php echo esc_html( $item_label ); ?></div>
 	<div class="drppsm-archive-meta-text">
-		<?php echo esc_html( $item_value ); ?>
+		<?php render_html( $item_value ); ?>
 	</div>
 </div>
 
