@@ -26,7 +26,7 @@ use DRPPSM\Interfaces\RequirementsInt;
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
  * @since       1.0.0
  */
-class Requirements implements RequirementsInt {
+class Requirements {
 
 	/**
 	 * Notice interface
@@ -46,6 +46,18 @@ class Requirements implements RequirementsInt {
 	}
 
 	/**
+	 * Initialize object and preform register hooks if needed.
+	 *
+	 * @return self
+	 * @since 1.0.0
+	 */
+	public static function exec(): self {
+		$obj = new self();
+		$obj->register();
+		return $obj;
+	}
+
+	/**
 	 * Register hooks.
 	 *
 	 * @return boolean|null Always true.
@@ -59,18 +71,6 @@ class Requirements implements RequirementsInt {
 
 		add_action( 'admin_init', array( $this, 'run' ) );
 		return true;
-	}
-
-	/**
-	 * Initialize and register.
-	 *
-	 * @return RequirementsInt
-	 * @since 1.0.0
-	 */
-	public static function exec(): RequirementsInt {
-		$obj = new self();
-		$obj->register();
-		return $obj;
 	}
 
 	/**
@@ -128,7 +128,7 @@ class Requirements implements RequirementsInt {
 		if ( version_compare( $wp_version, $version ) >= 0 ) {
 			return;
 		}
-		// $this->notice->set_error( esc_html( $title ), esc_html( $message ) );
+
 		throw new PluginException( esc_html( $message ) );
 	}
 }

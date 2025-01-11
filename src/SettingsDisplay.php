@@ -9,7 +9,6 @@
  * @since       1.0.0
  */
 
-
 namespace DRPPSM;
 
 use CMB2;
@@ -28,15 +27,21 @@ use DRPPSM\Interfaces\Registrable;
  */
 class SettingsDisplay extends SettingsBase implements Executable, Registrable {
 
+	/**
+	 * Key used in storing options.
+	 *
+	 * @var string
+	 * @since 1.0.0
+	 */
 	public string $option_key = Settings::OPTION_KEY_DISPLAY;
 
 	/**
 	 * Initailize and register hooks.
 	 *
-	 * @return SettingsDisplay
+	 * @return self
 	 * @since 1.0.0
 	 */
-	public static function exec(): SettingsDisplay {
+	public static function exec(): self {
 		$obj = new self();
 		$obj->register();
 		return $obj;
@@ -95,11 +100,10 @@ class SettingsDisplay extends SettingsBase implements Executable, Registrable {
 		$this->hide_topics( $cmb );
 	}
 
-
 	/**
 	 * Add sermon default image field.
 	 *
-	 * @param CMB2 $cmb
+	 * @param CMB2 $cmb CMB2 object.
 	 * @return void
 	 * @since 1.0.0
 	 */
@@ -122,7 +126,7 @@ class SettingsDisplay extends SettingsBase implements Executable, Registrable {
 	/**
 	 * Add archive order by.
 	 *
-	 * @param CMB2 $cmb
+	 * @param CMB2 $cmb CMB2 object.
 	 * @return void
 	 * @since 1.0.0
 	 */
@@ -150,7 +154,7 @@ class SettingsDisplay extends SettingsBase implements Executable, Registrable {
 	/**
 	 * Add archive order.
 	 *
-	 * @param CMB2 $cmb
+	 * @param CMB2 $cmb CMB2 object.
 	 * @return void
 	 * @since 1.0.0
 	 */
@@ -174,7 +178,7 @@ class SettingsDisplay extends SettingsBase implements Executable, Registrable {
 	/**
 	 * Add disable css.
 	 *
-	 * @param CMB2 $cmb
+	 * @param CMB2 $cmb CMB2 object.
 	 * @return void
 	 * @since 1.0.0
 	 */
@@ -193,7 +197,7 @@ class SettingsDisplay extends SettingsBase implements Executable, Registrable {
 	/**
 	 * Add archive filtering.
 	 *
-	 * @param CMB2 $cmb
+	 * @param CMB2 $cmb CMB2 object.
 	 * @return void
 	 * @since 1.0.0
 	 */
@@ -239,7 +243,7 @@ class SettingsDisplay extends SettingsBase implements Executable, Registrable {
 	/**
 	 * Add preacher sorting.
 	 *
-	 * @param CMB2 $cmb
+	 * @param CMB2 $cmb CMB2 object.
 	 * @return void
 	 * @since 1.0.0
 	 */
@@ -264,7 +268,7 @@ class SettingsDisplay extends SettingsBase implements Executable, Registrable {
 	/**
 	 * Add series sorting.
 	 *
-	 * @param CMB2 $cmb
+	 * @param CMB2 $cmb CMB2 object.
 	 * @return void
 	 * @since 1.0.0
 	 */
@@ -289,7 +293,7 @@ class SettingsDisplay extends SettingsBase implements Executable, Registrable {
 	/**
 	 * Add service type sorting.
 	 *
-	 * @param CMB2 $cmb
+	 * @param CMB2 $cmb CMB2 object.
 	 * @return void
 	 * @since 1.0.0
 	 */
@@ -315,7 +319,7 @@ class SettingsDisplay extends SettingsBase implements Executable, Registrable {
 	/**
 	 * Add topic sorting.
 	 *
-	 * @param CMB2 $cmb
+	 * @param CMB2 $cmb CMB2 object.
 	 * @return void
 	 * @since 1.0.0
 	 */

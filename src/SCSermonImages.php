@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Shortcodes for sermon images.
  *
@@ -22,8 +21,7 @@ use WP_Error;
 /**
  * Shortcodes for sermon images.
  *
- * @package     Proclaim-Sermon-Manager
- * @subpackage  SCSermonImages
+ * @package     DRPPSM\SCSermonImages
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
@@ -38,17 +36,35 @@ class SCSermonImages extends SCBase implements Executable, Registrable {
 	 */
 	private string $sc_images;
 
+	/**
+	 * Initialize object properties.
+	 *
+	 * @return void
+	 * @since 1.0.0
+	 */
 	protected function __construct() {
 		parent::__construct();
 		$this->sc_images = DRPPSM_SC_SERMON_IMAGES;
 	}
 
+	/**
+	 * Initialize and preform registration hooks if needed.
+	 *
+	 * @return SCSermonImages
+	 * @since 1.0.0
+	 */
 	public static function exec(): self {
 		$obj = new self();
 		$obj->register();
 		return $obj;
 	}
 
+	/**
+	 * Register hooks.
+	 *
+	 * @return null|bool
+	 * @since 1.0.0
+	 */
 	public function register(): ?bool {
 		if ( shortcode_exists( $this->sc_images ) ) {
 			return false;
@@ -60,7 +76,7 @@ class SCSermonImages extends SCBase implements Executable, Registrable {
 	/**
 	 * Show sermon,preacher images. ect.
 	 *
-	 * @param array $atts
+	 * @param array $atts Shorcode attributes array.
 	 * @return string
 	 * @since 1.0.0
 	 */
@@ -101,12 +117,14 @@ class SCSermonImages extends SCBase implements Executable, Registrable {
 					'terms'      => $terms,
 					'image_size' => $args['image_size'],
 					'taxonomy'   => $tax,
-					'meta_key'   => $this->get_meta_key( $args ),
+					'mkey'       => $this->get_meta_key( $args ),
 				)
 			);
 			$output .= ob_get_clean();
 		} else {
-
+			ob_start();
+			get_partial( 'no-posts' );
+			$output .= ob_get_clean();
 		}
 		$timer->stop( $timer_key );
 		return $output;
@@ -133,7 +151,7 @@ class SCSermonImages extends SCBase implements Executable, Registrable {
 	/**
 	 * Get query args.
 	 *
-	 * @param array $args
+	 * @param array $args Arguments array.
 	 * @return array
 	 * @since 1.0.0
 	 */
@@ -149,18 +167,16 @@ class SCSermonImages extends SCBase implements Executable, Registrable {
 			case DRPPSM_TAX_SERIES:
 				$meta_key = Meta::SERIES_IMAGE_ID;
 				break;
-			case DRPPSM_TAX_PREACHER;
+			case DRPPSM_TAX_PREACHER:
 				$meta_key = Meta::PREACHER_IMAGE_ID;
-			default:
-				// code...
-				break;
 		}
-
+		// @codingStandardsIgnoreStart
 		$query_args['meta_query'][] = array(
 			'meta_key'     => $meta_key,
 			'meta_value'   => ' ',
 			'meta_compare' => '!=',
 		);
+		// @codingStandardsIgnoreEnd
 
 		return $query_args;
 	}
@@ -168,8 +184,9 @@ class SCSermonImages extends SCBase implements Executable, Registrable {
 	/**
 	 * Get the meta key needed.
 	 *
-	 * @param array $args
+	 * @param array $args Arguments array.
 	 * @return null|string
+	 * @since 1.0.0
 	 */
 	private function get_meta_key( array $args ): ?string {
 		$meta_key = null;
@@ -177,10 +194,10 @@ class SCSermonImages extends SCBase implements Executable, Registrable {
 			case DRPPSM_TAX_SERIES:
 				$meta_key = Meta::SERIES_IMAGE_ID;
 				break;
-			case DRPPSM_TAX_PREACHER;
+			case DRPPSM_TAX_PREACHER:
 				$meta_key = Meta::PREACHER_IMAGE_ID;
+				break;
 			default:
-				// code...
 				break;
 		}
 		return $meta_key;

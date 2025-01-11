@@ -26,6 +26,12 @@ defined( 'ABSPATH' ) || exit;
  */
 class FatalError {
 
+	/**
+	 * Options key.
+	 *
+	 * @var string
+	 * @since 1.0.0
+	 */
 	private static $key = 'drppsm_fatal_error';
 
 	/**
@@ -78,7 +84,7 @@ class FatalError {
 	}
 
 	/**
-	 * Set error message
+	 * Store error message in options table.
 	 *
 	 * @param string     $message Message to display.
 	 * @param \Throwable $th Throwable.
@@ -97,6 +103,6 @@ class FatalError {
 			)
 		);
 
-		// wp_die( wp_kses_data( $th->getMessage() ) );
+		// wp_die( wp_kses_data( $th->getMint "string"; found "\Throwable" for $messageessage() ) );
 	}
 }

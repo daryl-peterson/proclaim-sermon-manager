@@ -36,18 +36,35 @@ class SCTerms extends SCBase implements Executable, Registrable {
 	 */
 	private string $sc_terms;
 
-
+	/**
+	 * Initialize object.
+	 *
+	 * @return void
+	 * @since 1.0.0
+	 */
 	protected function __construct() {
 		parent::__construct();
 		$this->sc_terms = DRPPSM_SC_TERMS;
 	}
 
+	/**
+	 * Initialize object and preform hooks registration if needed.
+	 *
+	 * @return self
+	 * @since 1.0.0
+	 */
 	public static function exec(): Executable {
 		$obj = new self();
 		$obj->register();
 		return $obj;
 	}
 
+	/**
+	 * Register hooks.
+	 *
+	 * @return null|bool
+	 * @since 1.0.0
+	 */
 	public function register(): ?bool {
 
 		if ( shortcode_exists( $this->sc_terms ) ) {
@@ -90,7 +107,7 @@ class SCTerms extends SCBase implements Executable, Registrable {
 		// Join default and user options.
 		$args = shortcode_atts( $defaults, $atts, DRPPSM_SC_TERMS );
 
-		// Fix taxonomy
+		// Fix taxonomy.
 		$args['display'] = $this->convert_taxonomy_name( $args['display'], true );
 
 		$query_args = array(

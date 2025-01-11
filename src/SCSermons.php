@@ -37,17 +37,35 @@ class SCSermons extends SCBase implements Executable, Registrable {
 	 */
 	private string $sc_sermons;
 
+	/**
+	 * Initialize object.
+	 *
+	 * @return void
+	 * @since 1.0.0
+	 */
 	protected function __construct() {
 		parent::__construct();
 		$this->sc_sermons = DRPPSM_SC_SERMONS;
 	}
 
+	/**
+	 * Initialize object and preform hooks registration if needed.
+	 *
+	 * @return Executable
+	 * @since 1.0.0
+	 */
 	public static function exec(): Executable {
 		$obj = new self();
 		$obj->register();
 		return $obj;
 	}
 
+	/**
+	 * Register hooks.
+	 *
+	 * @return null|bool
+	 * @since 1.0.0
+	 */
 	public function register(): ?bool {
 		if ( shortcode_exists( $this->sc_sermons ) ) {
 			return false;
@@ -59,8 +77,8 @@ class SCSermons extends SCBase implements Executable, Registrable {
 	/**
 	 * Display sermons.
 	 *
-	 * @param array $attr
-	 * @return void
+	 * @param array $atts Shortcode attributes.
+	 * @return string Rendered HTML.
 	 * @since 1.0.0
 	 *
 	 * #### Atts Parameters
@@ -159,11 +177,11 @@ class SCSermons extends SCBase implements Executable, Registrable {
 
 				// Check includes and excludes.
 				if ( $args['include'] || $args['exclude'] ) {
-					if ( ! in_array( $post->ID, $args['include'] ) ) {
+					if ( ! in_array( $post->ID, $args['include'], true ) ) {
 						continue;
 					}
 
-					if ( ! in_array( $post->ID, $args['exclude'] ) ) {
+					if ( ! in_array( $post->ID, $args['exclude'], true ) ) {
 						continue;
 					}
 				}
@@ -198,13 +216,11 @@ class SCSermons extends SCBase implements Executable, Registrable {
 		return $output;
 	}
 
-
-
 	/**
 	 * Set order by parameter.
 	 *
-	 * @param array &$args
-	 * @param array &$query_args
+	 * @param array &$args Shortcode arguments.
+	 * @param array &$query_args Query arguments.
 	 * @return void
 	 * @since 1.0.0
 	 */
@@ -215,6 +231,7 @@ class SCSermons extends SCBase implements Executable, Registrable {
 			case '':
 				$args['orderby'] = 'meta_value_num';
 
+				// @codingStandardsIgnoreStart
 				$query_args['meta_query'] = array(
 					array(
 						'key'     => Meta::DATE,
@@ -223,6 +240,7 @@ class SCSermons extends SCBase implements Executable, Registrable {
 						'compare' => '<=',
 					),
 				);
+				// @codingStandardsIgnoreEnd
 				break;
 			case 'published':
 			case 'date_published':
@@ -239,8 +257,8 @@ class SCSermons extends SCBase implements Executable, Registrable {
 	/**
 	 * Fix date ordering.
 	 *
-	 * @param array $args
-	 * @param array $query_args
+	 * @param array $args Shortcode arguments.
+	 * @param array $query_args Query arguments.
 	 * @return void
 	 * @since 1.0.0
 	 */
@@ -276,13 +294,14 @@ class SCSermons extends SCBase implements Executable, Registrable {
 					);
 					break;
 				case 'month':
-					$year  = $args['year'] ?: date( 'Y' );
-					$month = intval( $args['month'] ) ?: date( 'm' );
+					$year      = $args['year'] ?: date( 'Y' );
+					$month_arg = $args['month'];
+					$month     = intval( $month_arg ) ?: date( 'm' );
 
 					$query_args['meta_query'][] = array(
 						'key'     => 'sermon_date',
 						'value'   => array(
-							strtotime( $year . '-' . $args['month'] . '-' . '01' ),
+							strtotime( "$year-$month_arg-01" ),
 							strtotime( $year . '-' . $month . '-' . cal_days_in_month( CAL_GREGORIAN, $month, $year ) ),
 						),
 						'compare' => 'BETWEEN',
@@ -295,8 +314,8 @@ class SCSermons extends SCBase implements Executable, Registrable {
 	/**
 	 * Set after and before arguments.
 	 *
-	 * @param array $args
-	 * @param array &$query_args
+	 * @param array $args Shortcode arguments.
+	 * @param array $query_args Query arguments.
 	 * @return void
 	 * @since 1.0.0
 	 */
@@ -334,7 +353,7 @@ class SCSermons extends SCBase implements Executable, Registrable {
 	/**
 	 * Explode csv values in args array for include & exclude keys.
 	 *
-	 * @param array &$args
+	 * @param array &$args Shortcode arguments.
 	 * @return void
 	 * @since 1.0.0
 	 */
@@ -386,7 +405,7 @@ class SCSermons extends SCBase implements Executable, Registrable {
 	/**
 	 * Get sermon filtering defaults.
 	 *
-	 * @param array $args
+	 * @param array $args Shortcode arguments.
 	 * @return array
 	 * @since 1.0.0
 	 */

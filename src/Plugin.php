@@ -14,9 +14,6 @@ namespace DRPPSM;
 defined( 'ABSPATH' ) || exit;
 
 use DRPPSM\Constants\Actions;
-use DRPPSM\Exceptions\PluginException;
-use Exception;
-use WP_Exception;
 
 /**
  * Plugin main class.
@@ -30,13 +27,10 @@ use WP_Exception;
 class Plugin {
 
 	/**
-	 * String for CMB version.
+	 * Option key for activation storing time.
 	 *
-	 * @todo Fix this.
 	 * @var string
 	 */
-	private string $cmb2_version;
-
 	private string $act_key;
 
 	/**
@@ -45,8 +39,7 @@ class Plugin {
 	 * @since 1.0.0
 	 */
 	protected function __construct() {
-		$this->act_key      = 'drppsm_activated';
-		$this->cmb2_version = '?.?.?';
+		$this->act_key = 'drppsm_activated';
 	}
 
 	/**
@@ -78,7 +71,6 @@ class Plugin {
 			register_activation_hook( FILE, array( $this, 'activate' ) );
 			register_deactivation_hook( FILE, array( $this, 'deactivate' ) );
 			add_action( 'shutdown', array( $this, 'shutdown' ) );
-			add_action( 'cmb2_init', array( $this, 'cmb2_init' ) );
 			Loader::exec();
 
 			// @codeCoverageIgnoreStart
@@ -135,18 +127,5 @@ class Plugin {
 		$timer = Timer::get_instance();
 		$timer->shutdown();
 		return true;
-	}
-
-	/**
-	 * Attempt to CMB2 version.
-	 *
-	 * @return void
-	 */
-	public function cmb2_init() {
-		$ver = '?????';
-		if ( defined( 'CMB2_VERSION' ) ) {
-			$ver = CMB2_VERSION;
-		}
-		$this->cmb2_version = $ver;
 	}
 }

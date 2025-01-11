@@ -22,7 +22,7 @@ $tax_stype          = DRPPSM_TAX_SERVICE_TYPE;
 
 ?>
 
-<article id="sermon-single-id-<?php the_ID(); ?>" class="<?php echo $post_class; ?>">
+<article id="sermon-single-id-<?php the_ID(); ?>" class="<?php echo esc_html( $post_class ); ?>">
 	<div class="drppsm-single-inner">
 		<?php
 		get_partial( 'sermon-single-image', $args );

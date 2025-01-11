@@ -66,7 +66,6 @@ class Loader implements Executable, Runable {
 				if ( Plugin::class === $class ) {
 					continue;
 				}
-				// Logger::debug( "LOADING $class" );
 				app()->get( $class );
 			}
 			do_action( Actions::AFTER_INIT );

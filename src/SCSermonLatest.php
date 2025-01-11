@@ -2,7 +2,7 @@
 /**
  * Shortcodes for latest sermon.
  *
- * @package     Proclaim Sermon Manager
+ * @package     DRPPSM\SCSermonLatest
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
@@ -13,7 +13,6 @@ namespace DRPPSM;
 
 use DRPPSM\Interfaces\Executable;
 use DRPPSM\Interfaces\Registrable;
-use WP_Exception;
 use WP_Query;
 
 defined( 'ABSPATH' ) || exit;
@@ -21,7 +20,7 @@ defined( 'ABSPATH' ) || exit;
 /**
  * Shortcodes for latest sermon.
  *
- * @package     Proclaim Sermon Manager
+ * @package     DRPPSM\SCSermonLatest
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
@@ -51,10 +50,10 @@ class SCSermonLatest extends SCBase implements Executable, Registrable {
 	/**
 	 * Initialize object and preform hooks registration if needed.
 	 *
-	 * @return Executable
+	 * @return self
 	 * @since 1.0.0
 	 */
-	public static function exec(): Executable {
+	public static function exec(): self {
 		$obj = new self();
 		$obj->register();
 		return $obj;
@@ -78,8 +77,8 @@ class SCSermonLatest extends SCBase implements Executable, Registrable {
 	/**
 	 * Display latest sermon.
 	 *
-	 * @param array $atts
-	 * @return string
+	 * @param array $atts Attributes array.
+	 * @return string HTML string.
 	 * @since 1.0.0
 	 *
 	 *
@@ -146,6 +145,7 @@ class SCSermonLatest extends SCBase implements Executable, Registrable {
 				'ARGS'       => $args,
 			)
 		);
+
 		$query = new WP_Query( $query_args );
 
 		// Add query and post_id to the args.

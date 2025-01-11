@@ -2,7 +2,7 @@
 /**
  * Sermon sorting.
  *
- * @package     Proclaim Sermon Manager
+ * @package     DRPPSM\SermonSorting
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
@@ -12,16 +12,14 @@
 namespace DRPPSM;
 
 use DRPPSM\Interfaces\Executable;
-use DRPPSM\Interfaces\Registrable;
 use WP_Exception;
 
 defined( 'ABSPATH' ) || exit;
 
-
 /**
  * Sermon sorting.
  *
- * @package     Proclaim Sermon Manager
+ * @package     DRPPSM\SermonSorting
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
@@ -52,7 +50,6 @@ class SermonSorting implements Executable {
 	 */
 	private string $tax_series;
 
-
 	/**
 	 * Service type taxonomy.
 	 *
@@ -61,7 +58,6 @@ class SermonSorting implements Executable {
 	 */
 	private string $tax_service_type;
 
-
 	/**
 	 * Topics taxonomy.
 	 *
@@ -69,7 +65,6 @@ class SermonSorting implements Executable {
 	 * @since 1.0.0
 	 */
 	private string $tax_topics;
-
 
 	/**
 	 * Initialize object properties.
@@ -84,12 +79,16 @@ class SermonSorting implements Executable {
 		$this->tax_topics       = DRPPSM_TAX_TOPICS;
 	}
 
-
+	/**
+	 * Initialize object and preform register hooks if needed.
+	 *
+	 * @return self
+	 * @since 1.0.0
+	 */
 	public static function exec(): self {
 		$obj = new self();
 		return $obj;
 	}
-
 
 	/**
 	 * Render sermon sorting / filtering.
@@ -271,7 +270,7 @@ class SermonSorting implements Executable {
 	/**
 	 * Set form action.
 	 *
-	 * @param array &$args
+	 * @param array &$args Arguments array.
 	 * @return void
 	 */
 	private function set_action( array &$args ): void {
@@ -286,8 +285,6 @@ class SermonSorting implements Executable {
 			default:
 				if ( get_query_var( 'paged' ) === 0 ) {
 					$args['action'] = '';
-				} else {
-					// $args['action'] = str_replace( parse_url( get_pagenum_link(), PHP_URL_QUERY ), '', get_pagenum_link() );
 				}
 				break;
 		}

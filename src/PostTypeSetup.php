@@ -89,7 +89,6 @@ class PostTypeSetup implements Executable, Registrable {
 		}
 
 		add_action( 'init', array( $this, 'add' ) );
-		// add_action( DRPPSM_FLTR_FLUSH_REWRITE, array( $this, 'flush' ) );
 		return true;
 	}
 

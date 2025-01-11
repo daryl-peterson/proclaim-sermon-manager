@@ -30,7 +30,7 @@ class App implements Initable {
 	use SingletonTrait;
 
 	/**
-	 * Service container
+	 * Service container.
 	 *
 	 * @var Container
 	 */

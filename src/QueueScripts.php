@@ -87,7 +87,7 @@ class QueueScripts implements Registrable, Executable {
 	public function front_end(): void {
 		$url  = Helper::get_url() . 'assets';
 		$file = $url . '/css/drppsm-style.css';
-		wp_enqueue_style( 'drppsm-style', $file );
+		wp_enqueue_style( 'drppsm-style', $file, array(), '1.0.0' );
 	}
 
 	/**

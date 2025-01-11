@@ -22,6 +22,7 @@ $failure      = '<p><b>' . DRPPSM_TITLE . '</b>: Partial "<i>' . esc_html( $temp
 $requirements = array(
 	'terms',
 	'image_size',
+	'mkey',
 );
 
 if ( ! isset( $args ) ) {

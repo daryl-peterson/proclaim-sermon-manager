@@ -27,7 +27,13 @@ use DRPPSM\Interfaces\Registrable;
  */
 class SettingsGeneral extends SettingsBase implements Executable, Registrable {
 
-	public string $option_key     = Settings::OPTION_KEY_GENERAL;
+	/**
+	 * Key used in storing options.
+	 *
+	 * @var string
+	 */
+	public string $option_key = Settings::OPTION_KEY_GENERAL;
+
 	public const TRANSIENT_EXPIRE = '';
 
 
@@ -62,13 +68,12 @@ class SettingsGeneral extends SettingsBase implements Executable, Registrable {
 		return true;
 	}
 
-
 	/**
 	 * Check if rewrite rules need to be flushed after cmb save
 	 *
-	 * @param string     $object_id
-	 * @param null|array $updated
-	 * @param CMB2       $cmb
+	 * @param string     $object_id CMB object id.
+	 * @param null|array $updated Updated flash.
+	 * @param CMB2       $cmb CMB2 object.
 	 * @return void
 	 * @since 1.0.0
 	 */
@@ -85,7 +90,8 @@ class SettingsGeneral extends SettingsBase implements Executable, Registrable {
 
 		$flush = false;
 		foreach ( $check as $value ) {
-			if ( in_array( $value, $updated ) ) {
+
+			if ( in_array( $value, $updated, true ) ) {
 				$flush = true;
 				break;
 			}
@@ -146,7 +152,7 @@ class SettingsGeneral extends SettingsBase implements Executable, Registrable {
 	/**
 	 * Add audio / video player selection
 	 *
-	 * @param CMB2 $cmb
+	 * @param CMB2 $cmb CMB2 object.
 	 * @return void
 	 * @since 1.0.0
 	 */
@@ -340,9 +346,9 @@ class SettingsGeneral extends SettingsBase implements Executable, Registrable {
 	}
 
 	/**
-	 * Add series field
+	 * Add series field.
 	 *
-	 * @param CMB2 $cmb
+	 * @param CMB2 $cmb CMB2 object.
 	 * @return void
 	 * @since 1.0.0
 	 */

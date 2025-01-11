@@ -15,8 +15,6 @@ defined( 'ABSPATH' ) || exit;
 
 use DRPPSM\Interfaces\Executable;
 use DRPPSM\Interfaces\Registrable;
-use Exception;
-use WP_Query;
 
 /**
  * Overwrite query vars if conflicts exist.
@@ -84,7 +82,6 @@ class QueryVars implements Executable, Registrable {
 		if ( has_filter( 'request', array( $this, 'overwrite_query_vars' ) ) ) {
 			return false;
 		}
-		// add_action( 'parse_request', array( $this, 'parse_request' ) );
 		add_filter( 'request', array( $this, 'overwrite_query_vars' ) );
 		return true;
 	}
@@ -161,7 +158,7 @@ class QueryVars implements Executable, Registrable {
 	/**
 	 * Fix attachment if it's matches our permalinks.
 	 *
-	 * @param array $query
+	 * @param array $query Query arguments array.
 	 * @return array
 	 * @since 1.0.0
 	 */
@@ -193,17 +190,15 @@ class QueryVars implements Executable, Registrable {
 		return $query;
 	}
 
+	/**
+	 * Fig taxonomy settings.
+	 *
+	 * @param array $query Query arguments array.
+	 * @return array
+	 * @since 1.0.0
+	 */
 	private function fix_taxonomy( array $query ): array {
 
-		/*
-		(
-			[page] =>
-			[drppsm_sermon] => service-types
-			[post_type] => drppsm_sermon
-			[name] => service-types
-		)
-
-		*/
 		if ( key_exists( DRPPSM_PT_SERMON, $query ) ) {
 			$term = get_term_by( 'slug', $query[ DRPPSM_PT_SERMON ] );
 			Logger::debug( array( 'TERM' => $term ) );

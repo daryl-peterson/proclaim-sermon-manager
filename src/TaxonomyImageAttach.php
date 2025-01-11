@@ -2,7 +2,7 @@
 /**
  * Taxonomy image attaching.
  *
- * @package     Proclaim Sermon Manager
+ * @package     DRPPSM\TaxonomyImageAttach
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
@@ -12,7 +12,6 @@
 namespace DRPPSM;
 
 use DRPPSM\Interfaces\Executable;
-use DRPPSM\Interfaces\OptionsInt;
 use DRPPSM\Interfaces\Registrable;
 use WP_Error;
 use WP_Post;
@@ -20,7 +19,7 @@ use WP_Post;
 /**
  * Taxonomy image attaching.
  *
- * @package     Proclaim Sermon Manager
+ * @package     DRPPSM\TaxonomyImageAttach
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
@@ -28,14 +27,13 @@ use WP_Post;
  */
 class TaxonomyImageAttach implements Executable, Registrable {
 
-	private $pt = DRPPSM_PT_SERMON;
-
 	/**
-	 * Options interface.
+	 * Post type.
 	 *
-	 * @var OptionsInt
+	 * @var string
+	 * @since 1.0.0
 	 */
-	public OptionsInt $options;
+	private string $pt = DRPPSM_PT_SERMON;
 
 	/**
 	 * Sermon image class.
@@ -72,7 +70,6 @@ class TaxonomyImageAttach implements Executable, Registrable {
 	 * @since 1.0.0
 	 */
 	protected function __construct() {
-		$this->options      = options();
 		$this->sermon_image = SermonImageAttach::exec();
 		$this->tax          = array(
 			DRPPSM_TAX_PREACHER,
@@ -168,19 +165,11 @@ class TaxonomyImageAttach implements Executable, Registrable {
 
 		$option_key = $meta_key . '_' . $term_id;
 
+		// @todo Find a better way rather than storing in options.
 		if ( isset( $result ) && ! empty( $result ) && $single ) {
-			$this->options->set( $option_key, $result );
+			delete_option( $option_key );
+			add_option( $option_key, $result );
 		}
-
-		Logger::debug(
-			array(
-				'VALUE'     => $result,
-				'TERM ID'   => $term_id,
-				'META KEY'  => $meta_key,
-				'SINGLE'    => $single,
-				'META TYPE' => $meta_type,
-			)
-		);
 
 		return $result;
 	}
@@ -295,7 +284,7 @@ class TaxonomyImageAttach implements Executable, Registrable {
 		}
 
 		$option_key = $meta_key . '_' . $term_id;
-		$image_id   = $this->options->get( $option_key );
+		$image_id   = get_option( $option_key, null );
 		if ( ! isset( $image_id ) ) {
 			return false;
 		}
@@ -314,17 +303,9 @@ class TaxonomyImageAttach implements Executable, Registrable {
 			return false;
 		}
 
-		$this->options->delete( $option_key );
+		delete_option( $option_key );
 		$result = $this->sermon_image->detach_image( $attachment, $sermon );
 
-		Logger::debug(
-			array(
-				'TERM ID'    => $term_id,
-				'META KEY'   => $meta_key,
-				'META VALUE' => $meta_value,
-				'RESULT'     => $result,
-			)
-		);
 		return $result;
 	}
 

@@ -17,7 +17,6 @@ use DRPPSM\DB\DbUpdates;
 use DRPPSM\Interfaces\BibleLoaderInt;
 use DRPPSM\Interfaces\OptionsInt;
 use DRPPSM\Interfaces\PermaLinkInt;
-use DRPPSM\Interfaces\RequirementsInt;
 use DRPPSM\Interfaces\RolesInt;
 use DRPPSM\Interfaces\TextDomainInt;
 use DRPPSM\Interfaces\NoticeInt;
@@ -35,13 +34,12 @@ return array(
 	LoggerInt::class           => Logger::class,
 	NoticeInt::class           => Notice::class,
 	OptionsInt::class          => Options::class,
-	// Pagination::class          => Pagination::class,
 	PermaLinkInt::class        => PermaLinks::class,
 	Plugin::class              => Plugin::class,
 	PostTypeSetup::class       => PostTypeSetup::class,
 	QueryVars::class           => QueryVars::class,
 	QueueScripts::class        => QueueScripts::class,
-	RequirementsInt::class     => Requirements::class,
+	Requirements::class        => Requirements::class,
 	Rewrite::class             => Rewrite::class,
 	RolesInt::class            => Roles::class,
 	SermonComments::class      => SermonComments::class,
@@ -59,11 +57,4 @@ return array(
 	TaxonomyListTable::class   => TaxonomyListTable::class,
 	TextDomainInt::class       => TextDomain::class,
 	Templates::class           => Templates::class,
-
-	/*
-	PluginInt::class         => function (): PluginInt {
-		return Plugin::exec();
-	},
-	*/
-
 );

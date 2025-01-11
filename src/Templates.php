@@ -1,4 +1,13 @@
 <?php
+/**
+ * Template class for locating templates and loading them.
+ *
+ * @package     DRPPSM\Templates
+ * @author      Daryl Peterson <@gmail.com>
+ * @copyright   Copyright (c) 2024, Daryl Peterson
+ * @license     https://www.gnu.org/licenses/gpl-3.0.txt
+ * @since       1.0.0
+ */
 
 namespace DRPPSM;
 
@@ -77,7 +86,7 @@ class Templates implements Executable, Registrable {
 	}
 
 	/**
-	 * Include template
+	 * Include template.
 	 *
 	 * @param string $template Template name.
 	 * @return string
@@ -97,7 +106,7 @@ class Templates implements Executable, Registrable {
 
 		if ( $default_file ) {
 
-			// Search theme
+			// Search theme templat directory.
 			if ( file_exists( get_stylesheet_directory() . '/' . $default_file ) ) {
 				return get_stylesheet_directory() . '/' . $default_file;
 			}
@@ -132,8 +141,8 @@ class Templates implements Executable, Registrable {
 	/**
 	 * Locate the path to the template.
 	 *
-	 * @param string $name
-	 * @param array  $args
+	 * @param string $name Template name.
+	 * @param array  $args Arguments array used to pass to filter.
 	 * @return null|string
 	 * @since 1.0.0
 	 */
@@ -177,8 +186,9 @@ class Templates implements Executable, Registrable {
 	/**
 	 * Make sure template name ends with .php .
 	 *
-	 * @param string $name
+	 * @param string $name Template name.
 	 * @return string
+	 * @since 1.0.0
 	 */
 	private function fix_template_name( string $name ): string {
 		if ( false === strpos( $name, '.php' ) ) {
@@ -231,7 +241,7 @@ class Templates implements Executable, Registrable {
 	/**
 	 * Get partial from theme.
 	 *
-	 * @param string $name
+	 * @param string $name Template name.
 	 * @return null|string
 	 * @since 1.0.0
 	 */
@@ -259,7 +269,7 @@ class Templates implements Executable, Registrable {
 	/**
 	 * Get plugin partial template
 	 *
-	 * @param string $name
+	 * @param string $name Template name.
 	 * @return null|string
 	 * @since 1.0.0
 	 */
@@ -279,8 +289,8 @@ class Templates implements Executable, Registrable {
 	/**
 	 * Allows for changing the name of the template file.
 	 *
-	 * @param string $name
-	 * @param mixed  $args
+	 * @param string $name Template name.
+	 * @param mixed  $args Arguments to pass to template.
 	 * @return mixed
 	 * @since 1.0.0
 	 */
@@ -306,34 +316,5 @@ class Templates implements Executable, Registrable {
 			}
 		}
 		return null;
-	}
-
-	/**
-	 * Display template error
-	 *
-	 * @param string $name
-	 * @return void
-	 * @since 1.0.0
-	 */
-	private function template_error( string $name ): void {
-
-		$title = DRPPSM_TITLE;
-		$error = DRPPSM_MSG_FAILED_PARTIAL . " $name . " . DRPPSM_MSG_FILE_NOT_EXIST;
-
-		$html = '';
-		if ( did_action( DRPPSMA_TPL_ERROR ) ) {
-			return;
-		}
-
-		$html .= <<<HTML
-
-				<div class="drppsm-error-wrap">
-					<article class="drppsm-template-error">
-						<b>$title</b>:<i>$error</i>
-					</article>
-				</div>
-		HTML;
-		echo $html;
-		do_action( DRPPSMA_TPL_ERROR );
 	}
 }

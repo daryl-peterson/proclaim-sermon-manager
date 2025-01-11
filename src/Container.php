@@ -35,8 +35,6 @@ class Container implements ContainerInt {
 	 */
 	public array $services = array();
 
-	public array $data = array();
-
 	/**
 	 * Finds an entry of the container by its identifier and returns it.
 	 *
@@ -93,55 +91,24 @@ class Container implements ContainerInt {
 	private function get_instance( ReflectionClass $item ): mixed {
 
 		if ( $item->hasMethod( 'exec' ) ) {
-			/*
-			Logger::debug(
-				array(
-					'ITEM'   => $item->name,
-					'METHOD' => 'HAS EXEC',
-				)
-			);
-			*/
 			return call_user_func( $item->name . '::exec' );
 		}
 
 		if ( $item->hasMethod( 'init' ) ) {
-			/*
-			Logger::debug(
-				array(
-					'ITEM'   => $item->name,
-					'METHOD' => 'HAS INIT',
-				)
-			);
-			*/
 			return call_user_func( $item->name . '::init' );
 		}
 
 		// @codeCoverageIgnoreStart
 		if ( $item->hasMethod( 'get_instance' ) ) {
-			/*
-			Logger::debug(
-				array(
-					'ITEM'   => $item->name,
-					'METHOD' => 'HAS GET INSTANCE',
-				)
-			);
-			*/
 			return call_user_func( $item->name . '::get_instance' );
 		}
 		// @codeCoverageIgnoreEnd
 
 		$constructor = $item->getConstructor();
 		if ( is_null( $constructor ) || $constructor->getNumberOfRequiredParameters() === 0 ) {
-			/*
-			Logger::debug(
-				array(
-					'ITEM'   => $item->name,
-					'METHOD' => 'NEW INSTANCE',
-				)
-			);
-			*/
 			return $item->newInstance();
 		}
+
 		$params = array();
 		foreach ( $constructor->getParameters() as $param ) {
 			$type = $param->getType();
@@ -150,7 +117,6 @@ class Container implements ContainerInt {
 
 			}
 		}
-		// Logger::debug( 'NEW INSTANCE ARGS' );
 		return $item->newInstanceArgs( $params );
 	}
 

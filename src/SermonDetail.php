@@ -68,10 +68,10 @@ class SermonDetail implements Initable, Registrable {
 	/**
 	 * Get initialize object.
 	 *
-	 * @return SermonDetail
+	 * @return self
 	 * @since 1.0.0
 	 */
-	public static function init(): SermonDetail {
+	public static function init(): self {
 		return new self();
 	}
 
@@ -192,7 +192,6 @@ class SermonDetail implements Initable, Registrable {
 				'desc'         => '<br>' . wp_sprintf( esc_html__( 'format: %s', 'drppsm' ), $format ),
 				'id'           => Meta::DATE,
 				'type'         => 'text_datetime_timestamp',
-				// 'date_format'  => $format,
 				'autocomplete' => 'off',
 			)
 		);

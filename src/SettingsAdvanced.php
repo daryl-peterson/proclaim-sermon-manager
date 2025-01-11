@@ -2,28 +2,35 @@
 /**
  * Advanced settings.
  *
- * @package     Proclaim Sermon Manager
+ * @package     DRPPSM\SettingsAdvanced
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
  * @since       1.0.0
  */
+
 namespace DRPPSM;
 
 use CMB2;
 use DRPPSM\Constants\Actions;
 
 /**
- * Class description
+ * Advanced settings.
  *
- * @package
- * @category
+ * @package     DRPPSM\SettingsAdvanced
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
  * @since       1.0.0
  */
 class SettingsAdvanced extends SettingsBase {
+
+	/**
+	 * Key used in storing options.
+	 *
+	 * @var string
+	 * @since 1.0.0
+	 */
 	public string $option_key = Settings::OPTION_KEY_ADVANCED;
 
 	/**
@@ -81,6 +88,13 @@ class SettingsAdvanced extends SettingsBase {
 	}
 
 
+	/**
+	 * Add checkbox to enable reloading of bible books.
+	 *
+	 * @param CMB2 $cmb CMB2 object.
+	 * @return void
+	 * @since 1.0.0
+	 */
 	private function bible_book_load( CMB2 $cmb ) {
 		$desc = __(
 			'Select this to reload books',
@@ -97,6 +111,13 @@ class SettingsAdvanced extends SettingsBase {
 		);
 	}
 
+	/**
+	 * Add checkbox to enable sorting in biblical order.
+	 *
+	 * @param CMB2 $cmb CMB2 object.
+	 * @return void
+	 * @since 1.0.0
+	 */
 	private function bible_book_sort( CMB2 $cmb ) {
 		$desc = __(
 			'Orders book in filtering by biblical order, rather than alphabetical. Default checked.',

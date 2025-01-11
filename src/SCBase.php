@@ -1,8 +1,8 @@
 <?php
 /**
- * Shortcodes class.
+ * Shortcodes  base class.
  *
- * @package     Proclaim Sermon Manager
+ * @package     DRPPSM\SCBase
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
@@ -14,10 +14,9 @@ namespace DRPPSM;
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Class description
+ * Shortcodes  base class.
  *
- * @package
- * @category
+ * @package     DRPPSM\SCBase
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
@@ -56,8 +55,8 @@ class SCBase {
 	/**
 	 * Set filter if needed.
 	 *
-	 * @param array $args
-	 * @param array $query_args
+	 * @param array $args Arguments array.
+	 * @param array $query_args Query arguments array.
 	 * @return array
 	 * @since 1.0.0
 	 */
@@ -66,8 +65,6 @@ class SCBase {
 		if ( $args['filter_by'] && $args['filter_value'] ) {
 			// Term string to array.
 			$terms = explode( ',', $args['filter_value'] );
-
-			Logger::debug( array( 'TERMS' => $terms ) );
 
 			if ( ! empty( $terms ) ) {
 				$field = 'slug';
@@ -112,7 +109,7 @@ class SCBase {
 				$query_args['tax_query'][0][] = array(
 					'taxonomy' => $filter,
 					'field'    => 'slug',
-					'terms'    => sanitize_title_for_query( $_GET[ $filter ] ),
+					'terms'    => sanitize_title_for_query( wp_unslash( $_GET[ $filter ] ) ),
 				);
 
 				$query_args['tax_query']['custom'] = true;
@@ -126,7 +123,7 @@ class SCBase {
 				$query_args['tax_query'][0][] = array(
 					'taxonomy' => $filter,
 					'field'    => 'slug',
-					'terms'    => sanitize_title_for_query( $_POST[ $filter ] ),
+					'terms'    => sanitize_title_for_query( wp_unslash( $_POST[ $filter ] ) ),
 				);
 
 				$query_args['tax_query']['custom'] = true;
@@ -158,7 +155,7 @@ class SCBase {
 	protected function convert_taxonomy_name( string $name, bool $friendly = false ): string {
 		$result = $name;
 
-		// friendly => unfriendly
+		// Friendly to unfriendly.
 		if ( $friendly ) {
 
 			// Lets go ahead and pluralize it.
@@ -172,10 +169,10 @@ class SCBase {
 				$result = $this->tax_map[ $name ];
 			}
 
-			// unfriendly => friendly
+			// Unfriendly to friendly.
 		} else {
 
-			$match = array_search( $name, $this->tax_map );
+			$match = array_search( $name, $this->tax_map, true );
 			if ( $match ) {
 				$result = $match;
 			}
@@ -187,7 +184,7 @@ class SCBase {
 	/**
 	 * Fix attributes.
 	 *
-	 * @param array $atts
+	 * @param array $atts Attributes array.
 	 * @return array
 	 * @since 1.0.0
 	 */
@@ -201,14 +198,14 @@ class SCBase {
 	/**
 	 * Check if the order by is valid.
 	 *
-	 * @param array $args
+	 * @param array $args Attributes array.
 	 * @return bool
 	 * @since 1.0.0
 	 */
 	protected function is_valid_orderby( array $args ): bool {
 		$orderby = strtolower( $args['orderby'] );
 
-		if ( ! in_array( $orderby, DRPPSM_SERMON_ORDER_BY ) ) {
+		if ( ! in_array( $orderby, DRPPSM_SERMON_ORDER_BY, true ) ) {
 			return false;
 		}
 		return true;
@@ -217,7 +214,7 @@ class SCBase {
 	/**
 	 * Get the actual name of the taxonomy.
 	 *
-	 * @param string $tax
+	 * @param string $tax Taxonomy could be series this would convert to drppsm_series.
 	 * @return null|string
 	 * @since 1.0.0
 	 */
@@ -227,7 +224,7 @@ class SCBase {
 		if ( key_exists( $tax, $this->tax_map ) ) {
 			$result = $this->tax_map[ $tax ];
 		} else {
-			$match = array_search( $tax, $this->tax_map );
+			$match = array_search( $tax, $this->tax_map, true );
 			if ( $match ) {
 				$result = $tax;
 			}

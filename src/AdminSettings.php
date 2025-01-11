@@ -176,7 +176,7 @@ class AdminSettings implements Executable, Registrable {
 		$hidden = apply_filters( DRPPSMF_SETTINGS_RSM, array() );
 
 		// Select another submenu item to highlight (optional).
-		if ( $plugin_page && in_array( $plugin_page, $hidden ) ) {
+		if ( $plugin_page && in_array( $plugin_page, $hidden, true ) ) {
 			$submenu_file = Settings::OPTION_KEY_GENERAL;
 		}
 

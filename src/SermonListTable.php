@@ -107,6 +107,8 @@ class SermonListTable implements Executable, Registrable {
 	 */
 	public function init(): void {
 		/**
+		 * Use to time execution.
+		 *
 		 * @var Timer $timer
 		 */
 		$timer     = Timer::get_instance();

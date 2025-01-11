@@ -44,27 +44,28 @@ $result = array(
 		'name'                  => __( 'Proclaim Sermons', 'drppsm' ),
 		'singular_name'         => $single,
 		'all_items'             => __( 'Sermons', 'drppsm' ),
+
+		/* translators: %s: sermon */
 		'menu_name'             => _x( 'Sermons', 'menu_name', 'drppsm' ),
 		'add_new'               => __( 'Add New', 'drppsm' ),
 
-		/* translators: Add New %s: Add New %s */
+		/* translators: %s: add new sermon */
 		'add_new_item'          => wp_sprintf( _x( 'Add New %s', 'drppsm' ), $single ),
 
-		/* translators: Edit %s: Edit %s */
+		/* translators: %s: edit sermon */
 		'edit_item'             => wp_sprintf( __( 'Edit %s', 'drppsm' ), $single ),
 		'new_item'              => __( 'New Sermon', 'drppsm' ),
 		'view'                  => __( 'View Sermon', 'drppsm' ),
 		'view_item'             => __( 'View Sermon', 'drppsm' ),
 
-		/* translators: Search %s: Search %s */
+		/* translators: %s: search sermons */
 		'search_items'          => wp_sprintf( _x( 'Search %s', 'Search %s', 'drppsm' ), $plural ),
-		/* translators: No %s found: No %s found */
+		/* translators: %s: sermon not found */
 		'not_found'             => wp_sprintf( _x( 'No %s found', 'No %s found', 'drppsm' ), $plural ),
-		/* translators: No %s found in trash: No %s found in trash */
+		/* translators: %s: sermon not found in trash*/
 		'not_found_in_trash'    => wp_sprintf( _x( 'No %s found in trash', 'No %s found in trash', 'drppsm' ), $plural ),
 
-		// 'featured_image'        => __( 'Sermon Image', 'drppsm' ),
-
+		/* translators: %s: sermon featured image */
 		'featured_image'        => wp_sprintf( _x( '%s Image', '%s Image', 'drppsm' ), $single ),
 		'set_featured_image'    => __( 'Set Sermon Image', 'drppsm' ),
 		'remove_featured_image' => __( 'Remove Sermon Image', 'drppsm' ),

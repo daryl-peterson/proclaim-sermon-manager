@@ -1,10 +1,8 @@
 <?php
-
-
 /**
  * Timer to get execution time.
  *
- * @package     Proclaim Sermon Manager
+ * @package     DRPPSM\Timer
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
@@ -20,7 +18,7 @@ defined( 'ABSPATH' ) || exit;
 /**
  * Timer to get execution time.
  *
- * @package     Proclaim Sermon Manager
+ * @package     DRPPSM\Timer
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
@@ -30,9 +28,20 @@ class Timer {
 
 	use SingletonTrait;
 
-
+	/**
+	 * Stores timer values.
+	 *
+	 * @var array
+	 * @since 1.0.0
+	 */
 	private array $data = array();
 
+	/**
+	 * Initialize object properties.
+	 *
+	 * @return void
+	 * @since 1.0.0
+	 */
 	protected function __construct() {
 		$this->data = array();
 	}
@@ -40,20 +49,20 @@ class Timer {
 	/**
 	 * Start timer.
 	 *
-	 * @param string $function Current function name.
+	 * @param string $name Current function name.
 	 * @param string $file File name.
 	 * @return string Key to use for ending the timer.
 	 * @since 1.0.0
 	 */
-	public function start( string $function = '', string $file ): string {
+	public function start( string $name = '', string $file ): string {
 
-		if ( empty( $function ) ) {
-			$function = 'none';
+		if ( empty( $name ) ) {
+			$name = 'none';
 		}
 
 		$file = basename( $file );
 
-		$key                         = wp_sprintf( '%s', uniqid( "$file^$function^" ) );
+		$key                         = wp_sprintf( '%s', uniqid( "$file^$name^" ) );
 		$this->data[ $key ]['start'] = hrtime( true );
 		return $key;
 	}
@@ -75,9 +84,7 @@ class Timer {
 		}
 		$stop = hrtime( true );
 		$exec = ( ( $stop - $this->data[ $key ]['start'] ) / 1e9 );
-
 		$exec = sprintf( '%.8f', floatval( $exec ) ) . ' seconds';
-		// $exec = rtrim( sprintf( '%f', floatval( $exec ) ), '0' ) . ' seconds';
 
 		unset( $this->data[ $key ] );
 
@@ -91,7 +98,12 @@ class Timer {
 		$this->data[] = "$prefix -> execution time $exec";
 	}
 
-	public function shutdown() {
+	/**
+	 * Write to log.
+	 *
+	 * @return void
+	 */
+	public function shutdown(): void {
 		Logger::debug( $this->data );
 	}
 }

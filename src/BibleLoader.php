@@ -36,6 +36,12 @@ class BibleLoader implements BibleLoaderInt {
 	 */
 	private string $tax_bible;
 
+	/**
+	 * Initialize object properties.
+	 *
+	 * @return void
+	 * @since 1.0.0
+	 */
 	protected function __construct() {
 		$this->tax_bible = DRPPSM_TAX_BIBLE;
 	}
@@ -144,7 +150,7 @@ class BibleLoader implements BibleLoaderInt {
 	/**
 	 * Fix book name if unit testing.
 	 *
-	 * @param string $book
+	 * @param string $book Bible book.
 	 * @return string
 	 * @since 1.0.0
 	 */
@@ -159,9 +165,9 @@ class BibleLoader implements BibleLoaderInt {
 	/**
 	 * Insert term and delete it if unit testing.
 	 *
-	 * @param string $book
-	 * @param string $tax
-	 * @param string $slug
+	 * @param string $book Bible book.
+	 * @param string $tax Taxonomy.
+	 * @param string $slug Slug.
 	 * @return boolean
 	 * @since 1.0.0
 	 */

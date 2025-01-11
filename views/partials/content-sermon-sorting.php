@@ -14,13 +14,14 @@ namespace DRPPSM;
 defined( 'ABSPATH' ) or exit;
 
 $template = str_replace( '.php', '', basename( __FILE__ ) );
-$failure  = '<p><b>' . DRPPSM_TITLE . '</b>: Partial "<i>' . $template . '</i>" loaded incorrectly.</p>';
+$failure  = '<p><b>' . DRPPSM_TITLE . '</b>: Partial "<i>' . esc_html( $template ) . '</i>" loaded incorrectly.</p>';
 if ( ! isset( $args ) ) {
 	Logger::error( 'Args variable does not exist. Template : ' . $template );
 	echo $failure;
 	return;
 }
 
+// phpcs:ignore
 extract( $args );
 
 
@@ -89,45 +90,6 @@ foreach ( $filters as $filter ) {
 	</div>
 	HTML;
 	echo $html;
-	continue;
-
-	?>
-	<div class="<?php echo $filter['className']; ?>" style="display: inline-block">
-		<form action="<?php echo $args['action']; ?>" method="get">
-			<select name="<?php echo $filter['taxonomy']; ?>"
-					title="<?php echo $filter['title']; ?>"
-					id="<?php echo $filter['taxonomy']; ?>"
-					onchange="if(this.options[this.selectedIndex].value !== ''){return this.form.submit()}else{window.location = window.location.href.split('?')[0];}"
-					autocomplete="off"
-				<?php echo ! empty( $args[ $filter['taxonomy'] ] ) && 'disable' === $args['visibility'] ? 'disabled' : ''; ?>>
-				<option value=""><?php echo $filter['title']; ?></option>
-
-			</select>
-			<?php $series = explode( ',', $args['series_filter'] ); ?>
-			<?php if ( isset( $args['series_filter'] ) && '' !== $args['series_filter'] && $series ) : ?>
-				<?php if ( $series > 1 ) : ?>
-					<?php foreach ( $series as $item ) : ?>
-						<input type="hidden" name="wpfc_sermon_series[]" value="<?php echo esc_attr( trim( $item ) ); ?>">
-					<?php endforeach; ?>
-				<?php else : ?>
-					<input type="hidden" name="wpfc_sermon_series" value="<?php echo esc_attr( $series[0] ); ?>">
-				<?php endif; ?>
-			<?php endif; ?>
-			<?php $service_types = explode( ',', $args['service_type_filter'] ); ?>
-			<?php if ( isset( $args['service_type_filter'] ) && '' !== $args['service_type_filter'] && $service_types ) : ?>
-				<?php if ( $service_types > 1 ) : ?>
-					<?php foreach ( $service_types as $service_type ) : ?>
-						<input type="hidden" name="wpfc_service_type[]" value="<?php echo esc_attr( trim( $service_type ) ); ?>">
-					<?php endforeach; ?>
-				<?php else : ?>
-					<input type="hidden" name="wpfc_service_type" value="<?php echo esc_attr( $service_types[0] ); ?>">
-				<?php endif; ?>
-			<?php endif; ?>
-			<noscript>
-				<div><input type="submit" value="Submit"/></div>
-			</noscript>
-		</form>
-	</div>
-
-<?php } ?>
+}
+?>
 </div>

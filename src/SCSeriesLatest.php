@@ -2,7 +2,7 @@
 /**
  * Shortcodes for latest series.
  *
- * @package     Proclaim Sermon Manager
+ * @package     DRPPMS\SCSeriesLatest
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
@@ -23,7 +23,7 @@ defined( 'ABSPATH' ) || exit;
 /**
  * Shortcodes for latest series.
  *
- * @package     Proclaim Sermon Manager
+ * @package     DRPPMS\SCSeriesLatest
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
@@ -47,6 +47,12 @@ class SCSeriesLatest extends SCBase implements Executable, Registrable {
 	 */
 	private string $sc_series_latest;
 
+	/**
+	 * Initialize object.
+	 *
+	 * @return void
+	 * @since 1.0.0
+	 */
 	protected function __construct() {
 		parent::__construct();
 
@@ -54,12 +60,24 @@ class SCSeriesLatest extends SCBase implements Executable, Registrable {
 		$this->tax_series       = DRPPSM_TAX_SERIES;
 	}
 
-	public static function exec(): Executable {
+	/**
+	 * Initialize object and preform hooks registration if needed.
+	 *
+	 * @return self
+	 * @since 1.0.0
+	 */
+	public static function exec(): self {
 		$obj = new self();
 		$obj->register();
 		return $obj;
 	}
 
+	/**
+	 * Register hooks.
+	 *
+	 * @return null|bool
+	 * @since 1.0.0
+	 */
 	public function register(): ?bool {
 		if ( shortcode_exists( $this->sc_series_latest ) ) {
 			return false;
@@ -71,7 +89,7 @@ class SCSeriesLatest extends SCBase implements Executable, Registrable {
 	/**
 	 * Display latest series.
 	 *
-	 * @param array $atts
+	 * @param array $atts Shortcode arguments.
 	 * @return string
 	 * @since 1.0.0
 	 *
@@ -131,7 +149,7 @@ class SCSeriesLatest extends SCBase implements Executable, Registrable {
 
 		// Title wrapper tag name.
 		$wrapper_options = array( 'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'div' );
-		if ( ! in_array( sanitize_text_field( $args['title_wrapper'] ), $wrapper_options ) ) {
+		if ( ! in_array( sanitize_text_field( $args['title_wrapper'] ), $wrapper_options, true ) ) {
 			$args['title_wrapper'] = 'h3';
 		}
 
@@ -169,7 +187,7 @@ class SCSeriesLatest extends SCBase implements Executable, Registrable {
 	 */
 	private function get_series_latest_with_image(): WP_Term|null|bool {
 
-		// Get Order from settings
+		// Get Order from settings.
 		$default_orderby = Settings::get( Settings::ARCHIVE_ORDER_BY );
 		$default_order   = Settings::get( Settings::ARCHIVE_ORDER );
 
@@ -185,12 +203,14 @@ class SCSeriesLatest extends SCBase implements Executable, Registrable {
 
 		switch ( $default_orderby ) {
 			case 'date_preached':
+				// @codingStandardsIgnoreStart
 				$query_args['meta_query'] = array(
 					'orderby'      => 'meta_value_num',
 					'meta_key'     => Meta::DATE,
 					'meta_value'   => time(),
 					'meta_compare' => '<=',
 				);
+				// @codingStandardsIgnoreEnd
 				break;
 			default:
 				$query_args += array(
@@ -221,10 +241,10 @@ class SCSeriesLatest extends SCBase implements Executable, Registrable {
 	 * Get image id for latest sermon series.
 	 *
 	 * @param int $series Series term id.
-	 * @return WP_Term|int|null
+	 * @return mixed
 	 * @since 1.0.0
 	 */
-	private function get_series_latest_image_id( WP_Term|int|null $series = 0 ): ?int {
+	private function get_series_latest_image_id( mixed $series ): ?int {
 		if ( 0 !== $series && is_numeric( $series ) ) {
 			$series = intval( $series );
 		} elseif ( $series instanceof WP_Term ) {

@@ -1,9 +1,8 @@
 <?php
-
 /**
  * Sermon archive content
  *
- * @package     DRPPSM/Views/Partials
+ * @package     DRPPSM
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
@@ -12,7 +11,7 @@
 
 namespace DRPPSM;
 
-defined( 'ABSPATH' ) or exit;
+defined( 'ABSPATH' ) || exit;
 
 $template     = str_replace( '.php', '', basename( __FILE__ ) );
 $failure      = '<p><b>' . DRPPSM_TITLE . '</b>: Partial "<i>' . $template . '</i>" loaded incorrectly.</p>';
@@ -27,6 +26,7 @@ if ( ! isset( $args ) ) {
 	return;
 }
 
+// phpcs:ignore
 extract( $args );
 
 ?>
