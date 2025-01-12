@@ -18,25 +18,22 @@ $requirements = array(
 	'item_value',
 );
 
-if ( ! isset( $args ) ) {
+if ( ! isset( $args ) || ! is_array( $args ) ) {
 	return;
 }
 
-// phpcs:ignore
-extract( $args );
-
 // Check if requirements are met.
-foreach ( $requirements as $required_variable ) {
-	if ( ! isset( $$required_variable ) ) {
+foreach ( $requirements as $req ) {
+	if ( ! isset( $argsp[ $req ] ) ) {
 		return;
 	}
 }
 
 ?>
 <div class="drppsm-archive-meta-item">
-	<div class="drppsm-archive-meta-prefix"><?php echo esc_html( $item_label ); ?></div>
+	<div class="drppsm-archive-meta-prefix"><?php echo esc_html( $item_label['item_label'] ); ?></div>
 	<div class="drppsm-archive-meta-text">
-		<?php render_html( $item_value ); ?>
+		<?php render_html( $args['item_value'] ); ?>
 	</div>
 </div>
 

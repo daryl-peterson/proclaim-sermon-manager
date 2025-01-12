@@ -25,7 +25,7 @@ $requirements = array(
 	'mkey',
 );
 
-if ( ! isset( $args ) ) {
+if ( ! isset( $args ) | is_array( $args ) ) {
 	Logger::error( 'Args variable does not exist. Template : ' . $template );
 	echo $failure;
 	return;
@@ -33,6 +33,7 @@ if ( ! isset( $args ) ) {
 
 // phpcs:ignore
 extract( $args );
+
 get_partial( 'sc-wrapper-start' );
 
 // Check if requirements are met.

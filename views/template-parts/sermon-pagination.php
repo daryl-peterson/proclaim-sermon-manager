@@ -19,7 +19,7 @@ if ( ! isset( $args['query'] ) || ! isset( $args['post_id'] ) ) {
 	return;
 }
 
-if ( key_exists( 'disable_pagination', $args ) && $args['disable_pagination'] === 1 ) {
+if ( key_exists( 'disable_pagination', $args ) && 1 === $args['disable_pagination'] ) {
 	return;
 }
 
@@ -54,7 +54,7 @@ try {
 		)
 	);
 
-	// key variable
+	// key variable.
 	$paged = get_query_var( 'paged' ) ? absint( get_query_var( 'paged' ) ) : 1;
 
 	if ( $args['query']->max_num_pages != $paged && $paged == 1 ) {
