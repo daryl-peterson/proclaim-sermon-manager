@@ -103,24 +103,19 @@ class SCBase {
 
 		foreach ( $tax_list as $filter ) {
 
-			$val     = get_query_var( $filter );
-			$get_var = null;
-
-			if ( key_exists( $filter, $_GET ) ) {
-
-				$get_var = $_GET['drppsm_topics'];
-			}
+			$filter_val = get_query_var( $filter );
 
 			Logger::debug(
 				array(
 					'QUERY VARS' => get_query_var( $filter ),
 					'FILTER'     => $filter,
-					'VALUE'      => $val,
-					'GET_VAR'    => $get_var,
+					'VALUE'      => $filter_val,
+					'GET'        => $_GET,
+					'POST'       => $_POST,
 				)
 			);
 
-			if ( ! empty( $_GET[ $filter ] ) ) {
+			if ( ! empty( $filter_val ) ) {
 				if ( empty( $query_args['tax_query']['custom'] ) || empty( $query_args['tax_query'] ) ) {
 					$query_args['tax_query'] = array();
 				}
@@ -128,21 +123,7 @@ class SCBase {
 				$query_args['tax_query'][0][] = array(
 					'taxonomy' => $filter,
 					'field'    => 'slug',
-					'terms'    => sanitize_title_for_query( wp_unslash( $_GET[ $filter ] ) ),
-				);
-
-				$query_args['tax_query']['custom'] = true;
-			}
-
-			if ( ! empty( $_POST[ $filter ] ) ) {
-				if ( empty( $query_args['tax_query']['custom'] ) || empty( $query_args['tax_query'] ) ) {
-					$query_args['tax_query'] = array();
-				}
-
-				$query_args['tax_query'][0][] = array(
-					'taxonomy' => $filter,
-					'field'    => 'slug',
-					'terms'    => sanitize_title_for_query( wp_unslash( $_POST[ $filter ] ) ),
+					'terms'    => sanitize_title_for_query( wp_unslash( $filter_val ) ),
 				);
 
 				$query_args['tax_query']['custom'] = true;
@@ -183,8 +164,6 @@ class SCBase {
 			if ( substr( $name, -1 ) !== 's' ) {
 				$name .= 's';
 			}
-
-			Logger::debug( $this->tax_map );
 
 			if ( key_exists( $name, $this->tax_map ) ) {
 				$result = $this->tax_map[ $name ];

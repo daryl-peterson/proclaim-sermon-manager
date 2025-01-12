@@ -15,15 +15,11 @@ defined( 'ABSPATH' ) or exit;
 
 $template = str_replace( '.php', '', basename( __FILE__ ) );
 $failure  = '<p><b>' . DRPPSM_TITLE . '</b>: Partial "<i>' . esc_html( $template ) . '</i>" loaded incorrectly.</p>';
-if ( ! isset( $args ) ) {
+if ( ! isset( $args ) || ! is_array( $args ) ) {
 	Logger::error( 'Args variable does not exist. Template : ' . $template );
 	echo $failure;
 	return;
 }
-
-// phpcs:ignore
-extract( $args );
-
 
 $requirements = array(
 	'action',
@@ -33,24 +29,19 @@ $requirements = array(
 );
 $hide_values  = array( 'yes', 'hide', 1, '1', true, 'on' );
 
-
-// Check if requirements are met.
-foreach ( $requirements as $required_variable ) {
-	if ( ! isset( $$required_variable ) ) {
+foreach ( $requirements as $req ) {
+	if ( ! key_exists( $req, $args ) ) {
 		echo $failure;
 		Logger::error( 'Requirements not met : ' . $required_variable );
 		return;
 	}
+	${$req} = $args[ $req ];
 }
 
 // No point in continuing if these are set.
 if ( $args['visibility'] === 'none' || is_tax_filtering_disabled( $args ) ) {
 	return;
 }
-
-global $wp_query;
-$vars = $wp_query->query_vars;
-Logger::debug( array( 'QUERY VARS' => $vars ) );
 
 ?>
 
