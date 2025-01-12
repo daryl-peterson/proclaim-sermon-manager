@@ -11,17 +11,40 @@
 
 namespace DRPPSM;
 
+use WP_Exception;
 use WP_Taxonomy;
 
-function get_archive_order_by( string $default = 'date' ): string {
-	return Settings::get( Settings::ARCHIVE_ORDER_BY, 'date' );
+/**
+ * Get archive order by.
+ *
+ * @param string $default_orderby Default option is not set.
+ * @return string
+ * @since 1.0.0
+ */
+function get_archive_order_by( string $default_orderby = 'date' ): string {
+	return Settings::get( Settings::ARCHIVE_ORDER_BY, $default_orderby );
 }
 
-function get_archive_order( string $default = 'DESC' ) {
-	return Settings::get( Settings::ARCHIVE_ORDER, $default );
+/**
+ * Get archive order.
+ *
+ * @param string $default_order Default order.
+ * @return mixed
+ * @since 1.0.0
+ */
+function get_archive_order( string $default_order = 'DESC' ) {
+	return Settings::get( Settings::ARCHIVE_ORDER, $default_order );
 }
 
-function get_taxonomy_field( $taxonomy, $field_name ) {
+/**
+ * Get a field from the taxonomy definition.
+ *
+ * @param mixed $taxonomy Taxonomy name.
+ * @param mixed $field_name Field to get.
+ * @return null|string
+ * @since 1.0.0
+ */
+function get_taxonomy_field( $taxonomy, $field_name ): ?string {
 	$tax = get_taxonomy( $taxonomy );
 
 	if ( ! $tax instanceof WP_Taxonomy ) {
@@ -43,35 +66,35 @@ function get_taxonomy_field( $taxonomy, $field_name ) {
  * Removes all sorts of quotes from a string.
  *
  * @see   http://unicode.org/cldr/utility/confusables.jsp?a=%22&r=None
- * @param string $string String to unquote.
+ * @param mixed $item Item to remove quotes from if it's a string.
  * @return mixed Unquoted string if string supplied, original variable otherwise.
  * @since 1.0.0
  */
-function unquote( mixed $string ): mixed {
-	if ( ! is_string( $string ) ) {
-		return $string;
+function unquote( mixed $item ): mixed {
+	if ( is_string( $item ) ) {
+		return str_replace(
+			array(
+				"\x22",
+				"\x27\x27",
+				"\xCA\xBA",
+				"\xCB\x9D",
+				"\xCB\xAE",
+				"\xCB\xB6",
+				"\xD7\xB2",
+				"\xD7\xB4",
+				"\xE1\xB3\x93",
+				"\xE2\x80\x9C",
+				"\xE2\x80\x9D",
+				"\xE2\x80\x9F",
+				"\xE2\x80\xB3",
+				"\xE2\x80\xB6",
+				"\xE3\x80\x83",
+				"\xEF\xBC\x82",
+			),
+			'',
+			$item
+		);
+	} else {
+		return $item;
 	}
-
-	return str_replace(
-		array(
-			"\x22",
-			"\x27\x27",
-			"\xCA\xBA",
-			"\xCB\x9D",
-			"\xCB\xAE",
-			"\xCB\xB6",
-			"\xD7\xB2",
-			"\xD7\xB4",
-			"\xE1\xB3\x93",
-			"\xE2\x80\x9C",
-			"\xE2\x80\x9D",
-			"\xE2\x80\x9F",
-			"\xE2\x80\xB3",
-			"\xE2\x80\xB6",
-			"\xE3\x80\x83",
-			"\xEF\xBC\x82",
-		),
-		'',
-		$string
-	);
 }

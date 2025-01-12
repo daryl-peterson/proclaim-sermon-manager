@@ -123,7 +123,7 @@ class LogDatabase extends LogWritterAbs implements LogWritterInt {
 	/**
 	 * Truncate data.
 	 *
-	 * @return void
+	 * @return bool
 	 * @since 1.0.0
 	 */
 	public function truncate(): bool {

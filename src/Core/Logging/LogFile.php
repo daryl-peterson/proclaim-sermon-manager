@@ -105,7 +105,7 @@ class LogFile extends LogWritterAbs implements LogWritterInt {
 			$fs    = filesize( $this->file );
 			$limit = $this->size * 1000000;
 
-			if ( $fs === false ) {
+			if ( false === $fs ) {
 				return false;
 			}
 
