@@ -32,7 +32,7 @@ function drppsm_get_partial( string $name, array $args = array() ): void {
 /**
  * Get sermon excerpt
  *
- * @param array $args
+ * @param array $args Argument to pass to templates.
  * @return void
  * @since 1.0.0
  */

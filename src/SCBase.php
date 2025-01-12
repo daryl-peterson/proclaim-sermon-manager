@@ -100,7 +100,26 @@ class SCBase {
 		}
 
 		$tax_list = array_values( $this->tax_map );
+
 		foreach ( $tax_list as $filter ) {
+
+			$val     = get_query_var( $filter );
+			$get_var = null;
+
+			if ( key_exists( $filter, $_GET ) ) {
+
+				$get_var = $_GET['drppsm_topics'];
+			}
+
+			Logger::debug(
+				array(
+					'QUERY VARS' => get_query_var( $filter ),
+					'FILTER'     => $filter,
+					'VALUE'      => $val,
+					'GET_VAR'    => $get_var,
+				)
+			);
+
 			if ( ! empty( $_GET[ $filter ] ) ) {
 				if ( empty( $query_args['tax_query']['custom'] ) || empty( $query_args['tax_query'] ) ) {
 					$query_args['tax_query'] = array();
@@ -129,6 +148,8 @@ class SCBase {
 				$query_args['tax_query']['custom'] = true;
 			}
 		}
+
+		Logger::debug( array( 'QUERY ARGS' => $query_args ) );
 
 		if ( ! empty( $query_args['tax_query'] ) && count( $query_args['tax_query'] ) > 1 && ! empty( $query_args['tax_query']['custom'] ) ) {
 			unset( $query_args['tax_query']['custom'] );

@@ -48,6 +48,9 @@ if ( $args['visibility'] === 'none' || is_tax_filtering_disabled( $args ) ) {
 	return;
 }
 
+global $wp_query;
+$vars = $wp_query->query_vars;
+Logger::debug( array( 'QUERY VARS' => $vars ) );
 
 ?>
 

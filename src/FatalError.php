@@ -86,8 +86,7 @@ class FatalError {
 	/**
 	 * Store error message in options table.
 	 *
-	 * @param string     $message Message to display.
-	 * @param \Throwable $th Throwable.
+	 * @param \Throwable $th Throwable interface.
 	 * @return void
 	 * @since 1.0.0
 	 */
@@ -103,6 +102,7 @@ class FatalError {
 			)
 		);
 
+		// phpcs:ignore
 		// wp_die( wp_kses_data( $th->getMint "string"; found "\Throwable" for $messageessage() ) );
 	}
 }

@@ -85,6 +85,7 @@ class SettingsAdvanced extends SettingsBase {
 		$this->add_seperator( $cmb, __( 'Bible Settings', 'drppsm' ) );
 		$this->bible_book_load( $cmb );
 		$this->bible_book_sort( $cmb );
+		$this->post_view_count( $cmb );
 	}
 
 
@@ -105,7 +106,6 @@ class SettingsAdvanced extends SettingsBase {
 				'id'        => Settings::BIBLE_BOOK_LOAD,
 				'name'      => __( 'Load Books', 'drppsm' ),
 				'type'      => 'checkbox',
-				'default'   => Settings::get( Settings::BIBLE_BOOK_LOAD, true ),
 				'after_row' => $this->description( $desc ),
 			)
 		);
@@ -120,15 +120,36 @@ class SettingsAdvanced extends SettingsBase {
 	 */
 	private function bible_book_sort( CMB2 $cmb ) {
 		$desc = __(
-			'Orders book in filtering by biblical order, rather than alphabetical. Default checked.',
+			'Alphabetical rather than biblical order. Default unchecked.',
 			'drppsm'
 		);
 		$cmb->add_field(
 			array(
 				'id'        => Settings::BIBLE_BOOK_SORT,
-				'name'      => __( 'Sort Books', 'drppsm' ),
+				'name'      => __( 'Sort Books Alphabetical', 'drppsm' ),
 				'type'      => 'checkbox',
-				'default'   => Settings::get( Settings::BIBLE_BOOK_SORT, true ),
+				'after_row' => $this->description( $desc ),
+			)
+		);
+	}
+
+	/**
+	 * Count views if user is logged in.
+	 *
+	 * @param CMB2 $cmb CMB2 object.
+	 * @return void
+	 * @since 1.0.0
+	 */
+	private function post_view_count( CMB2 $cmb ) {
+		$desc = __(
+			'Disable this option if you do not want to count sermon views for editors and admins.',
+			'drppsm'
+		);
+		$cmb->add_field(
+			array(
+				'id'        => Settings::POST_VIEW_COUNT,
+				'name'      => __( 'View Count', 'drppsm' ),
+				'type'      => 'checkbox',
 				'after_row' => $this->description( $desc ),
 			)
 		);

@@ -2,7 +2,7 @@
 /**
  * Log writter interface.
  *
- * @package     Proclaim Sermon Manager
+ * @package     DRPPSM\Interfaces\LogWritterInt
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
@@ -17,7 +17,7 @@ use DRPPSM\Interfaces\Registrable;
 /**
  * Log writter interface.
  *
- * @package     Proclaim Sermon Manager
+ * @package     DRPPSM\Interfaces\LogWritterInt
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt

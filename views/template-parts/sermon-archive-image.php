@@ -17,7 +17,7 @@ if ( ! isset( $args['image_size'] ) ) {
 	$args['image_size'] = ImageSize::SERMON_WIDE;
 }
 
-$image = get_sermon_image_url( true, $args['image_size'], true );
+$image = get_sermon_image_url( $args['image_size'] );
 
 ?>
 

@@ -92,6 +92,7 @@ class SCSermonSorting extends SCBase implements Executable, Registrable {
 	 * - **hide_preachers**  Hides the preachers dropdown if set to "yes" hide_books - Hides the books dropdown if set to "yes"
 	 */
 	public function show_sermon_sorting( $atts = array() ): string {
+		Logger::debug( $atts );
 
 		// Default shortcode options.
 		$args = array(
@@ -110,6 +111,8 @@ class SCSermonSorting extends SCBase implements Executable, Registrable {
 
 		// Merge default and user options.
 		$args = shortcode_atts( $args, $atts, $this->sc );
+
+		Logger::debug( $args );
 
 		return sermon_sorting( $args );
 	}

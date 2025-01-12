@@ -61,7 +61,7 @@ function render_html( string $html ): void {
 /**
  * Get sermon excerpt
  *
- * @param array $args
+ * @param array $args Arguments to pass to template.
  * @return void
  * @since 1.0.0
  */
@@ -77,7 +77,7 @@ function sermon_excerpt( array $args = array() ): void {
 /**
  * Sermon single.
  *
- * @param array $args
+ * @param array $args Arguments to pass to template.
  * @return void
  * @since 1.0.0
  */
@@ -90,7 +90,7 @@ function sermon_single( array $args = array() ): void {
 /**
  * Sermon shorting.
  *
- * @param array $args
+ * @param array $args Arguments to pass to template.
  * @since 1.0.0
  */
 function sermon_sorting( array $args = array() ): string {
@@ -150,7 +150,7 @@ function is_tax_hidden( array $args, string $taxonomy ): bool {
 /**
  * Check if filtering is disabled for taxonomies.
  *
- * @param array $args
+ * @param array $args Array of argument to see if taxonomy filtering is disabled.
  * @return bool
  * @since 1.0.0
  */
@@ -164,79 +164,126 @@ function is_tax_filtering_disabled( array $args ): bool {
 }
 
 /**
- * Get sermon view count
+ * Get sermon view count.
  *
- * @param int  $post_id
- * @param bool $update
- * @return int
+ * @param null|int $post_id The post id, if null will use get_the_ID().
+ * @return null|int
  * @since 1.0.0
  */
-function get_sermon_view_count( int $post_id, bool $update = false ): int {
-	$key   = 'Views';
+function get_post_view_count( null|int $post_id = null ): int {
+
+	if ( null === $post_id ) {
+		$post_id = get_the_ID();
+	}
+	if ( false === $post_id ) {
+		return 0;
+	}
+
+	$key   = 'post_views_count';
 	$count = get_post_meta( $post_id, $key, true );
-	if ( $count == '' ) {
+
+	if ( '' === $count ) {
 		$count = 1;
-		delete_post_meta( $post_id, $key );
-		add_post_meta( $post_id, $key, $count );
 	}
 	return $count;
 }
 
 /**
- * Get sermon image
+ * Set post view count.
  *
- * @param bool             $fallback
- * @param string           $image_size
- * @param bool             $series_image_primary
- * @param null|int|WP_Post $post
+ * @return void
+ * @since 1.0.0
+ */
+function set_post_view_count() {
+	$key          = 'post_views_count';
+	$post_id      = get_the_ID();
+	$should_count = Settings::get( Settings::POST_VIEW_COUNT, true );
+
+	if ( ! $should_count || false === $post_id ) {
+		return;
+	}
+
+	$count = (int) get_post_meta( $post_id, $key, true );
+	++$count;
+	update_post_meta( $post_id, $key, $count );
+}
+
+/**
+ * Get image for sermon.
+
+ * @param string           $image_size The image size. Default: "post-thumbnail".
+ * @param bool             $fallback If set to true, it will try to fallback to the secondary option. If series\
+ *                         is primary, it will fallback to sermon image, else if sermon image is\
+ *                         primary, it will fallback to series image - if they exist, of course.
+ *
+ * @param bool             $series_primary Set series image as primary. Default true.
+ * @param null|int|WP_Post $post The post to get image url for.
  * @return null|string
  * @since 1.0.0
  */
-function get_sermon_image_url( bool $fallback = true, string $image_size = 'post-thumbnail', bool $series_image_primary = false, null|int|WP_Post $post = null ): ?string {
+function get_sermon_image_url( string $image_size = 'post-thumbnail', bool $fallback = true, bool $series_primary = true, null|int|WP_Post $post = null ): ?string {
 	if ( null === $post ) {
 		global $post;
 	}
 
-	if ( empty( $image_size ) ) {
-		$image_size = 'post-thumbnail';
+	if ( ! isset( $post ) ) {
+		return null;
 	}
 
 	/**
-	 * Allows to filter the image size.
+	 * Allows to filter the override the image size.
 	 *
-	 * @param string|array $image_size           The image size. Default: "post-thumbnail".
-	 * @param bool         $fallback             If set to true, it will try to fallback to the secondary option. If series
-	 *                                           is primary, it will fallback to sermon image, else if sermon image is
-	 *                                           primary, it will fallback to series image - if they exist, of course.
-	 * @param bool         $series_image_primary Set series image as primary.
-	 * @param WP_Post      $post                 The sermon object.
+	 * @param string $image_size   The image size. Default: "post-thumbnail".
+	 * @param bool $fallback       If set to true, it will try to fallback to the secondary option. If series
+	 *                             is primary, it will fallback to sermon image, else if sermon image is
+	 *                             primary, it will fallback to series image - if they exist, of course.
+	 * @param bool $series_primary Set series image as primary.
+	 * @param int|WP_Post $post    The sermon object.
 	 *
+	 * @category filter
 	 * @since 1.0.0
 	 */
-	$image_size = apply_filters( 'get_sermon_image_url_image_size', $image_size, $fallback, $series_image_primary, $post );
+	$image_size = apply_filters( 'drppsmf_get_sermon_image_size', $image_size, $fallback, $series_primary, $post );
 
 	// Get the sermon image.
-	$sermon_image = get_the_post_thumbnail_url( $post, $image_size ) ?: null;
-	$series_image = null;
-
-	$args = array(
-		'post_id'    => $post->ID,
-		'image_size' => $image_size,
-	);
+	$sermon_image = get_the_post_thumbnail_url( $post, $image_size );
 
 	// Get the series image.
-	$series_image = get_series_image( $post, $image_size );
-	Logger::debug( array( 'SERIES' => $series_image ) );
+	$series_image = get_series_image( $image_size );
+
+	$image = null;
 
 	// Assign the image, based on function parameters.
-	if ( $series_image_primary ) {
-		$image = $series_image ?: ( $fallback ? $sermon_image : null );
-	} else {
-		$image = $sermon_image ?: ( $fallback ? $series_image : null );
+	if ( $series_primary && $series_image ) {
+		$image = $series_image;
+	} elseif ( $fallback && $sermon_image ) {
+		$image = $sermon_image;
+	}
+
+	if ( ! $series_primary && $sermon_image ) {
+		$image = $sermon_image;
+	} elseif ( $fallback && $series_image ) {
+		$image = $series_image;
 	}
 
 	// Use the image, or default image set in options, if nothing found.
-	// $image = $image ?: \SermonManager::getOption( 'default_image' );
+	$default = Settings::get( Settings::DEFAULT_IMAGE );
+
+	// Check if there is a default image and nothing else.
+	if ( '' !== $default && ! $image ) {
+		$image = $default;
+	}
+
+	Logger::debug(
+		array(
+			'FALLBACK'       => $fallback,
+			'SERIES PRIMARY' => $series_primary,
+			'SERIES'         => $series_image,
+			'SERMON'         => $sermon_image,
+			'DEFAULT'        => $default,
+			'IMAGE'          => $image,
+		)
+	);
 
 	/**
 	 * Allows to filter the image URL.
@@ -245,27 +292,33 @@ function get_sermon_image_url( bool $fallback = true, string $image_size = 'post
 	 * @param bool         $fallback             If set to true, it will try to fallback to the secondary option. If series
 	 *                                           is primary, it will fallback to sermon image, else if sermon image is
 	 *                                           primary, it will fallback to series image - if they exist, of course.
-	 * @param bool         $series_image_primary Set series image as primary.
+	 * @param bool         $series_primary Set series image as primary.
 	 * @param WP_Post      $post                 The sermon object.
 	 * @param string|array $image_size           The image size. Default: "post-thumbnail".
 	 *
-	 * @since 2.13.0
-	 * @since 2.15.2 - Added missing $image_size argument, and re-labelled $image to correct description.
+	 * @category filter
+	 * @since 1.0.0
 	 */
-	$result = apply_filters( 'get_sermon_image_url', $image, $fallback, $series_image_primary, $post, $image_size );
-	/*
-	if ( is_string( $result ) ) {
-		return $result;
-	}
-	*/
+	$image = apply_filters( 'drppsm_get_sermon_image_url', $image, $fallback, $series_primary, $post, $image_size );
 
 	return $image;
 }
 
-
-function get_series_image( null|int|WP_Post $post = null, string $image_size = 'post-thumbnail' ): ?string {
+/**
+ * Get series image
+ *
+ * @param string           $image_size The image size. Default: "post-thumbnail".
+ * @param null|int|WP_Post $post The post to get image url for.
+ * @return string|null
+ * @since 1.0.0
+ */
+function get_series_image( string $image_size = 'post-thumbnail', null|int|WP_Post $post = null ): ?string {
 	if ( null === $post ) {
 		global $post;
+	}
+
+	if ( ! isset( $post ) ) {
+		return null;
 	}
 
 	$terms = get_the_terms( $post, DRPPSM_TAX_SERIES );
@@ -285,15 +338,17 @@ function get_series_image( null|int|WP_Post $post = null, string $image_size = '
 			break;
 		}
 	}
-
 	return $url;
 }
 
-
-function get_preacher_image( null|int|WP_Post $post = null, string $image_size = 'post-thumbnail' ) {
-	if ( null === $post ) {
-		global $post;
-	}
+/**
+ * Get the preach image for the current post.
+ *
+ * @param string $image_size The image size. Default: "post-thumbnail".
+ * @return null|string
+ */
+function get_preacher_image( string $image_size = 'post-thumbnail' ): ?string {
+	global $post;
 
 	$terms = get_the_terms( $post, DRPPSM_TAX_PREACHER );
 	$url   = null;
@@ -316,16 +371,15 @@ function get_preacher_image( null|int|WP_Post $post = null, string $image_size =
 	return $url;
 }
 
-
 /**
  * Get term dropdown.
  *
- * @param string $taxonomy
- * @param string $default
+ * @param string $taxonomy Taxonomy to get term dropdown for.
+ * @param string $default_value The forced default value. See function PHPDoc.
  * @return string
  * @since 1.0.0
  */
-function get_term_dropdown( string $taxonomy, string $default ): string {
+function get_term_dropdown( string $taxonomy, string $default_value ): string {
 
 	// Reset var.
 	$html = "\n" . PHP_EOL;
@@ -337,7 +391,7 @@ function get_term_dropdown( string $taxonomy, string $default ): string {
 		)
 	);
 
-	if ( DRPPSM_TAX_BIBLE === $taxonomy && Settings::get( Settings::BIBLE_BOOK_SORT, true ) ) {
+	if ( DRPPSM_TAX_BIBLE === $taxonomy && ! Settings::get( Settings::BIBLE_BOOK_SORT, false ) ) {
 		// Book order.
 		$books = Bible::BOOKS;
 
@@ -346,21 +400,25 @@ function get_term_dropdown( string $taxonomy, string $default ): string {
 
 		// Assign every book a number.
 		foreach ( $terms as $term ) {
-			if ( array_search( $term->name, $books ) !== false ) {
-				$ordered_terms[ array_search( $term->name, $books ) ] = $term;
+			if ( array_search( $term->name, $books, true ) !== false ) {
+				$ordered_terms[ array_search( $term->name, $books, true ) ] = $term;
 			} else {
 				$unordered_terms[] = $term;
 			}
 		}
 
-		// Order the numbers (books).
-		// ksort( $ordered_terms );
-
 		$terms = array_merge( $ordered_terms, $unordered_terms );
 		sort( $terms );
 	}
 
-	$current_slug = get_query_var( $taxonomy ) ?: ( isset( $_GET[ $taxonomy ] ) ? $_GET[ $taxonomy ] : '' );
+	$current_slug = get_query_var( $taxonomy );
+
+	Logger::debug(
+		array(
+			'CURRENT SLUG' => $current_slug,
+			'TAXONOMY'     => $taxonomy,
+		)
+	);
 
 	foreach ( $terms as $term ) {
 
@@ -383,5 +441,25 @@ function get_term_dropdown( string $taxonomy, string $default ): string {
 	 * @category filter
 	 * @since 1.0.0
 	 */
-	return apply_filters( 'drppsmf_get_term_dropdown', $html, $taxonomy, $default, $terms, $current_slug );
+	return apply_filters( 'drppsmf_get_term_dropdown', $html, $taxonomy, $default_value, $terms, $current_slug );
 }
+
+/**
+ * Add taxonomy query vars.
+ *
+ * @param array $vars Current query vars.
+ * @return array
+ * @since 1.0.0
+ */
+function add_query_vars( array $vars ): array {
+
+	$friendly = array_keys( DRPPSM_TAX_MAP );
+
+	$vars = array_merge( $vars, $friendly );
+
+	Logger::debug( $vars );
+
+	return $vars;
+}
+
+add_filter( 'query_vars', __NAMESPACE__ . '\\add_query_vars' );

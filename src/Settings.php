@@ -23,6 +23,7 @@ use Exception;
  * @since       1.0.0
  */
 class Settings {
+	public const DEFAULT_IMAGE         = 'default_image';
 	public const ARCHIVE_SLUG          = 'archive_slug';
 	public const ARCHIVE_ORDER         = 'archive_order';
 	public const ARCHIVE_ORDER_BY      = 'archive_order_by';
@@ -49,8 +50,9 @@ class Settings {
 
 	public const SERIES = 'series_label';
 
-	public const SERMON_COUNT = 'sermon_count';
-	public const SERVICE_TYPE = 'service_type_label';
+	public const SERMON_COUNT    = 'sermon_count';
+	public const SERVICE_TYPE    = 'service_type_label';
+	public const POST_VIEW_COUNT = 'post_view_count';
 
 	public const OPTION_KEY_DISPLAY  = 'drppsm_option_display';
 	public const OPTION_KEY_GENERAL  = 'drppsm_option_general';
@@ -76,6 +78,7 @@ class Settings {
 		self::COMMENTS              => self::OPTION_KEY_GENERAL,
 		self::COMMON_BASE_SLUG      => self::OPTION_KEY_GENERAL,
 		self::DATE_FORMAT           => self::OPTION_KEY_GENERAL,
+		self::DEFAULT_IMAGE         => self::OPTION_KEY_GENERAL,
 		self::MENU_ICON             => self::OPTION_KEY_GENERAL,
 		self::PLAYER                => self::OPTION_KEY_GENERAL,
 		self::PREACHER              => self::OPTION_KEY_GENERAL,
@@ -98,6 +101,7 @@ class Settings {
 
 		self::BIBLE_BOOK_LOAD       => self::OPTION_KEY_ADVANCED,
 		self::BIBLE_BOOK_SORT       => self::OPTION_KEY_ADVANCED,
+		self::POST_VIEW_COUNT       => self::OPTION_KEY_ADVANCED,
 
 	);
 
@@ -247,6 +251,7 @@ class Settings {
 				self::COMMENTS         => false,
 				self::COMMON_BASE_SLUG => false,
 				self::DATE_FORMAT      => 'mm/dd/YY',
+				self::DEFAULT_IMAGE    => '',
 				self::MENU_ICON        => 'dashicons-drppsm-holy-spirit',
 				self::PLAYER           => 'plyr',
 				self::PREACHER         => 'Preacher',
@@ -259,20 +264,19 @@ class Settings {
 				self::ARCHIVE_ORDER         => 'desc',
 				self::ARCHIVE_ORDER_BY      => 'date_preached',
 				self::ARCHIVE_DISABLE_IMAGE => false,
-
 				self::DISABLE_CSS           => false,
-
 				self::HIDE_BOOKS            => false,
 				self::HIDE_FILTERS          => false,
 				self::HIDE_PREACHERS        => false,
 				self::HIDE_SERIES           => false,
-				self::HIDE_SERVICE_TYPES    => true,
+				self::HIDE_SERVICE_TYPES    => false,
 				self::HIDE_TOPICS           => false,
 
 			),
 			self::OPTION_KEY_ADVANCED => array(
 				self::BIBLE_BOOK_LOAD => true,
-				self::BIBLE_BOOK_SORT => true,
+				self::BIBLE_BOOK_SORT => false,
+				self::POST_VIEW_COUNT => false,
 			),
 
 		);

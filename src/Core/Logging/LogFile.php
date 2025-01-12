@@ -2,7 +2,7 @@
 /**
  * Write log to file.
  *
- * @package     Proclaim Sermon Manager
+ * @package     DRPPSM\Logging
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
@@ -18,7 +18,7 @@ use const DRPPSM\LOG_FILE;
 /**
  * Write log to file.
  *
- * @package     Proclaim Sermon Manager
+ * @package     DRPPSM\Logging
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
@@ -49,6 +49,12 @@ class LogFile extends LogWritterAbs implements LogWritterInt {
 		$this->size = 30;
 	}
 
+	/**
+	 * Register function if need. Required by abstract.
+	 *
+	 * @return bool|null
+	 * @since 1.0.0
+	 */
 	public function register(): ?bool {
 		return true;
 	}

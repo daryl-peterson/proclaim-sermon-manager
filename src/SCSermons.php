@@ -104,8 +104,6 @@ class SCSermons extends SCBase implements Executable, Registrable {
 	 * - **hide_service_types** Hide service types filter. ('')
 	 */
 	public function show_sermons( array $atts ): string {
-		global $wp_query;
-		$post_id = $wp_query->post->ID;
 
 		/**
 		 * Allows for short code attribute filtering. A bit redundant but here it is.
@@ -163,7 +161,7 @@ class SCSermons extends SCBase implements Executable, Registrable {
 
 		// Add query to the args.
 		$args['query']   = $query;
-		$args['post_id'] = $post_id;
+		$args['post_id'] = get_the_ID();
 
 		$output = '';
 

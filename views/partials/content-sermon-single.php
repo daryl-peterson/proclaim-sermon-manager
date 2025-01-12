@@ -67,9 +67,11 @@ $tax_stype          = DRPPSM_TAX_SERVICE_TYPE;
 				get_partial( 'sermon-single-meta', $args_stype );
 			}
 
+			set_post_view_count();
+
 			$args_views = array(
 				'item_label' => __( 'Views', 'drppsm' ),
-				'item_value' => get_sermon_view_count( (int) $post->ID ),
+				'item_value' => get_post_view_count(),
 			);
 			get_partial( 'sermon-single-meta', $args_views );
 

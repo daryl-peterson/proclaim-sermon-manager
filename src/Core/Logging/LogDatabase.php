@@ -2,7 +2,7 @@
 /**
  * Write log record to database.
  *
- * @package     Proclaim Sermon Manager
+ * @package     DRPPSM\Logging\LogDatabase
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
@@ -22,7 +22,7 @@ use function DRPPSM\table_exist;
 /**
  * Write log record to database.
  *
- * @package     Proclaim Sermon Manager
+ * @package     DRPPSM\Logging\LogDatabase
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt

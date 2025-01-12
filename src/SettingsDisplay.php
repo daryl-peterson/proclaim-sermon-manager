@@ -85,7 +85,7 @@ class SettingsDisplay extends SettingsBase implements Executable, Registrable {
 
 		$cmb = new_cmb2_box( $args );
 		$this->add_seperator( $cmb, __( 'Display Settings', 'drppsm' ) );
-		$this->add_default_image( $cmb );
+		$this->default_image( $cmb );
 		$this->disable_css( $cmb );
 		$this->add_seperator( $cmb, __( 'Archive Settings', 'drppsm' ) );
 
@@ -107,7 +107,7 @@ class SettingsDisplay extends SettingsBase implements Executable, Registrable {
 	 * @return void
 	 * @since 1.0.0
 	 */
-	private function add_default_image( CMB2 $cmb ): void {
+	private function default_image( CMB2 $cmb ): void {
 		$desc = __(
 			'Sets the default sermon image that would show up if there is no sermon or series image set.',
 			'drppsm'
@@ -115,8 +115,8 @@ class SettingsDisplay extends SettingsBase implements Executable, Registrable {
 
 		$cmb->add_field(
 			array(
-				'name'      => esc_html__( 'Default Image', 'drppsm' ),
-				'id'        => 'sermon_default_image',
+				'name'      => __( 'Default Image', 'drppsm' ),
+				'id'        => Settings::DEFAULT_IMAGE,
 				'type'      => 'file',
 				'after_row' => $this->description( $desc ),
 			)
@@ -205,14 +205,9 @@ class SettingsDisplay extends SettingsBase implements Executable, Registrable {
 
 		$cmb->add_field(
 			array(
-				'id'      => Settings::HIDE_FILTERS,
-				'name'    => __( 'Hide Filtering', 'drppsm' ),
-				'type'    => 'select',
-				'options' => array(
-					false => __( 'No', 'drppsm' ),
-					true  => __( 'Yes', 'drppsm' ),
-				),
-
+				'id'   => Settings::HIDE_FILTERS,
+				'name' => __( 'Hide Filtering', 'drppsm' ),
+				'type' => 'checkbox',
 			)
 		);
 	}
@@ -228,14 +223,9 @@ class SettingsDisplay extends SettingsBase implements Executable, Registrable {
 
 		$cmb->add_field(
 			array(
-				'id'      => Settings::HIDE_BOOKS,
-				'name'    => __( 'Hide Bible', 'drppsm' ),
-				'type'    => 'select',
-				'options' => array(
-					false => __( 'No', 'drppsm' ),
-					true  => __( 'Yes', 'drppsm' ),
-				),
-
+				'id'   => Settings::HIDE_BOOKS,
+				'name' => __( 'Hide Bible', 'drppsm' ),
+				'type' => 'checkbox',
 			)
 		);
 	}
@@ -253,14 +243,9 @@ class SettingsDisplay extends SettingsBase implements Executable, Registrable {
 
 		$cmb->add_field(
 			array(
-				'id'      => Settings::HIDE_PREACHERS,
-				'name'    => $label,
-				'type'    => 'select',
-				'options' => array(
-					false => __( 'No', 'drppsm' ),
-					true  => __( 'Yes', 'drppsm' ),
-				),
-
+				'id'   => Settings::HIDE_PREACHERS,
+				'name' => $label,
+				'type' => 'checkbox',
 			)
 		);
 	}
@@ -278,14 +263,9 @@ class SettingsDisplay extends SettingsBase implements Executable, Registrable {
 
 		$cmb->add_field(
 			array(
-				'id'      => Settings::HIDE_SERIES,
-				'name'    => $label,
-				'type'    => 'select',
-				'options' => array(
-					false => __( 'No', 'drppsm' ),
-					true  => __( 'Yes', 'drppsm' ),
-				),
-
+				'id'   => Settings::HIDE_SERIES,
+				'name' => $label,
+				'type' => 'checkbox',
 			)
 		);
 	}
@@ -304,14 +284,9 @@ class SettingsDisplay extends SettingsBase implements Executable, Registrable {
 
 		$cmb->add_field(
 			array(
-				'id'      => Settings::HIDE_SERVICE_TYPES,
-				'name'    => $label,
-				'type'    => 'select',
-				'options' => array(
-					false => __( 'No', 'drppsm' ),
-					true  => __( 'Yes', 'drppsm' ),
-				),
-
+				'id'   => Settings::HIDE_SERVICE_TYPES,
+				'name' => $label,
+				'type' => 'checkbox',
 			)
 		);
 	}
@@ -330,14 +305,9 @@ class SettingsDisplay extends SettingsBase implements Executable, Registrable {
 
 		$cmb->add_field(
 			array(
-				'id'      => Settings::HIDE_TOPICS,
-				'name'    => $label,
-				'type'    => 'select',
-				'options' => array(
-					false => __( 'No', 'drppsm' ),
-					true  => __( 'Yes', 'drppsm' ),
-				),
-
+				'id'   => Settings::HIDE_TOPICS,
+				'name' => $label,
+				'type' => 'checkbox',
 			)
 		);
 	}
