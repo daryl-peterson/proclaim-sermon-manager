@@ -116,18 +116,19 @@ class TaxonomyImageAttach implements Executable, Registrable {
 	/**
 	 * Get meta data.
 	 *
-	 * @param mixed   $value The value to return, either a single metadata value or an array of values
-	 *                depending on the value of $single.
-	 * @param integer $term_id Term ID.
-	 * @param string  $meta_key Meta key.
-	 * @param boolean $single Get single value.
-	 * @param string  $meta_type Expected term.
+	 * @param mixed   $value The value to return, either a single metadata value\
+	 *                or an array of values depending on the value of $single. Default null.
+	 * @param integer $term_id ID of the object metadata is for.
+	 * @param string  $meta_key Metadata key.
+	 * @param boolean $single Whether to return only the first value of the specified $meta_key.
+	 * @param string  $meta_type Type of object metadata is for. Accepts 'post', 'comment', 'term',\
+	 *                'user', or any other object type with an associated meta table.
 	 * @return mixed
 	 * @since 1.0.0
 	 */
 	public function get_metadata(
 		mixed $value,
-		int $term_id,
+		int $object_id,
 		string $meta_key,
 		bool $single,
 		string $meta_type
@@ -138,12 +139,12 @@ class TaxonomyImageAttach implements Executable, Registrable {
 			return $value;
 		}
 
-		$meta_cache = wp_cache_get( $term_id, $meta_type . '_meta' );
+		$meta_cache = wp_cache_get( $object_id, $meta_type . '_meta' );
 
 		if ( ! $meta_cache ) {
-			$meta_cache = update_meta_cache( $meta_type, array( $term_id ) );
-			if ( isset( $meta_cache[ $term_id ] ) ) {
-				$meta_cache = $meta_cache[ $term_id ];
+			$meta_cache = update_meta_cache( $meta_type, array( $object_id ) );
+			if ( isset( $meta_cache[ $object_id ] ) ) {
+				$meta_cache = $meta_cache[ $object_id ];
 			} else {
 				$meta_cache = null;
 			}
@@ -163,12 +164,11 @@ class TaxonomyImageAttach implements Executable, Registrable {
 			}
 		}
 
-		$option_key = $meta_key . '_' . $term_id;
+		$option_key = $meta_key . '_' . $object_id;
 
 		// @todo Find a better way rather than storing in options.
 		if ( isset( $result ) && ! empty( $result ) && $single ) {
-			delete_option( $option_key );
-			add_option( $option_key, $result );
+			update_option( $option_key, $result );
 		}
 
 		return $result;

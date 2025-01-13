@@ -128,9 +128,6 @@ class Templates implements Executable, Registrable {
 	 */
 	public function get_partial( string $name, array $args = array() ): void {
 
-		// Save orginal name.
-		$name_org = $name;
-
 		$partial = $this->locate_partial( $name, $args );
 
 		if ( $partial ) {

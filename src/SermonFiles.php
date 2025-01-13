@@ -2,7 +2,7 @@
 /**
  * Sermon files meta boxes.
  *
- * @package     Proclaim Sermon Manager
+ * @package     DRPPSM\SermonFiles
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
@@ -21,7 +21,7 @@ use DRPPSM\Interfaces\Registrable;
 /**
  * Sermon files meta boxes.
  *
- * @package     Proclaim Sermon Manager
+ * @package     DRPPSM\SermonFiles
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt

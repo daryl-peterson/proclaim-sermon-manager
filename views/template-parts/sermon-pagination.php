@@ -11,8 +11,6 @@
 
 namespace DRPPSM;
 
-use WP_Error;
-
 defined( 'ABSPATH' ) || exit;
 
 if ( ! isset( $args['query'] ) || ! isset( $args['post_id'] ) ) {
@@ -33,45 +31,36 @@ $paginate_vars = array(
 	'page_id',
 );
 
-try {
-	foreach ( $paginate_vars as $query_var_name ) {
-		$query_var = get_query_var( $query_var_name );
-		if ( $query_var ) {
-			$add_args[ $query_var_name ] = $query_var;
-		}
+foreach ( $paginate_vars as $query_var_name ) {
+	$query_var = get_query_var( $query_var_name );
+	if ( $query_var ) {
+		$add_args[ $query_var_name ] = $query_var;
 	}
-	?>
+}
+?>
 
 <div id="drppsm-sermons-pagination">
 	<?php
-	echo paginate_links(
-		array(
-			'base'     => preg_replace( '/\/\?.*/', '', rtrim( get_permalink( $args['post_id'] ), '/' ) ) . '/%_%',
-			'current'  => $args['query']->get( 'paged' ),
-			'total'    => $args['query']->max_num_pages,
-			'end_size' => 3,
-			'add_args' => $add_args,
+	render_html(
+		paginate_links(
+			array(
+				'base'     => preg_replace( '/\/\?.*/', '', rtrim( get_permalink( $args['post_id'] ), '/' ) ) . '/%_%',
+				'current'  => $args['query']->get( 'paged' ),
+				'total'    => $args['query']->max_num_pages,
+				'end_size' => 3,
+				'add_args' => $add_args,
+			)
 		)
 	);
 
 	// key variable.
-	$paged = get_query_var( 'paged' ) ? absint( get_query_var( 'paged' ) ) : 1;
+	$paged_var = absint( get_query_var( 'paged' ) );
+	if ( ! $paged_var ) {
+		$paged_var = 1;
+	}
 
-	if ( $args['query']->max_num_pages != $paged && $paged == 1 ) {
-
-		echo ' <a class="next page-numbers" href="' . get_permalink( $args['post_id'] ) . 'page/' . ( $paged + 1 ) . '">Next &raquo;</a>';
-
+	if ( 1 === $paged_var && $args['query']->max_num_pages !== $paged_var ) {
+		render_html( ' <a class="next page-numbers" href="' . esc_html( get_permalink( $args['post_id'] ) ) . 'page/' . esc_html( $paged_var + 1 ) . '">Next &raquo;</a>' );
 	}
 	?>
 </div>
-
-	<?php
-} catch ( \Throwable | WP_Error $th ) {
-	Logger::error(
-		array(
-			'ERROR' => $th->getMessage(),
-			'TRACE' => $th->getTrace(),
-		)
-	);
-	return;
-}

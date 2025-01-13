@@ -79,6 +79,13 @@ class SCSermonImages extends SCBase implements Executable, Registrable {
 	 * @param array $atts Shorcode attributes array.
 	 * @return string
 	 * @since 1.0.0
+	 *
+	 * #### Atts Parameters
+	 * - **per_page** Define how many sermons to show per page. Overrides the WordPress setting.
+	 * - **display** Series or preachers
+	 * - **orderby** Order by name, id, count, slug, term_group, none. (name)
+	 * - **hide_title** Hides title if set to "yes"
+	 * - **show_description** Shows description if set to "yes"
 	 */
 	public function show_images( array $atts ): string {
 
@@ -92,8 +99,13 @@ class SCSermonImages extends SCBase implements Executable, Registrable {
 		}
 
 		$args['display'] = $tax;
-		$query_args      = $this->get_query_args( $args );
-		$terms           = get_terms( $query_args );
+
+		$query_args = $this->get_query_args( $args );
+		$terms      = get_terms( $query_args );
+
+		// get_object_term_cache()
+
+		Logger::debug( array( 'TERMS' => $terms ) );
 
 		if ( $terms instanceof WP_Error ) {
 			Logger::error(
@@ -126,6 +138,9 @@ class SCSermonImages extends SCBase implements Executable, Registrable {
 		return $output;
 	}
 
+	private function get_term_data() {
+	}
+
 	/**
 	 * Get default arguments.
 	 *
@@ -141,6 +156,8 @@ class SCSermonImages extends SCBase implements Executable, Registrable {
 			'hide_title'       => false,
 			'show_description' => false,
 			'image_size'       => 'sermon_medium',
+			// Used in query as number
+			'per_page'         => 30,
 		);
 	}
 
@@ -157,6 +174,8 @@ class SCSermonImages extends SCBase implements Executable, Registrable {
 			'taxonomy' => $args['display'],
 			'order'    => $args['order'],
 			'orderby'  => $args['orderby'],
+			'offset'   => absint( get_query_var( 'paged' ) ),
+			'number'   => $args['per_page'],
 		);
 
 		switch ( $args['display'] ) {

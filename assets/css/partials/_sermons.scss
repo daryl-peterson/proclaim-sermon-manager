@@ -11,3 +11,21 @@
 #drppsm_views {
 	max-width: 100px;
 }
+
+#drppsm {
+
+	&-flex-grid {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+
+	}
+
+	&-flex-grid>* {
+		width: calc(100%/3);
+		height: 90%;
+		text-align: center;
+		padding: 1em;
+	}
+
+}

@@ -14,25 +14,26 @@ namespace DRPPSM;
 defined( 'ABSPATH' ) || exit;
 
 $template     = str_replace( '.php', '', basename( __FILE__ ) );
-$failure      = '<p><b>' . DRPPSM_TITLE . '</b>: Partial "<i>' . $template . '</i>" loaded incorrectly.</p>';
+$failure      = '<p><b>' . DRPPSM_TITLE . '</b>: Partial "<i>' . esc_html( $template ) . '</i>" loaded incorrectly.</p>';
 $requirements = array(
-	'terms',
-	'image_size',
+	'term_tax',
+	'term_id',
+	'url',
 );
 
-if ( ! isset( $args ) ) {
+if ( ! isset( $args ) || ! is_array( $args ) ) {
 	Logger::error( 'Args variable does not exist. Template : ' . $template );
-	echo $failure;
+	render_html( $failure );
 	return;
 }
 
-// phpcs:ignore
-extract( $args );
+
+
 
 ?>
 
-<div id="drppms-<?php echo $taxonomy; ?>-grid-<?php echo $term->term_id; ?>" class="">
-
+<div id="<?php echo esc_attr( $args['term_tax'] ); ?>-grid-<?php echo esc_attr( $args['term_id'] ); ?>" class="">
+<image src="<?php echo esc_attr( $args['url'] ); ?>">
 
 
 </div>
