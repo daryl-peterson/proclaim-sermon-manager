@@ -13,11 +13,19 @@ namespace DRPPSM;
 
 defined( 'ABSPATH' ) || exit;
 
-Logger::debug( $args );
-
-if ( ! isset( $args['query'] ) || ! isset( $args['post_id'] ) ) {
-	Logger::debug( 'HERE 1' );
+if ( ! isset( $args ) || ! is_array( $args ) ) {
 	return;
+}
+
+$required = array(
+	'current',
+	'total',
+	'post_id',
+);
+foreach ( $required as $must_have ) {
+	if ( ! key_exists( $must_have, $args ) ) {
+		return;
+	}
 }
 
 if ( key_exists( 'disable_pagination', $args ) && 1 === $args['disable_pagination'] ) {
@@ -41,22 +49,29 @@ foreach ( $paginate_vars as $query_var_name ) {
 		$add_args[ $query_var_name ] = $query_var;
 	}
 }
-Logger::debug( 'HERE 3' );
+
+$paginate_links = paginate_links(
+	array(
+		'base'     => preg_replace( '/\/\?.*/', '', rtrim( get_permalink( $args['post_id'] ), '/' ) ) . '/%_%',
+		'current'  => $args['current'],
+		'total'    => $args['total'],
+		'end_size' => 3,
+		'add_args' => $add_args,
+	)
+);
+
+if ( ! isset( $paginate_links ) ) {
+	return;
+
+}
+
+
 ?>
 
 <div id="drppsm-sermons-pagination">
 	<?php
-	render_html(
-		paginate_links(
-			array(
-				'base'     => preg_replace( '/\/\?.*/', '', rtrim( get_permalink( $args['post_id'] ), '/' ) ) . '/%_%',
-				'current'  => $args['query']->get( 'paged' ),
-				'total'    => $args['query']->max_num_pages,
-				'end_size' => 3,
-				'add_args' => $add_args,
-			)
-		)
-	);
+
+	render_html( $paginate_links );
 
 	// key variable.
 	$paged_var = absint( get_query_var( 'paged' ) );
@@ -64,8 +79,16 @@ Logger::debug( 'HERE 3' );
 		$paged_var = 1;
 	}
 
-	if ( 1 === $paged_var && $args['query']->max_num_pages !== $paged_var ) {
-		render_html( ' <a class="next page-numbers" href="' . esc_html( get_permalink( $args['post_id'] ) ) . 'page/' . esc_html( $paged_var + 1 ) . '">Next &raquo;</a>' );
+	if ( 1 === $paged_var && $args['total'] !== $paged_var ) {
+		// render_html( ' <a class="next page-numbers" href="' . esc_html( get_permalink( $args['post_id'] ) ) . 'page/' . esc_html( $paged_var + 1 ) . '">Next &raquo;</a>' );
 	}
+
 	?>
 </div>
+<?php
+Logger::debug(
+	array(
+		'ARGS'  => $args,
+		'PAGED' => $paged_var,
+	)
+);

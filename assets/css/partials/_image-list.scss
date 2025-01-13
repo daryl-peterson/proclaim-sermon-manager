@@ -29,16 +29,24 @@
 		flex: 0 0 50%;
 	}
 
+	li.col2 img {
+		height: 315px;
+	}
+
 	li.col3 {
 		flex: 0 0 33.3333%;
 	}
 
 	li.col3 img {
-		height: 250px;
+		height: 210px;
 	}
 
 	li.col4 {
 		flex: 0 0 25%;
+	}
+
+	li.col4 img {
+		height: 160px;
 	}
 
 	@media(max-width: 800px) {
@@ -54,7 +62,7 @@
 		li.col2 img,
 		li.col3 img,
 		li.col4 img {
-			height: auto;
+			height: 240px;
 		}
 
 	}

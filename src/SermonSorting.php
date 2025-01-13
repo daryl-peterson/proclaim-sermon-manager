@@ -100,8 +100,6 @@ class SermonSorting implements Executable {
 	public static function render_sorting( array $args = array() ): ?string {
 		$obj = self::exec();
 
-		Logger::debug( $args );
-
 		try {
 			/**
 			 * Allows for filters HTML field data attributes.

@@ -402,13 +402,6 @@ function get_term_dropdown( string $taxonomy, string $default_value ): string {
 
 	$current_slug = get_query_var( $taxonomy );
 
-	Logger::debug(
-		array(
-			'CURRENT SLUG' => $current_slug,
-			'TAXONOMY'     => $taxonomy,
-		)
-	);
-
 	foreach ( $terms as $term ) {
 
 		if ( $current_slug === $term->slug ) {

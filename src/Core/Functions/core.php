@@ -98,6 +98,24 @@ function unquote( mixed $item ): mixed {
 		return $item;
 	}
 }
+
+/**
+ * Get the current page number.
+ *
+ * @return int
+ * @since 1.0.0
+ */
+function get_page_number(): int {
+	if ( get_query_var( 'paged' ) ) {
+		$paged = get_query_var( 'paged' );
+	} elseif ( get_query_var( 'page' ) ) {
+		$paged = get_query_var( 'page' );
+	} else {
+		$paged = 1;
+	}
+	return $paged;
+}
+
 /**
  * Add taxonomy query vars.
  *

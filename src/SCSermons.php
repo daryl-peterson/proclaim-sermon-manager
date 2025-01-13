@@ -163,6 +163,8 @@ class SCSermons extends SCBase implements Executable, Registrable {
 		$args['query']   = $query;
 		$args['post_id'] = get_the_ID();
 
+		$post_id = get_the_ID();
+
 		$output = '';
 
 		if ( $query->have_posts() ) {
@@ -201,7 +203,14 @@ class SCSermons extends SCBase implements Executable, Registrable {
 				$output = apply_filters( 'drppsmf_sc_sermon_single_output', $output, $post, $args );
 			}
 			ob_start();
-			get_partial( 'sermon-pagination', $args );
+			get_partial(
+				'sermon-pagination',
+				array(
+					'current' => get_page_number(),
+					'total'   => $query->max_num_pages,
+					'post_id' => $post_id,
+				)
+			);
 			$output .= ob_get_clean();
 
 			wp_reset_postdata();

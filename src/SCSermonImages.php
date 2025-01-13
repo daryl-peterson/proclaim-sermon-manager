@@ -40,6 +40,46 @@ class SCSermonImages extends SCBase implements Executable, Registrable {
 	private string $sc_images;
 
 	/**
+	 * Used in paginated queries, per_page
+	 *
+	 * @var int
+	 * @since 1.0.0
+	 */
+	private int $number;
+
+	/**
+	 * Query offset.
+	 *
+	 * @var int
+	 * @since 1.0.0
+	 */
+	private int $offset;
+
+	/**
+	 * Pagination arguments.
+	 *
+	 * @var array
+	 * @since 1.0.0
+	 */
+	private null|array $paginate;
+
+	/**
+	 * Template data.
+	 *
+	 * @var array
+	 * @since 1.0.0
+	 */
+	private null|array $data;
+
+	/**
+	 * Transient key for term list.
+	 *
+	 * @var string
+	 * @since 1.0.0
+	 */
+	private string $transient_key;
+
+	/**
 	 * Initialize object properties.
 	 *
 	 * @return void
@@ -103,18 +143,19 @@ class SCSermonImages extends SCBase implements Executable, Registrable {
 		}
 
 		$args['display'] = $tax;
-		$data            = $this->get_term_data( $args );
+		$args['post_id'] = get_the_ID();
+		$this->set_term_data( $args );
 
 		$output = '';
-		if ( is_array( $data ) && count( $data ) > 0 ) {
+		if ( isset( $this->data ) && is_array( $this->data ) && count( $this->data ) > 0 ) {
 			ob_start();
 			get_partial(
-				"taxonomy-{$tax}-grid",
+				'grid-drppsm_image',
 				array(
-					'list' => $data,
+					'list' => $this->data,
 				)
 			);
-			get_partial( 'sermon-pagination', $args );
+			get_partial( 'sermon-pagination', $this->paginate );
 			$output .= ob_get_clean();
 		} else {
 			ob_start();
@@ -125,39 +166,39 @@ class SCSermonImages extends SCBase implements Executable, Registrable {
 	}
 
 	/**
-	 * Get term data needed for template.
+	 * Set term data needed for template.
 	 *
-	 * @param array $args Arugments array.
-	 * @return null|array
+	 * @param array $args Shortcode arguments.
+	 * @return void
+	 * @since 1.0.0
 	 */
-	private function get_term_data( array &$args ): ?array {
-		$query_args = $this->get_query_args( $args );
+	private function set_term_data( array $args ): void {
 
-		$term_query = new WP_Term_Query( $query_args );
+		$this->data     = null;
+		$this->paginate = null;
 
-		$args['query'] = $term_query;
-		// $args['post_id'] = get_the_ID();
-
-		$list = $term_query->get_terms();
-		// $list       = get_terms( $query_args );
-
-		// @todo Use this for caching later.
-		$hash      = md5( serialize( $list ) );
-		$trans_key = 'drppsm_' . $hash;
-
-		$trans = get_transient( $trans_key );
-		if ( $trans ) {
-			return $trans;
+		$this->set_pagination( $args );
+		if ( ! $this->paginate ) {
+			return;
 		}
 
+		$query_args = $this->get_query_args( $args );
+		$list       = get_terms( $query_args );
 		if ( $list instanceof WP_Error ) {
-			Logger::error(
+			return;
+		}
+
+		$trans = $this->get_transient_data( $list );
+		if ( $trans ) {
+			Logger::debug(
 				array(
-					'ERROR' => $list->get_error_message(),
-					$list->get_error_data(),
+					'TRANS_KEY'  => $this->transient_key,
+					'TRANS DATA' => $trans,
+					'ARGS'       => $args,
 				)
 			);
-			return null;
+			$this->data = $trans;
+			return;
 		}
 
 		$data = array();
@@ -167,6 +208,7 @@ class SCSermonImages extends SCBase implements Executable, Registrable {
 
 		$count    = 0;
 		$meta_key = $this->get_meta_key( $args );
+
 		/**
 		 * @var WP_Term $item
 		 */
@@ -196,10 +238,46 @@ class SCSermonImages extends SCBase implements Executable, Registrable {
 			++$count;
 		}
 		if ( 0 === $count ) {
-			return null;
+			$this->data = null;
+			return;
 		}
-		set_transient( $trans_key, $data, DAY_IN_SECONDS );
-		return $data;
+		$result = set_transient( $this->transient_key, $data, DAY_IN_SECONDS );
+		Logger::debug( array( 'SET TRANS' => $result ) );
+		$this->data = $data;
+	}
+
+	/**
+	 * Set pagination data.
+	 *
+	 * @param array $args Shortcode arguments.
+	 * @return void
+	 * @since 1.0.0
+	 */
+	private function set_pagination( array $args ): void {
+		$this->paginate = null;
+
+		$term_count = $this->get_term_count( $args );
+		if ( ! $term_count ) {
+			return;
+		}
+
+		$tpp           = $args['per_page'];
+		$max_num_pages = ceil( $term_count / $tpp );
+		$paged         = get_page_number();
+
+		// Calculate term offset
+		$offset = ( ( $paged - 1 ) * $tpp );
+
+		// We can now get our terms and paginate it
+		$this->number = $tpp;
+		$this->offset = $offset;
+
+		$this->paginate = array(
+
+			'current' => $paged,
+			'total'   => $max_num_pages,
+			'post_id' => $args['post_id'],
+		);
 	}
 
 	/**
@@ -234,27 +312,15 @@ class SCSermonImages extends SCBase implements Executable, Registrable {
 	private function get_query_args( array $args ): array {
 
 		$query_args = array(
-			'show_count' => true,
-			'taxonomy'   => $args['display'],
-			'order'      => $args['order'],
-			'orderby'    => $args['orderby'],
-			'offset'     => absint( get_query_var( 'paged' ) ),
-			'number'     => $args['per_page'],
+			'taxonomy' => $args['display'],
+			'order'    => $args['order'],
+			'orderby'  => $args['orderby'],
+			'number'   => $this->number,
+			'offset'   => $this->offset,
 		);
 
-		switch ( $args['display'] ) {
-			case DRPPSM_TAX_SERIES:
-				$meta_key = Meta::SERIES_IMAGE_ID;
-				break;
-			case DRPPSM_TAX_PREACHER:
-				$meta_key = Meta::PREACHER_IMAGE_ID;
-		}
 		// @codingStandardsIgnoreStart
-		$query_args['meta_query'][] = array(
-			'meta_key'     => $meta_key,
-			'meta_value'   => ' ',
-			'meta_compare' => '!=',
-		);
+		$query_args['meta_query'][] = $this->get_meta_query($args);
 		// @codingStandardsIgnoreEnd
 
 		return $query_args;
@@ -280,5 +346,63 @@ class SCSermonImages extends SCBase implements Executable, Registrable {
 				break;
 		}
 		return $meta_key;
+	}
+
+	/**
+	 * Get meta query for taxonomy images.
+	 *
+	 * @param array $args Shortcode arguments.
+	 * @return array
+	 * @since 1.0.0
+	 */
+	private function get_meta_query( array $args ): array {
+		$meta_key = $this->get_meta_key( $args );
+		// @codingStandardsIgnoreStart
+		return array(
+			'meta_key'     => $meta_key,
+			'meta_value'   => ' ',
+			'meta_compare' => '!=',
+		);
+		// @codingStandardsIgnoreEnd
+	}
+
+	/**
+	 * Get term count for taxonomy.
+	 *
+	 * @param mixed $args Shortcode arguments.
+	 * @return int
+	 * @since 1.0.0
+	 */
+	private function get_term_count( $args ): int {
+		$query_args = array(
+			'taxonomy' => $args['display'],
+			'fields'   => 'count',
+		);
+
+		// @codingStandardsIgnoreStart
+		$query_args['meta_query'][] = $this->get_meta_query($args);
+
+		$term_count = get_terms( $query_args );
+		if ($term_count instanceof WP_Error){
+			return 0;
+		}
+		return absint($term_count);
+
+	}
+
+	/**
+	 * Get transient data.
+	 *
+	 * @param array $list Terms list.
+	 * @return void
+	 * @since 1.0.0
+	 *
+	 *
+	 */
+	private function get_transient_data(array $list){
+		// @todo Use this for caching later.
+		$hash      = md5( serialize( $list ) );
+		$this->transient_key = "drppsm_tmp_{$hash}";
+		get_transient( $this->transient_key );
 	}
 }

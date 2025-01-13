@@ -58,7 +58,6 @@ foreach ( $filters as $filter ) {
 		continue;
 	}
 
-
 	$tax_var    = $filter['taxonomy'];
 	$class_name = $filter['className'];
 	$act        = $args['action'];
@@ -76,7 +75,7 @@ foreach ( $filters as $filter ) {
 				autocomplete="off"
 				<?php echo esc_attr( $disabled ); ?>>
 
-				<option value=""><?php esc_html( $title_var ); ?></option>
+				<option value=""><?php echo esc_html( $title_var ); ?></option>
 				<?php render_html( $options ); ?>
 			</select>
 		</form>
