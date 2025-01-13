@@ -11,63 +11,44 @@
 
 namespace DRPPSM;
 
-use DRPPSM\Constants\Meta;
-
 defined( 'ABSPATH' ) || exit;
 
 if ( ! did_action( 'get_header' ) ) {
 	get_header();
 }
 
-$template     = str_replace( '.php', '', basename( __FILE__ ) );
-$failure      = '<p><b>' . DRPPSM_TITLE . '</b>: Partial "<i>' . esc_html( $template ) . '</i>" loaded incorrectly.</p>';
-$requirements = array(
-	'terms',
-	'image_size',
-	'mkey',
-);
+$template = str_replace( '.php', '', basename( __FILE__ ) );
+$failure  = '<p><b>' . DRPPSM_TITLE . '</b>: Partial "<i>' . esc_html( $template ) . '</i>" loaded incorrectly.</p>';
 
-if ( ! isset( $args ) ) {
+if ( ! isset( $args ) || ! is_array( $args ) ) {
 	Logger::error( 'Args variable does not exist. Template : ' . $template );
 	render_html( $failure );
 	return;
 }
 
-foreach ( $requirements as $req ) {
-	if ( ! isset( $args[ $req ] ) ) {
-		render_html( $failure );
-		Logger::error( 'Requirements not met : ' . $req );
-		return;
-	}
+if ( ! key_exists( 'list', $args ) ) {
+	render_html( $failure );
 }
-
-get_partial( 'sc-wrapper-start' );
-echo '<div id="drppsm-flex-grid">';
-
-$count = 0;
-foreach ( $args['terms'] as $item ) {
-
-	$url  = null;
-	$meta = get_term_meta( $item->term_id, Meta::SERIES_IMAGE_ID, true );
+$list = $args['list'];
+?>
 
 
-	if ( ! empty( $meta ) && false !== $meta ) {
-		$url = wp_get_attachment_image_url( $meta, $args['image_size'] );
-	}
-	if ( ! $url ) {
-		continue;
-	}
-	++$count;
+<div id="drppsm-sc-wrapper">
+	<div id="drppsm-image-list">
+		<ul>
 
-	$grid = array(
-		'term_id'    => $item->term_id,
-		'term_name'  => $item->name,
-		'term_tax'   => DRPPSM_TAX_SERIES,
-		'image_size' => $args['image_size'],
-		'url'        => $url,
+<?php
+foreach ( $list as $item ) :
+	?>
+			<li class="<?php echo esc_attr( $item['columns'] ); ?>">
+				<a href="<?php echo esc_attr( $item['term_link'] ); ?>" title="<?php echo esc_attr( $item['term_name'] ); ?>">
+				<img src="<?php echo esc_attr( $item['image_url'] ); ?>">
+				</a>
+			</li>
 
-	);
-	get_partial( 'content-series-grid', $grid );
-}
-echo '</div>';
-get_partial( 'sc-wrapper-end' );
+	<?php
+endforeach;
+?>
+		</ul>
+	</div>
+</div>

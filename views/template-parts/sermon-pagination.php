@@ -13,11 +13,15 @@ namespace DRPPSM;
 
 defined( 'ABSPATH' ) || exit;
 
+Logger::debug( $args );
+
 if ( ! isset( $args['query'] ) || ! isset( $args['post_id'] ) ) {
+	Logger::debug( 'HERE 1' );
 	return;
 }
 
 if ( key_exists( 'disable_pagination', $args ) && 1 === $args['disable_pagination'] ) {
+	Logger::debug( 'HERE 2' );
 	return;
 }
 
@@ -37,6 +41,7 @@ foreach ( $paginate_vars as $query_var_name ) {
 		$add_args[ $query_var_name ] = $query_var;
 	}
 }
+Logger::debug( 'HERE 3' );
 ?>
 
 <div id="drppsm-sermons-pagination">

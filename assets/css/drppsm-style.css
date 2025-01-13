@@ -427,4 +427,52 @@ ul#drppsm_images_grid .drppsm_grid_title {
 
 .plyr--audio.plyr {
   border: 1px solid #dbe3e8;
+}
+
+#drppsm-image-list {
+  justify-content: space-between;
+}
+#drppsm-image-list ul {
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+}
+#drppsm-image-list li {
+  padding: 1em;
+  list-style: none !important;
+}
+#drppsm-image-list li img {
+  height: 100%;
+  width: 100%;
+  -o-object-fit: fill;
+     object-fit: fill;
+}
+#drppsm-image-list li.col1 {
+  flex: 0 0 100%;
+}
+#drppsm-image-list li.col2 {
+  flex: 0 0 50%;
+}
+#drppsm-image-list li.col3 {
+  flex: 0 0 33.3333%;
+}
+#drppsm-image-list li.col3 img {
+  height: 250px;
+}
+#drppsm-image-list li.col4 {
+  flex: 0 0 25%;
+}
+@media (max-width: 800px) {
+  #drppsm-image-list li.col1,
+  #drppsm-image-list li.col2,
+  #drppsm-image-list li.col3,
+  #drppsm-image-list li.col3 {
+    flex: 0 0 100%;
+  }
+  #drppsm-image-list li.col1 img,
+  #drppsm-image-list li.col2 img,
+  #drppsm-image-list li.col3 img,
+  #drppsm-image-list li.col4 img {
+    height: auto;
+  }
 }/*# sourceMappingURL=drppsm-style.css.map */

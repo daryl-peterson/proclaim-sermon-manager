@@ -54,9 +54,14 @@ class Settings {
 	public const SERVICE_TYPE    = 'service_type_label';
 	public const POST_VIEW_COUNT = 'post_view_count';
 
+
+	public const IMAGES_PER_ROW = 'images_per_row';
+
 	public const OPTION_KEY_DISPLAY  = 'drppsm_option_display';
 	public const OPTION_KEY_GENERAL  = 'drppsm_option_general';
 	public const OPTION_KEY_ADVANCED = 'drppsm_option_advanced';
+
+
 
 
 	public const OPTION_KEYS = array(
@@ -98,6 +103,8 @@ class Settings {
 		self::HIDE_SERIES           => self::OPTION_KEY_DISPLAY,
 		self::HIDE_SERVICE_TYPES    => self::OPTION_KEY_DISPLAY,
 		self::HIDE_TOPICS           => self::OPTION_KEY_DISPLAY,
+
+		self::IMAGES_PER_ROW        => self::OPTION_KEY_DISPLAY,
 
 		self::BIBLE_BOOK_LOAD       => self::OPTION_KEY_ADVANCED,
 		self::BIBLE_BOOK_SORT       => self::OPTION_KEY_ADVANCED,
@@ -157,7 +164,6 @@ class Settings {
 			return $default_value;
 		}
 
-		$result = self::$option_default[ $option_key ][ $key ];
 		return self::$option_default[ $option_key ][ $key ];
 	}
 
@@ -271,6 +277,7 @@ class Settings {
 				self::HIDE_SERIES           => false,
 				self::HIDE_SERVICE_TYPES    => false,
 				self::HIDE_TOPICS           => false,
+				self::IMAGES_PER_ROW        => 3,
 
 			),
 			self::OPTION_KEY_ADVANCED => array(

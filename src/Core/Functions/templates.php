@@ -274,17 +274,6 @@ function get_sermon_image_url( string $image_size = 'post-thumbnail', bool $fall
 		$image = $default;
 	}
 
-	Logger::debug(
-		array(
-			'FALLBACK'       => $fallback,
-			'SERIES PRIMARY' => $series_primary,
-			'SERIES'         => $series_image,
-			'SERMON'         => $sermon_image,
-			'DEFAULT'        => $default,
-			'IMAGE'          => $image,
-		)
-	);
-
 	/**
 	 * Allows to filter the image URL.
 	 *
@@ -443,23 +432,3 @@ function get_term_dropdown( string $taxonomy, string $default_value ): string {
 	 */
 	return apply_filters( 'drppsmf_get_term_dropdown', $html, $taxonomy, $default_value, $terms, $current_slug );
 }
-
-/**
- * Add taxonomy query vars.
- *
- * @param array $vars Current query vars.
- * @return array
- * @since 1.0.0
- */
-function add_query_vars( array $vars ): array {
-
-	$friendly = array_keys( DRPPSM_TAX_MAP );
-
-	$vars = array_merge( $vars, $friendly );
-
-	Logger::debug( $vars );
-
-	return $vars;
-}
-
-add_filter( 'query_vars', __NAMESPACE__ . '\\add_query_vars' );

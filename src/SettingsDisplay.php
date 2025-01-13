@@ -98,6 +98,35 @@ class SettingsDisplay extends SettingsBase implements Executable, Registrable {
 		$this->hide_series( $cmb );
 		$this->hide_service_types( $cmb );
 		$this->hide_topics( $cmb );
+
+		$this->add_seperator( $cmb, __( 'Image Lists', 'drppsm' ) );
+		$this->images_per_row( $cmb );
+	}
+
+	/**
+	 * Add the images per row field.
+	 *
+	 * @param CMB2 $cmb CMB2 object.
+	 * @return void
+	 * @since 1.0.0
+	 */
+	private function images_per_row( CMB2 $cmb ): void {
+		$desc = __( 'For series, preacher image lists images per row.', 'drppsm' );
+		$cmb->add_field(
+			array(
+				'id'               => Settings::IMAGES_PER_ROW,
+				'name'             => __( 'Images per row', 'drppsm' ),
+				'type'             => 'select',
+				'show_option_none' => true,
+				'options'          => array(
+					'1' => 'One',
+					'2' => 'Two',
+					'3' => 'Three',
+					'4' => 'Four',
+				),
+				'after_row'        => $this->description( $desc ),
+			)
+		);
 	}
 
 	/**

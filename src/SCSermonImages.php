@@ -17,6 +17,9 @@ use DRPPSM\Constants\Meta;
 use DRPPSM\Interfaces\Executable;
 use DRPPSM\Interfaces\Registrable;
 use WP_Error;
+use WP_Exception;
+use WP_Term;
+use WP_Term_Query;
 
 /**
  * Shortcodes for sermon images.
@@ -86,6 +89,7 @@ class SCSermonImages extends SCBase implements Executable, Registrable {
 	 * - **orderby** Order by name, id, count, slug, term_group, none. (name)
 	 * - **hide_title** Hides title if set to "yes"
 	 * - **show_description** Shows description if set to "yes"
+	 * - **columns** Number of images per row.
 	 */
 	public function show_images( array $atts ): string {
 
@@ -99,36 +103,18 @@ class SCSermonImages extends SCBase implements Executable, Registrable {
 		}
 
 		$args['display'] = $tax;
-
-		$query_args = $this->get_query_args( $args );
-		$terms      = get_terms( $query_args );
-
-		// get_object_term_cache()
-
-		Logger::debug( array( 'TERMS' => $terms ) );
-
-		if ( $terms instanceof WP_Error ) {
-			Logger::error(
-				array(
-					'ERROR' => $terms->get_error_message(),
-					$terms->get_error_data(),
-				)
-			);
-			return 'Shortcode Error';
-		}
+		$data            = $this->get_term_data( $args );
 
 		$output = '';
-		if ( count( $terms ) > 0 ) {
+		if ( is_array( $data ) && count( $data ) > 0 ) {
 			ob_start();
 			get_partial(
 				"taxonomy-{$tax}-grid",
 				array(
-					'terms'      => $terms,
-					'image_size' => $args['image_size'],
-					'taxonomy'   => $tax,
-					'mkey'       => $this->get_meta_key( $args ),
+					'list' => $data,
 				)
 			);
+			get_partial( 'sermon-pagination', $args );
 			$output .= ob_get_clean();
 		} else {
 			ob_start();
@@ -138,7 +124,82 @@ class SCSermonImages extends SCBase implements Executable, Registrable {
 		return $output;
 	}
 
-	private function get_term_data() {
+	/**
+	 * Get term data needed for template.
+	 *
+	 * @param array $args Arugments array.
+	 * @return null|array
+	 */
+	private function get_term_data( array &$args ): ?array {
+		$query_args = $this->get_query_args( $args );
+
+		$term_query = new WP_Term_Query( $query_args );
+
+		$args['query'] = $term_query;
+		// $args['post_id'] = get_the_ID();
+
+		$list = $term_query->get_terms();
+		// $list       = get_terms( $query_args );
+
+		// @todo Use this for caching later.
+		$hash      = md5( serialize( $list ) );
+		$trans_key = 'drppsm_' . $hash;
+
+		$trans = get_transient( $trans_key );
+		if ( $trans ) {
+			return $trans;
+		}
+
+		if ( $list instanceof WP_Error ) {
+			Logger::error(
+				array(
+					'ERROR' => $list->get_error_message(),
+					$list->get_error_data(),
+				)
+			);
+			return null;
+		}
+
+		$data = array();
+		if ( ! is_array( $list ) ) {
+			$list = array( $list );
+		}
+
+		$count    = 0;
+		$meta_key = $this->get_meta_key( $args );
+		/**
+		 * @var WP_Term $item
+		 */
+		foreach ( $list as $item ) {
+
+			$url  = null;
+			$meta = get_term_meta( $item->term_id, $meta_key, true );
+
+			if ( ! empty( $meta ) && false !== $meta ) {
+				$url = wp_get_attachment_image_url( $meta, $args['size'] );
+			}
+			if ( ! $url ) {
+				continue;
+			}
+
+			$data[] = array(
+				'term_id'          => $item->term_id,
+				'term_name'        => $item->name,
+				'term_tax'         => $item->taxonomy,
+				'term_link'        => esc_url( get_term_link( $item, $item->taxonomy ) ),
+				'term_description' => $item->description,
+				'image_size'       => $args['size'],
+				'image_url'        => $url,
+				'columns'          => 'col' . $args['columns'],
+
+			);
+			++$count;
+		}
+		if ( 0 === $count ) {
+			return null;
+		}
+		set_transient( $trans_key, $data, DAY_IN_SECONDS );
+		return $data;
 	}
 
 	/**
@@ -152,10 +213,12 @@ class SCSermonImages extends SCBase implements Executable, Registrable {
 			'display'          => 'series',
 			'order'            => 'ASC',
 			'orderby'          => 'name',
-			'size'             => 'sermon_medium',
+			'size'             => ImageSize::SERMON_MEDIUM,
 			'hide_title'       => false,
 			'show_description' => false,
-			'image_size'       => 'sermon_medium',
+			'image_size'       => ImageSize::SERMON_MEDIUM,
+			'columns'          => Settings::get( Settings::IMAGES_PER_ROW ),
+
 			// Used in query as number
 			'per_page'         => 30,
 		);
@@ -171,11 +234,12 @@ class SCSermonImages extends SCBase implements Executable, Registrable {
 	private function get_query_args( array $args ): array {
 
 		$query_args = array(
-			'taxonomy' => $args['display'],
-			'order'    => $args['order'],
-			'orderby'  => $args['orderby'],
-			'offset'   => absint( get_query_var( 'paged' ) ),
-			'number'   => $args['per_page'],
+			'show_count' => true,
+			'taxonomy'   => $args['display'],
+			'order'      => $args['order'],
+			'orderby'    => $args['orderby'],
+			'offset'     => absint( get_query_var( 'paged' ) ),
+			'number'     => $args['per_page'],
 		);
 
 		switch ( $args['display'] ) {
