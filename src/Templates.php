@@ -27,6 +27,9 @@ use DRPPSM\Interfaces\Registrable;
  */
 class Templates implements Executable, Registrable {
 
+	const string Pagination = 'psm-pagination';
+	const string ImageList  = 'psm-image-list';
+
 	/**
 	 * Post type
 	 *

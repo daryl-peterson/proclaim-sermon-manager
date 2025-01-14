@@ -204,7 +204,7 @@ class SCSermons extends SCBase implements Executable, Registrable {
 			}
 			ob_start();
 			get_partial(
-				'sermon-pagination',
+				Templates::Pagination,
 				array(
 					'current' => get_page_number(),
 					'total'   => $query->max_num_pages,

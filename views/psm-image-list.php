@@ -13,9 +13,6 @@ namespace DRPPSM;
 
 defined( 'ABSPATH' ) || exit;
 
-if ( ! did_action( 'get_header' ) ) {
-	get_header();
-}
 
 $template = str_replace( '.php', '', basename( __FILE__ ) );
 $failure  = '<p><b>' . DRPPSM_TITLE . '</b>: Partial "<i>' . esc_html( $template ) . '</i>" loaded incorrectly.</p>';
