@@ -284,7 +284,7 @@ class SCSermonImages extends SCBase implements Executable, Registrable {
 			'columns'          => Settings::get( Settings::IMAGES_PER_ROW ),
 
 			// Used in query as number
-			'per_page'         => 30,
+			'per_page'         => 12,
 		);
 	}
 
