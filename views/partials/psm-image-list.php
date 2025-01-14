@@ -41,11 +41,12 @@ foreach ( $list as $item ) :
 				<a href="<?php echo esc_attr( $item['term_link'] ); ?>" title="<?php echo esc_attr( $item['term_name'] ); ?>">
 				<img src="<?php echo esc_attr( $item['image_url'] ); ?>">
 				</a>
-				<h3>
-					<a href="<?php echo esc_attr( $item['term_link'] ); ?>" title="<?php echo esc_attr( $item['term_name'] ); ?>">
+				<div class="list-info">
+					<p>
 					<?php echo esc_html( $item['term_name'] ); ?>
-					</a>
-				</h3>
+					<?php echo esc_html( $item['count'] ); ?>
+					</p>
+				</div>
 			</li>
 
 	<?php

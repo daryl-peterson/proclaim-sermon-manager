@@ -18,6 +18,7 @@ use DRPPSM\Interfaces\Executable;
 use DRPPSM\Interfaces\Registrable;
 use WP_Error;
 use WP_Exception;
+use WP_Query;
 use WP_Term;
 use WP_Term_Query;
 
@@ -211,6 +212,8 @@ class SCSermonImages extends SCBase implements Executable, Registrable {
 				continue;
 			}
 
+			Logger::debug( array( 'ITEM' => $item ) );
+
 			$data[] = array(
 				'term_id'          => $item->term_id,
 				'term_name'        => $item->name,
@@ -220,8 +223,10 @@ class SCSermonImages extends SCBase implements Executable, Registrable {
 				'image_size'       => $args['size'],
 				'image_url'        => $url,
 				'columns'          => 'col' . $args['columns'],
+				'count'            => $item->count,
 
 			);
+
 			++$count;
 		}
 		if ( 0 === $count ) {
@@ -230,6 +235,7 @@ class SCSermonImages extends SCBase implements Executable, Registrable {
 		}
 
 		$this->data = $data;
+		Logger::debug( array( 'DATA' => $data ) );
 	}
 
 	/**
