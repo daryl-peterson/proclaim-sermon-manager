@@ -50,6 +50,22 @@
 		height: 160px;
 	}
 
+	li .list-info {
+		padding: 1em;
+		background-color: white;
+		border: 1px solid #e0e0e0;
+	}
+
+	li .list-info h5 {
+		font-size: 18px;
+		margin-bottom: 0;
+	}
+
+	li .list-info p.cound {
+		font-size: 14px;
+
+	}
+
 	@media(max-width: 800px) {
 
 		li.col1,

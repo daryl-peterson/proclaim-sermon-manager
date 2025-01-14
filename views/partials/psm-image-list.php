@@ -27,6 +27,7 @@ if ( ! key_exists( 'list', $args ) ) {
 	render_html( $failure );
 }
 $list = $args['list'];
+
 ?>
 
 
@@ -42,9 +43,10 @@ foreach ( $list as $item ) :
 				<img src="<?php echo esc_attr( $item['image_url'] ); ?>">
 				</a>
 				<div class="list-info">
-					<p>
-					<?php echo esc_html( $item['term_name'] ); ?>
-					<?php echo esc_html( $item['count'] ); ?>
+					<h5><?php echo esc_html( $item['term_name'] ); ?></h5>
+
+					<p class="count">
+						Sermons: <?php echo esc_html( $item['count'] ); ?>
 					</p>
 				</div>
 			</li>

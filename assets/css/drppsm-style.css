@@ -453,6 +453,18 @@
 #drppsm-image-list li.col4 img {
   height: 160px;
 }
+#drppsm-image-list li .list-info {
+  padding: 1em;
+  background-color: white;
+  border: 1px solid #e0e0e0;
+}
+#drppsm-image-list li .list-info h5 {
+  font-size: 18px;
+  margin-bottom: 0;
+}
+#drppsm-image-list li .list-info p.cound {
+  font-size: 14px;
+}
 @media (max-width: 800px) {
   #drppsm-image-list li.col1,
   #drppsm-image-list li.col2,
