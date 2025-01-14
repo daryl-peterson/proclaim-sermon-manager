@@ -188,19 +188,6 @@ class SCSermonImages extends SCBase implements Executable, Registrable {
 			return;
 		}
 
-		$trans = $this->get_transient_data( $list );
-		if ( $trans ) {
-			Logger::debug(
-				array(
-					'TRANS_KEY'  => $this->transient_key,
-					'TRANS DATA' => $trans,
-					'ARGS'       => $args,
-				)
-			);
-			$this->data = $trans;
-			return;
-		}
-
 		$data = array();
 		if ( ! is_array( $list ) ) {
 			$list = array( $list );
@@ -241,8 +228,7 @@ class SCSermonImages extends SCBase implements Executable, Registrable {
 			$this->data = null;
 			return;
 		}
-		$result = set_transient( $this->transient_key, $data, DAY_IN_SECONDS );
-		Logger::debug( array( 'SET TRANS' => $result ) );
+
 		$this->data = $data;
 	}
 
@@ -388,21 +374,5 @@ class SCSermonImages extends SCBase implements Executable, Registrable {
 		}
 		return absint($term_count);
 
-	}
-
-	/**
-	 * Get transient data.
-	 *
-	 * @param array $list Terms list.
-	 * @return void
-	 * @since 1.0.0
-	 *
-	 *
-	 */
-	private function get_transient_data(array $list){
-		// @todo Use this for caching later.
-		$hash      = md5( serialize( $list ) );
-		$this->transient_key = "drppsm_tmp_{$hash}";
-		get_transient( $this->transient_key );
 	}
 }

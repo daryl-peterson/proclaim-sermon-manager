@@ -343,22 +343,6 @@
     margin-top: 1em;
   }
 }
-ul#drppsm_images_grid {
-  display: grid;
-  grid-template-columns: 50% 50%;
-  grid-gap: 1rem;
-  padding: 0;
-}
-ul#drppsm_images_grid .drppsm_grid_image {
-  display: block;
-}
-ul#drppsm_images_grid .drppsm_grid_image img {
-  margin-bottom: 15px;
-}
-ul#drppsm_images_grid .drppsm_grid_title {
-  margin: 0;
-}
-
 .subscribe {
   text-align: center;
   margin: 0;
@@ -417,7 +401,6 @@ ul#drppsm_images_grid .drppsm_grid_title {
 #drppsm-sc-wrapper {
   padding: 0;
   margin: 0;
-  min-height: 70vh;
 }
 
 .drppsm-sermon-player {
@@ -433,12 +416,14 @@ ul#drppsm_images_grid .drppsm_grid_title {
   justify-content: space-between;
 }
 #drppsm-image-list ul {
-  padding: 0;
+  padding: 0 !important;
+  margin: 0;
   display: flex;
   flex-wrap: wrap;
+  justify-content: space-between;
 }
 #drppsm-image-list li {
-  padding: 1em;
+  padding: 1em 0em;
   list-style: none !important;
 }
 #drppsm-image-list li img {
@@ -451,19 +436,19 @@ ul#drppsm_images_grid .drppsm_grid_title {
   flex: 0 0 100%;
 }
 #drppsm-image-list li.col2 {
-  flex: 0 0 50%;
+  flex: 0 0 49%;
 }
 #drppsm-image-list li.col2 img {
   height: 315px;
 }
 #drppsm-image-list li.col3 {
-  flex: 0 0 33.3333%;
+  flex: 0 0 32%;
 }
 #drppsm-image-list li.col3 img {
   height: 210px;
 }
 #drppsm-image-list li.col4 {
-  flex: 0 0 25%;
+  flex: 0 0 24%;
 }
 #drppsm-image-list li.col4 img {
   height: 160px;
@@ -472,7 +457,8 @@ ul#drppsm_images_grid .drppsm_grid_title {
   #drppsm-image-list li.col1,
   #drppsm-image-list li.col2,
   #drppsm-image-list li.col3,
-  #drppsm-image-list li.col3 {
+  #drppsm-image-list li.col3,
+  #drppsm-image-list li.col4 {
     flex: 0 0 100%;
   }
   #drppsm-image-list li.col1 img,

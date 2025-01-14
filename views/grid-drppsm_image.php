@@ -1,6 +1,6 @@
 <?php
 /**
- * Series image grid
+ * Image grid.
  *
  * @package     DRPPSM
  * @author      Daryl Peterson <@gmail.com>
