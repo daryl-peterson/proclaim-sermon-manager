@@ -214,6 +214,7 @@ class SCSermonImages extends SCBase implements Executable, Registrable {
 				'image_url'        => $url,
 				'columns'          => 'col' . $args['columns'],
 				'count'            => $item->count,
+				'preacher_label'   => get_taxonomy_field( DRPPSM_TAX_PREACHER, 'label' ),
 
 			);
 
@@ -242,14 +243,20 @@ class SCSermonImages extends SCBase implements Executable, Registrable {
 
 		$transient = get_transient( $key );
 		if ( ! $transient ) {
+			$data['preacher_cnt']   = 1;
+			$data['preacher_names'] = '';
+			$data['dates']          = '';
 			return;
 		}
 
-		Logger::debug( $transient );
+		Logger::debug( array( 'TRANSIENT' => $transient ) );
 
 		if ( isset( $transient->preacher ) ) {
 			$data['preacher_cnt']   = $transient->preacher->cnt;
 			$data['preacher_names'] = implode( ', ', $transient->preacher->names );
+		}
+		if ( $data['preacher_cnt'] === 0 ) {
+			$data['preacher_cnt'] = 1;
 		}
 
 		if ( isset( $transient->dates ) ) {

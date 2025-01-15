@@ -28,6 +28,7 @@ if ( ! key_exists( 'list', $args ) ) {
 }
 $list = $args['list'];
 
+
 ?>
 
 
@@ -37,6 +38,7 @@ $list = $args['list'];
 
 <?php
 foreach ( $list as $item ) :
+
 	?>
 			<li class="<?php echo esc_attr( $item['columns'] ); ?>">
 				<a href="<?php echo esc_attr( $item['term_link'] ); ?>" title="<?php echo esc_attr( $item['term_name'] ); ?>">
@@ -45,8 +47,9 @@ foreach ( $list as $item ) :
 				<div class="list-info">
 					<h5><?php echo esc_html( $item['term_name'] ); ?></h5>
 
-					<p class="count">
-						Sermons: <?php echo esc_html( $item['count'] ); ?>
+					<p class="ext-data">
+						<?php echo esc_html( Settings::get( Settings::ARCHIVE_SLUG ) ); ?>  : <?php echo esc_html( $item['count'] ); ?><br>
+						<?php echo esc_html( $item['preacher_label'] ); ?> : <?php echo esc_html( $item['preacher_cnt'] ); ?>
 					</p>
 				</div>
 			</li>

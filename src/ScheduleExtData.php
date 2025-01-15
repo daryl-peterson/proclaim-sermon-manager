@@ -173,8 +173,6 @@ class ScheduleExtData implements Executable, Registrable {
 
 			$key = 'drppsm_series_info_' . $item->term_id;
 			set_transient( $key, $data, 8 * HOUR_IN_SECONDS );
-			Logger::debug( $data );
-
 		}
 	}
 
@@ -196,15 +194,9 @@ class ScheduleExtData implements Executable, Registrable {
 
 			if ( $preacher_terms ) {
 
-				Logger::debug(
-					array(
-						'OBJECT'          => $obj,
-						'OBJECT PREACHER' => $obj->preacher,
-						'PREACHERS'       => $preacher_terms,
-					)
-				);
 				$this->set_term_info( $obj->preacher, $preacher_terms );
-				$obj->preacher->cnt = count( $obj->preacher->names );
+				// $obj->preacher->cnt   = count( $obj->preacher->names );
+
 			}
 
 			$topics = get_the_terms( $post_item->ID, DRPPSM_TAX_TOPICS );
@@ -242,7 +234,7 @@ class ScheduleExtData implements Executable, Registrable {
 			}
 		}
 
-		Logger::debug( $object );
+		$object->cnt = count( $object->names );
 	}
 
 	private function get_topic_info() {
