@@ -11,6 +11,7 @@
 
 namespace DRPPSM;
 
+use DRPPSM\Constants\Meta;
 use DRPPSM\Interfaces\Executable;
 use DRPPSM\Interfaces\Registrable;
 
@@ -28,30 +29,10 @@ defined( 'ABSPATH' ) || exit;
 class ScheduleExtData implements Executable, Registrable {
 
 
-	/**
-	 * Callbable for deactivation event.
-	 *
-	 * @var array
-	 * @since 1.0.0
-	 */
-	private array $cb_deactivate;
 
-	/**
-	 * Schedule event.
-	 *
-	 * @var array
-	 * @since 1.0.0
-	 */
-	private array $cb_schedule;
+	private string $hook;
 
-
-	/**
-	 * Filter cron schedule.
-	 *
-	 * @var array
-	 * @since 1.0.0
-	 */
-	private array $filter_cron_schedule;
+	private array $hook_args;
 
 
 	/**
@@ -60,9 +41,8 @@ class ScheduleExtData implements Executable, Registrable {
 	 * @since 1.0.0
 	 */
 	protected function __construct() {
-		$this->cb_deactivate        = array( $this, 'deactivate' );
-		$this->cb_schedule          = array( $this, 'do_schedule' );
-		$this->filter_cron_schedule = array( $this, 'add_cron_schedule' );
+		$this->hook      = 'drppsm_scheduler';
+		$this->hook_args = array( $this, 'do_schedule' );
 	}
 
 	/**
@@ -86,13 +66,26 @@ class ScheduleExtData implements Executable, Registrable {
 	public function register(): ?bool {
 		$this->add_event();
 
-		if ( has_filter( 'cron_schedules', $this->filter_cron_schedule ) ) {
+		if ( ! has_filter( 'deactivate_' . FILE, array( $this, 'deactivate' ) ) ) {
 			return false;
 		}
 
-		add_filter( 'cron_schedules', $this->filter_cron_schedule );
-		register_deactivation_hook( FILE, $this->cb_deactivate );
+		register_deactivation_hook( FILE, array( $this, 'deactivate' ) );
+
 		return true;
+	}
+
+	/**
+	 * Add event.
+	 *
+	 * @return void
+	 * @since 1.0.0
+	 */
+	public function add_event(): void {
+
+		if ( ! wp_next_scheduled( $this->hook, $this->hook_args ) ) {
+			wp_schedule_event( strtotime( '3am tomorrow' ), 'daily', $this->hook, $this->hook_args );
+		}
 	}
 
 	/**
@@ -103,7 +96,7 @@ class ScheduleExtData implements Executable, Registrable {
 	 */
 	public function deactivate() {
 
-		wp_clear_scheduled_hook( $this->cb_schedule );
+		wp_clear_scheduled_hook( $this->hook, $this->hook_args );
 	}
 
 	/**
@@ -122,18 +115,7 @@ class ScheduleExtData implements Executable, Registrable {
 		return $schedules;
 	}
 
-	/**
-	 * Add event.
-	 *
-	 * @return void
-	 * @since 1.0.0
-	 */
-	private function add_event(): void {
-		if ( ! wp_next_scheduled( $this->cb_schedule ) ) {
-			Logger::debug( 'Scheduling event' );
-			wp_schedule_event( strtotime( '3am' ), 'daily_3am', $this->cb_schedule );
-		}
-	}
+
 
 	/**
 	 * Do schedule.
@@ -149,7 +131,66 @@ class ScheduleExtData implements Executable, Registrable {
 	}
 
 
-	private function set_series_info() {
+	/**
+	 * Set series info.
+	 *
+	 * @return void
+	 * @since 1.0.0
+	 */
+	public function set_series_info() {
+		$list = TaxQueries::get_terms_with_images( DRPPSM_TAX_SERIES, 'ASC', 'name' );
+
+		if ( ! $list ) {
+			return;
+		}
+
+		foreach ( $list as $item ) {
+			$posts = TaxQueries::get_term_posts( DRPPSM_TAX_SERIES, $item->term_id );
+
+			if ( ! $posts ) {
+				continue;
+			}
+
+			$this->get_series_preacher( $item, $posts );
+
+		}
+	}
+
+	private function get_series_preacher( mixed $list_item, array $posts ) {
+		$data  = array();
+		$count = 0;
+
+		$data['preachers']['names'] = array();
+
+		foreach ( $posts as $item ) {
+
+			$meta = get_post_meta( $item->ID );
+
+			$terms_preachers = get_the_terms( $item->ID, DRPPSM_TAX_PREACHER );
+
+			if ( ! $terms_preachers ) {
+				continue;
+			}
+
+			foreach ( $terms_preachers as $preacher ) {
+				if ( ! in_array( $preacher->name, $data['preachers']['names'] ) ) {
+					$data['preachers']['names'][] = $preacher->name;
+					$data['preachers']['terms'][] = $preacher;
+				}
+			}
+
+			Logger::debug(
+				array(
+					'POST ID'   => $item->ID,
+					// 'TERMS'     => $terms_preachers,
+					'LIST ITEM' => $list_item,
+					'META'      => $meta,
+					'DATA'      => $data,
+
+				)
+			);
+
+		}
 	}
 
 	private function set_topics_info() {

@@ -191,7 +191,7 @@ class SermonDetail implements Initable, Registrable {
 				// translators: %1 Date preached.
 				'desc'         => '<br>' . wp_sprintf( esc_html__( 'format: %s', 'drppsm' ), $format ),
 				'id'           => Meta::DATE,
-				'type'         => 'text_datetime_timestamp',
+				'type'         => 'text_date',
 				'autocomplete' => 'off',
 			)
 		);

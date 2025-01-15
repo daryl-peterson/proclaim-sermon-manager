@@ -34,7 +34,7 @@ class SCSermonLatest extends SCBase implements Executable, Registrable {
 	 * @var string
 	 * @since 1.0.0
 	 */
-	private string $sc_sermon_latest;
+	private string $sc;
 
 	/**
 	 * Initialize object.
@@ -44,7 +44,7 @@ class SCSermonLatest extends SCBase implements Executable, Registrable {
 	 */
 	protected function __construct() {
 		parent::__construct();
-		$this->sc_sermon_latest = DRPPSM_SC_SERMON_LATEST;
+		$this->sc = DRPPSM_SC_SERMON_LATEST;
 	}
 
 	/**
@@ -66,11 +66,11 @@ class SCSermonLatest extends SCBase implements Executable, Registrable {
 	 * @since 1.0.0
 	 */
 	public function register(): ?bool {
-		if ( shortcode_exists( $this->sc_sermon_latest ) ) {
+		if ( shortcode_exists( $this->sc ) ) {
 			return false;
 		}
 
-		add_shortcode( $this->sc_sermon_latest, array( $this, 'show_sermon_latest' ) );
+		add_shortcode( $this->sc, array( $this, 'show_sermon_latest' ) );
 		return true;
 	}
 
@@ -121,7 +121,7 @@ class SCSermonLatest extends SCBase implements Executable, Registrable {
 		);
 
 		// Merge default and user options.
-		$args = shortcode_atts( $args, $atts, $this->sc_sermon_latest );
+		$args = shortcode_atts( $args, $atts, $this->sc );
 
 		// Make sure orderby is correct.
 		if ( ! $this->is_valid_orderby( $args ) ) {

@@ -94,7 +94,6 @@ class Plugin {
 			PostTypeSetup::exec()->add();
 			add_option( 'activated', time() );
 			flush_rewrite_rules();
-			// @codeCoverageIgnoreStart
 
 		} catch ( \Throwable $th ) {
 			FatalError::set( $th );

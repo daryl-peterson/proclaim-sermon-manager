@@ -13,14 +13,9 @@ namespace DRPPSM;
 
 defined( 'ABSPATH' ) || exit;
 
-use DRPPSM\Constants\Meta;
 use DRPPSM\Interfaces\Executable;
 use DRPPSM\Interfaces\Registrable;
-use WP_Error;
-use WP_Exception;
-use WP_Query;
 use WP_Term;
-use WP_Term_Query;
 
 /**
  * Shortcodes for sermon images.
@@ -38,7 +33,7 @@ class SCSermonImages extends SCBase implements Executable, Registrable {
 	 *
 	 * @var string
 	 */
-	private string $sc_images;
+	private string $sc;
 
 	/**
 	 * Used in paginated queries, per_page
@@ -73,14 +68,6 @@ class SCSermonImages extends SCBase implements Executable, Registrable {
 	private null|array $data;
 
 	/**
-	 * Transient key for term list.
-	 *
-	 * @var string
-	 * @since 1.0.0
-	 */
-	private string $transient_key;
-
-	/**
 	 * Initialize object properties.
 	 *
 	 * @return void
@@ -88,7 +75,7 @@ class SCSermonImages extends SCBase implements Executable, Registrable {
 	 */
 	protected function __construct() {
 		parent::__construct();
-		$this->sc_images = DRPPSM_SC_SERMON_IMAGES;
+		$this->sc = DRPPSM_SC_SERMON_IMAGES;
 	}
 
 	/**
@@ -110,10 +97,10 @@ class SCSermonImages extends SCBase implements Executable, Registrable {
 	 * @since 1.0.0
 	 */
 	public function register(): ?bool {
-		if ( shortcode_exists( $this->sc_images ) ) {
+		if ( shortcode_exists( $this->sc ) ) {
 			return false;
 		}
-		add_shortcode( $this->sc_images, array( $this, 'show_images' ) );
+		add_shortcode( $this->sc, array( $this, 'show_images' ) );
 		return true;
 	}
 
@@ -136,7 +123,7 @@ class SCSermonImages extends SCBase implements Executable, Registrable {
 
 		$atts = $this->fix_atts( $atts );
 		$args = $this->get_default_args();
-		$args = shortcode_atts( $args, $atts, $this->sc_images );
+		$args = shortcode_atts( $args, $atts, $this->sc );
 
 		$tax = $this->get_taxonomy_name( $args['display'] );
 		if ( ! $tax ) {
@@ -183,19 +170,21 @@ class SCSermonImages extends SCBase implements Executable, Registrable {
 			return;
 		}
 
-		$query_args = $this->get_query_args( $args );
-		$list       = get_terms( $query_args );
-		if ( $list instanceof WP_Error ) {
+		$list = TaxQueries::get_terms_with_images(
+			$args['display'],
+			$args['order'],
+			$args['orderby'],
+			$this->number,
+			$this->offset
+		);
+
+		if ( ! $list ) {
 			return;
 		}
 
-		$data = array();
-		if ( ! is_array( $list ) ) {
-			$list = array( $list );
-		}
-
+		$data     = array();
 		$count    = 0;
-		$meta_key = $this->get_meta_key( $args );
+		$meta_key = $args['display'] . '_image_id';
 
 		/**
 		 * @var WP_Term $item
@@ -235,6 +224,8 @@ class SCSermonImages extends SCBase implements Executable, Registrable {
 		}
 
 		$this->data = $data;
+		$obj        = ScheduleExtData::exec();
+		$obj->do_schedule();
 		Logger::debug( array( 'DATA' => $data ) );
 	}
 
@@ -248,7 +239,7 @@ class SCSermonImages extends SCBase implements Executable, Registrable {
 	private function set_pagination( array $args ): void {
 		$this->paginate = null;
 
-		$term_count = $this->get_term_count( $args );
+		$term_count = TaxQueries::get_term_count( $args['display'] );
 		if ( ! $term_count ) {
 			return;
 		}
@@ -292,93 +283,5 @@ class SCSermonImages extends SCBase implements Executable, Registrable {
 			// Used in query as number
 			'per_page'         => 12,
 		);
-	}
-
-	/**
-	 * Get query args.
-	 *
-	 * @param array $args Arguments array.
-	 * @return array
-	 * @since 1.0.0
-	 */
-	private function get_query_args( array $args ): array {
-
-		$query_args = array(
-			'taxonomy' => $args['display'],
-			'order'    => $args['order'],
-			'orderby'  => $args['orderby'],
-			'number'   => $this->number,
-			'offset'   => $this->offset,
-		);
-
-		// @codingStandardsIgnoreStart
-		$query_args['meta_query'][] = $this->get_meta_query($args);
-		// @codingStandardsIgnoreEnd
-
-		return $query_args;
-	}
-
-	/**
-	 * Get the meta key needed.
-	 *
-	 * @param array $args Arguments array.
-	 * @return null|string
-	 * @since 1.0.0
-	 */
-	private function get_meta_key( array $args ): ?string {
-		$meta_key = null;
-		switch ( $args['display'] ) {
-			case DRPPSM_TAX_SERIES:
-				$meta_key = Meta::SERIES_IMAGE_ID;
-				break;
-			case DRPPSM_TAX_PREACHER:
-				$meta_key = Meta::PREACHER_IMAGE_ID;
-				break;
-			default:
-				break;
-		}
-		return $meta_key;
-	}
-
-	/**
-	 * Get meta query for taxonomy images.
-	 *
-	 * @param array $args Shortcode arguments.
-	 * @return array
-	 * @since 1.0.0
-	 */
-	private function get_meta_query( array $args ): array {
-		$meta_key = $this->get_meta_key( $args );
-		// @codingStandardsIgnoreStart
-		return array(
-			'meta_key'     => $meta_key,
-			'meta_value'   => ' ',
-			'meta_compare' => '!=',
-		);
-		// @codingStandardsIgnoreEnd
-	}
-
-	/**
-	 * Get term count for taxonomy.
-	 *
-	 * @param mixed $args Shortcode arguments.
-	 * @return int
-	 * @since 1.0.0
-	 */
-	private function get_term_count( $args ): int {
-		$query_args = array(
-			'taxonomy' => $args['display'],
-			'fields'   => 'count',
-		);
-
-		// @codingStandardsIgnoreStart
-		$query_args['meta_query'][] = $this->get_meta_query($args);
-
-		$term_count = get_terms( $query_args );
-		if ($term_count instanceof WP_Error){
-			return 0;
-		}
-		return absint($term_count);
-
 	}
 }
