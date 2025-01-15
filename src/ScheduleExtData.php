@@ -14,6 +14,8 @@ namespace DRPPSM;
 use DRPPSM\Constants\Meta;
 use DRPPSM\Interfaces\Executable;
 use DRPPSM\Interfaces\Registrable;
+use stdClass;
+use WP_Post;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -124,10 +126,8 @@ class ScheduleExtData implements Executable, Registrable {
 	 * @since 1.0.0
 	 */
 	public function do_schedule(): void {
-		$this->set_series_info();
-		$this->set_topics_info();
-		$this->set_preacher_info();
-		$this->set_sermon_info();
+
+		$this->set_series_post_info();
 	}
 
 
@@ -137,68 +137,114 @@ class ScheduleExtData implements Executable, Registrable {
 	 * @return void
 	 * @since 1.0.0
 	 */
-	public function set_series_info() {
-		$list = TaxQueries::get_terms_with_images( DRPPSM_TAX_SERIES, 'ASC', 'name' );
+	public function set_series_post_info(): void {
+
+		$list = TaxQueries::get_terms_with_images(
+			array(
+				'taxonomy' => DRPPSM_TAX_SERIES,
+				'order'    => 'ASC',
+				'orderby'  => 'name',
+			)
+		);
 
 		if ( ! $list ) {
 			return;
 		}
 
+		/**
+		 * @var \WP_Term $item
+		 */
 		foreach ( $list as $item ) {
-			$posts = TaxQueries::get_term_posts( DRPPSM_TAX_SERIES, $item->term_id );
 
-			if ( ! $posts ) {
-				continue;
-			}
+			$data = new \stdClass();
 
-			$this->get_series_preacher( $item, $posts );
-
-		}
-	}
-
-	private function get_series_preacher( mixed $list_item, array $posts ) {
-		$data  = array();
-		$count = 0;
-
-		$data['preachers']['names'] = array();
-
-		foreach ( $posts as $item ) {
-
-			$meta = get_post_meta( $item->ID );
-
-			$terms_preachers = get_the_terms( $item->ID, DRPPSM_TAX_PREACHER );
-
-			if ( ! $terms_preachers ) {
-				continue;
-			}
-
-			foreach ( $terms_preachers as $preacher ) {
-				if ( ! in_array( $preacher->name, $data['preachers']['names'] ) ) {
-					$data['preachers']['names'][] = $preacher->name;
-					$data['preachers']['terms'][] = $preacher;
-				}
-			}
-
-			Logger::debug(
-				array(
-					'POST ID'   => $item->ID,
-					// 'TERMS'     => $terms_preachers,
-					'LIST ITEM' => $list_item,
-					'META'      => $meta,
-					'DATA'      => $data,
-
-				)
+			$post_args = array(
+				'post_type' => DRPPSM_PT_SERMON,
+				'taxonomy'  => DRPPSM_TAX_SERIES,
+				'terms'     => $item->term_id,
 			);
+			$post_list = TaxQueries::get_term_posts( $post_args );
+
+			if ( ! $post_list ) {
+				continue;
+			}
+
+			$data = $this->get_series_info( $item->term_id, $post_list );
+
+			$key = 'drppsm_series_info_' . $item->term_id;
+			set_transient( $key, $data, 8 * HOUR_IN_SECONDS );
+			Logger::debug( $data );
 
 		}
 	}
 
-	private function set_topics_info() {
+	private function get_series_info( int $series_id, array $post_list ): stdClass {
+		$obj           = new \stdClass();
+		$obj->preacher = $this->init_object();
+		$obj->topics   = $this->init_object();
+		$obj->dates    = array();
+
+		/**
+		 * @var \WP_Post $post_item Post for series.
+		 */
+		foreach ( $post_list as $post_item ) {
+
+			$date         = get_post_meta( $post_item->ID, Meta::DATE, true );
+			$obj->dates[] = $date;
+
+			$preacher_terms = get_the_terms( $post_item->ID, DRPPSM_TAX_PREACHER );
+
+			if ( $preacher_terms ) {
+
+				Logger::debug(
+					array(
+						'OBJECT'          => $obj,
+						'OBJECT PREACHER' => $obj->preacher,
+						'PREACHERS'       => $preacher_terms,
+					)
+				);
+				$this->set_term_info( $obj->preacher, $preacher_terms );
+				$obj->preacher->cnt = count( $obj->preacher->names );
+			}
+
+			$topics = get_the_terms( $post_item->ID, DRPPSM_TAX_TOPICS );
+
+			if ( $topics ) {
+				$this->set_term_info( $obj->topics, $topics );
+				$obj->topics->cnt = count( $obj->topics->names );
+			} else {
+				$obj->topics->cnt = 0;
+			}
+		}
+
+		return $obj;
 	}
 
-	private function set_preacher_info() {
+
+	private function init_object() {
+		$obj        = new \stdClass();
+		$obj->names = array();
+		$obj->terms = array();
+		$obj->cnt   = 0;
+		return $obj;
 	}
 
-	private function set_sermon_info() {
+
+	private function set_term_info( stdClass &$object, array $term_list ) {
+
+		/**
+		 * @var \WP_Term $item
+		 */
+		foreach ( $term_list as $item ) {
+			if ( ! in_array( $item->name, $object->names ) ) {
+				$object->names[] = $item->name;
+				$object->terms[] = $item;
+			}
+		}
+
+		Logger::debug( $object );
+	}
+
+	private function get_topic_info() {
 	}
 }

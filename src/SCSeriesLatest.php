@@ -7,6 +7,8 @@
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
  * @since       1.0.0
+ *
+ * @todo Add layout options.
  */
 
 namespace DRPPSM;
@@ -45,7 +47,7 @@ class SCSeriesLatest extends SCBase implements Executable, Registrable {
 	 * @var string
 	 * @since 1.0.0
 	 */
-	private string $sc_series_latest;
+	private string $sc;
 
 	/**
 	 * Initialize object.
@@ -56,8 +58,8 @@ class SCSeriesLatest extends SCBase implements Executable, Registrable {
 	protected function __construct() {
 		parent::__construct();
 
-		$this->sc_series_latest = DRPPSM_SC_SERIES_LATEST;
-		$this->tax_series       = DRPPSM_TAX_SERIES;
+		$this->sc         = DRPPSM_SC_SERIES_LATEST;
+		$this->tax_series = DRPPSM_TAX_SERIES;
 	}
 
 	/**
@@ -79,10 +81,10 @@ class SCSeriesLatest extends SCBase implements Executable, Registrable {
 	 * @since 1.0.0
 	 */
 	public function register(): ?bool {
-		if ( shortcode_exists( $this->sc_series_latest ) ) {
+		if ( shortcode_exists( $this->sc ) ) {
 			return false;
 		}
-		add_shortcode( $this->sc_series_latest, array( $this, 'show_series_latest' ) );
+		add_shortcode( $this->sc, array( $this, 'show_series_latest' ) );
 		return true;
 	}
 
@@ -124,7 +126,7 @@ class SCSeriesLatest extends SCBase implements Executable, Registrable {
 		$args = shortcode_atts( $args, $atts, 'latest_series' );
 
 		// Get latest series.
-		$latest_series = $this->get_series_latest_with_image( 0, $args['service_type'] );
+		$latest_series = $this->get_series_latest_with_image( $args );
 
 		// If for some reason we couldn't get latest series.
 		if ( null === $latest_series ) {
@@ -185,56 +187,72 @@ class SCSeriesLatest extends SCBase implements Executable, Registrable {
 	 * @return WP_Term|null|bool Term if found, null if there are no terms, false if there is no term with image.
 	 * @since 1.0.0
 	 */
-	private function get_series_latest_with_image(): WP_Term|null|bool {
+	private function get_series_latest_with_image( array $args ): WP_Term|null|bool {
 
 		// Get Order from settings.
 		$default_orderby = Settings::get( Settings::ARCHIVE_ORDER_BY );
 		$default_order   = Settings::get( Settings::ARCHIVE_ORDER );
 
-		if ( empty( $default_order ) ) {
-			$default_order = '';
+		$series_args = array(
+			'taxonomy'   => DRPPSM_TAX_SERIES,
+			'hide_empty' => true,
+			'fields'     => 'ids',
+
+		);
+
+		$series = TaxQueries::get_terms_with_images( $series_args );
+		if ( ! $series ) {
+			return null;
 		}
 
-		$query_args = array(
-			'taxonomy'   => $this->tax_series,
-			'hide_empty' => false,
-			'order'      => strtoupper( $default_order ),
+		$post_args = array(
+			'post_type' => DRPPSM_PT_SERMON,
+			'tax_query' => array(
+				array(
+					'taxonomy' => DRPPSM_TAX_SERIES,
+					'field'    => 'id',
+					'terms'    => array_values( $series ),
+				),
+			),
 		);
 
 		switch ( $default_orderby ) {
 			case 'date_preached':
-				// @codingStandardsIgnoreStart
-				$query_args['meta_query'] = array(
+				$post_args['meta_query'] = array(
 					'orderby'      => 'meta_value_num',
 					'meta_key'     => Meta::DATE,
 					'meta_value'   => time(),
 					'meta_compare' => '<=',
 				);
-				// @codingStandardsIgnoreEnd
 				break;
 			default:
-				$query_args += array(
-					'orderby' => $default_orderby,
-				);
+				$post_args['orderby'] = $default_orderby;
+				$post_args['order']   = $default_order;
+				break;
+		}
+		$key = 'drppsm_series_latest';
+
+		$transient = get_transient( $key );
+		if ( $transient ) {
+			return $transient;
 		}
 
-		try {
-			$series = get_terms( $query_args );
-			if ( $series instanceof WP_Error ) {
-				return null;
+		$list = get_posts( $post_args );
+
+		foreach ( $list as $item ) {
+			$series = get_the_terms( $item->ID, DRPPSM_TAX_SERIES );
+			if ( ! isset( $series[0] ) ) {
+				continue;
 			}
-		} catch ( \Throwable | WP_Exception $th ) {
-			return null;
-		}
 
-		// Fallback to next one until we find the one that has an image.
-		foreach ( $series as $item ) {
-			if ( $this->get_series_latest_image_id( $item ) ) {
-				return $item;
+			$series = $series[0];
+
+			if ( $this->get_series_latest_image_id( $series->term_id ) ) {
+				set_transient( $key, $series, 8 * HOUR_IN_SECONDS );
+				return $series;
 			}
 		}
-
-		return is_array( $series ) && count( $series ) > 0 ? false : null;
+		return null;
 	}
 
 	/**

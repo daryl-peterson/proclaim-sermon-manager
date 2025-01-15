@@ -15,6 +15,7 @@ defined( 'ABSPATH' ) || exit;
 
 use DRPPSM\Interfaces\Executable;
 use DRPPSM\Interfaces\Registrable;
+use WP_Exception;
 use WP_Term;
 
 /**
@@ -171,11 +172,13 @@ class SCSermonImages extends SCBase implements Executable, Registrable {
 		}
 
 		$list = TaxQueries::get_terms_with_images(
-			$args['display'],
-			$args['order'],
-			$args['orderby'],
-			$this->number,
-			$this->offset
+			array(
+				'taxonomy' => $args['display'],
+				'order'    => $args['order'],
+				'orderby'  => $args['orderby'],
+				'number'   => $this->number,
+				'offset'   => $this->offset,
+			)
 		);
 
 		if ( ! $list ) {
@@ -201,9 +204,7 @@ class SCSermonImages extends SCBase implements Executable, Registrable {
 				continue;
 			}
 
-			Logger::debug( array( 'ITEM' => $item ) );
-
-			$data[] = array(
+			$data_temp = array(
 				'term_id'          => $item->term_id,
 				'term_name'        => $item->name,
 				'term_tax'         => $item->taxonomy,
@@ -216,17 +217,74 @@ class SCSermonImages extends SCBase implements Executable, Registrable {
 
 			);
 
+			$this->set_ext_data( $item->term_id, $data_temp );
+			$data[] = $data_temp;
+
 			++$count;
 		}
 		if ( 0 === $count ) {
 			$this->data = null;
 			return;
 		}
-
+		Logger::debug( $data );
 		$this->data = $data;
-		$obj        = ScheduleExtData::exec();
-		$obj->do_schedule();
-		Logger::debug( array( 'DATA' => $data ) );
+	}
+
+	/**
+	 *
+	 * @param int   $term_id
+	 * @param array &$data
+	 * @return void
+	 * @since 1.0.0
+	 */
+	private function set_ext_data( int $term_id, array &$data ) {
+		$key = 'drppsm_series_info_' . $term_id;
+
+		$transient = get_transient( $key );
+		if ( ! $transient ) {
+			return;
+		}
+
+		Logger::debug( $transient );
+
+		if ( isset( $transient->preacher ) ) {
+			$data['preacher_cnt']   = $transient->preacher->cnt;
+			$data['preacher_names'] = implode( ', ', $transient->preacher->names );
+		}
+
+		if ( isset( $transient->dates ) ) {
+			$dates = $transient->dates;
+
+			if ( is_array( $dates ) && 0 !== count( $dates ) ) {
+				$format = 'j F Y';
+				asort( $dates );
+
+				$cnt = count( $dates );
+
+				Logger::debug( array( 'DATES' => $dates ) );
+				$date_last = '';
+
+				if ( 1 === $cnt ) {
+					$date_first = wp_date( $format, $dates[0] );
+					if ( ! $date_first ) {
+						$date_first = '';
+					}
+				} elseif ( $cnt > 1 ) {
+					$date_first = wp_date( $format, $dates[0] );
+
+					$date_last = wp_date( $format, $dates[ $cnt - 1 ] );
+					if ( ! $date_last ) {
+						$date_last = '';
+					} else {
+						$date_last = ' - ' . $date_last;
+					}
+
+					$data['dates'] = $date_first . $date_last;
+				}
+				$data_temp['dates'] = $date_first . ' - ' . $date_last;
+
+			}
+		}
 	}
 
 	/**
@@ -239,7 +297,7 @@ class SCSermonImages extends SCBase implements Executable, Registrable {
 	private function set_pagination( array $args ): void {
 		$this->paginate = null;
 
-		$term_count = TaxQueries::get_term_count( $args['display'] );
+		$term_count = TaxQueries::get_term_count( $args['display'], true );
 		if ( ! $term_count ) {
 			return;
 		}
