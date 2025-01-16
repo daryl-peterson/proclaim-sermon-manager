@@ -30,7 +30,6 @@ class Rewrite {
 	const TRANS_NAME    = 'drppsm_rewrite_conflicts';
 	const TRANS_TIMEOUT = DAY_IN_SECONDS;
 
-
 	/**
 	 * Initialize object and register hooks.
 	 *
