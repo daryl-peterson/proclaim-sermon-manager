@@ -27,6 +27,7 @@ use WP_Post;
  */
 class TaxonomyImageAttach implements Executable, Registrable {
 
+
 	/**
 	 * Post type.
 	 *
