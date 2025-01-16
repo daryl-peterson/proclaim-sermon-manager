@@ -63,6 +63,58 @@ function get_taxonomy_field( $taxonomy, $field_name ): ?string {
 }
 
 /**
+ * Get post type, taxonomy definition.
+ *
+ * @param string $item_name Name of the post type, taxonomy.
+ * @return mixed Definition array on success.
+ * @since 1.0.0
+ */
+function get_type_def( string $item_name ): mixed {
+	$trans_key = 'drppsm_defs';
+	$trans     = get_transient( $trans_key );
+
+	if ( ! $trans ) {
+		return $trans;
+	}
+
+	if ( ! key_exists( $item_name, $trans ) ) {
+		return null;
+	}
+	return $trans[ $item_name ];
+}
+
+/**
+ * Set post type, taxonomy def.
+ *
+ * @param string $item_name Name of the post type, taxonomy.
+ * @param mixed  $item_value Definition array.
+ * @return void
+ * @since 1.0.0
+ */
+function set_type_def( string $item_name, mixed $item_value ): void {
+	$trans_key = 'drppsm_defs';
+	$trans     = get_transient( $trans_key );
+	if ( ! is_array( $trans ) ) {
+		$trans = array();
+	}
+	$trans[ $item_name ] = $item_value;
+	set_transient( $trans_key, $trans );
+	set_transient( $trans_key . '_exp', true, WEEK_IN_SECONDS );
+}
+
+function expire_type_def( int $expiration, mixed $value, string $transient ) {
+	Logger::debug(
+		array(
+			'EXPIRATION' => $expiration,
+			'VALUE'      => $value,
+			'TRANSIENT'  => $transient,
+		)
+	);
+	return $expiration;
+}
+add_filter( 'expiration_of_transient_drppsm_defs_exp', __NAMESPACE__ . "\\expire_type_def", 10, 3 );
+
+/**
  * Removes all sorts of quotes from a string.
  *
  * @see   http://unicode.org/cldr/utility/confusables.jsp?a=%22&r=None

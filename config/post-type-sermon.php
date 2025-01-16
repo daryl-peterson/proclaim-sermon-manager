@@ -15,8 +15,8 @@ defined( 'ABSPATH' ) || exit;
 
 use DRPPSM\Constants\Caps;
 
-$trans_key = 'drppsm_sermon_post_def';
-$trans     = get_transient( $trans_key );
+$trans_key = DRPPSM_PT_SERMON;
+$trans     = get_type_def( $trans_key );
 if ( $trans ) {
 	return $trans;
 }
@@ -107,5 +107,5 @@ $result = array(
 	),
 );
 
-set_transient( $trans_key, $result, WEEK_IN_SECONDS );
+set_type_def( $trans_key, $result );
 return $result;

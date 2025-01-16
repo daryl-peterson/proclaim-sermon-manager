@@ -13,8 +13,8 @@ namespace DRPPSM;
 
 defined( 'ABSPATH' ) || exit;
 
-$trans_key = 'drppsm_tax_series_def';
-$trans     = get_transient( $trans_key );
+$trans_key = DRPPSM_TAX_SERIES;
+$trans     = get_type_def( $trans_key );
 if ( $trans ) {
 	return $trans;
 }
@@ -49,5 +49,5 @@ $result = array(
 	'capabilities'      => DRPPSM_TAX_CAPS,
 );
 
-set_transient( $trans_key, $result, WEEK_IN_SECONDS );
+set_type_def( $trans_key, $result );
 return $result;
