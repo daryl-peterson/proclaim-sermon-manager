@@ -15,7 +15,6 @@ defined( 'ABSPATH' ) || exit;
 
 use DRPPSM\Constants\Actions;
 use DRPPSM\Interfaces\Executable;
-use DRPPSM\Interfaces\OptionsInt;
 use DRPPSM\Interfaces\Registrable;
 use DRPPSM\SermonDetail;
 use DRPPSM\SermonFiles;

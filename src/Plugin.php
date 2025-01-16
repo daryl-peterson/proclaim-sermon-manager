@@ -27,9 +27,18 @@ use DRPPSM\Constants\Actions;
 class Plugin {
 
 	/**
+	 * Option key.
+	 *
+	 * @var string
+	 * @since 1.0.0
+	 */
+	private string $option_key;
+
+	/**
 	 * Option key for activation storing time.
 	 *
 	 * @var string
+	 * @since 1.0.0
 	 */
 	private string $act_key;
 
@@ -39,7 +48,8 @@ class Plugin {
 	 * @since 1.0.0
 	 */
 	protected function __construct() {
-		$this->act_key = 'drppsm_activated';
+		$this->option_key = DRPPSM_PLUGIN;
+		$this->act_key    = 'activated';
 	}
 
 	/**
@@ -92,7 +102,10 @@ class Plugin {
 		try {
 
 			PostTypeSetup::exec()->add();
-			update_option( $this->act_key, time() );
+
+			$options                   = get_option( $this->option_key, array() );
+			$options[ $this->act_key ] = time();
+			update_option( $this->option_key, $options );
 			flush_rewrite_rules();
 
 		} catch ( \Throwable $th ) {
@@ -110,7 +123,15 @@ class Plugin {
 	 * @since 1.0.0
 	 */
 	public function deactivate(): bool {
-		delete_option( $this->act_key );
+
+		$options = get_option( $this->option_key, array() );
+		if ( ! is_array( $options ) ) {
+			$options = array();
+		}
+		if ( key_exists( $this->act_key, $options ) ) {
+			unset( $options[ $this->act_key ] );
+		}
+		update_option( $this->option_key, $options );
 		do_action( Actions::REWRITE_FLUSH );
 		return true;
 	}

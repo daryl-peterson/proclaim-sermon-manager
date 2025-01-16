@@ -2,7 +2,7 @@
 /**
  * Database updates.
  *
- * @package     Proclaim Sermon Manager
+ * @package     DRPPSM\DbUpdates
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
@@ -12,20 +12,12 @@
 namespace DRPPSM\DB;
 
 use DRPPSM\Interfaces\DbInt;
-use DRPPSM\Interfaces\OptionsInt;
 use DRPPSM\Logger;
-
-/**
- * Get options interface.
- *
- * @package     Proclaim Sermon Manager
- */
-use function DRPPSM\options;
 
 /**
  * Database updates.
  *
- * @package     Proclaim Sermon Manager
+ * @package     DRPPSM\DbUpdates
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
@@ -34,11 +26,12 @@ use function DRPPSM\options;
 class DbUpdates implements DbInt {
 
 	/**
-	 * Options interface.
+	 * Options key.
 	 *
-	 * @var OptionsInt
+	 * @var string
+	 * @since 1.0.0
 	 */
-	private OptionsInt $options;
+	private string $option_key;
 
 	/**
 	 * Initialize object properties.
@@ -46,7 +39,7 @@ class DbUpdates implements DbInt {
 	 * @since 1.0.0
 	 */
 	protected function __construct() {
-		$this->options = options();
+		$this->option_key = DRPPSM_PLUGIN;
 	}
 
 	/**
@@ -94,7 +87,13 @@ class DbUpdates implements DbInt {
 		}
 
 		if ( $result ) {
-			$this->options->set( 'plugin_ver', DRPPSM_VER );
+			$options = get_option( $this->option_key, array() );
+			if ( ! is_array( $options ) ) {
+				$options = array();
+			}
+			$options['plugin_ver'] = DRPPSM_VER;
+			update_option( $this->option_key, $options );
+
 		}
 
 		return $result;
@@ -107,7 +106,13 @@ class DbUpdates implements DbInt {
 	 * @since 1.0.0
 	 */
 	public function version_check(): void {
-		if ( DRPPSM_VER !== $this->options->get( 'plugin_ver' ) ) {
+
+		$options    = get_option( $this->option_key, array() );
+		$plugin_ver = null;
+		if ( is_array( $options ) && key_exists( 'plugin_ver', $options ) ) {
+			$plugin_ver = $options['plugin_ver'];
+		}
+		if ( DRPPSM_VER !== $plugin_ver ) {
 			$this->run();
 		}
 	}

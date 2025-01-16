@@ -14,7 +14,6 @@ use DRPPSM\App;
 use DRPPSM\BibleLoader;
 use DRPPSM\Exceptions\NotfoundException;
 use DRPPSM\Interfaces\NoticeInt;
-use DRPPSM\Interfaces\OptionsInt;
 use DRPPSM\Plugin;
 use stdClass;
 
@@ -22,7 +21,6 @@ use function DRPPSM\allowed_html;
 use function DRPPSM\app;
 use function DRPPSM\app_get;
 use function DRPPSM\notice;
-use function DRPPSM\options;
 
 /**
  * App test.
@@ -66,11 +64,6 @@ class AppTest extends BaseTest {
 	public function test_app_get() {
 		$this->expectException( NotfoundException::class );
 		app_get( 'blah' );
-	}
-
-	public function test_get_options_int() {
-		$result = options();
-		$this->assertInstanceOf( OptionsInt::class, $result );
 	}
 
 	public function test_get_notice_int() {

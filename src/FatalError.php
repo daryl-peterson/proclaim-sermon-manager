@@ -11,8 +11,6 @@
 
 namespace DRPPSM;
 
-use WP_Exception;
-
 defined( 'ABSPATH' ) || exit;
 
 /**
@@ -27,12 +25,18 @@ defined( 'ABSPATH' ) || exit;
 class FatalError {
 
 	/**
-	 * Options key.
+	 * Option key.
 	 *
 	 * @var string
 	 * @since 1.0.0
 	 */
-	private static $key = 'drppsm_fatal_error';
+	private static string $option_key = DRPPSM_PLUGIN;
+
+	/**
+	 *
+	 * @var string
+	 */
+	private static string $option_name = 'fatal_error';
 
 	/**
 	 * Check if a fatal error exist.
@@ -41,7 +45,12 @@ class FatalError {
 	 * @since 1.0.0
 	 */
 	public static function exist(): bool {
-		return (bool) \get_option( self::$key, false );
+
+		$options = get_option( self::$option_key, array() );
+		if ( ! is_array( $options ) || ! key_exists( self::$option_name, $options ) ) {
+			return false;
+		}
+		return true;
 	}
 
 	/**
@@ -52,8 +61,12 @@ class FatalError {
 	 */
 	public static function check(): void {
 
-		$error = \get_option( self::$key, false );
+		$options = get_option( self::$option_key, array() );
+		if ( ! is_array( $options ) || ! key_exists( self::$option_name, $options ) ) {
+			return;
+		}
 
+		$error = $options[ self::$option_name ];
 		if ( ! $error ) {
 			return;
 		}
@@ -73,7 +86,8 @@ class FatalError {
 			$text
 		EOT;
 
-		\delete_option( self::$key );
+		unset( $options[ self::$option_name ] );
+		update_option( self::$option_key, $options );
 		Deactivator::run();
 
 		// @codeCoverageIgnoreStart
@@ -92,8 +106,12 @@ class FatalError {
 	 */
 	public static function set( \Throwable $th ): void {
 
-		delete_option( self::$key );
-		add_option( self::$key, $th->getMessage() );
+		$options = get_option( self::$option_key, array() );
+		if ( ! is_array( $options ) || ! key_exists( self::$option_name, $options ) ) {
+			$options = array();
+		}
+		$options[ self::$option_name ] = $th->getMessage();
+		update_option( self::$option_key, $options );
 
 		Logger::error(
 			array(

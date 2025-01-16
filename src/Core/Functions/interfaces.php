@@ -14,7 +14,6 @@ namespace DRPPSM;
 defined( 'ABSPATH' ) || exit;
 
 use DRPPSM\Interfaces\BibleLoaderInt;
-use DRPPSM\Interfaces\OptionsInt;
 use DRPPSM\Interfaces\RequirementsInt;
 use DRPPSM\Interfaces\RolesInt;
 use DRPPSM\Interfaces\TextDomainInt;
@@ -40,16 +39,6 @@ function requirements(): RequirementsInt {
  */
 function roles(): RolesInt {
 	return app()->get( RolesInt::class );
-}
-
-/**
- * Get options interface.
- *
- * @return OptionsInt Options inteface.
- * @since 1.0.0
- */
-function options(): OptionsInt {
-	return app()->get( OptionsInt::class );
 }
 
 /**

@@ -80,6 +80,7 @@ function get_type_def( string $item_name ): mixed {
 	if ( ! key_exists( $item_name, $trans ) ) {
 		return null;
 	}
+
 	return $trans[ $item_name ];
 }
 
@@ -92,27 +93,22 @@ function get_type_def( string $item_name ): mixed {
  * @since 1.0.0
  */
 function set_type_def( string $item_name, mixed $item_value ): void {
-	$trans_key = 'drppsm_defs';
-	$trans     = get_transient( $trans_key );
+	$trans_key     = 'drppsm_defs';
+	$trans_key_exp = $trans_key . '_exp';
+	$trans         = get_transient( $trans_key );
 	if ( ! is_array( $trans ) ) {
 		$trans = array();
 	}
 	$trans[ $item_name ] = $item_value;
 	set_transient( $trans_key, $trans );
-	set_transient( $trans_key . '_exp', true, WEEK_IN_SECONDS );
+	set_transient( $trans_key_exp, true, 60 );
 }
 
-function expire_type_def( int $expiration, mixed $value, string $transient ) {
-	Logger::debug(
-		array(
-			'EXPIRATION' => $expiration,
-			'VALUE'      => $value,
-			'TRANSIENT'  => $transient,
-		)
-	);
-	return $expiration;
+function expire_type_def( string $transient ) {
+	$trans_key = 'drppsm_defs';
+	delete_transient( $trans_key );
 }
-add_filter( 'expiration_of_transient_drppsm_defs_exp', __NAMESPACE__ . "\\expire_type_def", 10, 3 );
+add_action( 'delete_transient_drppsm_defs_exp', __NAMESPACE__ . "\\expire_type_def" );
 
 /**
  * Removes all sorts of quotes from a string.

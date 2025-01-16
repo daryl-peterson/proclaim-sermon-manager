@@ -2,7 +2,7 @@
 /**
  * Admin notice.
  *
- * @package     Proclaim Sermon Manager.
+ * @package     DRPPSM\Notice
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
@@ -14,13 +14,12 @@ namespace DRPPSM;
 defined( 'ABSPATH' ) || exit;
 
 use DRPPSM\Interfaces\NoticeInt;
-use DRPPSM\Interfaces\OptionsInt;
 use DRPPSM\Traits\SingletonTrait;
 
 /**
  * Admin notice.
  *
- * @package     Proclaim Sermon Manager.
+ * @package     DRPPSM\Notice
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
@@ -31,18 +30,20 @@ class Notice implements NoticeInt {
 	use SingletonTrait;
 
 	/**
-	 * Options interface.
+	 * Options key.
 	 *
-	 * @var OptionsInt
+	 * @var string
+	 * @since 1.0.0
 	 */
-	private OptionsInt $options;
+	private string $option_key;
 
 	/**
 	 * Option name.
 	 *
 	 * @var string
+	 * @since 1.0.0
 	 */
-	private string $option_name = 'notice';
+	private string $option_name;
 
 	/**
 	 * Set object properties.
@@ -50,9 +51,8 @@ class Notice implements NoticeInt {
 	 * @since 1.0.0
 	 */
 	protected function __construct() {
-		// @codeCoverageIgnoreStart
-		$this->options = options();
-		// @codeCoverageIgnoreEnd
+		$this->option_key  = DRPPSM_PLUGIN;
+		$this->option_name = 'notice';
 	}
 
 	/**
@@ -88,8 +88,13 @@ class Notice implements NoticeInt {
 	 * @since 1.0.0
 	 */
 	public function show_notice(): ?string {
-		$option = $this->options->get( $this->option_name, null );
+		$options = get_option( $this->option_key, array() );
+		if ( ! is_array( $options ) || ! isset( $options[ $this->option_name ] ) ) {
+			return null;
+		}
+
 		$html   = null;
+		$option = $options[ $this->option_name ];
 
 		if ( ! isset( $option ) ) {
 			return null;
@@ -108,7 +113,7 @@ class Notice implements NoticeInt {
 			HTML;
 
 			echo wp_kses( $html, allowed_html() );
-			$this->options->delete( $this->option_name );
+
 		}
 		return $html;
 	}
@@ -117,9 +122,15 @@ class Notice implements NoticeInt {
 	 * Delete admin notice.
 	 *
 	 * @return void
+	 * @since 1.0.0
 	 */
 	public function delete(): void {
-		$this->options->delete( $this->option_name );
+		$options = get_option( $this->option_key, array() );
+		if ( ! is_array( $options ) || ! isset( $options[ $this->option_name ] ) ) {
+			return;
+		}
+		unset( $options[ $this->option_name ] );
+		update_option( $this->option_key, $options );
 	}
 
 	/**
@@ -189,6 +200,11 @@ class Notice implements NoticeInt {
 			'notice-level' => $notice_level,
 		);
 
-		return $this->options->set( $this->option_name, $option_value );
+		$options = get_option( $this->option_key, array() );
+		if ( ! is_array( $options ) || ! isset( $options[ $this->option_name ] ) ) {
+			$options = array();
+		}
+		$options[ $this->option_key ] = $option_value;
+		return update_option( $this->option_key, $options );
 	}
 }

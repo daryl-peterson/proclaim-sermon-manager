@@ -11,6 +11,8 @@
 
 namespace DRPPSM;
 
+use DateInterval;
+use DateTime;
 use DRPPSM\Constants\Meta;
 use DRPPSM\Interfaces\Executable;
 use DRPPSM\Interfaces\Registrable;
@@ -27,6 +29,8 @@ defined( 'ABSPATH' ) || exit;
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
  * @since       1.0.0
+ *
+ * @todo Fix this.
  */
 class ScheduleExtData implements Executable, Registrable {
 
@@ -68,11 +72,12 @@ class ScheduleExtData implements Executable, Registrable {
 	public function register(): ?bool {
 		$this->add_event();
 
-		if ( ! has_filter( 'deactivate_' . FILE, array( $this, 'deactivate' ) ) ) {
+		if ( has_action( $this->hook, array( $this, 'do_schedule' ) ) ) {
 			return false;
 		}
 
 		register_deactivation_hook( FILE, array( $this, 'deactivate' ) );
+		add_action( $this->hook, array( $this, 'do_schedule' ) );
 
 		return true;
 	}
@@ -84,9 +89,19 @@ class ScheduleExtData implements Executable, Registrable {
 	 * @since 1.0.0
 	 */
 	public function add_event(): void {
+		if ( ! wp_next_scheduled( $this->hook ) ) {
 
-		if ( ! wp_next_scheduled( $this->hook, $this->hook_args ) ) {
-			wp_schedule_event( strtotime( '3am tomorrow' ), 'daily', $this->hook, $this->hook_args );
+			$date  = new DateTime( 'now', new \DateTimeZone( wp_timezone_string() ) );
+			$year  = $date->format( 'Y' );
+			$month = $date->format( 'm' );
+			$day   = $date->format( 'd' );
+
+			$date = new \DateTime( "$year-$month-$day 03:00:00", new \DateTimeZone( wp_timezone_string() ) );
+			$date->modify( '+1 day' );
+			$stamp = $date->getTimestamp();
+
+			wp_schedule_event( $stamp, 'daily', $this->hook );
+
 		}
 	}
 

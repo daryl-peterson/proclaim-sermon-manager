@@ -66,8 +66,11 @@ class Roles implements RolesInt {
 	 * @since 1.0.0
 	 */
 	public function register(): ?bool {
-		$activated = options()->get( 'activated', false );
-		$file      = plugin_basename( FILE );
+		$options = get_option( DRPPSM_PLUGIN, array() );
+		if ( is_array( $options ) && key_exists( 'activated', $options ) ) {
+			$activated = $options['activated'];
+		}
+		$file = plugin_basename( FILE );
 
 		if ( ! is_admin() || $activated || has_action( 'activate_' . $file, array( $this, 'add' ) ) ) {
 			return false;

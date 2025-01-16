@@ -8,6 +8,7 @@
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
  * @since       1.0.0
+ *
  * ----------------------------------------------------------------------------
  *
  * @wordpress-plugin
@@ -58,6 +59,7 @@ define( 'DRPPSM_MIN_WP', '6.4.0' );
 define( 'DRPPSM_VER', '1.0.0' );
 define( 'DRPSM_KEY_PREFIX', 'drppsm' );
 define( 'DRPSM_DOMAIN', 'drppsm' );
+define( 'DRPPSM_PLUGIN', 'drppsm_plugin' );
 
 
 const FILE     = __FILE__;
