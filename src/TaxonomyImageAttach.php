@@ -155,7 +155,6 @@ class TaxonomyImageAttach implements Executable, Registrable {
 		}
 
 		$result = null;
-
 		if ( isset( $meta_cache[ $meta_key ] ) ) {
 			if ( $single ) {
 				$result = maybe_unserialize( $meta_cache[ $meta_key ][0] );
@@ -164,11 +163,15 @@ class TaxonomyImageAttach implements Executable, Registrable {
 			}
 		}
 
-		$option_key = $meta_key . '_' . $object_id;
+		$option_key = $meta_key;
+		$options    = get_option( $option_key, array() );
+		if ( ! is_array( $options ) ) {
+			$options = array();
+		}
 
-		// @todo Find a better way rather than storing in options.
 		if ( isset( $result ) && ! empty( $result ) && $single ) {
-			update_option( $option_key, $result );
+			$options[ $object_id ] = $result;
+			update_option( $option_key, $options );
 		}
 
 		return $result;
@@ -184,6 +187,7 @@ class TaxonomyImageAttach implements Executable, Registrable {
 	 * @since 1.0.0
 	 */
 	public function add_meta( int $term_id, string $meta_key, mixed $meta_value ): bool {
+
 		return $this->attach( $term_id, $meta_key, $meta_value );
 	}
 
@@ -214,6 +218,7 @@ class TaxonomyImageAttach implements Executable, Registrable {
 	 * @since 1.0.0
 	 */
 	public function delete_meta( mixed $meta_ids, int $term_id, string $meta_key, mixed $meta_value ) {
+
 		return $this->detach( $term_id, $meta_key, $meta_value );
 	}
 
@@ -227,7 +232,7 @@ class TaxonomyImageAttach implements Executable, Registrable {
 	 * @since 1.0.0
 	 */
 	private function attach( int $term_id, string $meta_key, mixed $meta_value ): bool {
-		Logger::debug( 'ATTACHING IMAGE ' . __CLASS__ );
+
 		$taxonomy = $this->get_taxonomy( $meta_key );
 		if ( ! isset( $taxonomy ) ) {
 			return false;
@@ -257,14 +262,6 @@ class TaxonomyImageAttach implements Executable, Registrable {
 				break;
 			}
 		}
-		Logger::debug(
-			array(
-				'TERM ID'    => $term_id,
-				'META KEY'   => $meta_key,
-				'META VALUE' => $meta_value,
-				'RETURN'     => $result,
-			)
-		);
 		return $result;
 	}
 
@@ -278,13 +275,23 @@ class TaxonomyImageAttach implements Executable, Registrable {
 	 * @since 1.0.0
 	 */
 	private function detach( int $term_id, string $meta_key, mixed $meta_value ): bool {
+
 		$taxonomy = $this->get_taxonomy( $meta_key );
 		if ( ! isset( $taxonomy ) ) {
 			return false;
 		}
 
-		$option_key = $meta_key . '_' . $term_id;
-		$image_id   = get_option( $option_key, null );
+		$option_key = $meta_key;
+		$options    = get_option( $option_key, null );
+		if ( ! is_array( $options ) ) {
+			$options = array();
+		}
+
+		$image_id = null;
+		if ( is_array( $options ) && key_exists( $term_id, $options ) ) {
+			$image_id = $options[ $term_id ];
+		}
+
 		if ( ! isset( $image_id ) ) {
 			return false;
 		}
@@ -303,7 +310,9 @@ class TaxonomyImageAttach implements Executable, Registrable {
 			return false;
 		}
 
-		delete_option( $option_key );
+		// delete_option( $option_key );
+		unset( $options[ $term_id ] );
+		update_option( $option_key, $options );
 		$result = $this->sermon_image->detach_image( $attachment, $sermon );
 
 		return $result;
@@ -331,8 +340,6 @@ class TaxonomyImageAttach implements Executable, Registrable {
 			return null;
 		}
 
-		Logger::debug( array( 'TAXONOMY' => $taxonomy ) );
-
 		return $taxonomy;
 	}
 
@@ -346,7 +353,7 @@ class TaxonomyImageAttach implements Executable, Registrable {
 	private function get_sermon( int $sermon_id ): ?WP_Post {
 		$sermon = get_post( $sermon_id );
 
-		if ( $sermon instanceof WP_Error ) {
+		if ( $this->is_error( $sermon ) ) {
 			return null;
 		}
 
@@ -357,7 +364,6 @@ class TaxonomyImageAttach implements Executable, Registrable {
 		if ( ( ! $sermon instanceof WP_Post ) || ( $this->pt !== $sermon->post_type ) ) {
 			return null;
 		}
-		Logger::debug( $sermon );
 		return $sermon;
 	}
 
@@ -396,7 +402,6 @@ class TaxonomyImageAttach implements Executable, Registrable {
 		if ( ! is_array( $sermons ) ) {
 			return null;
 		}
-		Logger::debug( array( 'SERMONS' => $sermons ) );
 		return $sermons;
 	}
 
@@ -404,13 +409,13 @@ class TaxonomyImageAttach implements Executable, Registrable {
 	 * Get attachment.
 	 *
 	 * @param int $image_id Post ID.
-	 * @return ?WP_Post Post attachment.
+	 * @return null|WP_Post Post attachment.
 	 * @since 1.0.0
 	 */
 	private function get_attachment( int $image_id ): ?WP_Post {
 
 		$attachment = get_post( $image_id );
-		if ( $attachment instanceof WP_Error ) {
+		if ( $this->is_error( $attachment ) ) {
 			return null;
 		}
 
@@ -425,7 +430,17 @@ class TaxonomyImageAttach implements Executable, Registrable {
 		if ( 'attachment' !== $attachment->post_type ) {
 			return null;
 		}
-		Logger::debug( $attachment );
 		return $attachment;
+	}
+
+	/**
+	 * Check if value is WP_Error.
+	 *
+	 * @param mixed $value Value to check.
+	 * @return bool
+	 * @since 1.0.0
+	 */
+	private function is_error( mixed $value ): bool {
+		return $value instanceof WP_Error;
 	}
 }

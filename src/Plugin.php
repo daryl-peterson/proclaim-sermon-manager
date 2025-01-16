@@ -90,9 +90,9 @@ class Plugin {
 	 */
 	public function activate(): ?bool {
 		try {
-			delete_option( $this->act_key );
+
 			PostTypeSetup::exec()->add();
-			add_option( 'activated', time() );
+			update_option( $this->act_key, time() );
 			flush_rewrite_rules();
 
 		} catch ( \Throwable $th ) {
@@ -110,7 +110,7 @@ class Plugin {
 	 * @since 1.0.0
 	 */
 	public function deactivate(): bool {
-		options()->delete( 'activated' );
+		delete_option( $this->act_key );
 		do_action( Actions::REWRITE_FLUSH );
 		return true;
 	}

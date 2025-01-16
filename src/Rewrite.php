@@ -49,10 +49,10 @@ class Rewrite {
 	 * @since 1.0.0
 	 */
 	public function register(): ?bool {
-		if ( has_action( 'init', array( $this, 'find_conflicts' ) ) ) {
+		if ( has_action( DRPPSMA_FLUSH_REWRITE, array( $this, 'flush' ) ) ) {
 			return false;
 		}
-		add_action( 'init', array( $this, 'find_conflicts' ) );
+
 		add_action( 'activate_plugin', array( $this, 'reset' ), 10, 2 );
 		add_action( 'deactivate_plugin', array( $this, 'reset' ), 10, 2 );
 		add_action( DRPPSMA_FLUSH_REWRITE, array( $this, 'flush' ) );
@@ -90,6 +90,8 @@ class Rewrite {
 	 *
 	 * @return void
 	 * @since 1.0.0
+	 *
+	 * @todo Use to display admin notice of conflicts.
 	 */
 	public function find_conflicts(): void {
 		if ( FatalError::exist() ) {
