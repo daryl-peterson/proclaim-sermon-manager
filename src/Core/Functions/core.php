@@ -1,8 +1,8 @@
 <?php
 /**
- * Core functions
+ * Core functions.
  *
- * @package     Proclaim Sermon Manager
+ * @package     DRPPSM\Core
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
@@ -11,10 +11,8 @@
 
 namespace DRPPSM;
 
-use ParagonIE\Sodium\Core\Curve25519\Ge\P2;
 use ReflectionObject;
 use stdClass;
-use WP_Exception;
 use WP_Taxonomy;
 
 /**
@@ -73,8 +71,8 @@ function get_taxonomy_field( $taxonomy, $field_name ): ?string {
  * @since 1.0.0
  */
 function get_type_def( string $item_name ): mixed {
-	$key   = Transients::TYPE_DEF;
-	$trans = Transients::get( $key );
+	$key   = Transient::TYPE_DEF;
+	$trans = Transient::get( $key );
 
 	if ( ! $trans ) {
 		return $trans;
@@ -96,14 +94,14 @@ function get_type_def( string $item_name ): mixed {
  * @since 1.0.0
  */
 function set_type_def( string $item_name, mixed $item_value ): void {
-	$key = Transients::TYPE_DEF;
+	$key = Transient::TYPE_DEF;
 
-	$trans = Transients::get( $key );
+	$trans = Transient::get( $key );
 	if ( ! is_array( $trans ) ) {
 		$trans = array();
 	}
 	$trans[ $item_name ] = $item_value;
-	Transients::set( $key, $trans );
+	Transient::set( $key, $trans );
 }
 
 /**

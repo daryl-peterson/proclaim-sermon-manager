@@ -84,14 +84,14 @@ class TaxUtils {
 	 */
 	public static function get_term_options( $taxonomy = 'category', bool $full = false ): array {
 
-		$key      = Transients::TERM_OPTS;
+		$key      = Transient::TERM_OPTS;
 		$key_name = $taxonomy;
 
 		if ( $full ) {
 			$key_name = $taxonomy . '_full';
 		}
 
-		$options = Transients::get( $key );
+		$options = Transient::get( $key );
 
 		if ( ! is_array( $options ) ) {
 			$options = array();
@@ -130,7 +130,7 @@ class TaxUtils {
 
 		$options[ $key_name ] = $term_options;
 
-		Transients::set( $key, $options );
+		Transient::set( $key, $options );
 		return $term_options;
 	}
 
@@ -182,10 +182,10 @@ class TaxUtils {
 			return null;
 		}
 
-		$key      = Transients::TERMS_WITH_IMAGES;
+		$key      = Transient::TERMS_WITH_IMAGES;
 		$key_term = md5( serialize( $query_args ) );
 
-		$options = Transients::get( $key );
+		$options = Transient::get( $key );
 		if ( is_array( $options ) && key_exists( $key_term, $options ) ) {
 			return $options[ $key_term ];
 		}
@@ -203,7 +203,7 @@ class TaxUtils {
 		}
 
 		$options[ $key_term ] = $list;
-		Transients::set( $key, $options );
+		Transient::set( $key, $options );
 		return $list;
 	}
 
@@ -225,10 +225,10 @@ class TaxUtils {
 			$query_args['meta_query'] = self::get_meta_query_images( $taxonomy );
 		}
 
-		$key      = Transients::TERM_COUNT;
+		$key      = Transient::TERM_COUNT;
 		$key_term = md5( serialize( $query_args ) );
 
-		$options = Transients::get( $key );
+		$options = Transient::get( $key );
 		if ( ! is_array( $options ) ) {
 			$options = array();
 		}
@@ -244,7 +244,7 @@ class TaxUtils {
 		$result = absint( $term_count );
 
 		$options[ $key_term ] = $result;
-		Transients::set( $key, $options );
+		Transient::set( $key, $options );
 		return $result;
 	}
 
