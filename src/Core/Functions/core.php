@@ -74,16 +74,6 @@ function get_type_def( string $item_name ): mixed {
 	$key   = Transients::TYPE_DEF;
 	$trans = Transients::get( $key );
 
-	/*
-	$exists = get_transient( $key_exp );
-	if ( ! $exists ) {
-		delete_transient( $key );
-		return false;
-	}
-
-	$trans = get_transient( Transients::TYPE_DEF );
-	*/
-
 	if ( ! $trans ) {
 		return $trans;
 	}
@@ -112,18 +102,6 @@ function set_type_def( string $item_name, mixed $item_value ): void {
 	}
 	$trans[ $item_name ] = $item_value;
 	Transients::set( $key, $trans );
-
-	/*
-	$key     = Transients::TYPE_DEF;
-	$key_exp = Transients::TYPE_DEF_EXP;
-	$trans   = get_transient( $key );
-	if ( ! is_array( $trans ) ) {
-		$trans = array();
-	}
-	$trans[ $item_name ] = $item_value;
-	set_transient( $key, $trans );
-	set_transient( $key_exp, true, Transients::TYPE_DEF_TIME );
-	*/
 }
 
 /**

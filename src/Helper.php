@@ -118,19 +118,6 @@ class Helper {
 	}
 
 	/**
-	 * Get transient.
-	 * - Key is changed to namespace prefix.
-	 *
-	 * @param string $transient Transient name.
-	 * @return mixed
-	 */
-	public static function get_transient( string $transient ): mixed {
-		$transient = self::get_key_name( $transient );
-
-		return get_transient( $transient );
-	}
-
-	/**
 	 * Wrapper function for set_transient.
 	 * - Add a the prefix used for this plugin.
 	 *

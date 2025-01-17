@@ -64,9 +64,6 @@ class HelperTest extends BaseTest {
 		$key = Helper::get_key_name( 'delete_me' );
 		delete_transient( $key );
 
-		$result = Helper::get_transient( 'delete_me' );
-		$this->assertFalse( $result );
-
 		$result = Helper::set_transient( 'delete_me', true, 10 );
 		$this->assertTrue( $result );
 	}

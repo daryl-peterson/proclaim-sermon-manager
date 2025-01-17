@@ -200,18 +200,6 @@ class SCSermonImages extends SCBase implements Executable, Registrable {
 		 */
 		foreach ( $list as $item ) {
 
-			/*
-			$data = Transients::get_transient( Transients::SERIES_INFO, $item->term_id );
-			Logger::debug( $data );
-			*/
-			/*
-			$data = Transients::get_transient( Transients::SERIES_INFO, $item->term_id );
-			if ( $data ) {
-				$this->data = $data;
-				return;
-			}
-			*/
-
 			$url  = null;
 			$meta = get_term_meta( $item->term_id, $meta_key, true );
 
