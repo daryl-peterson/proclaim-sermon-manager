@@ -226,8 +226,8 @@ class ScheduleExtData implements Executable, Registrable {
 			if ( ! $post_list ) {
 				continue;
 			}
-			$key     = Transients::SERIES_INFO_EXTD;
-			$options = Transients::get( $key );
+			$key     = Transient::SERIES_INFO_EXTD;
+			$options = Transient::get( $key );
 			if ( ! is_array( $options ) ) {
 				$options = array();
 			}
@@ -236,7 +236,7 @@ class ScheduleExtData implements Executable, Registrable {
 			$options[ $item->term_id ] = $data;
 
 			Logger::debug( array( 'OPTIONS' => $options ) );
-			Transients::set( Transients::SERIES_INFO_EXTD, $options );
+			Transient::set( Transient::SERIES_INFO_EXTD, $options );
 
 		}
 	}

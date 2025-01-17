@@ -22,7 +22,7 @@ defined( 'ABSPATH' ) || exit;
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
  * @since       1.0.0
  */
-class Transients {
+class Transient {
 
 	/**
 	 * Type definitions post, taxonomy.

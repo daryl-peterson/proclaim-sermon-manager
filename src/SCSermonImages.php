@@ -188,8 +188,8 @@ class SCSermonImages extends SCBase implements Executable, Registrable {
 		$count    = 0;
 		$meta_key = $args['display'] . '_image_id';
 
-		$key  = Transients::SERIES_INFO;
-		$data = Transients::get( $key );
+		$key  = Transient::SERIES_INFO;
+		$data = Transient::get( $key );
 		if ( $data ) {
 			$this->data = $data;
 			return;
@@ -234,7 +234,7 @@ class SCSermonImages extends SCBase implements Executable, Registrable {
 			return;
 		}
 		$this->data = $data;
-		Transients::set( $key, $this->data );
+		Transient::set( $key, $this->data );
 	}
 
 	/**
@@ -245,7 +245,7 @@ class SCSermonImages extends SCBase implements Executable, Registrable {
 	 * @since 1.0.0
 	 */
 	private function set_ext_data( int $term_id, array &$data ) {
-		$transient = Transients::get( Transients::SERIES_INFO_EXTD );
+		$transient = Transient::get( Transient::SERIES_INFO_EXTD );
 		// $transient = Transients::get_transient( Transients::SERIES_INFO_EXD, $term_id );
 
 		if ( ! $transient ) {
