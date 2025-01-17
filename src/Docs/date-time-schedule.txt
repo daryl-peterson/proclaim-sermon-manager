@@ -1,0 +1,16 @@
+$hook = self::SCHEDULER;
+
+if ( ! wp_next_scheduled( $hook ) ) {
+
+	$date  = new DateTime( 'now', new \DateTimeZone( wp_timezone_string() ) );
+	$year  = $date->format( 'Y' );
+	$month = $date->format( 'm' );
+	$day   = $date->format( 'd' );
+
+	$date = new \DateTime( "$year-$month-$day 03:00:00", new \DateTimeZone( wp_timezone_string() ) );
+	$date->modify( '+1 day' );
+	$stamp = $date->getTimestamp();
+
+	wp_schedule_event( $stamp, 'daily', $this->hook );
+}
+

@@ -350,6 +350,31 @@ define( 'DRPPSMA_TPL_ERROR', 'drppsma_tpl_error' );
  */
 define( 'DRPPSMA_FLUSH_REWRITE', 'drppsma_flush_rewrite' );
 
+/**
+ * Action after schedule is registered.
+ * - Actions are prefixed with drppsma_
+ *
+ * @return void
+ * @since 1.0.0
+ */
+define( 'DRPPSMA_SCHEDULE_REGISTERED', 'drppsma_schedule_registered' );
+
+/**
+ * Action that runs per schedule.
+ *
+ * @return void
+ * @since 1.0.0
+ */
+define( 'DRPPSMA_JOB', 'drppsma_job' );
+
+/**
+ * Action that runs per schedule.
+ *
+ * @return void
+ * @since 1.0.0
+ */
+define( 'DRPPSMA_SCHEDULER', 'drppsma_scheduler' );
+
 
 
 

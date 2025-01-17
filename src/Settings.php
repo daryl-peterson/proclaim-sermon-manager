@@ -23,23 +23,91 @@ use Exception;
  * @since       1.0.0
  */
 class Settings {
-	public const DEFAULT_IMAGE         = 'default_image';
-	public const ARCHIVE_SLUG          = 'archive_slug';
-	public const ARCHIVE_ORDER         = 'archive_order';
-	public const ARCHIVE_ORDER_BY      = 'archive_order_by';
+	/**
+	 * Default image key.
+	 *
+	 * @since 1.0.0
+	 */
+	public const DEFAULT_IMAGE = 'default_image';
+
+	/**
+	 * Archive slug key.
+	 *
+	 * @since 1.0.0
+	 */
+	public const ARCHIVE_SLUG = 'archive_slug';
+
+	/**
+	 * Archive order key.
+	 *
+	 * @since 1.0.0
+	 */
+	public const ARCHIVE_ORDER = 'archive_order';
+
+	/**
+	 * Archive order by key.
+	 *
+	 * @since 1.0.0
+	 */
+	public const ARCHIVE_ORDER_BY = 'archive_order_by';
+
+	/**
+	 * Disable sermon images.
+	 *
+	 * @since 1.0.0
+	 */
 	public const ARCHIVE_DISABLE_IMAGE = 'archive_disable_image';
 
-	public const BIBLE_BOOK      = 'book_label';
+	/**
+	 * Bible book label key.
+	 *
+	 * @since 1.0.0
+	 */
+	public const BIBLE_BOOK = 'book_label';
+
+	/**
+	 * Bible book load key.
+	 * - Used to force reloading bible books.
+	 *
+	 * @since 1.0.0
+	 */
 	public const BIBLE_BOOK_LOAD = 'bible_book_load';
+
+	/**
+	 * Bible book sort key.
+	 *
+	 * @since 1.0.0
+	 */
 	public const BIBLE_BOOK_SORT = 'bible_book_sort';
 
-	public const COMMENTS         = 'comments';
+	/**
+	 * Cron interval key expressed in hours.
+	 *
+	 * - How often to run the cron job.
+	 *
+	 * @since 1.0.0
+	 */
+	public const CRON_INTERVAL = 'cron_interval';
+
+	/**
+	 * Enable / disable comments key.
+	 *
+	 * @since 1.0.0
+	 */
+	public const COMMENTS = 'comments';
+
+	/**
+	 * Common base slug key.
+	 *
+	 * @since 1.0.0
+	 */
 	public const COMMON_BASE_SLUG = 'common_base_slug';
-	public const DATE_FORMAT      = 'date_format';
-	public const DISABLE_CSS      = 'disable_css';
-	public const MENU_ICON        = 'menu_icon';
-	public const PLAYER           = 'player';
-	public const PREACHER         = 'preacher_label';
+
+	public const DATE_FORMAT = 'date_format';
+	public const DISABLE_CSS = 'disable_css';
+	public const MENU_ICON   = 'menu_icon';
+	public const PLAYER      = 'player';
+	public const PREACHER    = 'preacher_label';
 
 	public const HIDE_BOOKS         = 'hide_books';
 	public const HIDE_FILTERS       = 'hide_filters';
@@ -54,29 +122,51 @@ class Settings {
 	public const SERVICE_TYPE    = 'service_type_label';
 	public const POST_VIEW_COUNT = 'post_view_count';
 
-
+	/**
+	 * Images per row key. Used in the sermon images shortcode.
+	 *
+	 * @since 1.0.0
+	 */
 	public const IMAGES_PER_ROW = 'images_per_row';
 
-	public const OPTION_KEY_DISPLAY  = 'drppsm_option_display';
-	public const OPTION_KEY_GENERAL  = 'drppsm_option_general';
+	/**
+	 * Option key for display tab of settings page.
+	 *
+	 * @since 1.0.0
+	 */
+	public const OPTION_KEY_DISPLAY = 'drppsm_option_display';
+
+	/**
+	 * Option key for general tab of settings page.
+	 *
+	 * @since 1.0.0
+	 */
+	public const OPTION_KEY_GENERAL = 'drppsm_option_general';
+
+	/**
+	 * Option key for advanced tab of settings page.
+	 *
+	 * @since 1.0.0
+	 */
 	public const OPTION_KEY_ADVANCED = 'drppsm_option_advanced';
 
-
-
-
-	public const OPTION_KEYS = array(
+	/**
+	 * Option keys used to loop through options and set defaults.
+	 *
+	 * @since 1.0.0
+	 */
+	private const OPTION_KEYS = array(
 		self::OPTION_KEY_GENERAL,
 		self::OPTION_KEY_DISPLAY,
 		self::OPTION_KEY_ADVANCED,
 	);
-
 
 	/**
 	 * Option key map, used to map option to page.
 	 *
 	 * @since 1.0.0
 	 */
-	public const OPTION_KEY_MAP = array(
+	private const OPTION_KEY_MAP = array(
 
 		self::ARCHIVE_SLUG          => self::OPTION_KEY_GENERAL,
 		self::BIBLE_BOOK            => self::OPTION_KEY_GENERAL,
@@ -96,20 +186,18 @@ class Settings {
 		self::ARCHIVE_DISABLE_IMAGE => self::OPTION_KEY_DISPLAY,
 
 		self::DISABLE_CSS           => self::OPTION_KEY_DISPLAY,
-
 		self::HIDE_BOOKS            => self::OPTION_KEY_DISPLAY,
 		self::HIDE_FILTERS          => self::OPTION_KEY_DISPLAY,
 		self::HIDE_PREACHERS        => self::OPTION_KEY_DISPLAY,
 		self::HIDE_SERIES           => self::OPTION_KEY_DISPLAY,
 		self::HIDE_SERVICE_TYPES    => self::OPTION_KEY_DISPLAY,
 		self::HIDE_TOPICS           => self::OPTION_KEY_DISPLAY,
-
 		self::IMAGES_PER_ROW        => self::OPTION_KEY_DISPLAY,
 
 		self::BIBLE_BOOK_LOAD       => self::OPTION_KEY_ADVANCED,
 		self::BIBLE_BOOK_SORT       => self::OPTION_KEY_ADVANCED,
 		self::POST_VIEW_COUNT       => self::OPTION_KEY_ADVANCED,
-
+		self::CRON_INTERVAL         => self::OPTION_KEY_ADVANCED,
 	);
 
 	/**
@@ -119,6 +207,57 @@ class Settings {
 	 * @since 1.0.0
 	 */
 	private static array $option_default;
+
+	/**
+	 * Initialize private static variables.
+	 *
+	 * @return void
+	 * @since 1.0.0
+	 */
+	private static function init_defaults() {
+		if ( isset( self::$option_default ) ) {
+			return;
+		}
+		self::$option_default = array(
+
+			self::OPTION_KEY_GENERAL  => array(
+				self::ARCHIVE_SLUG     => 'Sermons',
+				self::BIBLE_BOOK       => 'book',
+				self::COMMENTS         => false,
+				self::COMMON_BASE_SLUG => false,
+				self::DATE_FORMAT      => 'mm/dd/YY',
+				self::DEFAULT_IMAGE    => '',
+				self::MENU_ICON        => 'dashicons-drppsm-holy-spirit',
+				self::PLAYER           => 'plyr',
+				self::PREACHER         => 'Preacher',
+				self::SERIES           => 'Series',
+				self::SERMON_COUNT     => 10,
+				self::SERVICE_TYPE     => 'Service Type',
+			),
+
+			self::OPTION_KEY_DISPLAY  => array(
+				self::ARCHIVE_ORDER         => 'desc',
+				self::ARCHIVE_ORDER_BY      => 'date_preached',
+				self::ARCHIVE_DISABLE_IMAGE => false,
+				self::DISABLE_CSS           => false,
+				self::HIDE_BOOKS            => false,
+				self::HIDE_FILTERS          => false,
+				self::HIDE_PREACHERS        => false,
+				self::HIDE_SERIES           => false,
+				self::HIDE_SERVICE_TYPES    => false,
+				self::HIDE_TOPICS           => false,
+				self::IMAGES_PER_ROW        => 3,
+
+			),
+			self::OPTION_KEY_ADVANCED => array(
+				self::BIBLE_BOOK_LOAD => true,
+				self::BIBLE_BOOK_SORT => false,
+				self::POST_VIEW_COUNT => false,
+				self::CRON_INTERVAL   => 2,
+			),
+
+		);
+	}
 
 	/**
 	 * Get options value
@@ -237,56 +376,6 @@ class Settings {
 				add_option( $option_key, $defauls );
 			}
 		}
-	}
-
-	/**
-	 * Initialize private static variables.
-	 *
-	 * @return void
-	 * @since 1.0.0
-	 */
-	private static function init_defaults() {
-		if ( isset( self::$option_default ) ) {
-			return;
-		}
-		self::$option_default = array(
-
-			self::OPTION_KEY_GENERAL  => array(
-				self::ARCHIVE_SLUG     => 'Sermons',
-				self::BIBLE_BOOK       => 'book',
-				self::COMMENTS         => false,
-				self::COMMON_BASE_SLUG => false,
-				self::DATE_FORMAT      => 'mm/dd/YY',
-				self::DEFAULT_IMAGE    => '',
-				self::MENU_ICON        => 'dashicons-drppsm-holy-spirit',
-				self::PLAYER           => 'plyr',
-				self::PREACHER         => 'Preacher',
-				self::SERIES           => 'Series',
-				self::SERMON_COUNT     => 10,
-				self::SERVICE_TYPE     => 'Service Type',
-			),
-
-			self::OPTION_KEY_DISPLAY  => array(
-				self::ARCHIVE_ORDER         => 'desc',
-				self::ARCHIVE_ORDER_BY      => 'date_preached',
-				self::ARCHIVE_DISABLE_IMAGE => false,
-				self::DISABLE_CSS           => false,
-				self::HIDE_BOOKS            => false,
-				self::HIDE_FILTERS          => false,
-				self::HIDE_PREACHERS        => false,
-				self::HIDE_SERIES           => false,
-				self::HIDE_SERVICE_TYPES    => false,
-				self::HIDE_TOPICS           => false,
-				self::IMAGES_PER_ROW        => 3,
-
-			),
-			self::OPTION_KEY_ADVANCED => array(
-				self::BIBLE_BOOK_LOAD => true,
-				self::BIBLE_BOOK_SORT => false,
-				self::POST_VIEW_COUNT => false,
-			),
-
-		);
 	}
 
 	/**

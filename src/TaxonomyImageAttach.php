@@ -64,22 +64,28 @@ class TaxonomyImageAttach implements Executable, Registrable {
 	 */
 	private string $image_suffix;
 
+	private string $preacher_suffix;
+
+	private array $preacher_ids;
+
 	/**
 	 * Initialize object properties.
 	 *
 	 * @since 1.0.0
 	 */
 	protected function __construct() {
-		$this->sermon_image = SermonImageAttach::exec();
-		$this->tax          = array(
+		$this->sermon_image    = SermonImageAttach::exec();
+		$this->tax             = array(
 			DRPPSM_TAX_PREACHER,
 			DRPPSM_TAX_SERIES,
 			DRPPSM_TAX_TOPICS,
 		);
-		$this->image_suffix = '_image_id';
+		$this->image_suffix    = '_image_id';
+		$this->preacher_suffix = '_preachers';
 
 		foreach ( $this->tax as $taxonomy ) {
-			$this->image_ids[] = $taxonomy . $this->image_suffix;
+			$this->image_ids[]    = $taxonomy . $this->image_suffix;
+			$this->preacher_ids[] = $taxonomy . '_preachers';
 		}
 	}
 
@@ -134,47 +140,15 @@ class TaxonomyImageAttach implements Executable, Registrable {
 		string $meta_type
 	): mixed {
 
-		// If it's not what were looking for return orginal value.
-		if ( ! isset( $meta_key ) || empty( $meta_key ) || ! in_array( $meta_key, $this->image_ids, true ) ) {
+		if ( ! isset( $meta_key ) || empty( $meta_key ) ) {
 			return $value;
 		}
 
-		$meta_cache = wp_cache_get( $object_id, $meta_type . '_meta' );
-
-		if ( ! $meta_cache ) {
-			$meta_cache = update_meta_cache( $meta_type, array( $object_id ) );
-			if ( isset( $meta_cache[ $object_id ] ) ) {
-				$meta_cache = $meta_cache[ $object_id ];
-			} else {
-				$meta_cache = null;
-			}
+		if ( in_array( $meta_key, $this->image_ids, true ) ) {
+			return $this->get_image_meta( $object_id, $meta_key, $single, $meta_type );
 		}
 
-		if ( ! $meta_key ) {
-			return $meta_cache;
-		}
-
-		$result = null;
-		if ( isset( $meta_cache[ $meta_key ] ) ) {
-			if ( $single ) {
-				$result = maybe_unserialize( $meta_cache[ $meta_key ][0] );
-			} else {
-				$result = array_map( 'maybe_unserialize', $meta_cache[ $meta_key ] );
-			}
-		}
-
-		$option_key = $meta_key;
-		$options    = get_option( $option_key, array() );
-		if ( ! is_array( $options ) ) {
-			$options = array();
-		}
-
-		if ( isset( $result ) && ! empty( $result ) && $single ) {
-			$options[ $object_id ] = $result;
-			update_option( $option_key, $options );
-		}
-
-		return $result;
+		return $value;
 	}
 
 	/**
@@ -243,7 +217,7 @@ class TaxonomyImageAttach implements Executable, Registrable {
 			return false;
 		}
 
-		$sermons = $this->get_sermons_by_term( $taxonomy, $term_id );
+		$sermons = TaxUtils::get_sermons_by_term( $taxonomy, $term_id );
 		if ( ! isset( $sermons ) ) {
 			return false;
 		}
@@ -335,7 +309,7 @@ class TaxonomyImageAttach implements Executable, Registrable {
 			return null;
 		}
 
-		$taxonomy = trim( str_replace( $this->image_suffix, '', $meta_key ) );
+		$taxonomy = trim( str_replace( array( $this->image_suffix, $this->preacher_suffix ), '', $meta_key ) );
 		if ( ! in_array( $taxonomy, $this->tax, true ) ) {
 			return null;
 		}
@@ -365,44 +339,6 @@ class TaxonomyImageAttach implements Executable, Registrable {
 			return null;
 		}
 		return $sermon;
-	}
-
-	/**
-	 * Get sermons by term
-	 *
-	 * @param string  $taxonomy Taxonomy.
-	 * @param integer $term_id Term id.
-	 * @return array|null Sermons array or null.
-	 * @since 1.0.0
-	 */
-	private function get_sermons_by_term( string $taxonomy, int $term_id ): ?array {
-
-		// phpcs:disable
-		$sermons = query_posts(
-			array(
-				'post_type'      => $this->pt,
-				'showposts'      => -1,
-				'posts_per_page' => 50,
-				/**
-				 * 'fields' => 'ids' Returns array of ids.
-				 */
-				'tax_query'      => array(
-					array(
-						'taxonomy' => $taxonomy,
-						'terms'    => $term_id,
-						'field'    => 'term_id',
-						'orderby'  => 'term_id',
-						'order'    => 'asc',
-					),
-				),
-			)
-		);
-		// phpcs:enable
-
-		if ( ! is_array( $sermons ) ) {
-			return null;
-		}
-		return $sermons;
 	}
 
 	/**
@@ -442,5 +378,49 @@ class TaxonomyImageAttach implements Executable, Registrable {
 	 */
 	private function is_error( mixed $value ): bool {
 		return $value instanceof WP_Error;
+	}
+
+	private function get_image_meta(
+		int $object_id,
+		string $meta_key,
+		bool $single,
+		string $meta_type
+	) {
+		$meta_cache = wp_cache_get( $object_id, $meta_type . '_meta' );
+
+		if ( ! $meta_cache ) {
+			$meta_cache = update_meta_cache( $meta_type, array( $object_id ) );
+			if ( isset( $meta_cache[ $object_id ] ) ) {
+				$meta_cache = $meta_cache[ $object_id ];
+			} else {
+				$meta_cache = null;
+			}
+		}
+
+		if ( ! $meta_key ) {
+			return $meta_cache;
+		}
+
+		$result = null;
+		if ( isset( $meta_cache[ $meta_key ] ) ) {
+			if ( $single ) {
+				$result = maybe_unserialize( $meta_cache[ $meta_key ][0] );
+			} else {
+				$result = array_map( 'maybe_unserialize', $meta_cache[ $meta_key ] );
+			}
+		}
+
+		$option_key = $meta_key;
+		$options    = get_option( $option_key, array() );
+		if ( ! is_array( $options ) ) {
+			$options = array();
+		}
+
+		if ( isset( $result ) && ! empty( $result ) && $single ) {
+			$options[ $object_id ] = $result;
+			update_option( $option_key, $options );
+		}
+
+		return $result;
 	}
 }

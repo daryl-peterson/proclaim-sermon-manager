@@ -307,6 +307,45 @@ class TaxUtils {
 	}
 
 	/**
+	 * Get sermons by term.
+	 *
+	 * @param string  $taxonomy Taxonomy.
+	 * @param integer $term_id Term id.
+	 * @param int     $per_page
+	 * @return array|null Sermons array or null.
+	 * @since 1.0.0
+	 */
+	public static function get_sermons_by_term( string $taxonomy, int $term_id, int $per_page = 50 ): ?array {
+
+		// phpcs:disable
+		$sermons = query_posts(
+		array(
+			'post_type'      => DRPPSM_PT_SERMON,
+			'showposts'      => -1,
+			'posts_per_page' => $per_page,
+			/**
+			 * 'fields' => 'ids' Returns array of ids.
+			 */
+			'tax_query'      => array(
+				array(
+					'taxonomy' => $taxonomy,
+					'terms'    => $term_id,
+					'field'    => 'term_id',
+					'orderby'  => 'term_id',
+					'order'    => 'asc',
+				),
+			),
+		)
+		);
+		// phpcs:enable
+
+		if ( ! is_array( $sermons ) ) {
+			return null;
+		}
+		return $sermons;
+	}
+
+	/**
 	 * Get meta query for taxonomy images.
 	 *
 	 * @param string $taxonomy Taxonomy name.

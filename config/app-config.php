@@ -53,6 +53,7 @@ return array(
 	ScheduleExtData::class     => ScheduleExtData::class,
 	TaxonomyImageAttach::class => TaxonomyImageAttach::class,
 	TaxonomyListTable::class   => TaxonomyListTable::class,
+	TaxonomyMeta::class        => TaxonomyMeta::class,
 	TextDomainInt::class       => TextDomain::class,
 	Templates::class           => Templates::class,
 );

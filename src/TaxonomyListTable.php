@@ -102,7 +102,9 @@ class TaxonomyListTable implements Executable, Registrable {
 			add_filter( "manage_edit-{$taxonomy}_sortable_columns", array( $this, 'set_sortable_columns' ) );
 			add_filter( "manage_{$taxonomy}_custom_column", array( $this, 'set_column_content' ), 10, 3 );
 			add_filter( "manage_edit-{$taxonomy}_columns", array( $this, 'set_columns' ), 10, 1 );
+
 		}
+
 		return true;
 	}
 
@@ -192,7 +194,11 @@ class TaxonomyListTable implements Executable, Registrable {
 	 * @return mixed
 	 * @since 1.0.0
 	 */
-	public function set_column_content( mixed $content, string $column_name, int $term_id ): mixed {
+	public function set_column_content(
+		mixed $content,
+		string $column_name,
+		int $term_id
+	): mixed {
 		try {
 			$edit_link = get_edit_term_link( $term_id );
 			switch ( $column_name ) {
@@ -209,8 +215,13 @@ class TaxonomyListTable implements Executable, Registrable {
 				default:
 					break;
 			}
+			$taxonomy = $this->get_tax_name();
+			$action   = "get_{$taxonomy}_meta_extd";
+			Logger::debug( array( 'ACTION' => $action ) );
 
+			do_action( $action, $taxonomy, $term_id );
 			return $content;
+
 			// @codeCoverageIgnoreStart
 		} catch ( \Throwable $th ) {
 			Logger::error(
@@ -221,6 +232,7 @@ class TaxonomyListTable implements Executable, Registrable {
 			);
 			// @codeCoverageIgnoreEnd
 		}
+		return $content;
 	}
 
 	/**

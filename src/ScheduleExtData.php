@@ -36,11 +36,30 @@ defined( 'ABSPATH' ) || exit;
 class ScheduleExtData implements Executable, Registrable {
 
 
+	/**
+	 * Job name / action.
+	 *
+	 * @var string
+	 * @since 1.0.0
+	 */
+	public const JOB_NAME = 'proclaim_job';
 
-	private string $hook;
+	/**
+	 * Job interval name.
+	 *
+	 * @var string
+	 * @since 1.0.0
+	 */
+	public const JOB_INTERVAL_NAME = 'proclaim';
 
-	private array $hook_args;
 
+	/**
+	 * Job callback.
+	 *
+	 * @var array
+	 * @since 1.0.0
+	 */
+	private array $job_cb;
 
 	/**
 	 * Initialize object properties.
@@ -48,8 +67,7 @@ class ScheduleExtData implements Executable, Registrable {
 	 * @since 1.0.0
 	 */
 	protected function __construct() {
-		$this->hook      = 'drppsm_scheduler';
-		$this->hook_args = array( $this, 'do_schedule' );
+		$this->job_cb = array( $this, 'job_runner' );
 	}
 
 	/**
@@ -71,16 +89,47 @@ class ScheduleExtData implements Executable, Registrable {
 	 * @since 1.0.0
 	 */
 	public function register(): ?bool {
-		$this->add_event();
 
-		if ( has_action( $this->hook, array( $this, 'do_schedule' ) ) ) {
+		if ( has_action( self::JOB_NAME, $this->job_cb ) ) {
 			return false;
 		}
 
+		// Add custom schedule.
+		add_filter( 'cron_schedules', array( $this, 'add_schedules' ) );
+
 		register_deactivation_hook( FILE, array( $this, 'deactivate' ) );
-		add_action( $this->hook, array( $this, 'do_schedule' ) );
+
+		// Add action to run jobs.
+		add_action( self::JOB_NAME, $this->job_cb );
+
+		// Add event.
+		$this->add_event();
+
+		// Do action to allow other plugins to register after this.
+		do_action( DRPPSMA_SCHEDULE_REGISTERED );
 
 		return true;
+	}
+
+	/**
+	 * Add custom schedule.
+	 *
+	 * @param array $schedules Schedules array.
+	 * @return array
+	 * @since 1.0.0
+	 */
+	public function add_schedules( array $schedules ): array {
+		$job = self::JOB_INTERVAL_NAME;
+		if ( ! isset( $schedules[ $job ] ) ) {
+			$interval = absint( Settings::get( Settings::CRON_INTERVAL, 2 ) );
+
+			$schedules[ $job ] = array(
+				'interval' => $interval * HOUR_IN_SECONDS,
+				'display'  => __( 'Proclaim Sermon Manager Job', 'drppsm' ),
+			);
+		}
+		Logger::debug( array( 'SCHEDULES' => $schedules ) );
+		return $schedules;
 	}
 
 	/**
@@ -90,19 +139,19 @@ class ScheduleExtData implements Executable, Registrable {
 	 * @since 1.0.0
 	 */
 	public function add_event(): void {
-		if ( ! wp_next_scheduled( $this->hook ) ) {
 
-			$date  = new DateTime( 'now', new \DateTimeZone( wp_timezone_string() ) );
-			$year  = $date->format( 'Y' );
-			$month = $date->format( 'm' );
-			$day   = $date->format( 'd' );
+		if ( ! wp_next_scheduled( self::JOB_NAME ) ) {
 
-			$date = new \DateTime( "$year-$month-$day 03:00:00", new \DateTimeZone( wp_timezone_string() ) );
-			$date->modify( '+1 day' );
-			$stamp = $date->getTimestamp();
-
-			wp_schedule_event( $stamp, 'daily', $this->hook );
-
+			$result = wp_schedule_event( time(), self::JOB_INTERVAL_NAME, self::JOB_NAME );
+			if ( ! $result ) {
+				Logger::error(
+					array(
+						'ERROR'    => 'FAILED TO SCHEDULE',
+						'JOB NAME' => self::JOB_NAME,
+						'INTERVAL' => self::JOB_INTERVAL_NAME,
+					)
+				);
+			}
 		}
 	}
 
@@ -114,17 +163,29 @@ class ScheduleExtData implements Executable, Registrable {
 	 */
 	public function deactivate() {
 
-		wp_clear_scheduled_hook( $this->hook, $this->hook_args );
+		wp_clear_scheduled_hook( self::JOB_NAME );
 	}
 
 	/**
-	 * Do schedule.
+	 * Run jobs.
 	 *
 	 * @return void
 	 * @since 1.0.0
 	 */
-	public function do_schedule(): void {
-		$this->set_series_post_info();
+	public function job_runner(): void {
+		$jobs = get_option( Options::KEY_JOBS );
+		if ( ! is_array( $jobs ) ) {
+			return;
+		}
+
+		foreach ( $jobs as $job_key => $job_value ) {
+			Logger::debug(
+				array(
+					'JOB'   => $job_key,
+					'VALUE' => $job_value,
+				)
+			);
+		}
 	}
 
 

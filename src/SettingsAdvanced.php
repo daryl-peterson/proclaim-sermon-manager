@@ -86,6 +86,7 @@ class SettingsAdvanced extends SettingsBase {
 		$this->bible_book_load( $cmb );
 		$this->bible_book_sort( $cmb );
 		$this->post_view_count( $cmb );
+		$this->cron_interval( $cmb );
 	}
 
 
@@ -150,6 +151,46 @@ class SettingsAdvanced extends SettingsBase {
 				'id'        => Settings::POST_VIEW_COUNT,
 				'name'      => __( 'View Count', 'drppsm' ),
 				'type'      => 'checkbox',
+				'after_row' => $this->description( $desc ),
+			)
+		);
+	}
+
+	private function cron_interval( CMB2 $cmb ) {
+		$desc = __(
+			'Interval in hours for cron jobs.',
+			'drppsm'
+		);
+		$cmb->add_field(
+			array(
+				'id'        => Settings::CRON_INTERVAL,
+				'name'      => __( 'Cron Interval', 'drppsm' ),
+				'type'      => 'select',
+				'options'   => array(
+					'1'  => __( '1 HOUR', 'drppsm' ),
+					'2'  => __( '2 HOURS', 'drppsm' ),
+					'3'  => __( '3 HOURS', 'drppsm' ),
+					'4'  => __( '4 HOURS', 'drppsm' ),
+					'5'  => __( '5 HOURS', 'drppsm' ),
+					'6'  => __( '6 HOURS', 'drppsm' ),
+					'7'  => __( '7 HOURS', 'drppsm' ),
+					'8'  => __( '8 HOURS', 'drppsm' ),
+					'9'  => __( '9 HOURS', 'drppsm' ),
+					'10' => __( '10 HOURS', 'drppsm' ),
+					'11' => __( '11 HOURS', 'drppsm' ),
+					'12' => __( '12 HOURS', 'drppsm' ),
+					'13' => __( '13 HOURS', 'drppsm' ),
+					'14' => __( '14 HOURS', 'drppsm' ),
+					'15' => __( '15 HOURS', 'drppsm' ),
+					'16' => __( '16 HOURS', 'drppsm' ),
+					'17' => __( '17 HOURS', 'drppsm' ),
+					'18' => __( '18 HOURS', 'drppsm' ),
+					'19' => __( '19 HOURS', 'drppsm' ),
+					'20' => __( '20 HOURS', 'drppsm' ),
+					'21' => __( '21 HOURS', 'drppsm' ),
+					'22' => __( '22 HOURS', 'drppsm' ),
+					'23' => __( '23 HOURS', 'drppsm' ),
+				),
 				'after_row' => $this->description( $desc ),
 			)
 		);
