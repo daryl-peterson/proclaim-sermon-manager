@@ -12,6 +12,8 @@
 namespace DRPPSM;
 
 use ParagonIE\Sodium\Core\Curve25519\Ge\P2;
+use ReflectionObject;
+use stdClass;
 use WP_Exception;
 use WP_Taxonomy;
 
@@ -156,6 +158,47 @@ function get_page_number(): int {
 		$paged = 1;
 	}
 	return $paged;
+}
+
+/**
+ * Cast object to standard class.
+ *
+ * @param mixed $source_obj
+ * @return stdClass
+ * @throws ReflectionException
+ * @since 1.0.0
+ */
+function cast_stdclass( $source_obj ): mixed {
+	try {
+		$destination = new stdClass();
+
+		$source_reflection      = new ReflectionObject( $source_obj );
+		$destination_reflection = new ReflectionObject( $destination );
+		$source_props           = $source_reflection->getProperties();
+		foreach ( $source_props as $source_prop ) {
+			$source_prop->setAccessible( true );
+			$name  = $source_prop->getName();
+			$value = $source_prop->getValue( $source_obj );
+			if ( $destination_reflection->hasProperty( $name ) ) {
+				$propDest = $destination_reflection->getProperty( $name );
+				$propDest->setAccessible( true );
+				$propDest->setValue( $destination, $value );
+			} else {
+				$destination->$name = $value;
+			}
+		}
+
+		return $destination;
+
+	} catch ( \Throwable $th ) {
+		Logger::error(
+			array(
+				'ERROR' => $th->getMessage(),
+				'TRACE' => $th->getTrace(),
+			)
+		);
+		return $source_obj;
+	}
 }
 
 /**

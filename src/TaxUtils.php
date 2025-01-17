@@ -123,7 +123,7 @@ class TaxUtils {
 				if ( ! $full ) {
 					$term_options[ $term->term_id ] = $term->name;
 				} else {
-					$term_options[] = self::cast_stdclass( $term );
+					$term_options[] = cast_stdclass( $term );
 				}
 			}
 		}
@@ -414,45 +414,5 @@ class TaxUtils {
 		}
 
 		return $result;
-	}
-
-	/**
-	 * Cast object to standard call.
-	 *
-	 * @param mixed $source_obj
-	 * @return stdClass
-	 * @throws ReflectionException
-	 * @since 1.0.0
-	 */
-	private static function cast_stdclass( $source_obj ): mixed {
-		try {
-			$destination = new stdClass();
-
-			$source_reflection      = new ReflectionObject( $source_obj );
-			$destination_reflection = new ReflectionObject( $destination );
-			$source_props           = $source_reflection->getProperties();
-			foreach ( $source_props as $source_prop ) {
-				$source_prop->setAccessible( true );
-				$name  = $source_prop->getName();
-				$value = $source_prop->getValue( $source_obj );
-				if ( $destination_reflection->hasProperty( $name ) ) {
-					$propDest = $destination_reflection->getProperty( $name );
-					$propDest->setAccessible( true );
-					$propDest->setValue( $destination, $value );
-				} else {
-					$destination->$name = $value;
-				}
-			}
-			return $destination;
-
-		} catch ( \Throwable $th ) {
-			Logger::error(
-				array(
-					'ERROR' => $th->getMessage(),
-					'TRACE' => $th->getTrace(),
-				)
-			);
-			return $source_obj;
-		}
 	}
 }

@@ -17,6 +17,7 @@ use DRPPSM\Constants\Meta;
 use DRPPSM\Interfaces\Executable;
 use DRPPSM\Interfaces\Registrable;
 use stdClass;
+use WP_Error;
 use WP_Post;
 
 defined( 'ABSPATH' ) || exit;
@@ -123,8 +124,6 @@ class ScheduleExtData implements Executable, Registrable {
 	 * @since 1.0.0
 	 */
 	public function do_schedule(): void {
-
-		return;
 		$this->set_series_post_info();
 	}
 
@@ -166,17 +165,28 @@ class ScheduleExtData implements Executable, Registrable {
 			if ( ! $post_list ) {
 				continue;
 			}
+			$key     = Transients::SERIES_INFO_EXTD;
+			$options = Transients::get( $key );
+			if ( ! is_array( $options ) ) {
+				$options = array();
+			}
 
-			$data = $this->get_series_info( $item->term_id, $post_list );
+			$data                      = $this->get_series_info( $item->term_id, $post_list );
+			$options[ $item->term_id ] = $data;
+
+			Logger::debug( array( 'OPTIONS' => $options ) );
+			Transients::set( Transients::SERIES_INFO_EXTD, $options );
 
 		}
 	}
 
 	private function get_series_info( int $series_id, array $post_list ): stdClass {
-		$obj           = new \stdClass();
-		$obj->preacher = $this->init_object();
-		$obj->topics   = $this->init_object();
-		$obj->dates    = array();
+
+		$obj            = new \stdClass();
+		$obj->preacher  = $this->init_object();
+		$obj->topics    = $this->init_object();
+		$obj->dates     = array();
+		$obj->dates_str = '';
 
 		/**
 		 * @var \WP_Post $post_item Post for series.
@@ -186,53 +196,91 @@ class ScheduleExtData implements Executable, Registrable {
 			$date         = get_post_meta( $post_item->ID, Meta::DATE, true );
 			$obj->dates[] = $date;
 
-			$preacher_terms = get_the_terms( $post_item->ID, DRPPSM_TAX_PREACHER );
+			$tax            = DRPPSM_TAX_PREACHER;
+			$preacher_terms = get_the_terms( $post_item->ID, $tax );
+			Logger::debug( array( 'PREACHERS' => $preacher_terms ) );
 
 			if ( $preacher_terms ) {
-
-				$this->set_term_info( $obj->preacher, $preacher_terms );
-				// $obj->preacher->cnt   = count( $obj->preacher->names );
+				$this->set_term_info( $obj->preacher, $preacher_terms, $tax );
 
 			}
 
-			$topics = get_the_terms( $post_item->ID, DRPPSM_TAX_TOPICS );
+			$tax    = DRPPSM_TAX_TOPICS;
+			$topics = get_the_terms( $post_item->ID, $tax );
 
 			if ( $topics ) {
-				$this->set_term_info( $obj->topics, $topics );
-				$obj->topics->cnt = count( $obj->topics->names );
+				$this->set_term_info( $obj->topics, $topics, $tax );
 			} else {
 				$obj->topics->cnt = 0;
 			}
 		}
-
+		$this->set_date_info( $obj );
 		return $obj;
 	}
 
 
 	private function init_object() {
-		$obj        = new \stdClass();
-		$obj->names = array();
-		$obj->terms = array();
-		$obj->cnt   = 0;
+		$obj            = new \stdClass();
+		$obj->names     = array();
+		$obj->names_str = '';
+		$obj->ids       = array();
+		$obj->cnt       = 0;
 		return $obj;
 	}
 
 
-	private function set_term_info( stdClass &$object, array $term_list ) {
+	private function set_term_info( stdClass &$object, array $term_list, string $taxonomy ) {
 
 		/**
 		 * @var \WP_Term $item
 		 */
 		foreach ( $term_list as $item ) {
 			if ( ! in_array( $item->name, $object->names ) ) {
-				$object->names[] = $item->name;
-				$object->terms[] = $item;
+
+				$link = get_term_link( $item, $taxonomy );
+				if ( ! $link instanceof WP_Error ) {
+					$link = esc_url( $link );
+				} else {
+					$link = false;
+				}
+
+				$object->names[]               = $item->name;
+				$object->ids[ $item->term_id ] = $link;
 			}
 		}
-
-		$object->cnt = count( $object->names );
+		$object->names_str = implode( ', ', $object->names );
+		$object->cnt       = count( $object->names );
 	}
 
-	private function get_topic_info() {
+	private function set_date_info( stdClass &$object ) {
+		$dates = $object->dates;
+
+		if ( is_array( $dates ) && 0 !== count( $dates ) ) {
+			$format = 'j F Y';
+			asort( $dates );
+
+			$cnt = count( $dates );
+
+			$date_last = '';
+
+			if ( 1 === $cnt ) {
+				$date_first = wp_date( $format, $dates[0] );
+				if ( ! $date_first ) {
+					$date_first = '';
+				}
+				$object->dates_str = $date_first;
+			} elseif ( $cnt > 1 ) {
+				$date_first = wp_date( $format, $dates[0] );
+
+				$date_last = wp_date( $format, $dates[ $cnt - 1 ] );
+				if ( ! $date_last ) {
+					$date_last = '';
+				} else {
+					$date_last = ' - ' . $date_last;
+				}
+
+				$object->dates_str = $date_first . $date_last;
+			}
+		}
 	}
 }

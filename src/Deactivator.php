@@ -2,7 +2,7 @@
 /**
  * Deactivate plugin.
  *
- * @package     Proclaim Sermon Manager
+ * @package     DRPPSM\Deactivator
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
@@ -13,11 +13,10 @@ namespace DRPPSM;
 
 defined( 'ABSPATH' ) || exit;
 
-
 /**
  * Deactivate plugin on errors.
  *
- * @package     Proclaim Sermon Manager
+ * @package     DRPPSM\Deactivator
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt

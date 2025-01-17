@@ -59,6 +59,8 @@ class Transients {
 	 */
 	public const SERIES_INFO = 'drppsm_series_info';
 
+	public const SERIES_INFO_EXTD = 'drppsm_series_info_extd';
+
 	/**
 	 * Sermon list table init.
 	 *
@@ -74,6 +76,7 @@ class Transients {
 	 */
 	private const EXPIRES = array(
 		self::SERIES_INFO            => self::SERIES_INFO . '_exp',
+		self::SERIES_INFO_EXTD       => self::SERIES_INFO_EXTD . '_ext',
 		self::SERMON_LIST_TABLE_INIT => self::SERMON_LIST_TABLE_INIT . '_exp',
 		self::TERM_COUNT             => self::TERM_COUNT . '_exp',
 		self::TERM_OPTS              => self::TERM_OPTS . '_exp',
@@ -90,6 +93,7 @@ class Transients {
 	 */
 	private const TIMES = array(
 		self::SERIES_INFO            => HOUR_IN_SECONDS,
+		self::SERIES_INFO_EXTD       => DAY_IN_SECONDS,
 		self::SERMON_LIST_TABLE_INIT => WEEK_IN_SECONDS,
 		self::TERM_COUNT             => HOUR_IN_SECONDS,
 		self::TERM_OPTS              => DAY_IN_SECONDS,
@@ -168,7 +172,13 @@ class Transients {
 		}
 	}
 
-	public static function delete_all() {
+	/**
+	 * Delete all transients.
+	 *
+	 * @return void
+	 * @since 1.0.0
+	 */
+	public static function delete_all(): void {
 		$keys = array_keys( self::EXPIRES );
 		foreach ( $keys as $key_name ) {
 			self::delete( $key_name );

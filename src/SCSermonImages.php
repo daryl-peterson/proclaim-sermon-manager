@@ -245,7 +245,7 @@ class SCSermonImages extends SCBase implements Executable, Registrable {
 	 * @since 1.0.0
 	 */
 	private function set_ext_data( int $term_id, array &$data ) {
-		$transient = get_transient( 'drppsm_series_info_ext' );
+		$transient = Transients::get( Transients::SERIES_INFO_EXTD );
 		// $transient = Transients::get_transient( Transients::SERIES_INFO_EXD, $term_id );
 
 		if ( ! $transient ) {
@@ -265,38 +265,9 @@ class SCSermonImages extends SCBase implements Executable, Registrable {
 			$data['preacher_cnt'] = 1;
 		}
 
-		if ( isset( $transient->dates ) ) {
-			$dates = $transient->dates;
+		if ( isset( $transient->dates_str ) ) {
+			$data_temp['dates'] = $transient->dates_str;
 
-			if ( is_array( $dates ) && 0 !== count( $dates ) ) {
-				$format = 'j F Y';
-				asort( $dates );
-
-				$cnt = count( $dates );
-
-				Logger::debug( array( 'DATES' => $dates ) );
-				$date_last = '';
-
-				if ( 1 === $cnt ) {
-					$date_first = wp_date( $format, $dates[0] );
-					if ( ! $date_first ) {
-						$date_first = '';
-					}
-				} elseif ( $cnt > 1 ) {
-					$date_first = wp_date( $format, $dates[0] );
-
-					$date_last = wp_date( $format, $dates[ $cnt - 1 ] );
-					if ( ! $date_last ) {
-						$date_last = '';
-					} else {
-						$date_last = ' - ' . $date_last;
-					}
-
-					$data['dates'] = $date_first . $date_last;
-				}
-				$data_temp['dates'] = $date_first . ' - ' . $date_last;
-
-			}
 		}
 
 		// $options['term_id'] = $data_temp;
