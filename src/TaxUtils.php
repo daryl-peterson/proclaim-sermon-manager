@@ -11,9 +11,6 @@
 
 namespace DRPPSM;
 
-use ReflectionException;
-use ReflectionObject;
-use stdClass;
 use WP_Error;
 
 defined( 'ABSPATH' ) || exit;
