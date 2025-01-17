@@ -107,11 +107,11 @@ class SermonListTable implements Executable, Registrable {
 	 */
 	public function init(): void {
 
-		$tax   = DRPPSM_TAX_LIST;
-		$trans = 'drppsm_sermon_list_table_init';
+		$tax = DRPPSM_TAX_LIST;
+		$key = Transients::SERMON_LIST_TABLE_INIT;
 
-		$init = \get_transient( $trans );
-		if ( $init ) {
+		$init = Transients::get( $key );
+		if ( is_array( $init ) && key_exists( 'columns', $init ) ) {
 			$this->columns  = $init['columns'];
 			$this->sortable = $init['sortable'];
 			return;
@@ -141,7 +141,8 @@ class SermonListTable implements Executable, Registrable {
 			'columns'  => $this->columns,
 			'sortable' => $this->sortable,
 		);
-		set_transient( $trans, $data, WEEK_IN_SECONDS );
+
+		Transients::set( $key, $data );
 	}
 
 	/**

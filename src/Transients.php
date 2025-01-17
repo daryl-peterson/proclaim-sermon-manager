@@ -59,6 +59,13 @@ class Transients {
 	 */
 	public const SERIES_INFO = 'drppsm_series_info';
 
+	/**
+	 * Sermon list table init.
+	 *
+	 * @since 1.0.0
+	 */
+	public const SERMON_LIST_TABLE_INIT = 'drppsm_sermon_list_table_init';
+
 
 	/**
 	 * Expired key mapping.
@@ -66,24 +73,28 @@ class Transients {
 	 * @since 1.0.0
 	 */
 	private const EXPIRES = array(
-		self::SERIES_INFO       => self::SERIES_INFO . '_exp',
-		self::TERM_COUNT        => self::TERM_COUNT . '_exp',
-		self::TERM_OPTS         => self::TERM_OPTS . '_exp',
-		self::TERMS_WITH_IMAGES => self::TERMS_WITH_IMAGES . '_exp',
-		self::TYPE_DEF          => self::TYPE_DEF . '_exp',
+		self::SERIES_INFO            => self::SERIES_INFO . '_exp',
+		self::SERMON_LIST_TABLE_INIT => self::SERMON_LIST_TABLE_INIT . '_exp',
+		self::TERM_COUNT             => self::TERM_COUNT . '_exp',
+		self::TERM_OPTS              => self::TERM_OPTS . '_exp',
+		self::TERMS_WITH_IMAGES      => self::TERMS_WITH_IMAGES . '_exp',
+		self::TYPE_DEF               => self::TYPE_DEF . '_exp',
 	);
 
 	/**
 	 * Transient expire times mapping.
 	 *
 	 * @since 1.0.0
+	 *
+	 * @todo adjust times.
 	 */
 	private const TIMES = array(
-		self::SERIES_INFO       => HOUR_IN_SECONDS,
-		self::TERM_COUNT        => HOUR_IN_SECONDS,
-		self::TERM_OPTS         => DAY_IN_SECONDS,
-		self::TERMS_WITH_IMAGES => DAY_IN_SECONDS,
-		self::TYPE_DEF          => WEEK_IN_SECONDS,
+		self::SERIES_INFO            => HOUR_IN_SECONDS,
+		self::SERMON_LIST_TABLE_INIT => WEEK_IN_SECONDS,
+		self::TERM_COUNT             => HOUR_IN_SECONDS,
+		self::TERM_OPTS              => DAY_IN_SECONDS,
+		self::TERMS_WITH_IMAGES      => DAY_IN_SECONDS,
+		self::TYPE_DEF               => WEEK_IN_SECONDS,
 	);
 
 
