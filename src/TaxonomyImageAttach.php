@@ -64,28 +64,22 @@ class TaxonomyImageAttach implements Executable, Registrable {
 	 */
 	private string $image_suffix;
 
-	private string $preacher_suffix;
-
-	private array $preacher_ids;
-
 	/**
 	 * Initialize object properties.
 	 *
 	 * @since 1.0.0
 	 */
 	protected function __construct() {
-		$this->sermon_image    = SermonImageAttach::exec();
-		$this->tax             = array(
+		$this->sermon_image = SermonImageAttach::exec();
+		$this->tax          = array(
 			DRPPSM_TAX_PREACHER,
 			DRPPSM_TAX_SERIES,
 			DRPPSM_TAX_TOPICS,
 		);
-		$this->image_suffix    = '_image_id';
-		$this->preacher_suffix = '_preachers';
+		$this->image_suffix = '_image_id';
 
 		foreach ( $this->tax as $taxonomy ) {
-			$this->image_ids[]    = $taxonomy . $this->image_suffix;
-			$this->preacher_ids[] = $taxonomy . '_preachers';
+			$this->image_ids[] = $taxonomy . $this->image_suffix;
 		}
 	}
 
@@ -309,7 +303,7 @@ class TaxonomyImageAttach implements Executable, Registrable {
 			return null;
 		}
 
-		$taxonomy = trim( str_replace( array( $this->image_suffix, $this->preacher_suffix ), '', $meta_key ) );
+		$taxonomy = trim( str_replace( $this->image_suffix, '', $meta_key ) );
 		if ( ! in_array( $taxonomy, $this->tax, true ) ) {
 			return null;
 		}

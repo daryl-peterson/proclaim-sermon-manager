@@ -246,7 +246,6 @@ class SCSermonImages extends SCBase implements Executable, Registrable {
 	 */
 	private function set_ext_data( int $term_id, array &$data ) {
 		$transient = Transient::get( Transient::SERIES_INFO_EXTD );
-		// $transient = Transients::get_transient( Transients::SERIES_INFO_EXD, $term_id );
 
 		if ( ! $transient ) {
 			$data['preacher_cnt']   = 1;

@@ -2,7 +2,7 @@
 /**
  * Transients.
  *
- * @package     DRPPSM\Transients
+ * @package     DRPPSM\Transient
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
@@ -16,7 +16,7 @@ defined( 'ABSPATH' ) || exit;
 /**
  * Transients.
  *
- * @package     DRPPSM\Transients
+ * @package     DRPPSM\Transient
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt

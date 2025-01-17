@@ -102,7 +102,7 @@ class Taxonomy implements Executable, Registrable {
 	 * @since 1.0.0
 	 */
 	public function delete_taxonomy( int $term_id, int $tax_id, WP_Term $deleted_term, array $bject_ids ) {
-		Transients::delete( Transients::TERM_OPTS );
+		Transient::delete( Transient::TERM_OPTS );
 	}
 
 	public function created_taxonomy( int $term_id, int $tax_id, WP_Term $deleted_term, array $bject_ids ) {
