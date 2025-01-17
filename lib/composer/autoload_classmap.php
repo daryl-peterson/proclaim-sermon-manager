@@ -69,7 +69,7 @@ return array(
     'DRPPSM\\SCSermonSorting' => $baseDir . '/src/SCSermonSorting.php',
     'DRPPSM\\SCSermons' => $baseDir . '/src/SCSermons.php',
     'DRPPSM\\SCTerms' => $baseDir . '/src/SCTerms.php',
-    'DRPPSM\\ScheduleExtData' => $baseDir . '/src/ScheduleExtData.php',
+    'DRPPSM\\Scheduler' => $baseDir . '/src/Scheduler.php',
     'DRPPSM\\SermonComments' => $baseDir . '/src/SermonComments.php',
     'DRPPSM\\SermonDetail' => $baseDir . '/src/SermonDetail.php',
     'DRPPSM\\SermonEdit' => $baseDir . '/src/SermonEdit.php',
@@ -115,5 +115,5 @@ return array(
     'DRPPSM\\Timer' => $baseDir . '/src/Timer.php',
     'DRPPSM\\Traits\\OverLoadTrait' => $baseDir . '/src/Core/Traits/OverLoadTrait.php',
     'DRPPSM\\Traits\\SingletonTrait' => $baseDir . '/src/Core/Traits/SingletonTrait.php',
-    'DRPPSM\\Transients' => $baseDir . '/src/Transients.php',
+    'DRPPSM\\Transient' => $baseDir . '/src/Transient.php',
 );

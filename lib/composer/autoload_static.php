@@ -130,7 +130,7 @@ class ComposerStaticInit672fe16c65cc53aa8b66e730cdfce0de
         'DRPPSM\\SCSermonSorting' => __DIR__ . '/../..' . '/src/SCSermonSorting.php',
         'DRPPSM\\SCSermons' => __DIR__ . '/../..' . '/src/SCSermons.php',
         'DRPPSM\\SCTerms' => __DIR__ . '/../..' . '/src/SCTerms.php',
-        'DRPPSM\\ScheduleExtData' => __DIR__ . '/../..' . '/src/ScheduleExtData.php',
+        'DRPPSM\\Scheduler' => __DIR__ . '/../..' . '/src/Scheduler.php',
         'DRPPSM\\SermonComments' => __DIR__ . '/../..' . '/src/SermonComments.php',
         'DRPPSM\\SermonDetail' => __DIR__ . '/../..' . '/src/SermonDetail.php',
         'DRPPSM\\SermonEdit' => __DIR__ . '/../..' . '/src/SermonEdit.php',
@@ -176,7 +176,7 @@ class ComposerStaticInit672fe16c65cc53aa8b66e730cdfce0de
         'DRPPSM\\Timer' => __DIR__ . '/../..' . '/src/Timer.php',
         'DRPPSM\\Traits\\OverLoadTrait' => __DIR__ . '/../..' . '/src/Core/Traits/OverLoadTrait.php',
         'DRPPSM\\Traits\\SingletonTrait' => __DIR__ . '/../..' . '/src/Core/Traits/SingletonTrait.php',
-        'DRPPSM\\Transients' => __DIR__ . '/../..' . '/src/Transients.php',
+        'DRPPSM\\Transient' => __DIR__ . '/../..' . '/src/Transient.php',
     );
 
     public static function getInitializer(ClassLoader $loader)

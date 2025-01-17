@@ -212,6 +212,7 @@ class TaxonomyImageAttach implements Executable, Registrable {
 		}
 
 		$sermons = TaxUtils::get_sermons_by_term( $taxonomy, $term_id );
+		Logger::debug( array( 'SERMONS' => $sermons ) );
 		if ( ! isset( $sermons ) ) {
 			return false;
 		}
