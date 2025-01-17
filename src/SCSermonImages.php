@@ -15,7 +15,6 @@ defined( 'ABSPATH' ) || exit;
 
 use DRPPSM\Interfaces\Executable;
 use DRPPSM\Interfaces\Registrable;
-use WP_Exception;
 use WP_Term;
 
 /**
@@ -171,7 +170,7 @@ class SCSermonImages extends SCBase implements Executable, Registrable {
 			return;
 		}
 
-		$list = TaxQueries::get_terms_with_images(
+		$list = TaxUtils::get_terms_with_images(
 			array(
 				'taxonomy' => $args['display'],
 				'order'    => $args['order'],
@@ -189,10 +188,29 @@ class SCSermonImages extends SCBase implements Executable, Registrable {
 		$count    = 0;
 		$meta_key = $args['display'] . '_image_id';
 
+		$key  = Transients::SERIES_INFO;
+		$data = Transients::get( $key );
+		if ( $data ) {
+			$this->data = $data;
+			return;
+		}
+
 		/**
 		 * @var WP_Term $item
 		 */
 		foreach ( $list as $item ) {
+
+			/*
+			$data = Transients::get_transient( Transients::SERIES_INFO, $item->term_id );
+			Logger::debug( $data );
+			*/
+			/*
+			$data = Transients::get_transient( Transients::SERIES_INFO, $item->term_id );
+			if ( $data ) {
+				$this->data = $data;
+				return;
+			}
+			*/
 
 			$url  = null;
 			$meta = get_term_meta( $item->term_id, $meta_key, true );
@@ -227,8 +245,8 @@ class SCSermonImages extends SCBase implements Executable, Registrable {
 			$this->data = null;
 			return;
 		}
-		Logger::debug( $data );
 		$this->data = $data;
+		Transients::set( $key, $this->data );
 	}
 
 	/**
@@ -239,9 +257,9 @@ class SCSermonImages extends SCBase implements Executable, Registrable {
 	 * @since 1.0.0
 	 */
 	private function set_ext_data( int $term_id, array &$data ) {
-		$key = 'drppsm_series_info_' . $term_id;
+		$transient = get_transient( 'drppsm_series_info_ext' );
+		// $transient = Transients::get_transient( Transients::SERIES_INFO_EXD, $term_id );
 
-		$transient = get_transient( $key );
 		if ( ! $transient ) {
 			$data['preacher_cnt']   = 1;
 			$data['preacher_names'] = '';
@@ -292,6 +310,9 @@ class SCSermonImages extends SCBase implements Executable, Registrable {
 
 			}
 		}
+
+		// $options['term_id'] = $data_temp;
+		// Transients::set_transient(Transients::SERIES_INFO,$options);
 	}
 
 	/**
@@ -304,7 +325,7 @@ class SCSermonImages extends SCBase implements Executable, Registrable {
 	private function set_pagination( array $args ): void {
 		$this->paginate = null;
 
-		$term_count = TaxQueries::get_term_count( $args['display'], true );
+		$term_count = TaxUtils::get_term_count( $args['display'], true );
 		if ( ! $term_count ) {
 			return;
 		}

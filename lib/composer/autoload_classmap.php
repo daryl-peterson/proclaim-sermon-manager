@@ -81,7 +81,6 @@ return array(
     'DRPPSM\\SettingsBase' => $baseDir . '/src/SettingsBase.php',
     'DRPPSM\\SettingsDisplay' => $baseDir . '/src/SettingsDisplay.php',
     'DRPPSM\\SettingsGeneral' => $baseDir . '/src/SettingsGeneral.php',
-    'DRPPSM\\TaxQueries' => $baseDir . '/src/TaxQueries.php',
     'DRPPSM\\TaxUtils' => $baseDir . '/src/TaxUtils.php',
     'DRPPSM\\Taxonomy' => $baseDir . '/src/Taxonomy.php',
     'DRPPSM\\TaxonomyImageAttach' => $baseDir . '/src/TaxonomyImageAttach.php',
@@ -114,4 +113,5 @@ return array(
     'DRPPSM\\Timer' => $baseDir . '/src/Timer.php',
     'DRPPSM\\Traits\\OverLoadTrait' => $baseDir . '/src/Core/Traits/OverLoadTrait.php',
     'DRPPSM\\Traits\\SingletonTrait' => $baseDir . '/src/Core/Traits/SingletonTrait.php',
+    'DRPPSM\\Transients' => $baseDir . '/src/Transients.php',
 );

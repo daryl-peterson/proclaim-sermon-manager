@@ -117,24 +117,6 @@ class ScheduleExtData implements Executable, Registrable {
 	}
 
 	/**
-	 * Add cron schedule.
-	 *
-	 * @param array $schedules List of schedules.
-	 * @return array
-	 * @since 1.0.0
-	 */
-	public function add_cron_schedule( array $schedules ) {
-		$schedules['daily_3am'] = array(
-			'interval' => DAY_IN_SECONDS,
-			'display'  => __( 'Daily 3am' ),
-		);
-
-		return $schedules;
-	}
-
-
-
-	/**
 	 * Do schedule.
 	 *
 	 * @return void
@@ -142,6 +124,7 @@ class ScheduleExtData implements Executable, Registrable {
 	 */
 	public function do_schedule(): void {
 
+		return;
 		$this->set_series_post_info();
 	}
 
@@ -154,7 +137,7 @@ class ScheduleExtData implements Executable, Registrable {
 	 */
 	public function set_series_post_info(): void {
 
-		$list = TaxQueries::get_terms_with_images(
+		$list = TaxUtils::get_terms_with_images(
 			array(
 				'taxonomy' => DRPPSM_TAX_SERIES,
 				'order'    => 'ASC',
@@ -178,7 +161,7 @@ class ScheduleExtData implements Executable, Registrable {
 				'taxonomy'  => DRPPSM_TAX_SERIES,
 				'terms'     => $item->term_id,
 			);
-			$post_list = TaxQueries::get_term_posts( $post_args );
+			$post_list = TaxUtils::get_term_posts( $post_args );
 
 			if ( ! $post_list ) {
 				continue;
@@ -186,8 +169,6 @@ class ScheduleExtData implements Executable, Registrable {
 
 			$data = $this->get_series_info( $item->term_id, $post_list );
 
-			$key = 'drppsm_series_info_' . $item->term_id;
-			set_transient( $key, $data, 8 * HOUR_IN_SECONDS );
 		}
 	}
 

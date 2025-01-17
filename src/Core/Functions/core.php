@@ -11,6 +11,7 @@
 
 namespace DRPPSM;
 
+use ParagonIE\Sodium\Core\Curve25519\Ge\P2;
 use WP_Exception;
 use WP_Taxonomy;
 
@@ -70,8 +71,18 @@ function get_taxonomy_field( $taxonomy, $field_name ): ?string {
  * @since 1.0.0
  */
 function get_type_def( string $item_name ): mixed {
-	$trans_key = 'drppsm_defs';
-	$trans     = get_transient( $trans_key );
+	$key   = Transients::TYPE_DEF;
+	$trans = Transients::get( $key );
+
+	/*
+	$exists = get_transient( $key_exp );
+	if ( ! $exists ) {
+		delete_transient( $key );
+		return false;
+	}
+
+	$trans = get_transient( Transients::TYPE_DEF );
+	*/
 
 	if ( ! $trans ) {
 		return $trans;
@@ -93,22 +104,27 @@ function get_type_def( string $item_name ): mixed {
  * @since 1.0.0
  */
 function set_type_def( string $item_name, mixed $item_value ): void {
-	$trans_key     = 'drppsm_defs';
-	$trans_key_exp = $trans_key . '_exp';
-	$trans         = get_transient( $trans_key );
+	$key = Transients::TYPE_DEF;
+
+	$trans = Transients::get( $key );
 	if ( ! is_array( $trans ) ) {
 		$trans = array();
 	}
 	$trans[ $item_name ] = $item_value;
-	set_transient( $trans_key, $trans );
-	set_transient( $trans_key_exp, true, 60 );
-}
+	Transients::set( $key, $trans );
 
-function expire_type_def( string $transient ) {
-	$trans_key = 'drppsm_defs';
-	delete_transient( $trans_key );
+	/*
+	$key     = Transients::TYPE_DEF;
+	$key_exp = Transients::TYPE_DEF_EXP;
+	$trans   = get_transient( $key );
+	if ( ! is_array( $trans ) ) {
+		$trans = array();
+	}
+	$trans[ $item_name ] = $item_value;
+	set_transient( $key, $trans );
+	set_transient( $key_exp, true, Transients::TYPE_DEF_TIME );
+	*/
 }
-add_action( 'delete_transient_drppsm_defs_exp', __NAMESPACE__ . "\\expire_type_def" );
 
 /**
  * Removes all sorts of quotes from a string.

@@ -423,12 +423,7 @@ class SermonListTable implements Executable, Registrable {
 	private function select_filter( string $tax ): string {
 		global $wp_query;
 
-		$terms = get_terms(
-			array(
-				'taxonomy'   => $tax,
-				'hide_empty' => false,
-			)
-		);
+		$terms = TaxUtils::get_term_options( $tax, true );
 
 		$field = get_taxonomy_field( $tax, 'singular_name' );
 

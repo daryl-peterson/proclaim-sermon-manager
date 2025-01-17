@@ -23,7 +23,7 @@ use DRPPSM\Interfaces\RolesInt;
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
- * @since       1.0.0
+ * @since       1.0.
  */
 class Roles implements RolesInt {
 
@@ -66,7 +66,9 @@ class Roles implements RolesInt {
 	 * @since 1.0.0
 	 */
 	public function register(): ?bool {
-		$options = get_option( DRPPSM_PLUGIN, array() );
+		$options   = get_option( DRPPSM_PLUGIN, array() );
+		$activated = null;
+
 		if ( is_array( $options ) && key_exists( 'activated', $options ) ) {
 			$activated = $options['activated'];
 		}

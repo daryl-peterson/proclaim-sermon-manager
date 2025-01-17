@@ -16,8 +16,6 @@ namespace DRPPSM;
 use DRPPSM\Constants\Meta;
 use DRPPSM\Interfaces\Executable;
 use DRPPSM\Interfaces\Registrable;
-use WP_Error;
-use WP_Exception;
 use WP_Term;
 
 defined( 'ABSPATH' ) || exit;
@@ -200,7 +198,7 @@ class SCSeriesLatest extends SCBase implements Executable, Registrable {
 
 		);
 
-		$series = TaxQueries::get_terms_with_images( $series_args );
+		$series = TaxUtils::get_terms_with_images( $series_args );
 		if ( ! $series ) {
 			return null;
 		}

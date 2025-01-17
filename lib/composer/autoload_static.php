@@ -142,7 +142,6 @@ class ComposerStaticInit672fe16c65cc53aa8b66e730cdfce0de
         'DRPPSM\\SettingsBase' => __DIR__ . '/../..' . '/src/SettingsBase.php',
         'DRPPSM\\SettingsDisplay' => __DIR__ . '/../..' . '/src/SettingsDisplay.php',
         'DRPPSM\\SettingsGeneral' => __DIR__ . '/../..' . '/src/SettingsGeneral.php',
-        'DRPPSM\\TaxQueries' => __DIR__ . '/../..' . '/src/TaxQueries.php',
         'DRPPSM\\TaxUtils' => __DIR__ . '/../..' . '/src/TaxUtils.php',
         'DRPPSM\\Taxonomy' => __DIR__ . '/../..' . '/src/Taxonomy.php',
         'DRPPSM\\TaxonomyImageAttach' => __DIR__ . '/../..' . '/src/TaxonomyImageAttach.php',
@@ -175,6 +174,7 @@ class ComposerStaticInit672fe16c65cc53aa8b66e730cdfce0de
         'DRPPSM\\Timer' => __DIR__ . '/../..' . '/src/Timer.php',
         'DRPPSM\\Traits\\OverLoadTrait' => __DIR__ . '/../..' . '/src/Core/Traits/OverLoadTrait.php',
         'DRPPSM\\Traits\\SingletonTrait' => __DIR__ . '/../..' . '/src/Core/Traits/SingletonTrait.php',
+        'DRPPSM\\Transients' => __DIR__ . '/../..' . '/src/Transients.php',
     );
 
     public static function getInitializer(ClassLoader $loader)
