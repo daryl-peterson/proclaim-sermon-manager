@@ -143,8 +143,6 @@ class TaxInfo {
 			);
 			// @codeCoverageIgnoreEnd
 		}
-
-		Logger::debug( $this );
 	}
 
 	/**
