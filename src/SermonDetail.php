@@ -139,8 +139,6 @@ class SermonDetail implements Initable, Registrable {
 		if ( get_post_type() !== $this->pt_sermon ) {
 			return;
 		}
-		Logger::debug( $cmb->data_to_save );
-
 		$result = $this->save_service_type( $post_ID, $cmb->data_to_save );
 	}
 
@@ -165,11 +163,10 @@ class SermonDetail implements Initable, Registrable {
 		}
 
 		$result = wp_set_object_terms( $post_ID, empty( $service_type ) ? null : $service_type, $this->tax_service_type );
-		if ( $result instanceof WP_Error ) {
+		if ( is_wp_error( $result ) ) {
 			Logger::error( $result->get_error_message() );
 			return false;
 		}
-
 		return true;
 	}
 

@@ -2,7 +2,7 @@
 /**
  * Taxonomy Registration.
  *
- * @package     Proclaim Sermon Manager
+ * @package     DRPPSM\TaxReg
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
@@ -19,13 +19,13 @@ use DRPPSM\Helper;
 /**
  * Taxonomy Registration.
  *
- * @package     Proclaim Sermon Manager
+ * @package     DRPPSM\TaxReg
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
  * @since       1.0.0
  */
-class TaxonomyReg {
+class TaxReg {
 
 	/**
 	 * Taxonomy.

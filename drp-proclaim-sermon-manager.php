@@ -25,6 +25,8 @@
  * Requires PHP:        8.1
  * Requires at least:   6.4
  * ----------------------------------------------------------------------------
+ *
+ * @todo Implement bible-api.com
  */
 
 namespace DRPPSM;

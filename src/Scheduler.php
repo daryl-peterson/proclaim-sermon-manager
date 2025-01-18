@@ -16,10 +16,8 @@ use DateTimeZone;
 use DRPPSM\Constants\Meta;
 use DRPPSM\Interfaces\Executable;
 use DRPPSM\Interfaces\Registrable;
-use DRPPSM\Traits\SingletonTrait;
 use stdClass;
 use WP_Error;
-use WP_Exception;
 use WP_Post;
 
 defined( 'ABSPATH' ) || exit;
@@ -32,28 +30,15 @@ defined( 'ABSPATH' ) || exit;
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
  * @since       1.0.0
- *
- * @todo Fix this.
  */
 class Scheduler implements Executable, Registrable {
 
-	use SingletonTrait;
-
 	/**
-	 * Jobs queue.
+	 * Jobs instance.
 	 *
-	 * @var null|array
-	 * @since 1.0.0
+	 * @var SchedulerJobs
 	 */
-	private static null|array $jobs = null;
-
-	/**
-	 * Meta data.
-	 *
-	 * @var null|array
-	 * @since 1.0.0
-	 */
-	private static null|array $meta = null;
+	private static SchedulerJobs $jobs;
 
 	/**
 	 * Job name / action.
@@ -104,7 +89,6 @@ class Scheduler implements Executable, Registrable {
 	 */
 	private array $complete_cb;
 
-
 	/**
 	 * Initialize object properties.
 	 *
@@ -115,21 +99,7 @@ class Scheduler implements Executable, Registrable {
 		$this->complete_cb = array( $this, 'complete_build' );
 
 		if ( ! isset( self::$jobs ) ) {
-			self::$jobs = array();
-			$jobs       = get_option( Options::KEY_JOBS );
-
-			if ( is_array( $jobs ) ) {
-				self::$jobs = $jobs;
-			}
-		}
-
-		if ( ! isset( self::$meta ) ) {
-			self::$meta = array();
-			$meta       = get_option( Options::KEY_TAX_META );
-
-			if ( is_array( $meta ) ) {
-				self::$meta = $meta;
-			}
+			self::$jobs = SchedulerJobs::get_instance();
 		}
 	}
 
@@ -165,8 +135,6 @@ class Scheduler implements Executable, Registrable {
 		// Add actions to run jobs.
 		add_action( self::JOB_NAME, $this->job_cb );
 		add_action( self::COMPLETE_NAME, $this->complete_cb );
-
-		add_action( 'shutdown', array( $this, 'shutdown' ) );
 
 		// Add event.
 		$this->add_events();
@@ -269,30 +237,40 @@ class Scheduler implements Executable, Registrable {
 	 * @since 1.0.0
 	 */
 	public function job_runner(): void {
-		Logger::debug( 'JOB RUNNER' );
 
-		// Call action to prevent TaxonomyMeta overwritting data.
-		do_action( 'drppsm_job_runner' );
+		try {
 
-		Logger::debug( array( 'JOBS' => self::$jobs ) );
-		if ( ! is_array( self::$jobs ) ) {
-			return;
-		}
+			// Call action to prevent TaxonomyMeta overwritting data.
+			do_action( 'drppsm_job_runner' );
 
-		foreach ( self::$jobs as $taxonomy => $term_ids ) {
+			Logger::debug( 'JOB RUNNER' );
+			Logger::debug( self::$jobs );
 
-			foreach ( $term_ids as $term_idx => $term_id ) {
-				$obj = $this->get_term_meta( $taxonomy, absint( $term_id ) );
-
-				if ( $obj ) {
-					Logger::debug( array( 'META' => $obj ) );
-					$key = TaxonomyMeta::get_data_key( $taxonomy );
-					update_term_meta( $term_id, $key, $obj );
-					unset( self::$jobs[ $taxonomy ][ $term_idx ] );
-				}
+			$jobs = self::$jobs->get_jobs();
+			if ( ! $jobs ) {
+				return;
 			}
 
-			Logger::debug( array( 'JOBS' => self::$jobs ) );
+			foreach ( $jobs as $taxonomy => $term_ids ) {
+
+				foreach ( $term_ids as $term_id ) {
+
+					$obj = $this->get_term_meta( $taxonomy, absint( $term_id ) );
+
+					if ( $obj ) {
+						$key = TaxMeta::get_data_key( $taxonomy );
+						update_term_meta( $term_id, $key, $obj );
+						self::$jobs->delete( $taxonomy, $term_id );
+					}
+				}
+			}
+		} catch ( \Throwable $th ) {
+			Logger::error(
+				array(
+					'ERROR' => $th->getMessage(),
+					'TRACE' => $th->getTrace(),
+				)
+			);
 		}
 	}
 
@@ -305,30 +283,6 @@ class Scheduler implements Executable, Registrable {
 		Logger::debug( 'COMPLETE BUILD' );
 	}
 
-	/**
-	 * Shutdown and write jobs & meta once.
-	 *
-	 * @return bool
-	 * @since 1.0.0
-	 */
-	public function shutdown(): bool {
-		try {
-			if ( did_action( 'drppsm_job_runner' ) ) {
-
-				return update_option( Options::KEY_JOBS, self::$jobs );
-			}
-			return false;
-
-		} catch ( \Throwable $th ) {
-			Logger::error(
-				array(
-					'ERROR' => $th->getMessage(),
-					'TRACE' => $th->getTrace(),
-				)
-			);
-		}
-		return false;
-	}
 
 	/**
 	 * Get term meta.
@@ -346,15 +300,16 @@ class Scheduler implements Executable, Registrable {
 				'TERM ID'  => $term_id,
 			)
 		);
-		$sermons = TaxUtils::get_sermons_by_term( $taxonomy, $term_id, -1 );
-
-		if ( ! $sermons ) {
-			return false;
-		}
 
 		switch ( $taxonomy ) {
 			case DRPPSM_TAX_SERIES:
-				$obj = $this->get_series_info( $sermons );
+				$obj = new TaxInfo( $taxonomy, $term_id );
+				$obj->init();
+
+				Logger::debug( 'ADDING TAXONOMY' );
+				$sermons = $obj->sermons();
+				$obj->add_taxonomy( DRPPSM_TAX_TOPICS );
+
 				break;
 			case DRPPSM_TAX_TOPICS:
 				break;
@@ -381,6 +336,8 @@ class Scheduler implements Executable, Registrable {
 		$obj['sermons']   = $this->init_object();
 		$obj['dates']     = array();
 		$obj['dates_str'] = '';
+
+		Logger::debug( array( 'POST LIST' => $post_list ) );
 
 		/**
 		 * @var \WP_Post $post_item Post for series.

@@ -74,6 +74,7 @@ class Logger implements LoggerInt {
 	 */
 	public static function error( mixed $context ): bool {
 		$obj = self::get_instance();
+		$obj->log( $context, self::LEVEL_DEBUG );
 		return $obj->log( $context, self::LEVEL_ERROR );
 	}
 

@@ -3,7 +3,7 @@
  * Taxonomy list table.
  * - Adds images to specific taxonomy.
  *
- * @package     DRPPSM\TaxonomyListTable
+ * @package     DRPPSM\TaxListTable
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
@@ -22,13 +22,13 @@ use WP_Term;
  * Taxonomy list table.
  * - Adds images to specific taxonomy.
  *
- * @package     DRPPSM\TaxonomyListTable
+ * @package     DRPPSM\TaxListTable
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
  * @since       1.0.0
  */
-class TaxonomyListTable implements Executable, Registrable {
+class TaxListTable implements Executable, Registrable {
 
 	/**
 	 * Table columns
@@ -216,10 +216,8 @@ class TaxonomyListTable implements Executable, Registrable {
 					break;
 			}
 			$taxonomy = $this->get_tax_name();
-			$action   = "get_{$taxonomy}_meta_extd";
-			Logger::debug( array( 'ACTION' => $action ) );
 
-			do_action( $action, $taxonomy, $term_id );
+			do_action( "check_{$taxonomy}_meta_extd", $taxonomy, $term_id );
 			return $content;
 
 			// @codeCoverageIgnoreStart

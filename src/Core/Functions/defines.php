@@ -126,7 +126,7 @@ define(
 		'preachers'     => 'drppsm_preacher',
 		'series'        => 'drppsm_series',
 		'service_types' => 'drppsm_stype',
-		'topics'        => 'drppms_topics',
+		'topics'        => 'drppsm_topics',
 	)
 );
 

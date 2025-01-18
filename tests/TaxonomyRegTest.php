@@ -2,7 +2,7 @@
 
 namespace DRPPSM\Tests;
 
-use DRPPSM\TaxonomyReg;
+use DRPPSM\TaxReg;
 use WP_Error;
 
 /**
@@ -18,7 +18,7 @@ use WP_Error;
 class TaxonomyRegTest extends BaseTest {
 
 	public function test_get_wp_error() {
-		$obj = new TaxonomyReg( DRPPSM_TAX_PREACHER, DRPPSM_PT_SERMON, 'taxonomy-preacher.php' );
+		$obj = new TaxReg( DRPPSM_TAX_PREACHER, DRPPSM_PT_SERMON, 'taxonomy-preacher.php' );
 
 		$msg    = 'Test Error';
 		$error  = new WP_Error( '', $msg );

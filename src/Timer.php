@@ -11,6 +11,8 @@
 
 namespace DRPPSM;
 
+use DRPPSM\Interfaces\Executable;
+use DRPPSM\Interfaces\Registrable;
 use DRPPSM\Traits\SingletonTrait;
 
 defined( 'ABSPATH' ) || exit;
@@ -24,7 +26,7 @@ defined( 'ABSPATH' ) || exit;
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
  * @since       1.0.0
  */
-class Timer {
+class Timer implements Executable, Registrable {
 
 	use SingletonTrait;
 
@@ -34,7 +36,23 @@ class Timer {
 	 * @var array
 	 * @since 1.0.0
 	 */
-	private array $data = array();
+	private static ?array $data;
+
+	/**
+	 * Flag to indicate if the object has been initialized.
+	 *
+	 * @var bool
+	 * @since 1.0.0
+	 */
+	private static ?bool $init;
+
+	/**
+	 * Flag to indicate if the object has been registered.
+	 *
+	 * @var bool
+	 * @since 1.0.0
+	 */
+	private static ?bool $registered;
 
 	/**
 	 * Initialize object properties.
@@ -43,27 +61,65 @@ class Timer {
 	 * @since 1.0.0
 	 */
 	protected function __construct() {
-		$this->data = array();
+		if ( ! isset( self::$init ) ) {
+			self::$data = array();
+			self::$init = true;
+		}
+	}
+
+	/**
+	 * Get the instance of the object and register hooks if needed.
+	 *
+	 * @return self
+	 * @since 1.0.0
+	 */
+	public static function exec(): self {
+		$obj = self::get_instance();
+		$obj->register();
+		return $obj;
+	}
+
+	/**
+	 * Register the hooks.
+	 *
+	 * @return bool|null Return true if registered.
+	 * @since 1.0.0
+	 */
+	public function register(): ?bool {
+		if ( ! isset( self::$registered ) ) {
+			register_shutdown_function( array( $this, 'shutdown' ) );
+			self::$registered = true;
+			return true;
+		}
+		return false;
 	}
 
 	/**
 	 * Start timer.
 	 *
-	 * @param string $name Current function name.
-	 * @param string $file File name.
+	 * @param mixed  $file File name.
+	 * @param string $name Function name or identifier.
 	 * @return string Key to use for ending the timer.
 	 * @since 1.0.0
 	 */
-	public function start( string $name, string $file ): string {
+	public static function start( mixed $file, string $name = '' ): string {
 
 		if ( empty( $name ) ) {
 			$name = 'none';
 		}
 
 		$file = basename( $file );
+		$file = str_replace( DRPPSM_PATH, '', $file );
+
+		Logger::debug(
+			array(
+				'FILE'     => $file,
+				'FUNCTION' => $name,
+			)
+		);
 
 		$key                         = wp_sprintf( '%s', uniqid( "$file^$name^" ) );
-		$this->data[ $key ]['start'] = hrtime( true );
+		self::$data[ $key ]['start'] = hrtime( true );
 		return $key;
 	}
 
@@ -74,36 +130,40 @@ class Timer {
 	 * @return void
 	 * @since 1.0.0
 	 */
-	public function stop( string $key ): void {
-		if ( ! key_exists( $key, $this->data ) ) {
+	public static function stop( string $key ): void {
+		if ( ! key_exists( $key, self::$data ) ) {
 			return;
 		}
 
-		if ( ! isset( $this->data[ $key ]['start'] ) ) {
+		if ( ! isset( self::$data[ $key ]['start'] ) ) {
 			return;
 		}
 		$stop = hrtime( true );
-		$exec = ( ( $stop - $this->data[ $key ]['start'] ) / 1e9 );
+		$exec = ( ( $stop - self::$data[ $key ]['start'] ) / 1e9 );
 		$exec = sprintf( '%.8f', floatval( $exec ) ) . ' seconds';
 
-		unset( $this->data[ $key ] );
+		unset( self::$data[ $key ] );
 
 		$name = explode( '^', $key );
 		array_pop( $name );
 		$file     = $name[0];
 		$function = end( $name );
 
-		$prefix = substr( "$file $function" . str_repeat( ' ', 40 ), 0, 40 );
-
-		$this->data[] = "$prefix -> execution time $exec";
+		$prefix       = substr( "$file $function" . str_repeat( ' ', 40 ), 0, 40 );
+		self::$data[] = "$prefix -> execution time $exec";
 	}
 
 	/**
 	 * Write to log.
 	 *
 	 * @return void
+	 * @since 1.0.0
 	 */
 	public function shutdown(): void {
-		Logger::debug( $this->data );
+
+		if ( count( self::$data ) === 0 ) {
+			return;
+		}
+		Logger::debug( self::$data );
 	}
 }

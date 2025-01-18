@@ -2,7 +2,7 @@
 /**
  * Taxonomy events.
  *
- * @package     DRPPSM\Taxonomy
+ * @package     DRPPSM\Tax
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
@@ -17,21 +17,16 @@ use WP_Term;
 
 defined( 'ABSPATH' ) || exit;
 
-
-
 /**
- * Store backup of taxonomy when taxomonmy is deleted.
+ * Taxonomy events.
  *
- * @package
- * @category
+ * @package     DRPPSM\Tax
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
  * @since       1.0.0
- *
- * @todo Finish implementing.
  */
-class Taxonomy implements Executable, Registrable {
+class Tax implements Executable, Registrable {
 
 	/**
 	 * Initialize object properties.

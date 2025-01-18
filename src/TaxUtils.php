@@ -253,19 +253,19 @@ class TaxUtils {
 	 * @return null|array
 	 * @since 1.0.0
 	 *
-	 * #### args[post_type]
+	 * #### args[ post_type ]
 	 * - optional - Not required default is drppsm_sermon.
 	 *
-	 * #### args[taxonomy]
+	 * #### args[ taxonomy ]
 	 * - required - Taxonomy name.
 	 *
-	 * #### args[numberposts]
+	 * #### args[ numberposts ]
 	 * - optional - Number of posts to return. Default is 5.
 	 *
-	 * #### args[terms]
+	 * #### args[ terms ]
 	 * - required - Term ID or array of ids.
 	 *
-	 * #### args[meta_query]
+	 * #### args[ meta_query ]
 	 * - optional - Meta query.
 	 */
 	public static function get_term_posts( array $args ): ?array {
@@ -371,13 +371,41 @@ class TaxUtils {
 		// @codingStandardsIgnoreEnd
 	}
 
-
 	/**
 	 * Get query args.
 	 *
 	 * @param array $args Query arguments.
 	 * @return null|array
 	 * @since 1.0.0
+	 *
+	 * #### args[ taxonomy ]
+	 * - required - Taxonomy name.
+	 * - drppsm_bible, drppsm_preacher, drppsm_series, drppms_stype, drppsm_topics
+	 * - books, preachers, series, service_types, topics
+	 *
+	 * #### args[ hide_empty ]
+	 * - optional - Hide empty terms.
+	 *
+	 * #### args[ orderby ]
+	 * - optional - Order by.
+	 *
+	 * #### args[ order]
+	 * - optional - Order.
+	 *
+	 * #### args[ number ]
+	 * - optional - Number of terms to return.
+	 *
+	 * #### args[ offset ]
+	 * - optional - Offset the query.
+	 *
+	 * #### args[ fields ]
+	 * - optional - Fields to return.
+	 *
+	 * #### args[ meta_query ]
+	 * - optional - Meta query.
+	 *
+	 * #### args[ tax_query ]
+	 * - optional - Tax query.
 	 */
 	private static function get_query_args_images( array $args ): ?array {
 
@@ -400,12 +428,12 @@ class TaxUtils {
 			$query_args['orderby'] = $args['orderby'];
 		}
 
-		if ( isset( $args['number'] ) && is_int( $args['number'] ) ) {
-			$query_args['number'] = $args['number'];
+		if ( isset( $args['number'] ) ) {
+			$query_args['number'] = absint( $args['number'] );
 		}
 
-		if ( isset( $args['offset'] ) && is_int( $args['offset'] ) ) {
-			$query_args['offset'] = $args['offset'];
+		if ( isset( $args['offset'] ) ) {
+			$query_args['offset'] = absint( $args['offset'] );
 		}
 
 		if ( key_exists( 'number', $args ) && ! key_exists( 'offset', $args ) ) {
@@ -432,31 +460,35 @@ class TaxUtils {
 	/**
 	 * Get the actual name of the taxonomy.
 	 *
-	 * @param string $tax Taxonomy could be series this would convert to drppsm_series.
+	 * @param string $tax Taxonomy name.
 	 * @return null|string
 	 * @since 1.0.0
+	 *
+	 * #### Taxonomy
+	 * - drppsm_bible, drppsm_preacher, drppsm_series, drppms_stype, drppsm_topics
+	 * - books, preachers, series, service_types, topics
 	 */
-	public static function get_taxonomy_name( string $tax ): ?string {
+	public static function get_taxonomy_name( string $taxonomy ): ?string {
 
 		$result  = null;
 		$tax_map = DRPPSM_TAX_MAP;
-		if ( key_exists( $tax, $tax_map ) ) {
-			$result = $tax_map[ $tax ];
+		if ( key_exists( $taxonomy, $tax_map ) ) {
+			$result = $tax_map[ $taxonomy ];
 		} else {
-			$match = array_search( $tax, $tax_map, true );
+			$match = array_search( $taxonomy, $tax_map, true );
 			if ( $match ) {
-				$result = $tax;
+				$result = $taxonomy;
 			}
 		}
 
 		if ( ! $result ) {
 			// Lets go ahead and pluralize it.
-			if ( substr( $tax, -1 ) !== 's' ) {
-				$tax .= 's';
+			if ( substr( $taxonomy, -1 ) !== 's' ) {
+				$taxonomy .= 's';
 			}
 
-			if ( key_exists( $tax, $tax_map ) ) {
-				$result = $tax_map[ $tax ];
+			if ( key_exists( $taxonomy, $tax_map ) ) {
+				$result = $tax_map[ $taxonomy ];
 			}
 		}
 

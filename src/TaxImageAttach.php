@@ -25,7 +25,7 @@ use WP_Post;
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
  * @since       1.0.0
  */
-class TaxonomyImageAttach implements Executable, Registrable {
+class TaxImageAttach implements Executable, Registrable {
 
 	/**
 	 * Post type.
@@ -86,10 +86,10 @@ class TaxonomyImageAttach implements Executable, Registrable {
 	/**
 	 * Initialize and register hooks.
 	 *
-	 * @return TaxonomyImageAttach
+	 * @return TaxImageAttach
 	 * @since 1.0.0
 	 */
-	public static function exec(): TaxonomyImageAttach {
+	public static function exec(): TaxImageAttach {
 		$obj = new self();
 		$obj->register();
 		return $obj;

@@ -20,7 +20,7 @@ use DRPPSM\PostTypeReg;
 use DRPPSM\Exceptions\PluginException;
 use DRPPSM\Interfaces\Executable;
 use DRPPSM\Interfaces\Registrable;
-use DRPPSM\TaxonomyReg;
+use DRPPSM\TaxReg;
 
 /**
  * Register post types and taxonomies.
@@ -57,11 +57,11 @@ class PostTypeSetup implements Executable, Registrable {
 	protected function __construct() {
 		$pt                        = DRPPSM_PT_SERMON;
 		$this->post_types[ $pt ]   = new PostTypeReg( DRPPSM_PT_SERMON, 'post-type-sermon.php' );
-		$this->taxonomies[ $pt ][] = new TaxonomyReg( DRPPSM_TAX_BIBLE, DRPPSM_PT_SERMON, 'taxonomy-bible-book.php' );
-		$this->taxonomies[ $pt ][] = new TaxonomyReg( DRPPSM_TAX_PREACHER, DRPPSM_PT_SERMON, 'taxonomy-preacher.php' );
-		$this->taxonomies[ $pt ][] = new TaxonomyReg( DRPPSM_TAX_SERIES, DRPPSM_PT_SERMON, 'taxonomy-series.php' );
-		$this->taxonomies[ $pt ][] = new TaxonomyReg( DRPPSM_TAX_SERVICE_TYPE, DRPPSM_PT_SERMON, 'taxonomy-service-type.php' );
-		$this->taxonomies[ $pt ][] = new TaxonomyReg( DRPPSM_TAX_TOPICS, DRPPSM_PT_SERMON, 'taxonomy-topics.php' );
+		$this->taxonomies[ $pt ][] = new TaxReg( DRPPSM_TAX_BIBLE, DRPPSM_PT_SERMON, 'taxonomy-bible-book.php' );
+		$this->taxonomies[ $pt ][] = new TaxReg( DRPPSM_TAX_PREACHER, DRPPSM_PT_SERMON, 'taxonomy-preacher.php' );
+		$this->taxonomies[ $pt ][] = new TaxReg( DRPPSM_TAX_SERIES, DRPPSM_PT_SERMON, 'taxonomy-series.php' );
+		$this->taxonomies[ $pt ][] = new TaxReg( DRPPSM_TAX_SERVICE_TYPE, DRPPSM_PT_SERMON, 'taxonomy-service-type.php' );
+		$this->taxonomies[ $pt ][] = new TaxReg( DRPPSM_TAX_TOPICS, DRPPSM_PT_SERMON, 'taxonomy-topics.php' );
 	}
 
 	/**
@@ -114,7 +114,7 @@ class PostTypeSetup implements Executable, Registrable {
 				/**
 				 * Taxonomy registration interface.
 				 *
-				 * @var TaxonomyReg $taxonomy
+				 * @var TaxReg $taxonomy
 				 */
 				foreach ( $taxonomies as $taxonomy ) {
 					$taxonomy->add();
@@ -154,7 +154,7 @@ class PostTypeSetup implements Executable, Registrable {
 				/**
 				 * Taxonomy registration interface.
 				 *
-				 * @var TaxonomyReg $taxonomy
+				 * @var TaxReg $taxonomy
 				 */
 				foreach ( $taxonomies as $taxonomy ) {
 					$taxonomy->remove();
