@@ -17,7 +17,12 @@ use WP_Term;
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Taxonomy info.
+ * Taxonomy info for associated sermons.
+ *
+ * - books
+ * - preachers
+ * - series
+ * - topics
  *
  * @package     DRPPSM\TaxInfo
  * @author      Daryl Peterson <@gmail.com>
