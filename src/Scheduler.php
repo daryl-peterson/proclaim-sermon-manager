@@ -13,12 +13,8 @@ namespace DRPPSM;
 
 use DateTime;
 use DateTimeZone;
-use DRPPSM\Constants\Meta;
 use DRPPSM\Interfaces\Executable;
 use DRPPSM\Interfaces\Registrable;
-use stdClass;
-use WP_Error;
-use WP_Post;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -257,17 +253,11 @@ class Scheduler implements Executable, Registrable {
 
 					$obj = new TaxInfo( $taxonomy, absint( $term_id ) );
 
-					Logger::debug( $obj->summary() );
-
-					Logger::debug( $obj->preachers()->names( false ) );
-
-					/*
 					if ( $obj ) {
 						$key = TaxMeta::get_data_key( $taxonomy );
 						update_term_meta( $term_id, $key, $obj );
 						self::$jobs->delete( $taxonomy, $term_id );
 					}
-					*/
 				}
 			}
 		} catch ( \Throwable $th ) {
@@ -286,205 +276,28 @@ class Scheduler implements Executable, Registrable {
 	 * @since 1.0.0
 	 */
 	public function complete_build() {
-		Logger::debug( 'COMPLETE BUILD' );
-	}
+		$key = Timer::start( __FILE__, __FUNCTION__ );
+		$tax = array_values( DRPPSM_TAX_MAP );
+		foreach ( $tax as $taxonomy ) {
+			$terms = get_terms(
+				array(
+					'taxonomy'   => $taxonomy,
+					'hide_empty' => true,
+				)
+			);
 
-
-	/**
-	 * Get term meta.
-	 *
-	 * @param string $taxonomy Taxonomy name.
-	 * @param int    $term_id Term id.
-	 * @return mixed
-	 * @since 1.0.0
-	 */
-	private function get_term_meta( string $taxonomy, int $term_id ): mixed {
-
-		switch ( $taxonomy ) {
-			case DRPPSM_TAX_SERIES:
-				$obj = new TaxInfo( $taxonomy, $term_id );
-
-				break;
-			case DRPPSM_TAX_TOPICS:
-				$obj = new TaxInfo( $taxonomy, $term_id );
-
-				break;
-			case DRPPSM_TAX_PREACHER:
-				$obj = new TaxInfo( $taxonomy, $term_id );
-
-				break;
-			case DRPPSM_TAX_BIBLE:
-				$obj = new TaxInfo( $taxonomy, $term_id );
-
-				break;
-		}
-		return null;
-	}
-
-	/**
-	 * Get series info.
-	 *
-	 * @param array $post_list
-	 * @return array
-	 * @since 1.0.0
-	 */
-	private function get_series_info( array $post_list ): array {
-
-		$obj              = array();
-		$obj['preacher']  = $this->init_object();
-		$obj['topics']    = $this->init_object();
-		$obj['sermons']   = $this->init_object();
-		$obj['dates']     = array();
-		$obj['dates_str'] = '';
-
-		Logger::debug( array( 'POST LIST' => $post_list ) );
-
-		/**
-		 * @var \WP_Post $post_item Post for series.
-		 */
-		foreach ( $post_list as $post_item ) {
-			$this->set_sermon_info( $obj['sermons'], $post_list );
-
-			$date           = get_post_meta( $post_item->ID, Meta::DATE, true );
-			$obj['dates'][] = $date;
-			$tax            = DRPPSM_TAX_PREACHER;
-
-			$preacher_terms = get_the_terms( $post_item->ID, $tax );
-			if ( $preacher_terms ) {
-				$this->set_term_info( $obj['preacher'], $preacher_terms, $tax );
-			} else {
-				unset( $obj['preacher'] );
+			if ( is_wp_error( $terms ) || ! is_array( $terms ) || count( $terms ) === 0 ) {
+				continue;
 			}
 
-			$tax    = DRPPSM_TAX_TOPICS;
-			$topics = get_the_terms( $post_item->ID, $tax );
-
-			if ( $topics ) {
-				$this->set_term_info( $obj['topics'], $topics, $tax );
-			} else {
-				unset( $obj['topics'] );
-			}
-		}
-		$this->set_date_info( $obj );
-		return $obj;
-	}
-
-	/**
-	 * Initialize object.
-	 *
-	 * @return stdClass
-	 * @since 1.0.0
-	 */
-	private function init_object() {
-		$obj            = new \stdClass();
-		$obj->names     = array();
-		$obj->names_str = '';
-		$obj->ids       = array();
-		$obj->links     = array();
-
-		$obj->cnt = 0;
-		return $obj;
-	}
-
-	/**
-	 * Get sermon info.
-	 *
-	 * @param stdClass &$object
-	 * @param array    $sermons
-	 * @return void
-	 * @since 1.0.0
-	 */
-	private function set_sermon_info( stdClass &$object, array $sermons ) {
-		$object->names = array();
-		$object->ids   = array();
-
-		foreach ( $sermons as $sermon ) {
-			$object->names[] = $sermon->post_title;
-			$object->ids[]   = $sermon->ID;
-			$object->slugs[] = $sermon->post_name;
-
-			$link = get_permalink( $sermon );
-			if ( ! $link instanceof WP_Error && isset( $link ) ) {
-				$link = esc_url( $link );
-			} else {
-				$link = false;
-			}
-			$object->links[ $sermon->ID ] = $link;
-
-		}
-		$object->names_str = implode( ', ', $object->names );
-		$object->cnt       = count( $object->names );
-	}
-
-	/**
-	 * Set term info.
-	 *
-	 * @param stdClass $object Object to set.
-	 * @param array    $term_list List of terms.
-	 * @param string   $taxonomy Taxonomy name.
-	 * @return void
-	 * @since 1.0.0
-	 */
-	private function set_term_info( stdClass &$object, array $term_list, string $taxonomy ) {
-
-		/**
-		 * @var \WP_Term $item
-		 */
-		foreach ( $term_list as $item ) {
-			if ( ! in_array( $item->name, $object->names ) ) {
-
-				$link = get_term_link( $item, $taxonomy );
-				if ( ! $link instanceof WP_Error && isset( $link ) ) {
-					$link = esc_url( $link );
-				} else {
-					$link = false;
+			foreach ( $terms as $term ) {
+				$obj = new TaxInfo( $taxonomy, $term->term_id );
+				if ( $obj ) {
+					$key = TaxMeta::get_data_key( $taxonomy );
+					update_term_meta( $term->term_id, $key, $obj );
 				}
-
-				$object->names[]                 = $item->name;
-				$object->ids[]                   = $item->term_id;
-				$object->links[ $item->term_id ] = $link;
 			}
 		}
-		$object->names_str = implode( ', ', $object->names );
-		$object->cnt       = count( $object->names );
-	}
-
-	/**
-	 * Set date info.
-	 *
-	 * @param array &$object Initialized object.
-	 * @return void
-	 * @since 1.0.0
-	 */
-	private function set_date_info( array &$object ) {
-		$dates = $object['dates'];
-
-		if ( is_array( $dates ) && 0 !== count( $dates ) ) {
-			$format = 'j F Y';
-			asort( $dates );
-
-			$cnt = count( $dates );
-
-			$date_last = '';
-
-			if ( 1 === $cnt ) {
-				$date_first = wp_date( $format, $dates[0] );
-				if ( ! $date_first ) {
-					$date_first = '';
-				}
-				$object['dates_str'] = $date_first;
-			} elseif ( $cnt > 1 ) {
-				$date_first = wp_date( $format, $dates[0] );
-
-				$date_last = wp_date( $format, $dates[ $cnt - 1 ] );
-				if ( ! $date_last ) {
-					$date_last = '';
-				} else {
-					$date_last = ' - ' . $date_last;
-				}
-
-				$object['dates_str'] = $date_first . $date_last;
-			}
-		}
+		Timer::stop( $key );
 	}
 }

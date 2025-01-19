@@ -104,6 +104,8 @@ class TaxInfo {
 	 */
 	private string $pointer;
 
+	public int $stamp;
+
 	/**
 	 * TaxInfo constructor.
 	 *
@@ -112,13 +114,13 @@ class TaxInfo {
 	 */
 	public function __construct( string $taxonomy, int $term_id ) {
 
+		$this->stamp    = time();
 		$this->taxonomy = $taxonomy;
 		$this->term_id  = $term_id;
-
-		$this->ids     = array();
-		$this->links   = array();
-		$this->names   = array();
-		$this->pointer = DRPPSM_TAX_SERIES;
+		$this->ids      = array();
+		$this->links    = array();
+		$this->names    = array();
+		$this->pointer  = DRPPSM_TAX_SERIES;
 
 		try {
 			$this->set_term( $term_id, $taxonomy );
@@ -354,6 +356,34 @@ class TaxInfo {
 		}
 
 		return count( $this->ids[ $taxonomy ] );
+	}
+
+	/**
+	 * Get term image.
+	 *
+	 * @param int         $term_id
+	 * @param string      $size
+	 * @param null|string $taxonomy
+	 * @return null|string
+	 * @since 1.0.0
+	 */
+	public function image(
+		int $term_id,
+		string $size = ImageSize::SERMON_MEDIUM,
+		?string $taxonomy = null
+	): ?string {
+
+		if ( ! isset( $taxonomy ) ) {
+			$taxonomy = $this->pointer;
+		}
+
+		$url  = null;
+		$meta = get_term_meta( $term_id, "{$taxonomy}_image_id", true );
+
+		if ( ! empty( $meta ) && false !== $meta ) {
+			$url = wp_get_attachment_image_url( $meta, $size );
+		}
+		return $url;
 	}
 
 	/**
