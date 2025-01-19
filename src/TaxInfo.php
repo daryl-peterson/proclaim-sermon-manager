@@ -251,7 +251,11 @@ class TaxInfo {
 	 * @return array|string
 	 * @since 1.0.0
 	 */
-	public function names( bool $array = true, ?string $taxonomy = null ): array|string {
+	public function names(
+		bool $array = true,
+		?string $taxonomy = null
+	): array|string {
+
 		if ( ! isset( $taxonomy ) ) {
 			$taxonomy = $this->pointer;
 		}
@@ -367,7 +371,11 @@ class TaxInfo {
 	 * @since 1.0.0
 	 */
 	private function init() {
-		$sermons = TaxUtils::get_sermons_by_term( $this->taxonomy, $this->term_id, -1 );
+		$sermons = TaxUtils::get_sermons_by_term(
+			$this->taxonomy,
+			$this->term_id,
+			-1
+		);
 
 		$this->sermons = new SermonsInfo( $sermons );
 		foreach ( $sermons as $sermon ) {
