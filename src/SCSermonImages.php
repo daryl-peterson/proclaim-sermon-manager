@@ -224,6 +224,8 @@ class SCSermonImages extends SCBase implements Executable, Registrable {
 
 			);
 
+			$tmp = apply_filters( "get_{$item->taxonomy}_meta_extd", $item->taxonomy, $item->term_id );
+			Logger::debug( array( 'TMP' => $tmp ) );
 			$this->set_ext_data( $item->term_id, $data_temp );
 			$data[] = $data_temp;
 

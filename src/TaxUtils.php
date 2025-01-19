@@ -314,14 +314,6 @@ class TaxUtils {
 	 */
 	public static function get_sermons_by_term( string $taxonomy, int $term_id, int $per_page = 50 ): ?array {
 
-		Logger::debug(
-			array(
-				'TAXONOMY' => $taxonomy,
-				'TERM_ID'  => $term_id,
-				'PER PAGE' => $per_page,
-			)
-		);
-
 		$post_args = array(
 			'post_type'      => DRPPSM_PT_SERMON,
 			'showposts'      => -1,
@@ -340,11 +332,8 @@ class TaxUtils {
 			),
 		);
 
-		Logger::debug( array( 'POST_ARGS' => $post_args ) );
-
 		// phpcs:disable
 		$sermons = query_posts( $post_args );
-		Logger::debug($sermons);
 		// phpcs:enable
 
 		if ( ! is_array( $sermons ) ) {

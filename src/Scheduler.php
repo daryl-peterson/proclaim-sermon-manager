@@ -255,13 +255,19 @@ class Scheduler implements Executable, Registrable {
 
 				foreach ( $term_ids as $term_id ) {
 
-					$obj = $this->get_term_meta( $taxonomy, absint( $term_id ) );
+					$obj = new TaxInfo( $taxonomy, absint( $term_id ) );
 
+					Logger::debug( $obj->summary() );
+
+					Logger::debug( $obj->preachers()->names( false ) );
+
+					/*
 					if ( $obj ) {
 						$key = TaxMeta::get_data_key( $taxonomy );
 						update_term_meta( $term_id, $key, $obj );
 						self::$jobs->delete( $taxonomy, $term_id );
 					}
+					*/
 				}
 			}
 		} catch ( \Throwable $th ) {
@@ -294,31 +300,25 @@ class Scheduler implements Executable, Registrable {
 	 */
 	private function get_term_meta( string $taxonomy, int $term_id ): mixed {
 
-		Logger::debug(
-			array(
-				'TAXONOMY' => $taxonomy,
-				'TERM ID'  => $term_id,
-			)
-		);
-
 		switch ( $taxonomy ) {
 			case DRPPSM_TAX_SERIES:
 				$obj = new TaxInfo( $taxonomy, $term_id );
-				$obj->init();
-
-				Logger::debug( 'ADDING TAXONOMY' );
-				$sermons = $obj->sermons();
-				$obj->add_taxonomy( DRPPSM_TAX_TOPICS );
 
 				break;
 			case DRPPSM_TAX_TOPICS:
+				$obj = new TaxInfo( $taxonomy, $term_id );
+
 				break;
 			case DRPPSM_TAX_PREACHER:
+				$obj = new TaxInfo( $taxonomy, $term_id );
+
 				break;
 			case DRPPSM_TAX_BIBLE:
+				$obj = new TaxInfo( $taxonomy, $term_id );
+
 				break;
 		}
-		return $obj;
+		return null;
 	}
 
 	/**

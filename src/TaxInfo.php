@@ -11,7 +11,7 @@
 
 namespace DRPPSM;
 
-use DRPPSM\Constants\Meta;
+use WP_Post;
 use WP_Term;
 
 defined( 'ABSPATH' ) || exit;
@@ -26,38 +26,6 @@ defined( 'ABSPATH' ) || exit;
  * @since       1.0.0
  */
 class TaxInfo {
-
-	/**
-	 * Taxonomy name.
-	 *
-	 * @var string
-	 * @since 1.0.0
-	 */
-	private string $taxonomy;
-
-	/**
-	 * Term id.
-	 *
-	 * @var int
-	 * @since 1.0.0
-	 */
-	private int $term_id;
-
-	/**
-	 * Term name.
-	 *
-	 * @var string
-	 * @since 1.0.0
-	 */
-	private ?WP_Term $term;
-
-	/**
-	 * Names array
-	 *
-	 * @var array
-	 * @since 1.0.0
-	 */
-	private array $names;
 
 	/**
 	 * Ids array
@@ -76,28 +44,60 @@ class TaxInfo {
 	private array $links;
 
 	/**
-	 * Dates array
+	 * Names array
 	 *
 	 * @var array
 	 * @since 1.0.0
 	 */
-	private array $dates;
+	private array $names;
 
 	/**
-	 * Array of sermon post type.
+	 * Taxonomy name.
 	 *
-	 * @var array
+	 * @var string
 	 * @since 1.0.0
 	 */
-	private ?array $sermons;
+	private string $taxonomy;
 
 	/**
-	 * Array of taxonomies.
+	 * Term id.
 	 *
-	 * @var array
+	 * @var int
 	 * @since 1.0.0
 	 */
-	private array $taxonomies;
+	private int $term_id;
+
+	/**
+	 * Term object.
+	 *
+	 * @var WP_Term
+	 * @since 1.0.0
+	 */
+	private WP_Term $term;
+
+	/**
+	 * Sermon info.
+	 *
+	 * @var SermonsInfo
+	 * @since 1.0.0
+	 */
+	private ?SermonsInfo $sermons;
+
+	/**
+	 * Taxonomy list
+	 *
+	 * @var array
+	 * @since
+	 */
+	private array $list;
+
+	/**
+	 * Pointer for taxonomy.
+	 *
+	 * @var string
+	 * @since 1.0.0
+	 */
+	private string $pointer;
 
 	/**
 	 * TaxInfo constructor.
@@ -105,36 +105,24 @@ class TaxInfo {
 	 * @param string $taxonomy Taxonomy name.
 	 * @since 1.0.0
 	 */
-	public function __construct( string $taxonomy, int $term_id, ?array $sermons = null ) {
+	public function __construct( string $taxonomy, int $term_id ) {
+
 		$this->taxonomy = $taxonomy;
 		$this->term_id  = $term_id;
 
-		$this->names      = array();
-		$this->ids        = array();
-		$this->links      = array();
-		$this->dates      = array();
-		$this->taxonomies = array();
+		$this->ids     = array();
+		$this->links   = array();
+		$this->names   = array();
+		$this->pointer = DRPPSM_TAX_SERIES;
 
 		try {
-			$terms = get_term( $term_id, $taxonomy );
-			if ( is_wp_error( $terms ) ) {
-				$this->term = null;
-			} elseif ( is_array( $terms ) ) {
-					$this->term = $terms[0];
-			} else {
-				$this->term = $terms;
-			}
+			$this->set_term( $term_id, $taxonomy );
+			$this->init();
 
-			if ( $sermons ) {
-				$this->sermons = $sermons;
-			} else {
-				$this->sermons = null;
-			}
+			Logger::debug( $this );
 
 			// @codeCoverageIgnoreStart
 		} catch ( \Exception $e ) {
-			$this->term    = null;
-			$this->sermons = array();
 			Logger::error(
 				array(
 					'MESSAGE' => $e->getMessage(),
@@ -146,243 +134,6 @@ class TaxInfo {
 	}
 
 	/**
-	 * Initialize.
-	 *
-	 * @return void
-	 * @since 1.0.0
-	 */
-	public function init() {
-
-		$key = Timer::start( __FILE__, __FUNCTION__ );
-		if ( ! $this->sermons ) {
-			$this->sermons = TaxUtils::get_sermons_by_term( $this->taxonomy, $this->term_id, -1 );
-		}
-		foreach ( $this->sermons as $sermon ) {
-			$this->names[] = $sermon->post_title;
-			$this->add_id( $sermon->ID );
-
-			$date = get_post_meta( $sermon->ID, Meta::DATE, true );
-			if ( $date ) {
-				$this->dates[] = $date;
-			} else {
-				$this->dates[] = strtotime( $sermon->post_date );
-			}
-		}
-		Timer::stop( $key );
-	}
-
-	/**
-	 * Refresh term info.
-	 *
-	 * @return void
-	 * @since 1.0.0
-	 */
-	public function refresh() {
-		if ( ! $this->term ) {
-			return;
-		}
-		$this->sermons = TaxUtils::get_sermons_by_term( $this->taxonomy, $this->term_id, -1 );
-		$this->init();
-	}
-
-	/**
-	 * Count.
-	 *
-	 * @return int
-	 * @since 1.0.0
-	 */
-	public function count(): int {
-		return count( $this->names );
-	}
-
-	/**
-	 * Name.
-	 *
-	 * @return string
-	 * @since 1.0.0
-	 */
-	public function name(): string {
-		if ( count( $this->names ) === 0 ) {
-			return 'none';
-		}
-		return implode( ', ', $this->names );
-	}
-
-	/**
-	 * Get names.
-	 *
-	 * @return array
-	 * @since 1.0.0
-	 */
-	public function names(): array {
-		return $this->names;
-	}
-
-	/**
-	 * Get ids.
-	 *
-	 * @return array
-	 * @since 1.0.0
-	 */
-	public function ids(): array {
-		return $this->ids;
-	}
-
-	/**
-	 * Get links.
-	 *
-	 * @return array
-	 * @since 1.0.0
-	 */
-	public function links(): array {
-		return $this->links;
-	}
-
-	/**
-	 * Get link.
-	 *
-	 * @param int $id Id.
-	 * @return string|null
-	 * @since 1.0.0
-	 */
-	public function link( int $id ): ?string {
-		if ( ! isset( $this->links[ $id ] ) ) {
-			return null;
-		}
-		return $this->links[ $id ];
-	}
-
-	/**
-	 * Get date.
-	 *
-	 * @param string $format Date format.
-	 * @return null|string
-	 * @since 1.0.0
-	 */
-	public function date( string $format = 'j F Y' ): ?string {
-		$dates = $this->dates;
-
-		if ( count( $this->dates ) === 0 ) {
-			return null;
-		}
-
-		asort( $dates );
-
-		$cnt       = count( $dates );
-		$date_last = '';
-
-		if ( 1 === $cnt ) {
-			$first = wp_date( $format, $dates[0] );
-			if ( ! $first ) {
-				$first = null;
-			}
-			return $first;
-
-		} elseif ( $cnt > 1 ) {
-			$first = wp_date( $format, $dates[0] );
-			if ( ! $first ) {
-				return null;
-			}
-
-			$last = wp_date( $format, $dates[ $cnt - 1 ] );
-
-			if ( ! $last ) {
-				$last = '';
-			} else {
-				$last = ' - ' . $date_last;
-			}
-
-			return $first . $last;
-		}
-	}
-
-	/**
-	 * Get dates.
-	 *
-	 * @return array
-	 * @since 1.0.0
-	 */
-	public function dates(): array {
-		return $this->dates;
-	}
-
-	/**
-	 * Get sermons.
-	 *
-	 * @return array
-	 * @since 1.0.0
-	 */
-	public function sermons(): ?array {
-		return $this->sermons;
-	}
-
-	/**
-	 * Get taxonomy.
-	 *
-	 * @return null|array
-	 * @since 1.0.0
-	 */
-	public function topics(): ?array {
-		if ( ! isset( $this->taxonomies[ DRPPSM_TAX_TOPICS ] ) ) {
-			return null;
-		}
-		return $this->taxonomies[ DRPPSM_TAX_TOPICS ];
-	}
-
-	/**
-	 * Add toxonomy to object.
-	 *
-	 * @param string $taxonomy
-	 * @return void
-	 * @since 1.0.0
-	 */
-	public function add_taxonomy( string $taxonomy ): void {
-
-		try {
-			$tax = array_values( DRPPSM_TAX_MAP );
-			if ( ! in_array( $taxonomy, $tax, true ) ) {
-				return;
-			}
-
-			foreach ( $this->sermons as $sermon ) {
-				$terms = get_the_terms( $sermon->ID, $taxonomy );
-				if ( is_wp_error( $terms ) || ! $terms ) {
-					continue;
-				}
-
-				/**
-				 * @var WP_Term $term
-				 */
-				foreach ( $terms as $term ) {
-					$this->taxonomies[ $taxonomy ][ $term->name ] = new TaxInfo( $taxonomy, $term->term_id, $this->sermons );
-					$this->taxonomies[ $taxonomy ][ $term->name ]->init();
-				}
-			}
-		} catch ( \Throwable $th ) {
-			Logger::error(
-				array(
-					'MESSAGE' => $th->getMessage(),
-					'TRACE'   => $th->getTrace(),
-				)
-			);
-		}
-	}
-
-	/**
-	 * Get a taxonomy added by add_taxonomy method.
-	 *
-	 * @param string $taxonomy Taxonomy name.
-	 * @return array|null
-	 * @since 1.0.0
-	 */
-	public function get_taxonomy( string $taxonomy ): ?array {
-		if ( ! isset( $this->taxonomies[ $taxonomy ] ) ) {
-			return null;
-		}
-		return $this->taxonomies[ $taxonomy ];
-	}
-
-	/**
 	 * Serialize magic method.
 	 *
 	 * @return array
@@ -390,13 +141,12 @@ class TaxInfo {
 	 */
 	public function __serialize(): array {
 		return array(
-			'taxonomy'   => $this->taxonomy,
-			'term'       => $this->term,
-			'term_id'    => $this->term_id,
-			'names'      => $this->names,
-			'ids'        => $this->ids,
-			'links'      => $this->links,
-			'taxonomies' => $this->taxonomies,
+			'ids'      => $this->ids,
+			'links'    => $this->links,
+			'names'    => $this->names,
+			'object'   => $this->term,
+			'taxonomy' => $this->taxonomy,
+			'term_id'  => $this->term_id,
 		);
 	}
 
@@ -408,12 +158,12 @@ class TaxInfo {
 	 * @since 1.0.0
 	 */
 	public function __unserialize( array $data ): void {
-		$this->taxonomy   = $data['taxonomy'];
-		$this->term_id    = $data['term_id'];
-		$this->names      = $data['names'];
-		$this->ids        = $data['ids'];
-		$this->links      = $data['links'];
-		$this->taxonomies = $data['taxonomies'];
+		$this->ids      = $data['ids'];
+		$this->links    = $data['links'];
+		$this->names    = $data['names'];
+		$this->term     = $data['object'];
+		$this->taxonomy = $data['taxonomy'];
+		$this->term_id  = $data['term_id'];
 	}
 
 	/**
@@ -423,22 +173,270 @@ class TaxInfo {
 	 * @since 1.0.0
 	 */
 	public function __toString(): string {
-		return 'Info : ' . $this->name();
+		$msg  = "Term : $this->term->name ";
+		$msg .= 'Sermons : ' . $this->sermons->count();
+		$msg .= 'Books : ' . $this->books()->count();
+		$msg .= 'Series : ' . $this->series()->count();
+		$msg .= 'Topics : ' . $this->topics()->count();
+		return $msg;
 	}
 
 	/**
-	 * Add id.
+	 * Get summary.
 	 *
-	 * @param int $id Id.
+	 * @return array
+	 * @since 1.0.0
+	 */
+	public function summary(): array {
+		return array(
+			'term'     => $this->term->name,
+			'term_id'  => $this->term_id,
+			'taxonomy' => $this->taxonomy,
+			'sermons'  => $this->sermons->count(),
+			'books'    => $this->books()->count(),
+			'series'   => $this->series()->count(),
+			'topics'   => $this->topics()->count(),
+		);
+	}
+
+	/**
+	 * Switch to books taxonomy.
+	 *
+	 * @return self
+	 * @since 1.0.0
+	 */
+	public function books() {
+		$this->pointer = DRPPSM_TAX_BIBLE;
+		return $this;
+	}
+
+	/**
+	 * Switch to series taxonomy.
+	 *
+	 * @return self
+	 * @since 1.0.0
+	 */
+	public function series() {
+		$this->pointer = DRPPSM_TAX_SERIES;
+		return $this;
+	}
+
+	/**
+	 * Switch to topics taxonomy.
+	 *
+	 * @return self
+	 * @since 1.0.0
+	 */
+	public function topics() {
+		$this->pointer = DRPPSM_TAX_TOPICS;
+		return $this;
+	}
+
+	/**
+	 * Switch to preachers taxonomy.
+	 *
+	 * @return self
+	 * @since 1.0.0
+	 */
+	public function preachers() {
+		$this->pointer = DRPPSM_TAX_PREACHER;
+		return $this;
+	}
+
+	/**
+	 * Get names array or string.
+	 *
+	 * @param bool        $array True to return array, false to return string.
+	 * @param null|string $taxonomy Optional taxonomy name.
+	 * @return array|string
+	 * @since 1.0.0
+	 */
+	public function names( bool $array = true, ?string $taxonomy = null ): array|string {
+		if ( ! isset( $taxonomy ) ) {
+			$taxonomy = $this->pointer;
+		}
+
+		if ( ! isset( $this->names[ $taxonomy ] ) ) {
+			return array();
+		}
+
+		if ( $array ) {
+			return array_values( $this->names[ $taxonomy ] );
+		}
+
+		$names = $this->names[ $taxonomy ];
+		asort( $names );
+
+		return implode( ', ', $names );
+	}
+
+	/**
+	 * Get ids array.
+	 *
+	 * @param null|string $taxonomy Optional taxonomy name.
+	 * @return array
+	 * @since 1.0.0
+	 */
+	public function ids( ?string $taxonomy = null ): array {
+		if ( ! isset( $taxonomy ) ) {
+			$taxonomy = $this->pointer;
+		}
+
+		if ( ! isset( $this->ids[ $taxonomy ] ) ) {
+			return array();
+		}
+
+		return $this->ids[ $taxonomy ];
+	}
+
+	/**
+	 * Get links array.
+	 *
+	 * @param null|string $taxonomy Optional taxonomy name.
+	 * @return array
+	 * @since 1.0.0
+	 */
+	public function links( ?string $taxonomy = null ): array {
+		if ( ! isset( $taxonomy ) ) {
+			$taxonomy = $this->pointer;
+		}
+
+		if ( ! isset( $this->links[ $taxonomy ] ) ) {
+			return array();
+		}
+
+		return $this->links[ $taxonomy ];
+	}
+
+	/**
+	 * Get term link.
+	 *
+	 * @param int         $id Term id.
+	 * @param null|string $taxonomy Optional taxonomy name.
+	 * @return string|null
+	 * @since 1.0.0
+	 */
+	public function link( int $id, ?string $taxonomy = null ): ?string {
+		if ( ! isset( $taxonomy ) ) {
+			$taxonomy = $this->pointer;
+		}
+
+		if ( ! isset( $this->links[ $taxonomy ][ $id ] ) ) {
+			return null;
+		}
+
+		return $this->links[ $taxonomy ][ $id ];
+	}
+
+	/**
+	 * Get taxonomy count.
+	 *
+	 * @param null|string $taxonomy Optional taxonomy name.
+	 * @return int
+	 * @since 1.0.0
+	 */
+	public function count( ?string $taxonomy = null ): int {
+		if ( ! isset( $taxonomy ) ) {
+			$taxonomy = $this->pointer;
+		}
+
+		if ( ! isset( $this->ids[ $taxonomy ] ) ) {
+			return 0;
+		}
+
+		return count( $this->ids[ $taxonomy ] );
+	}
+
+	/**
+	 * Refresh object.
+	 *
+	 * @return void
+	 */
+	public function refresh() {
+		$this->ids     = array();
+		$this->links   = array();
+		$this->names   = array();
+		$this->pointer = $this->taxonomy;
+		$this->init();
+	}
+
+	/**
+	 * Initialize.
+	 *
 	 * @return void
 	 * @since 1.0.0
 	 */
-	private function add_id( int $id ): void {
-		$this->ids[] = $id;
-		$link        = get_term_link( $id, $this->taxonomy );
+	private function init() {
+		$sermons = TaxUtils::get_sermons_by_term( $this->taxonomy, $this->term_id, -1 );
 
-		if ( ! is_wp_error( $link ) ) {
-			$this->links[ $id ] = $link;
+		$this->sermons = new SermonsInfo( $sermons );
+		foreach ( $sermons as $sermon ) {
+			$this->set_terms( $sermon );
 		}
+	}
+
+	/**
+	 * Set term info.
+	 *
+	 * @param WP_Post $sermon Sermon post.
+	 * @return void
+	 * @since 1.0.0
+	 */
+	private function set_terms( WP_Post $sermon ): void {
+		$this->list = array_values( DRPPSM_TAX_MAP );
+		foreach ( $this->list as $tax ) {
+			$terms = wp_get_post_terms( $sermon->ID, $tax );
+
+			if ( is_wp_error( $terms ) || ! is_array( $terms ) || count( $terms ) === 0 ) {
+				continue;
+			}
+
+			$term = $terms[0];
+			$tid  = $term->term_id;
+
+			if ( ! isset( $this->ids[ $tax ] ) ) {
+				$this->ids[ $tax ] = array();
+			}
+
+			if ( in_array( $tid, $this->ids[ $tax ] ) ) {
+				continue;
+			}
+
+			$this->ids[ $tax ][]         = $tid;
+			$this->names[ $tax ][ $tid ] = $term->name;
+			$link                        = get_term_link( $tid, $tax );
+			if ( ! is_wp_error( $link ) ) {
+				$this->links[ $tax ][ $tid ] = $link;
+			}
+		}
+	}
+
+	/**
+	 * Set object.
+	 *
+	 * @param int    $term_id Term id.
+	 * @param string $taxonomy Taxonomy name.
+	 * @return void
+	 * @since 1.0.0
+	 */
+	private function set_term( int $term_id, string $taxonomy ): void {
+		$term = get_term( $term_id, $taxonomy );
+
+		if ( is_wp_error( $term ) || ! isset( $term ) ) {
+			return;
+		}
+
+		if ( is_array( $term ) && count( $term ) !== 0 ) {
+			$obj = $term[0];
+		}
+		if ( is_a( $term, 'WP_Term' ) ) {
+			$obj = $term;
+		}
+
+		if ( ! isset( $obj ) ) {
+			return;
+		}
+
+		$this->term = $obj;
 	}
 }

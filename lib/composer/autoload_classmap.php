@@ -80,6 +80,7 @@ return array(
     'DRPPSM\\SermonImageAttach' => $baseDir . '/src/SermonImageAttach.php',
     'DRPPSM\\SermonListTable' => $baseDir . '/src/SermonListTable.php',
     'DRPPSM\\SermonSorting' => $baseDir . '/src/SermonSorting.php',
+    'DRPPSM\\SermonsInfo' => $baseDir . '/src/SermonsInfo.php',
     'DRPPSM\\Settings' => $baseDir . '/src/Settings.php',
     'DRPPSM\\SettingsAdvanced' => $baseDir . '/src/SettingsAdvanced.php',
     'DRPPSM\\SettingsBase' => $baseDir . '/src/SettingsBase.php',
