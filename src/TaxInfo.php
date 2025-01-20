@@ -16,6 +16,7 @@ use WP_Term;
 
 defined( 'ABSPATH' ) || exit;
 
+
 /**
  * Taxonomy info for associated sermons.
  *
@@ -33,7 +34,7 @@ defined( 'ABSPATH' ) || exit;
 class TaxInfo {
 
 	/**
-	 * Ids array
+	 * Ids array.
 	 *
 	 * @var array
 	 * @since 1.0.0
@@ -41,7 +42,7 @@ class TaxInfo {
 	private array $ids;
 
 	/**
-	 * Links array
+	 * Links array.
 	 *
 	 * @var array
 	 * @since 1.0.0
@@ -49,7 +50,7 @@ class TaxInfo {
 	private array $links;
 
 	/**
-	 * Names array
+	 * Names array.
 	 *
 	 * @var array
 	 * @since 1.0.0
@@ -78,7 +79,15 @@ class TaxInfo {
 	 * @var WP_Term
 	 * @since 1.0.0
 	 */
-	private WP_Term $term;
+	private ?WP_Term $term;
+
+	/**
+	 * Time.
+	 *
+	 * @var int
+	 * @since 1.0.0
+	 */
+	public int $time;
 
 	/**
 	 * Sermon info.
@@ -89,7 +98,7 @@ class TaxInfo {
 	private ?SermonsInfo $sermons;
 
 	/**
-	 * Taxonomy list
+	 * Taxonomy list.
 	 *
 	 * @var array
 	 * @since
@@ -104,8 +113,6 @@ class TaxInfo {
 	 */
 	private string $pointer;
 
-	public int $stamp;
-
 	/**
 	 * TaxInfo constructor.
 	 *
@@ -114,7 +121,7 @@ class TaxInfo {
 	 */
 	public function __construct( string $taxonomy, int $term_id ) {
 
-		$this->stamp    = time();
+		$this->time     = time();
 		$this->taxonomy = $taxonomy;
 		$this->term_id  = $term_id;
 		$this->ids      = array();
@@ -361,29 +368,39 @@ class TaxInfo {
 	/**
 	 * Get term image.
 	 *
-	 * @param int         $term_id
-	 * @param string      $size
-	 * @param null|string $taxonomy
+	 * @param string $size
 	 * @return null|string
+	 */
+	public function image( string $size = ImageSize::SERMON_MEDIUM ): ?string {
+
+		$term = $this->term;
+		if ( ! isset( $term ) || $term->has_image === false ) {
+			return null;
+		}
+
+		if ( is_array( $term->images ) && isset( $term->images[ $size ] ) ) {
+			return $term->images[ $size ];
+		}
+	}
+
+	/**
+	 * Get term object.
+	 *
+	 * @return WP_Term
 	 * @since 1.0.0
 	 */
-	public function image(
-		int $term_id,
-		string $size = ImageSize::SERMON_MEDIUM,
-		?string $taxonomy = null
-	): ?string {
+	public function term() {
+		return $this->term;
+	}
 
-		if ( ! isset( $taxonomy ) ) {
-			$taxonomy = $this->pointer;
-		}
-
-		$url  = null;
-		$meta = get_term_meta( $term_id, "{$taxonomy}_image_id", true );
-
-		if ( ! empty( $meta ) && false !== $meta ) {
-			$url = wp_get_attachment_image_url( $meta, $size );
-		}
-		return $url;
+	/**
+	 * Get taxonomy label.
+	 *
+	 * @return string|null
+	 * @since 1.0.0
+	 */
+	public function label(): ?string {
+		return get_taxonomy_field( $this->pointer, 'label' );
 	}
 
 	/**
@@ -406,6 +423,7 @@ class TaxInfo {
 	 * @since 1.0.0
 	 */
 	private function init() {
+
 		$sermons = TaxUtils::get_sermons_by_term(
 			$this->taxonomy,
 			$this->term_id,
@@ -441,16 +459,13 @@ class TaxInfo {
 				$this->ids[ $tax ] = array();
 			}
 
-			if ( in_array( $tid, $this->ids[ $tax ] ) ) {
+			if ( in_array( $tid, $this->ids[ $tax ], true ) ) {
 				continue;
 			}
 
 			$this->ids[ $tax ][]         = $tid;
 			$this->names[ $tax ][ $tid ] = $term->name;
-			$link                        = get_term_link( $tid, $tax );
-			if ( ! is_wp_error( $link ) ) {
-				$this->links[ $tax ][ $tid ] = $link;
-			}
+			$this->links[ $tax ][ $tid ] = $this->get_term_link( $tid, $tax );
 		}
 	}
 
@@ -463,6 +478,8 @@ class TaxInfo {
 	 * @since 1.0.0
 	 */
 	private function set_term( int $term_id, string $taxonomy ): void {
+
+		// @return WP_Term|array|WP_Error|null
 		$term = get_term( $term_id, $taxonomy );
 
 		if ( is_wp_error( $term ) || ! isset( $term ) ) {
@@ -471,8 +488,7 @@ class TaxInfo {
 
 		if ( is_array( $term ) && count( $term ) !== 0 ) {
 			$obj = $term[0];
-		}
-		if ( is_a( $term, 'WP_Term' ) ) {
+		} elseif ( is_a( $term, 'WP_Term' ) ) {
 			$obj = $term;
 		}
 
@@ -480,6 +496,71 @@ class TaxInfo {
 			return;
 		}
 
+		$obj->link = $this->get_term_link( $term_id, $taxonomy );
+		$this->set_images( $obj );
+		$this->term_cleanup( $obj );
 		$this->term = $obj;
+	}
+
+	/**
+	 * Set term images.
+	 *
+	 * @param WP_Term $term Term object.
+	 * @return void
+	 * @since 1.0.0
+	 */
+	private function set_images( WP_Term $term ): void {
+		$sizes    = get_intermediate_image_sizes();
+		$meta_key = $this->taxonomy . '_image_id';
+		$images   = array();
+		$meta     = get_term_meta( $term->term_id, $meta_key, true );
+		if ( empty( $meta ) || false === $meta ) {
+			$term->has_image = false;
+			$term->images    = array();
+		}
+
+		foreach ( $sizes as $size ) {
+
+			$image = wp_get_attachment_image_url( $meta, $size );
+			if ( ! $image ) {
+				continue;
+			}
+			$images[ $size ] = $image;
+		}
+		if ( count( $images ) > 0 ) {
+			$term->has_image = true;
+			$term->images    = $images;
+			return;
+		}
+	}
+
+	/**
+	 * Term cleanup, remove unwanted properties.
+	 *
+	 * @param WP_Term $term Term object.
+	 * @return void
+	 * @since 1.0.0
+	 */
+	private function term_cleanup( WP_Term &$term ): void {
+		unset( $term->filter );
+		unset( $term->parent );
+		unset( $term->term_group );
+		unset( $term->term_order );
+	}
+
+	/**
+	 * Get term link.
+	 *
+	 * @param int    $term_id Term id.
+	 * @param string $taxonomy Taxonomy name.
+	 * @return string|null
+	 * @since 1.0.0
+	 */
+	private function get_term_link( int $term_id, string $taxonomy ): ?string {
+		$link = get_term_link( $term_id, $taxonomy );
+		if ( is_wp_error( $link ) ) {
+			return null;
+		}
+		return $link;
 	}
 }

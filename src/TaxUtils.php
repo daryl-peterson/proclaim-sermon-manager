@@ -26,10 +26,6 @@ defined( 'ABSPATH' ) || exit;
  */
 class TaxUtils {
 
-	private static $trans_key = 'drppsm_tax_utils';
-
-	private static $term_opt_key = 'drppsm_term_opts';
-
 	/**
 	 * Return registered taxonomies for post type.
 	 *
@@ -192,9 +188,10 @@ class TaxUtils {
 		}
 
 		$list = get_terms( $query_args );
-		if ( $list instanceof WP_Error ) {
+		if ( is_wp_error( $list ) ) {
 			return null;
 		}
+
 		if ( is_string( $list ) ) {
 			$list = array( $list );
 		}

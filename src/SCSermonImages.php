@@ -140,7 +140,9 @@ class SCSermonImages extends SCBase implements Executable, Registrable {
 			get_partial(
 				Templates::ImageList,
 				array(
-					'list' => $this->data,
+					'list'    => $this->data,
+					'columns' => 'col' . $args['columns'],
+					'size'    => $args['size'],
 				)
 			);
 			get_partial( Templates::Pagination, $this->paginate );
@@ -184,13 +186,13 @@ class SCSermonImages extends SCBase implements Executable, Registrable {
 			return;
 		}
 
-		$data     = array();
-		$count    = 0;
-		$meta_key = $args['display'] . '_image_id';
+		$data  = array();
+		$count = 0;
 
 		$key  = Transient::SERIES_INFO;
 		$data = Transient::get( $key );
 		if ( $data ) {
+			Logger::debug( array( 'TRANSIENT' => $data ) );
 			$this->data = $data;
 			return;
 		}
@@ -200,35 +202,12 @@ class SCSermonImages extends SCBase implements Executable, Registrable {
 		 */
 		foreach ( $list as $item ) {
 
-			$url  = null;
-			$meta = get_term_meta( $item->term_id, $meta_key, true );
-
-			if ( ! empty( $meta ) && false !== $meta ) {
-				$url = wp_get_attachment_image_url( $meta, $args['size'] );
-			}
-			if ( ! $url ) {
+			$meta = apply_filters( "get_{$item->taxonomy}_meta_extd", $item->taxonomy, $item->term_id );
+			if ( ! $meta ) {
 				continue;
 			}
 
-			$data_temp = array(
-				'term_id'          => $item->term_id,
-				'term_name'        => $item->name,
-				'term_tax'         => $item->taxonomy,
-				'term_link'        => esc_url( get_term_link( $item, $item->taxonomy ) ),
-				'term_description' => $item->description,
-				'image_size'       => $args['size'],
-				'image_url'        => $url,
-				'columns'          => 'col' . $args['columns'],
-				'count'            => $item->count,
-				'preacher_label'   => get_taxonomy_field( DRPPSM_TAX_PREACHER, 'label' ),
-
-			);
-
-			$tmp = apply_filters( "get_{$item->taxonomy}_meta_extd", $item->taxonomy, $item->term_id );
-			Logger::debug( array( 'TMP' => $tmp ) );
-			$this->set_ext_data( $item->term_id, $data_temp );
-			$data[] = $data_temp;
-
+			$data[] = $meta;
 			++$count;
 		}
 		if ( 0 === $count ) {
@@ -237,42 +216,6 @@ class SCSermonImages extends SCBase implements Executable, Registrable {
 		}
 		$this->data = $data;
 		Transient::set( $key, $this->data );
-	}
-
-	/**
-	 *
-	 * @param int   $term_id
-	 * @param array &$data
-	 * @return void
-	 * @since 1.0.0
-	 */
-	private function set_ext_data( int $term_id, array &$data ) {
-		$transient = Transient::get( Transient::SERIES_INFO_EXTD );
-
-		if ( ! $transient ) {
-			$data['preacher_cnt']   = 1;
-			$data['preacher_names'] = '';
-			$data['dates']          = '';
-			return;
-		}
-
-		Logger::debug( array( 'TRANSIENT' => $transient ) );
-
-		if ( isset( $transient->preacher ) ) {
-			$data['preacher_cnt']   = $transient->preacher->cnt;
-			$data['preacher_names'] = implode( ', ', $transient->preacher->names );
-		}
-		if ( $data['preacher_cnt'] === 0 ) {
-			$data['preacher_cnt'] = 1;
-		}
-
-		if ( isset( $transient->dates_str ) ) {
-			$data_temp['dates'] = $transient->dates_str;
-
-		}
-
-		// $options['term_id'] = $data_temp;
-		// Transients::set_transient(Transients::SERIES_INFO,$options);
 	}
 
 	/**

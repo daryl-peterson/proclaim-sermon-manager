@@ -47,6 +47,7 @@ function get_archive_order( string $default_order = 'DESC' ) {
  */
 function get_taxonomy_field( $taxonomy, $field_name ): ?string {
 	$tax = get_taxonomy( $taxonomy );
+	Logger::debug( array( 'TAX' => $tax ) );
 
 	if ( ! $tax instanceof WP_Taxonomy ) {
 		return null;
@@ -102,6 +103,23 @@ function set_type_def( string $item_name, mixed $item_value ): void {
 	}
 	$trans[ $item_name ] = $item_value;
 	Transient::set( $key, $trans );
+}
+
+/**
+ * Check if an array has all the keys.
+ *
+ * @param array $keys
+ * @param array $array
+ * @return bool
+ * @since 1.0.0
+ */
+function has_keys( array $keys, array $array ): bool {
+	foreach ( $keys as $key ) {
+		if ( ! key_exists( $key, $array ) ) {
+			return false;
+		}
+	}
+	return true;
 }
 
 /**

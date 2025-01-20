@@ -23,12 +23,15 @@ if ( ! isset( $args ) || ! is_array( $args ) ) {
 	return;
 }
 
-if ( ! key_exists( 'list', $args ) ) {
+if ( ! has_keys( array( 'list', 'columns', 'size' ), $args ) ) {
 	render_html( $failure );
+	return;
 }
+
+
 $list = $args['list'];
-
-
+$cols = $args['columns'];
+$size = $args['size'];
 ?>
 
 
@@ -37,20 +40,52 @@ $list = $args['list'];
 		<ul>
 
 <?php
+
+/**
+ * @var TaxInfo $item
+ */
 foreach ( $list as $item ) :
 
+	$term = $item->term();
+
+	$preacher     = false;
+	$preacher_cnt = $item->preachers()->count();
+	$preacher_lbl = $item->preachers()->label();
+	if ( $preacher_cnt > 0 ) {
+		$preacher = true;
+	}
+
+	$books = $item->books()->count();
+
+	$topic     = false;
+	$topic_cnt = $item->topics()->count();
+	$topic_lbl = $item->topics()->label();
+	if ( $topic_cnt > 0 ) {
+		$topic = true;
+	}
+
 	?>
-			<li class="<?php echo esc_attr( $item['columns'] ); ?>">
-				<a href="<?php echo esc_attr( $item['term_link'] ); ?>" title="<?php echo esc_attr( $item['term_name'] ); ?>">
-				<img src="<?php echo esc_attr( $item['image_url'] ); ?>">
+			<li class="<?php echo esc_attr( $cols ); ?>">
+
+			<a href="<?php echo esc_attr( $term->link ); ?>" title="<?php echo esc_attr( $term->name ); ?>">
+				<img src="<?php echo esc_attr( $term->images[ $size ] ); ?>">
 				</a>
 				<div class="list-info">
-					<h5><?php echo esc_html( $item['term_name'] ); ?></h5>
+					<h5><?php echo esc_html( $term->name ); ?></h5>
 
-					<p class="ext-data">
-						<?php echo esc_html( Settings::get( Settings::ARCHIVE_SLUG ) ); ?>  : <?php echo esc_html( $item['count'] ); ?><br>
-						<?php echo esc_html( $item['preacher_label'] ); ?> : <?php echo esc_html( $item['preacher_cnt'] ); ?>
-					</p>
+					<ul>
+						<?php if ( $preacher ) : ?>
+						<li>
+							<?php echo esc_html( $preacher_lbl ); ?>: <?php echo esc_html( $preacher_cnt ); ?>
+						</li>
+						<?php endif; ?>
+						<?php if ( $topic ) : ?>
+						<li>
+							<?php echo esc_html( $topic_lbl ); ?>: <?php echo esc_html( $topic_cnt ); ?>
+						</li>
+						<?php endif; ?>
+
+					</ul>
 				</div>
 			</li>
 

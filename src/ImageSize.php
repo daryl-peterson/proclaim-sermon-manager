@@ -27,11 +27,58 @@ defined( 'ABSPATH' ) || exit;
 class ImageSize {
 
 	/**
-	 * Image sizes.
+	 * Small image size.
+	 *
+	 * - size 75x75
+	 * - crop false
+	 *
+	 * @var string
+	 * @since 1.0.0
 	 */
-	public const SERMON_SMALL  = 'proclaim_small';
+	public const SERMON_SMALL = 'proclaim_small';
+
+	/**
+	 * Medium image size.
+	 *
+	 * - size 300x200
+	 * - crop false
+	 *
+	 * @var string
+	 * @since 1.0.0
+	 */
 	public const SERMON_MEDIUM = 'proclaim_medium';
-	public const SERMON_WIDE   = 'proclaim_wide';
+
+	/**
+	 * Wide image size.
+	 *
+	 * - size 940x350
+	 * - crop false
+	 *
+	 * @var string
+	 * @since 1.0.0
+	 */
+	public const SERMON_WIDE = 'proclaim_wide';
+
+	/**
+	 * Full image size.
+	 *
+	 * - size 1200x630
+	 * - crop false
+	 *
+	 * @var string
+	 * @since 1.0.0
+	 */
+	public const SERMON_FULL = 'proclaim_full';
+
+	/**
+	 * Image sizes list.
+	 */
+	public const LIST = array(
+		self::SERMON_SMALL,
+		self::SERMON_MEDIUM,
+		self::SERMON_WIDE,
+		self::SERMON_FULL,
+	);
 
 	/**
 	 * Size arrarrys.
@@ -47,19 +94,26 @@ class ImageSize {
 	 */
 	protected function __construct() {
 		$this->sizes = array(
-			self::SERMON_SMALL  => array(
+
+			apply_filters( 'drppsm_image_size', self::SERMON_SMALL ) => array(
 				75,
 				75,
 				false,
 			),
-			self::SERMON_MEDIUM => array(
+
+			apply_filters( 'drppsm_image_size', self::SERMON_MEDIUM ) => array(
 				300,
 				200,
 				false,
 			),
-			self::SERMON_WIDE   => array(
+			apply_filters( 'drppsm_image_size', self::SERMON_WIDE )   => array(
 				940,
 				350,
+				false,
+			),
+			apply_filters( 'drppsm_image_size', self::SERMON_FULL )   => array(
+				1200,
+				630,
 				false,
 			),
 		);
@@ -132,7 +186,7 @@ class ImageSize {
 	 * @return mixed|array
 	 * @since 1.0.0
 	 */
-	public function get_all_image_sizes() {
+	public static function get_all_image_sizes() {
 		global $_wp_additional_image_sizes;
 
 		$default_image_sizes = get_intermediate_image_sizes();
@@ -148,15 +202,5 @@ class ImageSize {
 		}
 
 		return $image_sizes;
-	}
-
-	/**
-	 * Get sizes to define.
-	 *
-	 * @return array
-	 * @since 1.0.0
-	 */
-	public function get_sizes(): array {
-		return $this->sizes;
 	}
 }
