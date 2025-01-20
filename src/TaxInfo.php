@@ -220,7 +220,7 @@ class TaxInfo {
 	 * @since 1.0.0
 	 */
 	public function books() {
-		$this->pointer = DRPPSM_TAX_BIBLE;
+		$this->pointer = DRPPSM_TAX_BOOK;
 		return $this;
 	}
 
@@ -242,7 +242,7 @@ class TaxInfo {
 	 * @since 1.0.0
 	 */
 	public function topics() {
-		$this->pointer = DRPPSM_TAX_TOPICS;
+		$this->pointer = DRPPSM_TAX_TOPIC;
 		return $this;
 	}
 
