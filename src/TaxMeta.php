@@ -187,7 +187,6 @@ class TaxMeta implements Executable, Registrable {
 		self::$jobs->add( $taxonomy, $term_id );
 	}
 
-
 	public function delete_taxonomy(
 		int $term_id,
 		int $tax_id,
@@ -209,6 +208,7 @@ class TaxMeta implements Executable, Registrable {
 	 *
 	 * @param string $taxonomy
 	 * @return string
+	 * @since 1.0.0
 	 */
 	public static function get_data_key( string $taxonomy ): string {
 		return "{$taxonomy}_info";
@@ -216,5 +216,26 @@ class TaxMeta implements Executable, Registrable {
 
 	public static function get_runner_key( string $taxonomy ): string {
 		return "{$taxonomy}_runner";
+	}
+
+	/**
+	 * Update term meta.
+	 *
+	 * @param string $taxonomy Taxonomy name.
+	 * @param int    $term_id Term ID.
+	 * @return bool
+	 * @since 1.0.0
+	 */
+	public static function update_term_meta( string $taxonomy, int $term_id ): ?TaxInfo {
+		$obj = new TaxInfo( $taxonomy, absint( $term_id ) );
+
+		if ( isset( $obj->ready ) && true === $obj->ready ) {
+			$key = self::get_data_key( $taxonomy );
+			update_term_meta( $term_id, $key, $obj );
+			self::$jobs->delete( $taxonomy, $term_id );
+			return $obj;
+
+		}
+		return null;
 	}
 }

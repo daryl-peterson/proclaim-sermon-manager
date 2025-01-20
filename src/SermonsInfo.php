@@ -187,6 +187,16 @@ class SermonsInfo {
 	}
 
 	/**
+	 * Get label.
+	 *
+	 * @return string|null
+	 * @since 1.0.0
+	 */
+	public function label(): ?string {
+		return get_post_field( DRPPSM_PT_SERMON, 'label' );
+	}
+
+	/**
 	 * Get date.
 	 *
 	 * @param string $format Date format.

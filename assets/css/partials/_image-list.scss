@@ -11,6 +11,10 @@
 		align-items: stretch;
 	}
 
+	ul.list-meta li {
+		padding: 0;
+	}
+
 	li {
 		padding: 1em 0em;
 		list-style: none !important;
@@ -56,7 +60,7 @@
 		padding: 1em;
 		background-color: white;
 		border: 1px solid #e0e0e0;
-		height: 135px;
+		height: 110px;
 	}
 
 	li .list-info h5 {

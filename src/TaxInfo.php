@@ -114,6 +114,14 @@ class TaxInfo {
 	private string $pointer;
 
 	/**
+	 * Ready flag.
+	 *
+	 * @var bool
+	 * @since 1.0.0
+	 */
+	public bool $ready;
+
+	/**
 	 * TaxInfo constructor.
 	 *
 	 * @param string $taxonomy Taxonomy name.
@@ -132,15 +140,15 @@ class TaxInfo {
 		try {
 			$this->set_term( $term_id, $taxonomy );
 			$this->init();
-
-			Logger::debug( $this );
+			$this->ready = true;
 
 			// @codeCoverageIgnoreStart
-		} catch ( \Exception $e ) {
+		} catch ( \Throwable $th ) {
+			$this->ready = false;
 			Logger::error(
 				array(
-					'MESSAGE' => $e->getMessage(),
-					'TRACE'   => $e->getTrace(),
+					'MESSAGE' => $th->getMessage(),
+					'TRACE'   => $th->getTrace(),
 				)
 			);
 			// @codeCoverageIgnoreEnd
@@ -159,8 +167,10 @@ class TaxInfo {
 			'links'    => $this->links,
 			'names'    => $this->names,
 			'object'   => $this->term,
+			'sermons'  => $this->sermons,
 			'taxonomy' => $this->taxonomy,
 			'term_id'  => $this->term_id,
+
 		);
 	}
 
@@ -175,6 +185,7 @@ class TaxInfo {
 		$this->ids      = $data['ids'];
 		$this->links    = $data['links'];
 		$this->names    = $data['names'];
+		$this->sermons  = $data['sermons'];
 		$this->term     = $data['object'];
 		$this->taxonomy = $data['taxonomy'];
 		$this->term_id  = $data['term_id'];
@@ -225,6 +236,17 @@ class TaxInfo {
 	}
 
 	/**
+	 * Switch to preachers taxonomy.
+	 *
+	 * @return self
+	 * @since 1.0.0
+	 */
+	public function preachers() {
+		$this->pointer = DRPPSM_TAX_PREACHER;
+		return $this;
+	}
+
+	/**
 	 * Switch to series taxonomy.
 	 *
 	 * @return self
@@ -243,17 +265,6 @@ class TaxInfo {
 	 */
 	public function topics() {
 		$this->pointer = DRPPSM_TAX_TOPIC;
-		return $this;
-	}
-
-	/**
-	 * Switch to preachers taxonomy.
-	 *
-	 * @return self
-	 * @since 1.0.0
-	 */
-	public function preachers() {
-		$this->pointer = DRPPSM_TAX_PREACHER;
 		return $this;
 	}
 
@@ -384,6 +395,16 @@ class TaxInfo {
 	}
 
 	/**
+	 * Get sermons info.
+	 *
+	 * @return SermonsInfo
+	 * @since 1.0.0
+	 */
+	public function sermons(): SermonsInfo {
+		return $this->sermons;
+	}
+
+	/**
 	 * Get term object.
 	 *
 	 * @return WP_Term
@@ -401,6 +422,56 @@ class TaxInfo {
 	 */
 	public function label(): ?string {
 		return get_taxonomy_field( $this->pointer, 'label' );
+	}
+
+	/**
+	 * Check if this taxonomy has books.
+	 *
+	 * @return bool
+	 * @since 1.0.0
+	 */
+	public function has_books(): bool {
+		return $this->count( DRPPSM_TAX_BOOK ) > 0;
+	}
+
+	/**
+	 * Check if this taxonomy has preachers.
+	 *
+	 * @return bool
+	 * @since 1.0.0
+	 */
+	public function has_preachers(): bool {
+		return $this->count( DRPPSM_TAX_TOPIC ) > 0;
+	}
+
+	/**
+	 * Check if this taxonomy has sermons.
+	 *
+	 * @return bool
+	 * @since 1.0.0
+	 */
+	public function has_sermons(): bool {
+		return $this->sermons->count() > 0;
+	}
+
+	/**
+	 * Check if this taxonomy has series.
+	 *
+	 * @return bool
+	 * @since 1.0.0
+	 */
+	public function has_series(): bool {
+		return $this->count( DRPPSM_TAX_SERIES ) > 0;
+	}
+
+	/**
+	 * Check if this taxonomy has topics.
+	 *
+	 * @return bool
+	 * @since 1.0.0
+	 */
+	public function has_topics(): bool {
+		return $this->count( DRPPSM_TAX_TOPIC ) > 0;
 	}
 
 	/**

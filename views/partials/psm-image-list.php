@@ -47,21 +47,30 @@ $size = $args['size'];
 foreach ( $list as $item ) :
 
 	$term = $item->term();
+	$book = $preacher = $sermon = $topic = false;
 
-	$preacher     = false;
-	$preacher_cnt = $item->preachers()->count();
-	$preacher_lbl = $item->preachers()->label();
-	if ( $preacher_cnt > 0 ) {
-		$preacher = true;
+	if ( $item->has_books() ) {
+		$book     = true;
+		$book_cnt = $item->books()->count();
+		$book_lbl = $item->books()->label();
 	}
 
-	$books = $item->books()->count();
+	if ( $item->has_preachers() ) {
+		$preacher     = true;
+		$preacher_cnt = $item->preachers()->count();
+		$preacher_lbl = $item->preachers()->label();
+	}
 
-	$topic     = false;
-	$topic_cnt = $item->topics()->count();
-	$topic_lbl = $item->topics()->label();
-	if ( $topic_cnt > 0 ) {
-		$topic = true;
+	if ( $item->has_sermons() ) {
+		$sermon     = true;
+		$sermon_cnt = $item->sermons()->count();
+		$sermon_lbl = $item->sermons()->label();
+	}
+
+	if ( $item->has_topics() ) {
+		$topic     = true;
+		$topic_cnt = $item->topics()->count();
+		$topic_lbl = $item->topics()->label();
 	}
 
 	?>
@@ -73,7 +82,12 @@ foreach ( $list as $item ) :
 				<div class="list-info">
 					<h5><?php echo esc_html( $term->name ); ?></h5>
 
-					<ul>
+					<ul class="list-meta">
+						<?php if ( $sermon ) : ?>
+						<li>
+							<?php echo esc_html( $sermon_lbl ); ?>: <?php echo esc_html( $sermon_cnt ); ?>
+						</li>
+						<?php endif; ?>
 						<?php if ( $preacher ) : ?>
 						<li>
 							<?php echo esc_html( $preacher_lbl ); ?>: <?php echo esc_html( $preacher_cnt ); ?>
@@ -82,6 +96,11 @@ foreach ( $list as $item ) :
 						<?php if ( $topic ) : ?>
 						<li>
 							<?php echo esc_html( $topic_lbl ); ?>: <?php echo esc_html( $topic_cnt ); ?>
+						</li>
+						<?php endif; ?>
+						<?php if ( $book ) : ?>
+						<li>
+							<?php echo esc_html( $book_lbl ); ?>: <?php echo esc_html( $book_cnt ); ?>
 						</li>
 						<?php endif; ?>
 

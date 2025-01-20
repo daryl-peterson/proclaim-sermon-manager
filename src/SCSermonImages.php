@@ -28,15 +28,15 @@ use WP_Term;
  */
 class SCSermonImages extends SCBase implements Executable, Registrable {
 
+	/**
+	 * Taxonomy transient map.
+	 */
 	public const TRANSIENT_MAP = array(
-		DRPPSM_TAX_SERIES   => Transient::SERIES_INFO,
-		DRPPSM_TAX_PREACHER => Transient::PREACHER_INFO,
-		DRPPSM_TAX_TOPIC    => Transient::TOPIC_INFO,
 		DRPPSM_TAX_BOOK     => Transient::BOOK_INFO,
-
-
+		DRPPSM_TAX_PREACHER => Transient::PREACHER_INFO,
+		DRPPSM_TAX_SERIES   => Transient::SERIES_INFO,
+		DRPPSM_TAX_TOPIC    => Transient::TOPIC_INFO,
 	);
-
 
 	/**
 	 * Shortcode name.
@@ -210,10 +210,10 @@ class SCSermonImages extends SCBase implements Executable, Registrable {
 		$data  = array();
 		$count = 0;
 
-		$key  = Transient::SERIES_INFO;
-		$data = Transient::get( $key );
+		$this->transient_key = self::TRANSIENT_MAP[ $args['display'] ];
+		$data                = Transient::get( $this->transient_key );
+
 		if ( $data ) {
-			Logger::debug( array( 'TRANSIENT' => $data ) );
 			$this->data = $data;
 			return;
 		}
@@ -223,7 +223,7 @@ class SCSermonImages extends SCBase implements Executable, Registrable {
 		 */
 		foreach ( $list as $item ) {
 
-			$meta = apply_filters( "get_{$item->taxonomy}_meta_extd", $item->taxonomy, $item->term_id );
+			$meta = $this->get_meta( $item );
 			if ( ! $meta ) {
 				continue;
 			}
@@ -236,7 +236,22 @@ class SCSermonImages extends SCBase implements Executable, Registrable {
 			return;
 		}
 		$this->data = $data;
-		Transient::set( $key, $this->data );
+		Transient::set( $this->transient_key, $this->data );
+	}
+
+	/**
+	 * Get meta data for term.
+	 *
+	 * @param WP_Term $item Term object.
+	 * @return null|TaxInfo
+	 * @since 1.0.0
+	 */
+	private function get_meta( WP_Term $item ): ?TaxInfo {
+		$meta = apply_filters( "get_{$item->taxonomy}_meta_extd", $item->taxonomy, $item->term_id );
+		if ( $meta ) {
+			return $meta;
+		}
+		return null;
 	}
 
 	/**

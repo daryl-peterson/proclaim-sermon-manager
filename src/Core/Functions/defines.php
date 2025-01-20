@@ -263,6 +263,16 @@ define(
 	__( 'The label should be in the singular form.', 'drppsm' )
 );
 
+define(
+	'DRPPSM_MSG_LABEL_PLURAL',
+	__( 'The label should be in the plural form.', 'drppsm' )
+);
+
+define(
+	'DRPPSM_MSG_SLUG_NOTE',
+	__( 'Note: This also changes the slugs.', 'drppsm' )
+);
+
 
 
 /*

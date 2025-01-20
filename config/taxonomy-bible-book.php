@@ -21,23 +21,34 @@ if ( $trans ) {
 
 $permalinks = App::init()->permalinks();
 
+$single = ucwords( __( 'book', 'drppsm' ) );
+$plural = ucwords( __( 'books', 'drppsm' ) );
+
 
 $result = array(
 	'hierarchical'      => false,
-	'label'             => __( 'Books', 'drppsm' ),
+	'label'             => $plural,
 	'labels'            => array(
-		'name'              => __( 'Bible books', 'drppsm' ),
-		'singular_name'     => __( 'Book', 'drppsm' ),
-		'menu_name'         => _x( 'Books', 'menu', 'drppsm' ),
+		'name'              => $plural,
+		'singular_name'     => $single,
+		'menu_name'         => $plural,
 		'parent_item'       => null,
 		'parent_item_colon' => null,
-		'search_items'      => __( 'Search books', 'drppsm' ),
-		'all_items'         => __( 'All books', 'drppsm' ),
-		'edit_item'         => __( 'Edit book', 'drppsm' ),
-		'update_item'       => __( 'Update book', 'drppsm' ),
-		'add_new_item'      => __( 'Add new book', 'drppsm' ),
-		'new_item_name'     => __( 'New book name', 'drppsm' ),
-		'not_found'         => __( 'No books found', 'drppsm' ),
+
+		/* translators: %s: search */
+		'search_items'      => wp_sprintf( __( 'Search %s', 'drppsm' ), $plural ),
+		/* translators: %s: all */
+		'all_items'         => wp_sprintf( __( 'All %s', 'drppsm' ), $plural ),
+		/* translators: %s: edit */
+		'edit_item'         => wp_sprintf( __( 'Edit %s', 'drppsm' ), $single ),
+		/* translators: %s: update */
+		'update_item'       => wp_sprintf( __( 'Update %s', 'drppsm' ), $single ),
+		/* translators: %s: add new */
+		'add_new_item'      => wp_sprintf( __( 'Add New %s', 'drppsm' ), $single ),
+		/* translators: %s: new name */
+		'new_item_name'     => wp_sprintf( __( 'New %s name', 'drppsm' ), $single ),
+		/* translators: %s: not found */
+		'not_found'         => wp_sprintf( __( 'No %s found', 'drppsm' ), $plural ),
 	),
 	'show_ui'           => true,
 	'query_var'         => true,

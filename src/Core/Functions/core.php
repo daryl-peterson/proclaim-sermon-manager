@@ -13,6 +13,8 @@ namespace DRPPSM;
 
 use ReflectionObject;
 use stdClass;
+use WP_Post;
+use WP_Post_Type;
 use WP_Taxonomy;
 
 /**
@@ -58,6 +60,39 @@ function get_taxonomy_field( $taxonomy, $field_name ): ?string {
 
 	if ( isset( $tax->labels->$field_name ) ) {
 		return $tax->labels->$field_name;
+	}
+
+	return null;
+}
+
+/**
+ * Get a field from the post type definition.
+ *
+ * @param mixed $post_type Post type name.
+ * @param mixed $field_name Field to get.
+ * @return null|string
+ * @since 1.0.0
+ */
+function get_post_field( $post_type, $field_name ): ?string {
+	$post = get_post_type_object( $post_type );
+	Logger::debug(
+		array(
+			'POST TYPE'  => $post_type,
+			'POST'       => $post,
+			'FIELD NAME' => $field_name,
+		)
+	);
+
+	if ( ! $post instanceof WP_Post_Type ) {
+		return null;
+	}
+
+	if ( isset( $post->$field_name ) ) {
+		return $post->$field_name;
+	}
+
+	if ( isset( $post->labels->$field_name ) ) {
+		return $post->labels->$field_name;
 	}
 
 	return null;

@@ -52,9 +52,26 @@ class Transient {
 	 */
 	public const TERMS_WITH_IMAGES = 'drppsm_term_with_images';
 
+	/**
+	 * Preacher info.
+	 *
+	 * @since 1.0.0
+	 */
 	public const PREACHER_INFO = 'drppsm_preacher_info';
-	public const TOPIC_INFO    = 'drppsm_topic_info';
-	public const BOOK_INFO     = 'drppsm_book_info';
+
+	/**
+	 * Topic info.
+	 *
+	 * @since 1.0.0
+	 */
+	public const TOPIC_INFO = 'drppsm_topic_info';
+
+	/**
+	 * Book info.
+	 *
+	 * @since 1.0.0
+	 */
+	public const BOOK_INFO = 'drppsm_book_info';
 
 	/**
 	 * Series info.
@@ -77,7 +94,11 @@ class Transient {
 	 * @since 1.0.0
 	 */
 	private const EXPIRES = array(
+		self::BOOK_INFO              => self::BOOK_INFO . '_exp',
+		self::PREACHER_INFO          => self::PREACHER_INFO . '_exp',
 		self::SERIES_INFO            => self::SERIES_INFO . '_exp',
+		self::TOPIC_INFO             => self::TOPIC_INFO . '_exp',
+
 		self::SERMON_LIST_TABLE_INIT => self::SERMON_LIST_TABLE_INIT . '_exp',
 		self::TERM_COUNT             => self::TERM_COUNT . '_exp',
 		self::TERM_OPTS              => self::TERM_OPTS . '_exp',
@@ -93,7 +114,11 @@ class Transient {
 	 * @todo adjust times.
 	 */
 	private const TIMES = array(
+		self::BOOK_INFO              => DAY_IN_SECONDS,
+		self::PREACHER_INFO          => HOUR_IN_SECONDS,
 		self::SERIES_INFO            => HOUR_IN_SECONDS,
+		self::TOPIC_INFO             => DAY_IN_SECONDS,
+
 		self::SERMON_LIST_TABLE_INIT => WEEK_IN_SECONDS,
 		self::TERM_COUNT             => HOUR_IN_SECONDS,
 		self::TERM_OPTS              => DAY_IN_SECONDS,

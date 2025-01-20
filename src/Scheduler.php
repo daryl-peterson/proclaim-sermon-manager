@@ -251,13 +251,7 @@ class Scheduler implements Executable, Registrable {
 
 				foreach ( $term_ids as $term_id ) {
 
-					$obj = new TaxInfo( $taxonomy, absint( $term_id ) );
-
-					if ( $obj ) {
-						$key = TaxMeta::get_data_key( $taxonomy );
-						update_term_meta( $term_id, $key, $obj );
-						self::$jobs->delete( $taxonomy, $term_id );
-					}
+					TaxMeta::update_term_meta( $taxonomy, absint( $term_id ) );
 				}
 			}
 		} catch ( \Throwable $th ) {
@@ -276,7 +270,6 @@ class Scheduler implements Executable, Registrable {
 	 * @since 1.0.0
 	 */
 	public function complete_build() {
-		$key = Timer::start( __FILE__, __FUNCTION__ );
 		$tax = array_values( DRPPSM_TAX_MAP );
 		foreach ( $tax as $taxonomy ) {
 			$terms = get_terms(
@@ -291,13 +284,8 @@ class Scheduler implements Executable, Registrable {
 			}
 
 			foreach ( $terms as $term ) {
-				$obj = new TaxInfo( $taxonomy, $term->term_id );
-				if ( $obj ) {
-					$key = TaxMeta::get_data_key( $taxonomy );
-					update_term_meta( $term->term_id, $key, $obj );
-				}
+				TaxMeta::update_term_meta( $taxonomy, absint( $term->term_id ) );
 			}
 		}
-		Timer::stop( $key );
 	}
 }
