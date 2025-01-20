@@ -84,7 +84,7 @@ define(
  *
  * @since 1.0.0
  */
-define( 'DRPPSM_TAX_BIBLE', 'drppsm_bible' );
+define( 'DRPPSM_TAX_BOOK', 'drppsm_bible' );
 
 /**
  * Preacher taxonomy.

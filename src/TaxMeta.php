@@ -15,7 +15,7 @@ namespace DRPPSM;
 
 use DRPPSM\Interfaces\Executable;
 use DRPPSM\Interfaces\Registrable;
-
+use WP_Term;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -78,6 +78,9 @@ class TaxMeta implements Executable, Registrable {
 		foreach ( $taxonomies as $taxonomy ) {
 			add_filter( "get_{$taxonomy}_meta_extd", array( $this, 'get_taxonomy_meta' ), 10, 2 );
 			add_action( "check_{$taxonomy}_meta_extd", array( $this, 'check_taxonomy_meta' ), 10, 2 );
+			add_action( "created_{$taxonomy}", array( $this, 'created_taxonomy' ), 10, 4 );
+			add_action( "edited_{$taxonomy}", array( $this, 'edited_taxonomy' ), 10, 4 );
+			add_action( "delete_{$taxonomy}", array( $this, 'delete_taxonomy' ), 10, 4 );
 		}
 		return true;
 	}
@@ -122,6 +125,83 @@ class TaxMeta implements Executable, Registrable {
 			return null;
 		}
 		return $meta;
+	}
+
+	/**
+	 * Add taxonomy to job queue.
+	 *
+	 * @param int   $term_id
+	 * @param int   $tt_id
+	 * @param array $args
+	 * @since 1.0.0
+	 */
+	public function created_taxonomy(
+		int $term_id,
+		int $tt_id,
+		array $args
+	) {
+		global $taxnow;
+
+		$taxonomy = $taxnow;
+
+		// If taxonomy is not set, get it from term_id.
+		if ( ! isset( $taxonomy ) || empty( $taxonomy ) ) {
+			$taxonomy = get_term_by( 'term_id', $term_id );
+		}
+
+		// If taxonomy is still not set, return.
+		if ( ! isset( $taxonomy ) || empty( $taxonomy ) ) {
+			return;
+		}
+
+		self::$jobs->add( $taxonomy, $term_id );
+	}
+
+	/**
+	 * Add taxonomy to job queue.
+	 *
+	 * @param int   $term_id
+	 * @param int   $tt_id
+	 * @param array $args
+	 * @since 1.0.0
+	 */
+	public function edited_taxonomy(
+		int $term_id,
+		int $tt_id,
+		array $args
+	) {
+		global $taxnow;
+
+		$taxonomy = $taxnow;
+
+		// If taxonomy is not set, get it from term_id.
+		if ( ! isset( $taxonomy ) || empty( $taxonomy ) ) {
+			$taxonomy = get_term_by( 'term_id', $term_id );
+		}
+
+		// If taxonomy is still not set, return.
+		if ( ! isset( $taxonomy ) || empty( $taxonomy ) ) {
+			return;
+		}
+
+		self::$jobs->add( $taxonomy, $term_id );
+	}
+
+
+	public function delete_taxonomy(
+		int $term_id,
+		int $tax_id,
+		WP_Term $deleted_term,
+		array $bject_ids
+	) {
+		Logger::debug(
+			array(
+				'TERM_ID' => $term_id,
+				'TAX_ID'  => $tax_id,
+				'TERM'    => $deleted_term,
+				'OBJECTS' => $bject_ids,
+			)
+		);
 	}
 
 	/**

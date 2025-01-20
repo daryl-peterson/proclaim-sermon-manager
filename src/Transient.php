@@ -52,6 +52,10 @@ class Transient {
 	 */
 	public const TERMS_WITH_IMAGES = 'drppsm_term_with_images';
 
+	public const PREACHER_INFO = 'drppsm_preacher_info';
+	public const TOPIC_INFO    = 'drppsm_topic_info';
+	public const BOOK_INFO     = 'drppsm_book_info';
+
 	/**
 	 * Series info.
 	 *

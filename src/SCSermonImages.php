@@ -28,6 +28,16 @@ use WP_Term;
  */
 class SCSermonImages extends SCBase implements Executable, Registrable {
 
+	public const TRANSIENT_MAP = array(
+		DRPPSM_TAX_SERIES   => Transient::SERIES_INFO,
+		DRPPSM_TAX_PREACHER => Transient::PREACHER_INFO,
+		DRPPSM_TAX_TOPICS   => Transient::TOPIC_INFO,
+		DRPPSM_TAX_BOOK     => Transient::BOOK_INFO,
+
+
+	);
+
+
 	/**
 	 * Shortcode name.
 	 *
@@ -66,6 +76,17 @@ class SCSermonImages extends SCBase implements Executable, Registrable {
 	 * @since 1.0.0
 	 */
 	private null|array $data;
+
+
+	/**
+	 * Transient key.
+	 *
+	 * @var string
+	 * @since 1.0.0
+	 */
+	private string $transient_key;
+
+
 
 	/**
 	 * Initialize object properties.

@@ -13,7 +13,7 @@ namespace DRPPSM;
 
 defined( 'ABSPATH' ) || exit;
 
-$trans_key = DRPPSM_TAX_BIBLE;
+$trans_key = DRPPSM_TAX_BOOK;
 $trans     = get_type_def( $trans_key );
 if ( $trans ) {
 	return $trans;
@@ -44,7 +44,7 @@ $result = array(
 	'show_in_rest'      => true,
 	'show_admin_column' => true,
 	'rewrite'           => array(
-		'slug'       => $permalinks[ DRPPSM_TAX_BIBLE ],
+		'slug'       => $permalinks[ DRPPSM_TAX_BOOK ],
 		'with_front' => false,
 	),
 	'capabilities'      => DRPPSM_TAX_CAPS,

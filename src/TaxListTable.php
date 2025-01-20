@@ -59,7 +59,7 @@ class TaxListTable implements Executable, Registrable {
 	 * @since 1.0.0
 	 */
 	protected function __construct() {
-		$this->tax_bible = DRPPSM_TAX_BIBLE;
+		$this->tax_bible = DRPPSM_TAX_BOOK;
 
 		$this->columns = array(
 			'cb'           => '<input type="checkbox" />',

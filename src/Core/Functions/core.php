@@ -47,7 +47,6 @@ function get_archive_order( string $default_order = 'DESC' ) {
  */
 function get_taxonomy_field( $taxonomy, $field_name ): ?string {
 	$tax = get_taxonomy( $taxonomy );
-	Logger::debug( array( 'TAX' => $tax ) );
 
 	if ( ! $tax instanceof WP_Taxonomy ) {
 		return null;
