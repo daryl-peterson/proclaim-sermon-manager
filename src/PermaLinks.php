@@ -100,11 +100,11 @@ class PermaLinks implements PermaLinkInt {
 	 */
 	protected function __construct() {
 		$this->pt_sermon        = DRPPSM_PT_SERMON;
-		$this->tax_bible        = DRPPSM_TAX_BIBLE;
+		$this->tax_bible        = DRPPSM_TAX_BOOK;
 		$this->tax_preacher     = DRPPSM_TAX_PREACHER;
 		$this->tax_series       = DRPPSM_TAX_SERIES;
 		$this->tax_service_type = DRPPSM_TAX_SERVICE_TYPE;
-		$this->tax_topics       = DRPPSM_TAX_TOPICS;
+		$this->tax_topics       = DRPPSM_TAX_TOPIC;
 		$this->text             = TextDomain::exec();
 	}
 

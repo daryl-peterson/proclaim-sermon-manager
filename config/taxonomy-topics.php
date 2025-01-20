@@ -13,14 +13,14 @@ namespace DRPPSM;
 
 defined( 'ABSPATH' ) || exit;
 
-$trans_key = DRPPSM_TAX_TOPICS;
+$trans_key = DRPPSM_TAX_TOPIC;
 $trans     = get_type_def( $trans_key );
 if ( $trans ) {
 	return $trans;
 }
 
 $permalinks   = App::init()->permalinks();
-$slug         = DRPPSM_TAX_TOPICS;
+$slug         = DRPPSM_TAX_TOPIC;
 $capabilities = DRPPSM_TAX_CAPS;
 
 $result = array(

@@ -407,7 +407,7 @@ class SermonListTable implements Executable, Registrable {
 
 		$output[] = $this->select_filter( DRPPSM_TAX_PREACHER );
 		$output[] = $this->select_filter( DRPPSM_TAX_SERIES );
-		$output[] = $this->select_filter( DRPPSM_TAX_TOPICS );
+		$output[] = $this->select_filter( DRPPSM_TAX_TOPIC );
 		$output[] = $this->select_filter( DRPPSM_TAX_SERVICE_TYPE );
 
 		$output = apply_filters( DRPPSMF_ADMIN_SERMON, $output );

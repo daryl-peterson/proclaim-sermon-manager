@@ -112,7 +112,7 @@ define( 'DRPPSM_TAX_SERIES', 'drppsm_series' );
  *
  * @since 1.0.0
  */
-define( 'DRPPSM_TAX_TOPICS', 'drppsm_topics' );
+define( 'DRPPSM_TAX_TOPIC', 'drppsm_topics' );
 
 /**
  * Taxomomy mapping friendly to unfriendly.

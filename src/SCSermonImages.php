@@ -31,7 +31,7 @@ class SCSermonImages extends SCBase implements Executable, Registrable {
 	public const TRANSIENT_MAP = array(
 		DRPPSM_TAX_SERIES   => Transient::SERIES_INFO,
 		DRPPSM_TAX_PREACHER => Transient::PREACHER_INFO,
-		DRPPSM_TAX_TOPICS   => Transient::TOPIC_INFO,
+		DRPPSM_TAX_TOPIC    => Transient::TOPIC_INFO,
 		DRPPSM_TAX_BOOK     => Transient::BOOK_INFO,
 
 

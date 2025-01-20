@@ -57,11 +57,11 @@ class PostTypeSetup implements Executable, Registrable {
 	protected function __construct() {
 		$pt                        = DRPPSM_PT_SERMON;
 		$this->post_types[ $pt ]   = new PostTypeReg( DRPPSM_PT_SERMON, 'post-type-sermon.php' );
-		$this->taxonomies[ $pt ][] = new TaxReg( DRPPSM_TAX_BIBLE, DRPPSM_PT_SERMON, 'taxonomy-bible-book.php' );
+		$this->taxonomies[ $pt ][] = new TaxReg( DRPPSM_TAX_BOOK, DRPPSM_PT_SERMON, 'taxonomy-bible-book.php' );
 		$this->taxonomies[ $pt ][] = new TaxReg( DRPPSM_TAX_PREACHER, DRPPSM_PT_SERMON, 'taxonomy-preacher.php' );
 		$this->taxonomies[ $pt ][] = new TaxReg( DRPPSM_TAX_SERIES, DRPPSM_PT_SERMON, 'taxonomy-series.php' );
 		$this->taxonomies[ $pt ][] = new TaxReg( DRPPSM_TAX_SERVICE_TYPE, DRPPSM_PT_SERMON, 'taxonomy-service-type.php' );
-		$this->taxonomies[ $pt ][] = new TaxReg( DRPPSM_TAX_TOPICS, DRPPSM_PT_SERMON, 'taxonomy-topics.php' );
+		$this->taxonomies[ $pt ][] = new TaxReg( DRPPSM_TAX_TOPIC, DRPPSM_PT_SERMON, 'taxonomy-topics.php' );
 	}
 
 	/**
