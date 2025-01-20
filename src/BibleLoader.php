@@ -43,7 +43,7 @@ class BibleLoader implements BibleLoaderInt {
 	 * @since 1.0.0
 	 */
 	protected function __construct() {
-		$this->tax_bible = DRPPSM_TAX_BIBLE;
+		$this->tax_bible = DRPPSM_TAX_BOOK;
 	}
 
 	/**

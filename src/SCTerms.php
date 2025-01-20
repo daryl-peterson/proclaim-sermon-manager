@@ -138,7 +138,7 @@ class SCTerms extends SCBase implements Executable, Registrable {
 
 		if ( count( $terms ) > 0 ) {
 			// Sort books by order.
-			if ( DRPPSM_TAX_BIBLE === $args['display'] && 'book' === $args['orderby'] ) {
+			if ( DRPPSM_TAX_BOOK === $args['display'] && 'book' === $args['orderby'] ) {
 				// Book order.
 				$books = Bible::BOOKS;
 

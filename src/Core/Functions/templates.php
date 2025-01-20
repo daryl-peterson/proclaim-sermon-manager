@@ -380,7 +380,7 @@ function get_term_dropdown( string $taxonomy, string $default_value ): string {
 		)
 	);
 
-	if ( DRPPSM_TAX_BIBLE === $taxonomy && ! Settings::get( Settings::BIBLE_BOOK_SORT, false ) ) {
+	if ( DRPPSM_TAX_BOOK === $taxonomy && ! Settings::get( Settings::BIBLE_BOOK_SORT, false ) ) {
 		// Book order.
 		$books = Bible::BOOKS;
 

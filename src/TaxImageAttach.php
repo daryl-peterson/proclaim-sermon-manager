@@ -74,7 +74,7 @@ class TaxImageAttach implements Executable, Registrable {
 		$this->tax          = array(
 			DRPPSM_TAX_PREACHER,
 			DRPPSM_TAX_SERIES,
-			DRPPSM_TAX_TOPICS,
+			DRPPSM_TAX_TOPIC,
 		);
 		$this->image_suffix = '_image_id';
 

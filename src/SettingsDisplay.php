@@ -330,7 +330,7 @@ class SettingsDisplay extends SettingsBase implements Executable, Registrable {
 	private function hide_topics( CMB2 $cmb ): void {
 
 		/* translators: %s topics */
-		$label = wp_sprintf( 'Hide %s', get_taxonomy_field( DRPPSM_TAX_TOPICS, 'label' ) );
+		$label = wp_sprintf( 'Hide %s', get_taxonomy_field( DRPPSM_TAX_TOPIC, 'label' ) );
 
 		$cmb->add_field(
 			array(
