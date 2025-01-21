@@ -2,7 +2,7 @@
 /**
  * Sermon list table.
  *
- * @package     Proclaim Sermon Manager
+ * @package     DRPPSM\SermonListTable
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
@@ -16,12 +16,11 @@ defined( 'ABSPATH' ) || exit;
 use DRPPSM\Constants\Meta;
 use DRPPSM\Interfaces\Executable;
 use DRPPSM\Interfaces\Registrable;
-use WP_Exception;
 
 /**
  * Sermon list table.
  *
- * @package     Proclaim Sermon Manager
+ * @package     DRPPSM\SermonListTable
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
@@ -95,6 +94,7 @@ class SermonListTable implements Executable, Registrable {
 		add_filter( 'post_row_actions', array( $this, 'row_actions' ), 100, 2 );
 		add_filter( 'parse_query', array( $this, 'sermon_filters_query' ), 10, 1 );
 		add_action( 'manage_posts_extra_tablenav', array( $this, 'extra_nav' ), 10, 1 );
+		add_filter( 'request', array( $this, 'request_query' ) );
 		return true;
 	}
 
@@ -106,10 +106,10 @@ class SermonListTable implements Executable, Registrable {
 	 */
 	public function init(): void {
 
-		$tax = DRPPSM_TAX_LIST;
-		$key = Transient::SERMON_LIST_TABLE_INIT;
-
-		$init = Transient::get( $key );
+		$tax  = DRPPSM_TAX_LIST;
+		$key  = Transient::SERMON_LIST_TABLE_INIT;
+		$init = null;
+		// $init = Transient::get( $key );
 		if ( is_array( $init ) && key_exists( 'columns', $init ) ) {
 			$this->columns  = $init['columns'];
 			$this->sortable = $init['sortable'];
@@ -121,20 +121,19 @@ class SermonListTable implements Executable, Registrable {
 		$this->sortable['title'] = 'title';
 
 		foreach ( $tax as $taxonomy ) {
-			$label = get_taxonomy_field( $taxonomy, 'label' );
-
+			$label                                     = get_taxonomy_field( $taxonomy, 'label' );
 			$this->columns[ 'taxonomy-' . $taxonomy ]  = $label;
 			$this->sortable[ 'taxonomy-' . $taxonomy ] = $taxonomy;
+
 		}
 
-		$this->columns['drppsm_views']    = __( 'Views', 'drppsm' );
-		$this->columns['comments']        = __( 'Comments', 'drppsm' );
-		$this->columns['drppsm_preached'] = __( 'Preached', 'drppsm' );
-		$this->columns['date']            = __( 'Published' );
+		$this->columns['drppsm_views'] = __( 'Views', 'drppsm' );
+		$this->columns['comments']     = __( 'Comments', 'drppsm' );
+		$this->columns['preached']     = __( 'Preached', 'drppsm' );
+		$this->columns['date']         = __( 'Published' );
 
-		$this->sortable[ Meta::DATE ]      = Meta::DATE;
-		$this->sortable['drppsm_views']    = __( 'Views', 'drppsm' );
-		$this->sortable['drppsm_preached'] = $this->columns['drppsm_preached'];
+		$this->sortable['preached']     = Meta::DATE;
+		$this->sortable['drppsm_views'] = __( 'Views', 'drppsm' );
 
 		$data = array(
 			'columns'  => $this->columns,
@@ -143,6 +142,8 @@ class SermonListTable implements Executable, Registrable {
 
 		Transient::set( $key, $data );
 	}
+
+
 
 	/**
 	 * Add extra filters.
@@ -191,7 +192,9 @@ class SermonListTable implements Executable, Registrable {
 				case 'drppsm_views':
 					$data = PostTypeUtils::get_view_count( array( 'post_id' => $post->ID ) );
 					break;
-				case 'drppsm_preached':
+				case 'preached':
+					Logger::debug( 'Preached column' );
+
 					$unix_preached = DateUtils::get( 'U' );
 
 					if ( time() - $unix_preached < DAY_IN_SECONDS ) {
@@ -347,16 +350,18 @@ class SermonListTable implements Executable, Registrable {
 				return $vars;
 			}
 
+			Logger::debug( $vars );
+
 			if ( isset( $vars['orderby'] ) ) {
 
 				// Sorting.
 				switch ( $vars['orderby'] ) {
-					case 'preached':
+					case Meta::DATE:
 						// phpcs:disable
 						$vars = array_merge(
 							$vars,
 							array(
-								'meta_key'       => 'sermon_date',
+								'meta_key'       => Meta::DATE,
 								'orderby'        => 'meta_value_num',
 								'meta_value_num' => time(),
 								'meta_compare'   => '<=',

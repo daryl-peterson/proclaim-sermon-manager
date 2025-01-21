@@ -13,6 +13,7 @@ namespace DRPPSM;
 
 defined( 'ABSPATH' ) || exit;
 
+use DRPPSM\Constants\Meta;
 use DRPPSM\Interfaces\Executable;
 use DRPPSM\Interfaces\Registrable;
 
@@ -63,7 +64,8 @@ class QueryVars implements Executable, Registrable {
 	public function overwrite_query_vars( array $query ): array {
 		try {
 			$query_org = $query;
-			$query     = $this->fix_attachment( $query );
+			Logger::debug( array( 'QUERY' => $query ) );
+			$query = $this->fix_attachment( $query );
 
 			if ( key_exists( DRPPSM_PT_SERMON, $query ) ) {
 				$arg = $query[ DRPPSM_PT_SERMON ];
@@ -76,6 +78,17 @@ class QueryVars implements Executable, Registrable {
 						'orderby'   => 'name',
 						'order'     => 'ASC',
 					);
+
+					/*
+					$query['meta_query'] = array(
+						'orderby'      => 'meta_value_num',
+						'meta_key'     => Meta::DATE,
+						'meta_value'   => time(),
+						'meta_compare' => '<=',
+					);
+					*/
+
+					Logger::debug( array( 'QUERY' => $query ) );
 				}
 			}
 		} catch ( \Throwable $th ) {

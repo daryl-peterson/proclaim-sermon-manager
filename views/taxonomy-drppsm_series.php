@@ -12,6 +12,8 @@
 
 namespace DRPPSM;
 
+Logger::debug( $args );
+
 if ( ! did_action( 'get_header' ) ) {
 	get_header();
 }

@@ -82,19 +82,6 @@ class SermonEdit implements Executable, Registrable {
 	}
 
 	/**
-	 * Fix date.
-	 *
-	 * @param mixed $value Still trying to figure this out.
-	 * @return mixed Not sure yet.
-	 *
-	 * @todo Fix this.
-	 */
-	public function fix_date( $value ) {
-
-		return $value;
-	}
-
-	/**
 	 * Disable gutenberg editor for this post type.
 	 *
 	 * @param boolean $current_status Current status.

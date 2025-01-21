@@ -85,11 +85,11 @@ class SermonDetail implements Initable, Registrable {
 			return false;
 		}
 		// @codeCoverageIgnoreStart
-		$pt = 'post';
+		$pt         = 'post';
+		$field_type = 'text_date_timestamp';
 		add_action( Action::SERMON_EDIT_FORM, array( $this, 'show' ) );
 		add_action( "cmb2_save_{$pt}_fields_{$this->cmb_id}", array( $this, 'save' ), 10, 3 );
 		return true;
-		// @codeCoverageIgnoreEnd
 	}
 
 	/**
@@ -124,6 +124,7 @@ class SermonDetail implements Initable, Registrable {
 		return true;
 	}
 
+
 	/**
 	 * Fires after save. Used to seto object terms.
 	 *
@@ -134,11 +135,26 @@ class SermonDetail implements Initable, Registrable {
 	 * @since 1.0.0
 	 */
 	public function save( int $post_ID, array $updated, CMB2 $cmb ): void {
-
+		Logger::debug( $updated );
 		if ( get_post_type() !== $this->pt_sermon ) {
 			return;
 		}
 		$result = $this->save_service_type( $post_ID, $cmb->data_to_save );
+		$this->save_date( $post_ID, $cmb->data_to_save );
+	}
+
+	private function save_date( int $post_ID, array $data ): bool {
+		Logger::debug( $data );
+		return true;
+		if ( ! isset( $data[ Meta::DATE ] ) ) {
+			return false;
+		}
+		$date = $data[ Meta::DATE ];
+		Logger::debug( $date );
+
+		$date = strtotime( wp_date( 'Y-m-d 00:00:00', strtotime( $date ) ) );
+		update_post_meta( $post_ID, Meta::DATE, $date );
+		return true;
 	}
 
 	/**
@@ -150,6 +166,8 @@ class SermonDetail implements Initable, Registrable {
 	 * @since 1.0.0
 	 */
 	private function save_service_type( int $post_ID, array $data ): bool {
+
+		Logger::debug( $data );
 
 		$term = get_term_by(
 			'id',
@@ -185,9 +203,9 @@ class SermonDetail implements Initable, Registrable {
 			array(
 				'name'         => esc_html__( 'Date Preached', 'drppsm' ),
 				// translators: %1 Date preached.
-				'desc'         => '<br>' . wp_sprintf( esc_html__( 'format: %s', 'drppsm' ), $format ),
+				// 'desc'         => '<br>' . wp_sprintf( esc_html__( 'format: %s', 'drppsm' ), $format ),
 				'id'           => Meta::DATE,
-				'type'         => 'text_date',
+				'type'         => 'text_datetime_timestamp',
 				'autocomplete' => 'off',
 			)
 		);

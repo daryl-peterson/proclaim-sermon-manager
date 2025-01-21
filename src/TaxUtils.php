@@ -180,6 +180,7 @@ class TaxUtils {
 
 		$options = Transient::get( $key );
 		if ( is_array( $options ) && key_exists( $key_term, $options ) ) {
+			Logger::debug( array( 'OPTIONS' => $options[ $key_term ] ) );
 			return $options[ $key_term ];
 		}
 

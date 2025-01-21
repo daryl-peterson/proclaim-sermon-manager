@@ -12,6 +12,7 @@
 namespace DRPPSM;
 
 use DRPPSM\Constants\Meta;
+use WP_Post;
 
 /**
  * Date utils.
@@ -42,7 +43,6 @@ class DateUtils {
 	public static function get( string $format = '', null|int|\WP_Post $post = null, $force_unix_sanitation = false, $localize = true ) {
 
 		// Reset the variable.
-		$has_time  = false;
 		$sanitized = false;
 
 		// Get the sermon.
@@ -56,47 +56,16 @@ class DateUtils {
 		// Check if date is set.
 		$date = get_post_meta( $post->ID, Meta::DATE, true );
 		if ( ! $date ) {
+			self::set_timestamp( $post );
 			return false;
 		}
 
 		// Save original date to a variable to allow later filtering.
 		$orig_date = $date;
 
-		// If it's already an Unix timestamp, don't convert it.
-		$date_copy = intval( trim( $date ) );
-		if ( is_numeric( $date ) && $date_copy ) {
-			$dt = \DateTime::createFromFormat( 'U', $date_copy );
-			if ( $dt->format( 'H' ) !== '00' || $dt->format( 'i' ) !== '00' ) {
-				$has_time = true;
-			}
-		} else {
-			$date      = self::sanitize( $date );
-			$sanitized = true;
-			update_post_meta( $post->ID, Meta::DATE, $date );
-		}
-
 		// Check if we need to force it.
 		if ( false === $sanitized && true === $force_unix_sanitation ) {
 			$date = self::sanitize( $date );
-		}
-
-		// Add the time if time is not set. The way this is done is that it checks for post time, takes it, converts to
-		// seconds and adds to Unix timestamp. It's so we don't have 00:00 time set for all sermons with old date format.
-		if ( ! $has_time ) {
-			$dt = \DateTime::createFromFormat( 'U', mysql2date( 'U', $post->post_date ) );
-
-			$time = array(
-				$dt->format( 'H' ),
-				$dt->format( 'i' ),
-				$dt->format( 's' ),
-			);
-
-			// Convert all to ints.
-			$time = array_map( 'intval', $time );
-
-			list( $hours, $minutes, $seconds ) = $time;
-
-			$date += $hours * HOUR_IN_SECONDS + $minutes * MINUTE_IN_SECONDS + $seconds;
 		}
 
 		/*
@@ -128,6 +97,11 @@ class DateUtils {
 		return $result;
 	}
 
+	private static function set_timestamp( WP_Post $post ): void {
+		$time = strtotime( $post->post_date );
+		update_post_meta( $post->ID, Meta::DATE, $time );
+	}
+
 	/**
 	 * Tries to convert the textual date to Unix timestamp
 	 *
@@ -149,6 +123,6 @@ class DateUtils {
 		 *                               dates have been saved to the database in "mm/dd/YYYY" format.
 		 *                               Warning: there could be other formats that we are not aware of yet.
 		 */
-		return apply_filters( 'sm_sanitize_date', $sanitized_date, $date );
+		return apply_filters( 'drppsm_sanitize_date', $sanitized_date, $date );
 	}
 }
