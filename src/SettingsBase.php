@@ -96,8 +96,7 @@ class SettingsBase {
 			return true;
 		}
 
-		\delete_option( $this->option_key );
-		return \add_option( $this->option_key, $options, '', false );
+		return update_option( $this->option_key, $options, true );
 	}
 
 

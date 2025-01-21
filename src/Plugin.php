@@ -13,7 +13,6 @@ namespace DRPPSM;
 
 defined( 'ABSPATH' ) || exit;
 
-use DRPPSM\Constants\Actions;
 
 /**
  * Plugin main class.
@@ -132,7 +131,7 @@ class Plugin {
 			unset( $options[ $this->act_key ] );
 		}
 		update_option( $this->option_key, $options );
-		do_action( Actions::REWRITE_FLUSH );
+		do_action( Action::REWRITE_FLUSH );
 		return true;
 	}
 

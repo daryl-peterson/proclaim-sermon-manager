@@ -21,8 +21,6 @@ if ( $trans ) {
 	return $trans;
 }
 
-$permalinks = app()->permalinks();
-
 $capabilities = array(
 	Caps::MANAGE_SETTINGS   => Caps::MANAGE_SETTINGS,
 	Caps::MANAGE_CATAGORIES => Caps::MANAGE_CATAGORIES,
@@ -31,6 +29,13 @@ $capabilities = array(
 $menu_icon = Settings::get( Settings::MENU_ICON );
 $single    = Settings::get( Settings::SERMON_SINGULAR );
 $plural    = Settings::get( Settings::SERMON_PLURAL );
+$slug      = strtolower(
+	untrailingslashit(
+		trim(
+			sanitize_title( $plural )
+		)
+	)
+);
 
 $result = array(
 	'labels'              => array(
@@ -93,7 +98,7 @@ $result = array(
 	'menu_icon'           => $menu_icon,
 	'hierarchical'        => false,
 	'rewrite'             => array(
-		'slug'       => $permalinks[ DRPPSM_PT_SERMON ],
+		'slug'       => $slug,
 		'with_front' => false,
 	),
 	'query_var'           => true,

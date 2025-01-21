@@ -65,22 +65,26 @@ class QueryVars implements Executable, Registrable {
 			$query_org = $query;
 			$query     = $this->fix_attachment( $query );
 
+			Logger::debug( array( 'QUERY' => $query ) );
+
 			if ( key_exists( DRPPSM_PT_SERMON, $query ) ) {
 				$arg = $query[ DRPPSM_PT_SERMON ];
 
-				switch ( $arg ) {
-					case 'series':
-						$query = array(
-							'taxonomy' => DRPPSM_TAX_SERIES,
-							'term'     => '',
-						);
-						break;
+				$tax = TaxUtils::get_taxonomy_name( $arg );
+				if ( $tax ) {
+					$query = array(
+						'post_type' => DRPPSM_PT_SERMON,
+						'taxonomy'  => $tax,
+						'orderby'   => 'name',
+						'order'     => 'ASC',
+					);
 				}
 			}
 		} catch ( \Throwable $th ) {
 			FatalError::set( $th );
 			$query = $query_org;
 		}
+		Logger::debug( array( 'QUERY' => $query ) );
 		return $query;
 	}
 
@@ -94,11 +98,13 @@ class QueryVars implements Executable, Registrable {
 	private function fix_attachment( array $query ): array {
 		global $wp;
 
+		Logger::debug( array( 'QUERY' => $query ) );
 		if ( ! key_exists( 'attachment', $query ) ) {
 			return $query;
 		}
 
-		$links   = PermaLinks::exec()->get();
+		$links = PermaLinks::get();
+		Logger::debug( array( 'LINKS' => $links ) );
 		$request = $wp->request;
 		$term    = $query['attachment'];
 		$request = trim( str_replace( '/' . $term, '', $request ) );

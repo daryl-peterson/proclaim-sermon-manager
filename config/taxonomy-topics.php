@@ -13,42 +13,42 @@ namespace DRPPSM;
 
 defined( 'ABSPATH' ) || exit;
 
-$trans_key = DRPPSM_TAX_TOPIC;
-$trans     = get_type_def( $trans_key );
-if ( $trans ) {
-	return $trans;
-}
-
-$permalinks   = App::init()->permalinks();
-$slug         = DRPPSM_TAX_TOPIC;
-$capabilities = DRPPSM_TAX_CAPS;
+$single = __( 'Topic', 'drppsm' );
+$plural = __( 'Topics', 'drppsm' );
+$slug   = PermaLinks::add( DRPPSM_TAX_TOPIC, $plural );
 
 $result = array(
 	'hierarchical'      => false,
-	'label'             => __( 'Topics', 'drppsm' ),
+	'label'             => $plural,
 	'labels'            => array(
-		'name'              => __( 'Topics', 'drppsm' ),
-		'singular_name'     => __( 'Topic', 'drppsm' ),
-		'menu_name'         => _x( 'Topics', 'menu', 'drppsm' ),
+		'name'              => $plural,
+		'singular_name'     => $single,
+		'menu_name'         => $plural,
 		'parent_item'       => null,
 		'parent_item_colon' => null,
-		'search_items'      => __( 'Search topics', 'drppsm' ),
-		'all_items'         => __( 'All topics', 'drppsm' ),
-		'edit_item'         => __( 'Edit topic', 'drppsm' ),
-		'update_item'       => __( 'Update topic', 'drppsm' ),
-		'add_new_item'      => __( 'Add new topic', 'drppsm' ),
-		'new_item_name'     => __( 'New topic name', 'drppsm' ),
-		'not_found'         => __( 'No topics found', 'drppsm' ),
+		/* translators: %s Search Topics */
+		'search_items'      => wp_sprintf( _x( 'Search %s', 'Search %s', 'drppsm' ), $plural ),
+		/* translators: %s All Topics */
+		'all_items'         => wp_sprintf( __( 'All %s', 'drppsm' ), $plural ),
+		/* translators: %s Edit Topic */
+		'edit_item'         => wp_sprintf( __( 'Edit %s', 'drppsm' ), $single ),
+		/* translators: %s Update Topic */
+		'update_item'       => wp_sprintf( __( 'Update %s', 'drppsm' ), $single ),
+		/* translators: %s Add New Topic */
+		'add_new_item'      => wp_sprintf( __( 'Add New %s', 'drppsm' ), $single ),
+		/* translators: %s New Topic Name */
+		'new_item_name'     => wp_sprintf( __( 'New %s name', 'drppsm' ), $single ),
+		/* translators: %s No Topic Found */
+		'not_found'         => wp_sprintf( __( 'No %s found', 'drppsm' ), $single ),
 	),
 	'show_ui'           => true,
 	'query_var'         => true,
 	'show_in_rest'      => true,
 	'show_admin_column' => true,
 	'rewrite'           => array(
-		'slug'       => $permalinks[ $slug ],
+		'slug'       => $slug,
 		'with_front' => false,
 	),
-	'capabilities'      => $capabilities,
+	'capabilities'      => DRPPSM_TAX_CAPS,
 );
-set_type_def( $trans_key, $result );
 return $result;

@@ -15,7 +15,6 @@ namespace DRPPSM;
 
 defined( 'ABSPATH' ) || exit;
 
-use DRPPSM\Constants\Actions;
 use DRPPSM\PostTypeReg;
 use DRPPSM\Exceptions\PluginException;
 use DRPPSM\Interfaces\Executable;
@@ -122,7 +121,7 @@ class PostTypeSetup implements Executable, Registrable {
 				}
 			}
 
-			do_action( Actions::AFTER_POST_SETUP );
+			do_action( Action::AFTER_POST_SETUP );
 			return $status;
 
 			// @codeCoverageIgnoreStart

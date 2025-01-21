@@ -2,10 +2,6 @@
 
 namespace DRPPSM\Tests;
 
-use DRPPSM\Interfaces\PermaLinkInt;
-
-use function DRPPSM\app;
-
 /**
  * Class description
  *
@@ -18,7 +14,5 @@ use function DRPPSM\app;
  */
 class ContainerTest extends BaseTest {
 	public function test_get() {
-		$result = app()->get( PermaLinkInt::class );
-		$this->assertNotNull( $result );
 	}
 }

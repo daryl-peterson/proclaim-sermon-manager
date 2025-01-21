@@ -13,7 +13,6 @@ namespace DRPPSM;
 
 use ReflectionObject;
 use stdClass;
-use WP_Post;
 use WP_Post_Type;
 use WP_Taxonomy;
 
@@ -75,13 +74,6 @@ function get_taxonomy_field( $taxonomy, $field_name ): ?string {
  */
 function get_post_field( $post_type, $field_name ): ?string {
 	$post = get_post_type_object( $post_type );
-	Logger::debug(
-		array(
-			'POST TYPE'  => $post_type,
-			'POST'       => $post,
-			'FIELD NAME' => $field_name,
-		)
-	);
 
 	if ( ! $post instanceof WP_Post_Type ) {
 		return null;
@@ -106,6 +98,7 @@ function get_post_field( $post_type, $field_name ): ?string {
  * @since 1.0.0
  */
 function get_type_def( string $item_name ): mixed {
+	return null;
 	$key   = Transient::TYPE_DEF;
 	$trans = Transient::get( $key );
 
@@ -129,6 +122,7 @@ function get_type_def( string $item_name ): mixed {
  * @since 1.0.0
  */
 function set_type_def( string $item_name, mixed $item_value ): void {
+	return;
 	$key = Transient::TYPE_DEF;
 
 	$trans = Transient::get( $key );

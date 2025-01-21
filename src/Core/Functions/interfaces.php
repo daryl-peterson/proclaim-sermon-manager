@@ -18,7 +18,6 @@ use DRPPSM\Interfaces\RequirementsInt;
 use DRPPSM\Interfaces\RolesInt;
 use DRPPSM\Interfaces\TextDomainInt;
 use DRPPSM\Interfaces\NoticeInt;
-use DRPPSM\Interfaces\PermaLinkInt;
 use DRPPSM\Logging\LogWritterInt;
 
 /**
@@ -59,16 +58,6 @@ function textdomain(): TextDomainInt {
  */
 function notice(): NoticeInt {
 	return app()->get( NoticeInt::class );
-}
-
-/**
- * Get permalink interface.
- *
- * @return array
- * @since 1.0.0
- */
-function permalinks(): array {
-	return app()->get( PermaLinkInt::class )->get();
 }
 
 /**

@@ -19,11 +19,9 @@ if ( $trans ) {
 	return $trans;
 }
 
-$permalinks = App::init()->permalinks();
-
-$single = ucwords( __( 'book', 'drppsm' ) );
-$plural = ucwords( __( 'books', 'drppsm' ) );
-
+$single = __( 'Book', 'drppsm' );
+$plural = __( 'Books', 'drppsm' );
+$slug   = PermaLinks::add( DRPPSM_TAX_BOOK, $plural );
 
 $result = array(
 	'hierarchical'      => false,
@@ -55,7 +53,7 @@ $result = array(
 	'show_in_rest'      => true,
 	'show_admin_column' => true,
 	'rewrite'           => array(
-		'slug'       => $permalinks[ DRPPSM_TAX_BOOK ],
+		'slug'       => $slug,
 		'with_front' => false,
 	),
 	'capabilities'      => DRPPSM_TAX_CAPS,

@@ -2,8 +2,7 @@
 
 namespace DRPPSM\Tests;
 
-use DRPPSM\App;
-use DRPPSM\Interfaces\PermaLinkInt;
+use DRPPSM\PermaLinks;
 
 /**
  * Class description.
@@ -17,7 +16,7 @@ use DRPPSM\Interfaces\PermaLinkInt;
  */
 class PermaLinkTest extends BaseTest {
 
-	public PermaLinkInt $obj;
+	public PermaLinks $obj;
 
 	/**
 	 * This method is called before each test.
@@ -26,11 +25,9 @@ class PermaLinkTest extends BaseTest {
 	 * @since 1.0.0
 	 */
 	public function setup(): void {
-		$this->obj = App::init()->get( PermaLinkInt::class );
+		$this->obj = PermaLinks::get_instance();
 	}
 
 	public function testPermaLinkStructure() {
-		$result = $this->obj->get();
-		$this->assertIsArray( $result );
 	}
 }

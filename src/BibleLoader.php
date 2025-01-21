@@ -65,12 +65,12 @@ class BibleLoader implements BibleLoaderInt {
 	 * @since 1.0.0
 	 */
 	public function register(): ?bool {
-		if ( has_action( Actions::AFTER_POST_SETUP, array( $this, 'run' ) ) ) {
+		if ( has_action( Action::AFTER_POST_SETUP, array( $this, 'run' ) ) ) {
 			// @codeCoverageIgnoreStart
 			return false;
 			// @codeCoverageIgnoreEnd
 		}
-		return add_action( Actions::AFTER_POST_SETUP, array( $this, 'run' ) );
+		return add_action( Action::AFTER_POST_SETUP, array( $this, 'run' ) );
 	}
 
 	/**

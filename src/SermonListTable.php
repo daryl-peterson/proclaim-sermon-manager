@@ -13,7 +13,6 @@ namespace DRPPSM;
 
 defined( 'ABSPATH' ) || exit;
 
-use DRPPSM\Constants\Actions;
 use DRPPSM\Constants\Meta;
 use DRPPSM\Interfaces\Executable;
 use DRPPSM\Interfaces\Registrable;
@@ -88,7 +87,7 @@ class SermonListTable implements Executable, Registrable {
 		}
 		// @codeCoverageIgnoreEnd
 
-		add_action( Actions::AFTER_POST_SETUP, array( $this, 'init' ) );
+		add_action( Action::AFTER_POST_SETUP, array( $this, 'init' ) );
 		add_filter( "manage_edit-{$this->pt}_sortable_columns", array( $this, 'set_sortable_columns' ) );
 		add_action( "manage_{$this->pt}_posts_custom_column", array( $this, 'render_columns' ), 2 );
 		add_filter( "manage_edit-{$this->pt}_columns", array( $this, 'set_columns' ), 10, 1 );

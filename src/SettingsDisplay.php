@@ -54,7 +54,7 @@ class SettingsDisplay extends SettingsBase implements Executable, Registrable {
 	 * @since 1.0.0
 	 */
 	public function register(): ?bool {
-		add_action( Actions::SETTINGS_REGISTER_FORM, array( $this, 'register_metaboxes' ) );
+		add_action( Action::SETTINGS_REGISTER_FORM, array( $this, 'register_metaboxes' ) );
 		add_filter( DRPPSMF_SETTINGS_RSM, array( $this, 'set_menu' ) );
 		return true;
 	}

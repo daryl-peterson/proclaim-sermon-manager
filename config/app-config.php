@@ -15,7 +15,6 @@ defined( 'ABSPATH' ) || exit;
 
 use DRPPSM\DB\DbUpdates;
 use DRPPSM\Interfaces\BibleLoaderInt;
-use DRPPSM\Interfaces\PermaLinkInt;
 use DRPPSM\Interfaces\RolesInt;
 use DRPPSM\Interfaces\TextDomainInt;
 use DRPPSM\Interfaces\NoticeInt;
@@ -32,7 +31,6 @@ return array(
 	LogWritterInt::class     => LogFile::class,
 	LoggerInt::class         => Logger::class,
 	NoticeInt::class         => Notice::class,
-	PermaLinkInt::class      => PermaLinks::class,
 	Plugin::class            => Plugin::class,
 	PostTypeSetup::class     => PostTypeSetup::class,
 	QueryVars::class         => QueryVars::class,

@@ -111,15 +111,6 @@ class App implements Initable {
 	}
 
 	/**
-	 * Get parmalinks array.
-	 *
-	 * @since 1.0.0
-	 */
-	public function permalinks(): array {
-		return PermaLinks::exec()->get();
-	}
-
-	/**
 	 * Get plugin interface.
 	 *
 	 * @return Plugin

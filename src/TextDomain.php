@@ -14,7 +14,6 @@ namespace DRPPSM;
 
 defined( 'ABSPATH' ) || exit;
 
-use DRPPSM\Constants\Actions;
 use DRPPSM\Interfaces\TextDomainInt;
 
 /**
@@ -63,7 +62,7 @@ class TextDomain implements TextDomainInt {
 	 */
 	public function load_domain(): bool {
 
-		if ( did_action( Actions::TEXT_DOMAIN_LOADED ) ) {
+		if ( did_action( Action::TEXT_DOMAIN_LOADED ) ) {
 			return false;
 		}
 		$locale = apply_filters( 'plugin_locale', determine_locale(), 'drppsm' );

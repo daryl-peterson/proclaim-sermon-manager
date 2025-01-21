@@ -113,9 +113,10 @@ class SermonEdit implements Executable, Registrable {
 	 * Display metaboxes.
 	 *
 	 * @return void
+	 * @since 1.0.0
 	 */
 	public function show_meta_boxes(): void {
-		do_action( Actions::SERMON_EDIT_FORM );
+		do_action( Action::SERMON_EDIT_FORM );
 	}
 
 	/**

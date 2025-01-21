@@ -13,7 +13,6 @@ namespace DRPPSM;
 
 defined( 'ABSPATH' ) || exit;
 
-use DRPPSM\Constants\Actions;
 use DRPPSM\Interfaces\Executable;
 use DRPPSM\Interfaces\Runable;
 
@@ -55,7 +54,7 @@ class Loader implements Executable, Runable {
 	 */
 	public function run(): bool {
 		try {
-			if ( did_action( Actions::AFTER_INIT ) && ! ( defined( DRPPSM_TESTING ) ) ) {
+			if ( did_action( Action::AFTER_INIT ) && ! ( defined( DRPPSM_TESTING ) ) ) {
 				// @codeCoverageIgnoreStart
 				return false;
 				// @codeCoverageIgnoreEnd
@@ -68,7 +67,7 @@ class Loader implements Executable, Runable {
 				}
 				app()->get( $class );
 			}
-			do_action( Actions::AFTER_INIT );
+			do_action( Action::AFTER_INIT );
 
 		} catch ( \Throwable $th ) {
 			FatalError::set( $th );

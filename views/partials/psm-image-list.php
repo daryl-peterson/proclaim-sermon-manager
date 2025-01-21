@@ -42,12 +42,15 @@ $size = $args['size'];
 <?php
 
 /**
- * @var TaxInfo $item
+ * @var TaxInfo $item Object.
  */
 foreach ( $list as $item ) :
 
-	$term = $item->term();
-	$book = $preacher = $sermon = $topic = false;
+	$object   = $item->term();
+	$book     = false;
+	$preacher = false;
+	$sermon   = false;
+	$topic    = false;
 
 	if ( $item->has_books() ) {
 		$book     = true;
@@ -76,11 +79,11 @@ foreach ( $list as $item ) :
 	?>
 			<li class="<?php echo esc_attr( $cols ); ?>">
 
-			<a href="<?php echo esc_attr( $term->link ); ?>" title="<?php echo esc_attr( $term->name ); ?>">
-				<img src="<?php echo esc_attr( $term->images[ $size ] ); ?>">
+			<a href="<?php echo esc_attr( $object->link ); ?>" title="<?php echo esc_attr( $object->name ); ?>">
+				<img src="<?php echo esc_attr( $object->images[ $size ] ); ?>">
 				</a>
 				<div class="list-info">
-					<h5><?php echo esc_html( $term->name ); ?></h5>
+					<h5><?php echo esc_html( $object->name ); ?></h5>
 
 					<ul class="list-meta">
 						<?php if ( $sermon ) : ?>

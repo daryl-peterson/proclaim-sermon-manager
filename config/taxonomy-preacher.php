@@ -19,11 +19,9 @@ if ( $trans ) {
 	return $trans;
 }
 
-$permalinks = App::init()->permalinks();
-$label      = Settings::get( Settings::PREACHER, Settings::get_default( Settings::PREACHER ) );
-
-$single = ucwords( $label );
-$plural = ucwords( $label . 's' );
+$single = Settings::get( Settings::PREACHER_SINGULAR );
+$plural = Settings::get( Settings::PREACHER_PLURAL );
+$slug   = PermaLinks::add( DRPPSM_TAX_PREACHER, $plural );
 
 $result = array(
 	'hierarchical'      => false,
@@ -56,7 +54,7 @@ $result = array(
 	'show_in_menu'      => true,
 	'show_admin_column' => true,
 	'rewrite'           => array(
-		'slug'       => $permalinks[ DRPPSM_TAX_PREACHER ],
+		'slug'       => $slug,
 		'with_front' => false,
 	),
 	'capabilities'      => DRPPSM_TAX_CAPS,

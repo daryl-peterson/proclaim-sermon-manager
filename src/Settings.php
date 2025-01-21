@@ -31,13 +31,6 @@ class Settings {
 	public const DEFAULT_IMAGE = 'default_image';
 
 	/**
-	 * Archive slug key.
-	 *
-	 * @since 1.0.0
-	 */
-	public const ARCHIVE_SLUG = 'archive_slug';
-
-	/**
 	 * Archive order key.
 	 *
 	 * @since 1.0.0
@@ -117,9 +110,6 @@ class Settings {
 	public const HIDE_TOPICS        = 'hide_topics';
 
 
-
-	public const PREACHER = 'preacher_label';
-
 	/**
 	 * Preacher singular label key.
 	 *
@@ -133,6 +123,20 @@ class Settings {
 	 * @since 1.0.0
 	 */
 	public const PREACHER_PLURAL = 'preacher_plural';
+
+	/**
+	 * Series singular label key.
+	 *
+	 * @since 1.0.0
+	 */
+	public const SERIES_SINGULAR = 'series_singular';
+
+	/**
+	 * Series plural label key.
+	 *
+	 * @since 1.0.0
+	 */
+	public const SERIES_PLURAL = 'series_plural';
 
 	/**
 	 * Sermon count key.
@@ -157,11 +161,25 @@ class Settings {
 	 */
 	public const SERMON_PLURAL = 'sermon_plural';
 
+	/**
+	 * Service type singular label key.
+	 *
+	 * @since 1.0.0
+	 */
+	public const SERVICE_TYPE_SINGULAR = 'service_type_singular';
 
-	public const SERIES = 'series_label';
+	/**
+	 * Service type plural label key.
+	 *
+	 * @since 1.0.0
+	 */
+	public const SERVICE_TYPE_PLURAL = 'service_type_plural';
 
-
-	public const SERVICE_TYPE    = 'service_type_label';
+	/**
+	 * Post view count key.
+	 *
+	 * @since 1.0.0
+	 */
 	public const POST_VIEW_COUNT = 'post_view_count';
 
 	/**
@@ -210,7 +228,6 @@ class Settings {
 	 */
 	private const OPTION_KEY_MAP = array(
 
-		self::ARCHIVE_SLUG          => self::OPTION_KEY_GENERAL,
 		self::BIBLE_BOOK            => self::OPTION_KEY_GENERAL,
 		self::COMMENTS              => self::OPTION_KEY_GENERAL,
 		self::COMMON_BASE_SLUG      => self::OPTION_KEY_GENERAL,
@@ -218,19 +235,24 @@ class Settings {
 		self::DEFAULT_IMAGE         => self::OPTION_KEY_GENERAL,
 		self::MENU_ICON             => self::OPTION_KEY_GENERAL,
 		self::PLAYER                => self::OPTION_KEY_GENERAL,
-		self::PREACHER              => self::OPTION_KEY_GENERAL,
-		self::SERIES                => self::OPTION_KEY_GENERAL,
 
-		self::SERVICE_TYPE          => self::OPTION_KEY_GENERAL,
+		// Preacher settings.
+		self::PREACHER_SINGULAR     => self::OPTION_KEY_GENERAL,
+		self::PREACHER_PLURAL       => self::OPTION_KEY_GENERAL,
+
+		// Series settings.
+		self::SERIES_SINGULAR       => self::OPTION_KEY_GENERAL,
+		self::SERIES_PLURAL         => self::OPTION_KEY_GENERAL,
 
 		// Sermon settings.
 		self::SERMON_COUNT          => self::OPTION_KEY_GENERAL,
 		self::SERMON_SINGULAR       => self::OPTION_KEY_GENERAL,
 		self::SERMON_PLURAL         => self::OPTION_KEY_GENERAL,
 
-		// Preacher settings.
-		self::PREACHER_SINGULAR     => self::OPTION_KEY_GENERAL,
-		self::PREACHER_PLURAL       => self::OPTION_KEY_GENERAL,
+		// Service type settings.
+		self::SERVICE_TYPE_SINGULAR => self::OPTION_KEY_GENERAL,
+		self::SERVICE_TYPE_PLURAL   => self::OPTION_KEY_GENERAL,
+
 
 		self::ARCHIVE_ORDER         => self::OPTION_KEY_DISPLAY,
 		self::ARCHIVE_ORDER_BY      => self::OPTION_KEY_DISPLAY,
@@ -272,33 +294,60 @@ class Settings {
 		self::$option_default = array(
 
 			self::OPTION_KEY_GENERAL  => array(
-				self::ARCHIVE_SLUG      => 'Sermons',
-				self::BIBLE_BOOK        => 'book',
-				self::COMMENTS          => false,
-				self::COMMON_BASE_SLUG  => false,
-				self::DATE_FORMAT       => 'mm/dd/YY',
-				self::DEFAULT_IMAGE     => '',
-				self::MENU_ICON         => 'dashicons-drppsm-holy-spirit',
-				self::PLAYER            => 'plyr',
-				self::PREACHER          => 'Preacher',
-				self::SERIES            => 'Series',
+				self::BIBLE_BOOK            => 'book',
+				self::COMMENTS              => false,
+				self::COMMON_BASE_SLUG      => false,
+				self::DATE_FORMAT           => 'mm/dd/YY',
+				self::DEFAULT_IMAGE         => '',
+				self::MENU_ICON             => 'dashicons-drppsm-holy-spirit',
+				self::PLAYER                => 'plyr',
 
-				// Preacher settings
+				// ------------------------------------------------------------
+				// PREACHER SETTINGS
+				// ------------------------------------------------------------
 
 				/* translators: preacher singular */
-				self::PREACHER_SINGULAR => __( 'Preacher', 'drppsm' ),
-				/* translators: preacher plural */
-				self::PREACHER_PLURAL   => __( 'Preachers', 'drppsm' ),
+				self::PREACHER_SINGULAR     => __( 'Preacher', 'drppsm' ),
 
-				// Sermon settings.
-				self::SERMON_COUNT      => 10,
+				/* translators: preacher plural */
+				self::PREACHER_PLURAL       => __( 'Preachers', 'drppsm' ),
+
+				// ------------------------------------------------------------
+				// SERIES SETTINGS
+				// ------------------------------------------------------------
+
+				/* translators: series singular */
+				self::SERIES_SINGULAR       => __( 'Series', 'drppsm' ),
+
+				/* translators: series plural */
+				self::SERIES_PLURAL         => __( 'Series', 'drppsm' ),
+
+				// ------------------------------------------------------------
+				// SERMON SETTINGS
+				// ------------------------------------------------------------
+				self::SERMON_COUNT          => 10,
 
 				/* translators: sermon singular */
-				self::SERMON_SINGULAR   => __( 'Sermon', 'drppsm' ),
+				self::SERMON_SINGULAR       => __( 'Sermon', 'drppsm' ),
 
 				/* translators: sermon plural */
-				self::SERMON_PLURAL     => __( 'Sermons', 'drppsm' ),
-				self::SERVICE_TYPE      => 'Service Type',
+				self::SERMON_PLURAL         => __( 'Sermons', 'drppsm' ),
+
+				/* translators: service type singular */
+				self::SERIES_SINGULAR       => __( 'Service Type', 'drppsm' ),
+
+				/* translators: service type plural */
+				self::SERIES_PLURAL         => __( 'Service Types', 'drppsm' ),
+
+				// --------------------------------------------------------------
+				// SERVICE TYPE SETTINGS
+				// --------------------------------------------------------------
+
+				/* translators: service type singular */
+				self::SERVICE_TYPE_SINGULAR => __( 'Service Type', 'drppsm' ),
+
+				/* translators: service type plural */
+				self::SERVICE_TYPE_PLURAL   => __( 'Service Types', 'drppsm' ),
 			),
 
 			self::OPTION_KEY_DISPLAY  => array(
@@ -322,6 +371,17 @@ class Settings {
 				self::CRON_INTERVAL   => 2,
 			),
 
+		);
+	}
+
+	public static function all_peramlinks() {
+		return array(
+			'pt_sermon'        => DRPPSM_PT_SERMON,
+			'tax_bible'        => DRPPSM_TAX_BOOK,
+			'tax_preacher'     => DRPPSM_TAX_PREACHER,
+			'tax_series'       => DRPPSM_TAX_SERIES,
+			'tax_service_type' => DRPPSM_TAX_SERVICE_TYPE,
+			'tax_topics'       => DRPPSM_TAX_TOPIC,
 		);
 	}
 

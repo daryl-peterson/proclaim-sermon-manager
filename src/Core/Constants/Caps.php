@@ -71,6 +71,11 @@ class Caps {
 		self::MANAGE_SETTINGS,
 	);
 
+	public const PT_SERMON = array(
+		self::MANAGE_SETTINGS   => self::MANAGE_SETTINGS,
+		self::MANAGE_CATAGORIES => self::MANAGE_CATAGORIES,
+	);
+
 	public const PRIVILEGES = array(
 		self::MANAGE_SETTINGS       => array( self::ROLE_ADMIN ),
 		self::EDIT_OTHERS_SERMONS   => array( self::ROLE_ADMIN, self::ROLE_EDITOR ),

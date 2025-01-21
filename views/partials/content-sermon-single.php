@@ -40,7 +40,7 @@ $tax_stype          = DRPPSM_TAX_SERVICE_TYPE;
 			// Get series meta.
 			if ( has_term( '', $tax_series, $post->ID ) ) {
 				$args_series = array(
-					'item_label' => ucwords( Settings::get( Settings::SERIES ) ),
+					'item_label' => get_taxonomy_field( $tax_series, 'label' ),
 					'item_value' => get_the_term_list( $post->ID, $tax_series ),
 				);
 
@@ -50,7 +50,7 @@ $tax_stype          = DRPPSM_TAX_SERVICE_TYPE;
 			// Get preacher meta.
 			if ( has_term( '', $tax_preacher, $post->ID ) ) {
 				$args_preacher = array(
-					'item_label' => ucwords( Settings::get( Settings::PREACHER ) ),
+					'item_label' => get_taxonomy_field( $tax_preacher, 'label' ),
 					'item_value' => get_the_term_list( $post->ID, $tax_preacher ),
 				);
 
@@ -60,7 +60,7 @@ $tax_stype          = DRPPSM_TAX_SERVICE_TYPE;
 			// Get service type meta.
 			if ( has_term( '', $tax_stype, $post->ID ) ) {
 				$args_stype = array(
-					'item_label' => ucwords( Settings::get( Settings::SERVICE_TYPE ) ),
+					'item_label' => get_taxonomy_field( $tax_stype, 'label' ),
 					'item_value' => get_the_term_list( $post->ID, $tax_stype ),
 				);
 

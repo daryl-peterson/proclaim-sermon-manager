@@ -13,7 +13,6 @@ namespace DRPPSM;
 
 defined( 'ABSPATH' ) || exit;
 
-use DRPPSM\Constants\Actions;
 use DRPPSM\Constants\Meta;
 use DRPPSM\Interfaces\Initable;
 use DRPPSM\Interfaces\Registrable;
@@ -46,10 +45,10 @@ class SermonFiles implements Initable, Registrable {
 	 * @since 1.0.0
 	 */
 	public function register(): ?bool {
-		if ( ! is_admin() || has_action( Actions::SERMON_EDIT_FORM, array( $this, 'show' ) ) ) {
+		if ( ! is_admin() || has_action( Action::SERMON_EDIT_FORM, array( $this, 'show' ) ) ) {
 			return false;
 		}
-		add_action( Actions::SERMON_EDIT_FORM, array( $this, 'show' ) );
+		add_action( Action::SERMON_EDIT_FORM, array( $this, 'show' ) );
 		return true;
 	}
 

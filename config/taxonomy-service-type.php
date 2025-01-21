@@ -19,15 +19,13 @@ if ( $trans ) {
 	return $trans;
 }
 
-$permalinks = app()->permalinks();
-$label      = Settings::get( Settings::SERVICE_TYPE );
-
-$single = ucwords( $label );
-$plural = ucwords( $single . 's' );
+$single = Settings::get( Settings::SERVICE_TYPE_SINGULAR );
+$plural = Settings::get( Settings::SERVICE_TYPE_PLURAL );
+$slug   = PermaLinks::add( DRPPSM_TAX_SERVICE_TYPE, $plural );
 
 $result = array(
 	'hierarchical'      => false,
-	'label'             => ucwords( $label ),
+	'label'             => $plural,
 	'labels'            => array(
 		'name'              => $plural,
 		'singular_name'     => $single,
@@ -54,7 +52,7 @@ $result = array(
 	'show_in_rest'      => true,
 	'show_admin_column' => true,
 	'rewrite'           => array(
-		'slug'       => $permalinks[ DRPPSM_TAX_SERVICE_TYPE ],
+		'slug'       => $slug,
 		'with_front' => false,
 	),
 	'capabilities'      => DRPPSM_TAX_CAPS,

@@ -99,6 +99,8 @@ class Templates implements Executable, Registrable {
 
 		$default_file = '';
 
+		Logger::debug( "TEMPLATE : $template" );
+
 		if ( is_singular( $this->pt ) ) {
 			$default_file = $this->get_single_template();
 		} elseif ( is_tax( get_object_taxonomies( $this->pt ) ) ) {

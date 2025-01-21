@@ -84,7 +84,7 @@ class AdminSettings implements Executable, Registrable {
 	 */
 	public function register_metaboxes() {
 		$cb = array( $this, 'display_with_tabs' );
-		do_action( Actions::SETTINGS_REGISTER_FORM, $cb );
+		do_action( Action::SETTINGS_REGISTER_FORM, $cb );
 	}
 
 	/**

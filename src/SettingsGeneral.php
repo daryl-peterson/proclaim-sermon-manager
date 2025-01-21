@@ -59,11 +59,11 @@ class SettingsGeneral extends SettingsBase implements Executable, Registrable {
 		$object_type = 'options-page';
 		$id          = $this->option_key;
 
-		if ( ! is_admin() || has_action( Actions::SETTINGS_REGISTER_FORM, array( $this, 'register_metaboxes' ) ) ) {
+		if ( ! is_admin() || has_action( Action::SETTINGS_REGISTER_FORM, array( $this, 'register_metaboxes' ) ) ) {
 			return false;
 		}
 
-		add_action( Actions::SETTINGS_REGISTER_FORM, array( $this, 'register_metaboxes' ) );
+		add_action( Action::SETTINGS_REGISTER_FORM, array( $this, 'register_metaboxes' ) );
 		add_action( "cmb2_save_{$object_type}_fields_{$id}", array( $this, 'flush_check' ), 10, 3 );
 		return true;
 	}
@@ -98,7 +98,7 @@ class SettingsGeneral extends SettingsBase implements Executable, Registrable {
 		}
 
 		if ( $flush ) {
-			do_action( Actions::REWRITE_FLUSH );
+			do_action( Action::REWRITE_FLUSH );
 		}
 	}
 
@@ -141,16 +141,29 @@ class SettingsGeneral extends SettingsBase implements Executable, Registrable {
 		$this->add_date_format( $cmb );
 		$this->sermon_count( $cmb );
 
-		$this->add_seperator( $cmb, __( 'Links', 'drppsm' ), true );
-		$this->add_common_base_slug( $cmb );
+		$this->add_seperator( $cmb, __( 'Sermon Labels', 'drppsm' ), true );
 		$this->sermon_single( $cmb );
 		$this->sermon_plural( $cmb );
-		$this->add_archive( $cmb );
-		$this->add_series( $cmb );
-		$this->add_preacher( $cmb );
+		$this->add_common_base_slug( $cmb );
+
+		// Preacher labels.
+		$this->add_seperator( $cmb, __( 'Preacher Labels', 'drppsm' ), true );
 		$this->preacher_single( $cmb );
 		$this->preacher_plural( $cmb );
-		$this->add_service_type( $cmb );
+
+		// Series labels.
+		$this->add_seperator( $cmb, __( 'Series Labels', 'drppsm' ), true );
+		$this->series_single( $cmb );
+		$this->series_plural( $cmb );
+
+		// Service type labels.
+		$this->add_seperator(
+			$cmb,
+			__( 'Service Type Labels', 'drppsm' ),
+			true
+		);
+		$this->service_type_singular( $cmb );
+		$this->service_type_plural( $cmb );
 	}
 
 	/**
@@ -289,11 +302,23 @@ class SettingsGeneral extends SettingsBase implements Executable, Registrable {
 	 * @since 1.0.0
 	 */
 	private function sermon_single( CMB2 $cmb ): void {
-		$desc = DRPPSM_MSG_LABEL_SINGLE;
+		$s1 = '<code>' . __( '/sermon/mark', 'drppsm' ) . '</code>';
+		$s2 = '<code>' . __( '/lecture/mark', 'drppsm' ) . '</code>';
+
+		$desc  = DRPPSM_MSG_LABEL_SINGLE . '<br>';
+		$desc .= wp_sprintf(
+			// translators: %1$s Default sermon slug/path. Effectively <code>/sermon/mark</code>.
+			// translators: %2$s Example lecture slug/path. Effectively <code>/lecture/mark</code>.
+			__( 'Changing "Sermon" to "Lecture" would result in %1$s becoming %2$s.', 'drppsm' ),
+			$s1,
+			$s2
+		);
+		$desc .= '<br>' . DRPPSM_MSG_SLUG_NOTE;
+
 		$cmb->add_field(
 			array(
 				'id'        => Settings::SERMON_SINGULAR,
-				'name'      => __( 'Sermon Singular Label', 'drppsm' ),
+				'name'      => __( 'Singular Label', 'drppsm' ),
 				'type'      => 'text',
 				'after_row' => $this->description( $desc ),
 			)
@@ -308,11 +333,23 @@ class SettingsGeneral extends SettingsBase implements Executable, Registrable {
 	 * @since 1.0.0
 	 */
 	private function sermon_plural( CMB2 $cmb ): void {
-		$desc = DRPPSM_MSG_LABEL_PLURAL;
+		$s1 = '<code>' . __( '/sermons/', 'drppsm' ) . '</code>';
+		$s2 = '<code>' . __( '/lectures/', 'drppsm' ) . '</code>';
+
+		$desc  = DRPPSM_MSG_LABEL_PLURAL . '<br>';
+		$desc .= wp_sprintf(
+			// translators: %1$s Default series slug/path. Effectively <code>/sermons/</code>.
+			// translators: %2$s Example listings slug/path. Effectively <code>/lectures/</code>.
+			__( 'Changing "Sermons" to "Lectures" would result in %1$s becoming %2$s.', 'drppsm' ),
+			$s1,
+			$s2
+		);
+		$desc .= '<br>' . DRPPSM_MSG_SLUG_NOTE;
+
 		$cmb->add_field(
 			array(
 				'id'        => Settings::SERMON_PLURAL,
-				'name'      => __( 'Sermon Plural Label', 'drppsm' ),
+				'name'      => __( 'Plural Label', 'drppsm' ),
 				'type'      => 'text',
 				'after_row' => $this->description( $desc ),
 			)
@@ -320,35 +357,61 @@ class SettingsGeneral extends SettingsBase implements Executable, Registrable {
 	}
 
 	/**
-	 * Add archive field
+	 * Service type singular label.
 	 *
-	 * @param CMB2 $cmb CMB2 Object.
+	 * @param CMB2 $cmb
 	 * @return void
 	 * @since 1.0.0
 	 */
-	private function add_archive( CMB2 $cmb ): void {
-		$s1 = '<code>' . __( '/sermons', 'drppsm' ) . '</code>';
-		$s2 = '<code>' . __( '/sermons/jesus', 'drppsm' ) . '</code>';
+	private function service_type_singular( CMB2 $cmb ) {
+		$s1 = '<code>' . __( '/service-type/morning', 'drppsm' ) . '</code>';
+		$s2 = '<code>' . __( '/congregation/morning', 'drppsm' ) . '</code>';
 
-		$desc  = __( 'This setting determines the page where sermons will be found, including each sermon.', 'drppsm' );
-		$desc .= $this->dot();
-
+		$desc  = DRPPSM_MSG_LABEL_SINGLE . '<br>';
 		$desc .= wp_sprintf(
-			// translators: %1$s Default archive path, effectively <code>/sermons</code>.
-			// translators: %2$s Example single sermon path, effectively <code>/sermons/jesus</code>.
-			__(
-				'By default, all sermons will be under %1$s, and a single sermon with slug of “jesus” will be under %2$s.',
-				'drppsm'
-			),
+			// translators: %1$s Default service type slug/path. Effectively <code>/service-type/morning</code>.
+			// translators: %2$s Example congregation slug/path. Effectively <code>/congreation/morning</code>.
+			__( 'Changing "Service Type" to "Congregation" would result in %1$s becoming %2$s.', 'drppsm' ),
 			$s1,
 			$s2
 		);
-		$desc .= $this->dot() . __( 'However, this does not apply if "pretty permalinks" are not enabled.', 'drppsm' );
+		$desc .= '<br>' . DRPPSM_MSG_SLUG_NOTE;
 
 		$cmb->add_field(
 			array(
-				'id'        => Settings::ARCHIVE_SLUG,
-				'name'      => __( 'Archive Page Slug', 'drppsm' ),
+				'id'        => Settings::SERVICE_TYPE_SINGULAR,
+				'name'      => __( 'Singular Label', 'drppsm' ),
+				'type'      => 'text',
+				'after_row' => $this->description( $desc ),
+			)
+		);
+	}
+
+	/**
+	 * Service type plural label.
+	 *
+	 * @param CMB2 $cmb
+	 * @return void
+	 * @since 1.0.0
+	 */
+	private function service_type_plural( CMB2 $cmb ) {
+		$s1 = '<code>' . __( '/service-types/', 'drppsm' ) . '</code>';
+		$s2 = '<code>' . __( '/congregations/', 'drppsm' ) . '</code>';
+
+		$desc  = DRPPSM_MSG_LABEL_PLURAL . '<br>';
+		$desc .= wp_sprintf(
+			// translators: %1$s Default service types slug/path. Effectively <code>/service-types/</code>.
+			// translators: %2$s Example congregations slug/path. Effectively <code>/congreations/</code>.
+			__( 'Changing "Service Types" to "Congregations" would result in %1$s becoming %2$s.', 'drppsm' ),
+			$s1,
+			$s2
+		);
+		$desc .= '<br>' . DRPPSM_MSG_SLUG_NOTE;
+
+		$cmb->add_field(
+			array(
+				'id'        => Settings::SERVICE_TYPE_PLURAL,
+				'name'      => __( 'Plural Label', 'drppsm' ),
 				'type'      => 'text',
 				'after_row' => $this->description( $desc ),
 			)
@@ -388,32 +451,31 @@ class SettingsGeneral extends SettingsBase implements Executable, Registrable {
 	}
 
 	/**
-	 * Add series field.
+	 * Series singular field.
+	 * - Allows to give alias to the series taxonomy.
 	 *
-	 * @param CMB2 $cmb CMB2 object.
+	 * @param CMB2 $cmb
 	 * @return void
 	 * @since 1.0.0
 	 */
-	private function add_series( CMB2 $cmb ): void {
-		$s1    = '<code>' . __( '/series/open-doors', 'drppsm' ) . '</code>';
-		$s2    = '<code>' . __( '/list/open-doors', 'drppsm' ) . '</code>';
-		$desc  = DRPPSM_MSG_LABEL_SINGLE;
-		$desc .= $this->dot() . __( 'You have the option to change the default value of "Series" to anything you prefer.' );
-		$desc .= $this->dot();
+	private function series_single( CMB2 $cmb ) {
+		$s1 = '<code>' . __( '/series/mark', 'drppsm' ) . '</code>';
+		$s2 = '<code>' . __( '/listing/mark', 'drppsm' ) . '</code>';
 
+		$desc  = DRPPSM_MSG_LABEL_SINGLE . '<br>';
 		$desc .= wp_sprintf(
 			// translators: %1$s Default preacher slug/path. Effectively <code>/preacher/mark</code>.
 			// translators: %2$s Example reverend slug/path. Effectively <code>/reverend/mark</code>.
-			__( 'Changing "Series" to "List" would result in %1$s becoming %2$s.', 'drppsm' ),
+			__( 'Changing "Series" to "Listing" would result in %1$s becoming %2$s.', 'drppsm' ),
 			$s1,
 			$s2
 		);
-		$desc .= $this->dot() . __( 'Note: This also changes the slugs.' );
+		$desc .= '<br>' . DRPPSM_MSG_SLUG_NOTE;
 
 		$cmb->add_field(
 			array(
-				'id'        => Settings::SERIES,
-				'name'      => __( 'Series Label', 'drppsm' ),
+				'id'        => Settings::SERIES_SINGULAR,
+				'name'      => __( 'Singular Label', 'drppsm' ),
 				'type'      => 'text',
 				'after_row' => $this->description( $desc ),
 			)
@@ -421,35 +483,31 @@ class SettingsGeneral extends SettingsBase implements Executable, Registrable {
 	}
 
 	/**
-	 * Add preacher field.
+	 * Series plural field.
+	 * - Allows to give alias to the series taxonomy.
 	 *
-	 * @param CMB2 $cmb CMB2 Object.
+	 * @param CMB2 $cmb
 	 * @return void
 	 * @since 1.0.0
 	 */
-	private function add_preacher( CMB2 $cmb ): void {
-		$s1    = '<code>' . __( '/preacher/mark', 'drppsm' ) . '</code>';
-		$s2    = '<code>' . __( '/reverend/mark', 'drppsm' ) . '</code>';
-		$desc  = DRPPSM_MSG_LABEL_SINGLE;
-		$desc .= $this->dot() . __( 'You have the option to change the default value of "Preacher" to anything you prefer.' );
-		$desc .= $this->dot();
+	private function series_plural( CMB2 $cmb ) {
+		$s1 = '<code>' . __( '/series/', 'drppsm' ) . '</code>';
+		$s2 = '<code>' . __( '/listings/', 'drppsm' ) . '</code>';
 
+		$desc  = DRPPSM_MSG_LABEL_PLURAL . '<br>';
 		$desc .= wp_sprintf(
-			// translators: %1$s Default preacher slug/path. Effectively <code>/preacher/mark</code>.
-			// translators: %2$s Example reverend slug/path. Effectively <code>/reverend/mark</code>.
-			__( 'Changing "Preacher" to "Reverend" would result in %1$s becoming %2$s.', 'drppsm' ),
+			// translators: %1$s Default series slug/path. Effectively <code>/series/</code>.
+			// translators: %2$s Example listings slug/path. Effectively <code>/listings/</code>.
+			__( 'Changing "Series" to "Listings" would result in %1$s becoming %2$s.', 'drppsm' ),
 			$s1,
 			$s2
 		);
-		$desc .= $this->dot() . __( 'Note: This also changes the slugs.' );
+		$desc .= '<br>' . DRPPSM_MSG_SLUG_NOTE;
 
-		/**
-		 * Preacher label.
-		 */
 		$cmb->add_field(
 			array(
-				'id'        => Settings::PREACHER,
-				'name'      => __( 'Preacher Label', 'drppsm' ),
+				'id'        => Settings::SERIES_PLURAL,
+				'name'      => __( 'Plural Label', 'drppsm' ),
 				'type'      => 'text',
 				'after_row' => $this->description( $desc ),
 			)
@@ -457,7 +515,7 @@ class SettingsGeneral extends SettingsBase implements Executable, Registrable {
 	}
 
 	/**
-	 * Add preacher singular fields.
+	 * Preacher singular field.
 	 * - Allows to give alias to the preacher taxonomy.
 	 *
 	 * @param CMB2 $cmb
@@ -481,7 +539,7 @@ class SettingsGeneral extends SettingsBase implements Executable, Registrable {
 		$cmb->add_field(
 			array(
 				'id'        => Settings::PREACHER_SINGULAR,
-				'name'      => __( 'Preacher Singular Label', 'drppsm' ),
+				'name'      => __( 'Singular Label', 'drppsm' ),
 				'type'      => 'text',
 				'after_row' => $this->description( $desc ),
 			)
@@ -489,7 +547,7 @@ class SettingsGeneral extends SettingsBase implements Executable, Registrable {
 	}
 
 	/**
-	 * Add preacher plural fields.
+	 * Preacher plural field.
 	 * - Allows to give alias to the preachers taxonomy.
 	 *
 	 * @param CMB2 $cmb
@@ -512,41 +570,7 @@ class SettingsGeneral extends SettingsBase implements Executable, Registrable {
 		$cmb->add_field(
 			array(
 				'id'        => Settings::PREACHER_PLURAL,
-				'name'      => __( 'Preacher Plural Label', 'drppsm' ),
-				'type'      => 'text',
-				'after_row' => $this->description( $desc ),
-			)
-		);
-	}
-
-	/**
-	 * Add service type.self::OPTION_KEY
-	 *
-	 * @param CMB2 $cmb CMB2 Object.
-	 * @return void
-	 * @since 1.0.0
-	 */
-	private function add_service_type( CMB2 $cmb ): void {
-		$desc  = __( 'The label should be in singular form.', 'drppsm' );
-		$desc .= $this->dot() . __( 'You can change the default value of "Service Type" to anything you prefer.', 'drppsm' );
-		$desc .= $this->dot();
-
-		$s1 = '<code>' . __( '/service-type/morning', 'drppsm' ) . '</code>';
-		$s2 = '<code>' . __( '/congregation/monring', 'drppsm' ) . '</code>';
-
-		$desc .= wp_sprintf(
-				// translators: %1$s Default slug/path. Effectively <code>/service-type/morning</code>.
-				// translators: %2$s Example changed slug/path. Effectively <code>/congregation/morning</code>.
-			__( 'Changing "Service Type" to "Congregation" would result in %1$s becomimg %2$s.', 'drppsm' ),
-			$s1,
-			$s2
-		);
-		$desc .= $this->dot() . __( 'Note that this also changes the slugs.', 'drppsm' );
-
-		$cmb->add_field(
-			array(
-				'id'        => Settings::SERVICE_TYPE,
-				'name'      => __( 'Service Type Label', 'drppsm' ),
+				'name'      => __( 'Plural Label', 'drppsm' ),
 				'type'      => 'text',
 				'after_row' => $this->description( $desc ),
 			)

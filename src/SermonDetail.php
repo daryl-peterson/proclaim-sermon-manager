@@ -14,11 +14,10 @@ namespace DRPPSM;
 defined( 'ABSPATH' ) || exit;
 
 use CMB2;
-use DRPPSM\Constants\Actions;
 use DRPPSM\Constants\Meta;
 use DRPPSM\Interfaces\Initable;
 use DRPPSM\Interfaces\Registrable;
-use WP_Error;
+
 
 /**
  * Show sermon deail meta box.
@@ -82,12 +81,12 @@ class SermonDetail implements Initable, Registrable {
 	 * @since 1.0.0
 	 */
 	public function register(): ?bool {
-		if ( ! is_admin() || has_action( Actions::SERMON_EDIT_FORM, array( $this, 'show' ) ) ) {
+		if ( ! is_admin() || has_action( Action::SERMON_EDIT_FORM, array( $this, 'show' ) ) ) {
 			return false;
 		}
 		// @codeCoverageIgnoreStart
 		$pt = 'post';
-		add_action( Actions::SERMON_EDIT_FORM, array( $this, 'show' ) );
+		add_action( Action::SERMON_EDIT_FORM, array( $this, 'show' ) );
 		add_action( "cmb2_save_{$pt}_fields_{$this->cmb_id}", array( $this, 'save' ), 10, 3 );
 		return true;
 		// @codeCoverageIgnoreEnd
