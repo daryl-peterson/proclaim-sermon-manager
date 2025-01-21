@@ -65,8 +65,6 @@ class QueryVars implements Executable, Registrable {
 			$query_org = $query;
 			$query     = $this->fix_attachment( $query );
 
-			Logger::debug( array( 'QUERY' => $query ) );
-
 			if ( key_exists( DRPPSM_PT_SERMON, $query ) ) {
 				$arg = $query[ DRPPSM_PT_SERMON ];
 
@@ -84,7 +82,6 @@ class QueryVars implements Executable, Registrable {
 			FatalError::set( $th );
 			$query = $query_org;
 		}
-		Logger::debug( array( 'QUERY' => $query ) );
 		return $query;
 	}
 
