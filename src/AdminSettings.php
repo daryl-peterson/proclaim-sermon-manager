@@ -2,7 +2,7 @@
 /**
  * Admin settings.
  *
- * @package     Proclaim Sermon Manager
+ * @package     DRPPSM\AdminSettings
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
@@ -15,7 +15,6 @@ defined( 'ABSPATH' ) || exit;
 
 use CMB2_Boxes;
 use CMB2_Options_Hookup;
-use DRPPSM\Constants\Actions;
 use DRPPSM\Interfaces\Executable;
 use DRPPSM\Interfaces\Registrable;
 
@@ -23,7 +22,7 @@ use DRPPSM\Interfaces\Registrable;
 /**
  * Admin settings.
  *
- * @package     Proclaim Sermon Manager
+ * @package     DRPPSM\AdminSettings
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
@@ -65,8 +64,8 @@ class AdminSettings implements Executable, Registrable {
 		if ( ! is_admin() || has_action( 'cmb2_admin_init', array( $this, 'register_metaboxes' ) ) ) {
 			return false;
 		}
-
 		Settings::set_defaults();
+
 		add_action( 'cmb2_admin_init', array( $this, 'register_metaboxes' ) );
 		add_filter( 'submenu_file', array( $this, 'remove_submenus' ) );
 

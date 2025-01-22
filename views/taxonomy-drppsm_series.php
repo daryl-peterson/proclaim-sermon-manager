@@ -20,7 +20,7 @@ if ( ! did_action( 'get_header' ) ) {
 
 get_partial( 'sermon-wrapper-start' );
 
-$obj = new Series( array( 'display' => 'series' ) );
+$obj = new TaxList( array( 'display' => 'series' ) );
 
 get_partial( 'sermon-wrapper-end' );
 
