@@ -12,15 +12,35 @@
 
 namespace DRPPSM;
 
-Logger::debug( array( 'ARGS' => $args ) );
-
 if ( ! did_action( 'get_header' ) ) {
-	// get_header();
+	get_header();
 }
 
 get_partial( 'sermon-wrapper-start' );
+global $wp_query;
 
-$obj = new TaxList( array( 'display' => 'series' ) );
+$archive = is_archive();
+$qv      = get_query_var( 'taxonomy' );
+Logger::debug(
+	array(
+		'QV' => $qv,
+		$wp_query->query,
+	)
+);
+
+$query = $wp_query->query;
+if ( isset( $query['taxonomy'] ) ) {
+	$obj = new TaxList( array( 'display' => 'series' ) );
+} elseif ( have_posts() ) {
+	while ( have_posts() ) {
+		the_post();
+		sermon_excerpt();
+	}
+		wp_reset_postdata();
+} else {
+	get_partial( 'no-posts' );
+}
+
 
 get_partial( 'sermon-wrapper-end' );
 

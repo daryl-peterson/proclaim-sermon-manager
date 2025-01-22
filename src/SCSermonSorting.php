@@ -13,6 +13,7 @@ namespace DRPPSM;
 
 use DRPPSM\Interfaces\Executable;
 use DRPPSM\Interfaces\Registrable;
+use DRPPSM\Traits\ExecutableTrait;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -26,6 +27,8 @@ defined( 'ABSPATH' ) || exit;
  * @since       1.0.0
  */
 class SCSermonSorting extends SCBase implements Executable, Registrable {
+	use ExecutableTrait;
+
 	/**
 	 * Shortcode
 	 *
@@ -43,18 +46,6 @@ class SCSermonSorting extends SCBase implements Executable, Registrable {
 	protected function __construct() {
 		parent::__construct();
 		$this->sc = DRPPSM_SC_SERMON_SORTING;
-	}
-
-	/**
-	 * Initialize object and preform hooks registration if needed.
-	 *
-	 * @return self
-	 * @since 1.0.0
-	 */
-	public static function exec(): self {
-		$obj = new self();
-		$obj->register();
-		return $obj;
 	}
 
 	/**

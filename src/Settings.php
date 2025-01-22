@@ -26,6 +26,43 @@ use Exception;
 class Settings {
 	use SingletonTrait;
 
+
+	/**
+	 * Option key for display tab of settings page.
+	 *
+	 * @since 1.0.0
+	 */
+	public const OPTION_KEY_DISPLAY = 'drppsm_option_display';
+
+	/**
+	 * Option key for general tab of settings page.
+	 *
+	 * @since 1.0.0
+	 */
+	public const OPTION_KEY_GENERAL = 'drppsm_option_general';
+
+	/**
+	 * Option key for advanced tab of settings page.
+	 *
+	 * @since 1.0.0
+	 */
+	public const OPTION_KEY_ADVANCED = 'drppsm_option_advanced';
+
+	/**
+	 * Option key for sermons.
+	 *
+	 * @since 1.0.0
+	 */
+	public const OPTION_KEY_SERMONS = 'drppsm_option_sermons';
+
+
+	/**
+	 * Option key for series.
+	 *
+	 * @since 1.0.0
+	 */
+	public const OPTION_KEY_SERIES = 'drppsm_option_series';
+
 	/**
 	 * Default image key.
 	 *
@@ -226,26 +263,7 @@ class Settings {
 	 */
 	public const IMAGES_PER_ROW = 'images_per_row';
 
-	/**
-	 * Option key for display tab of settings page.
-	 *
-	 * @since 1.0.0
-	 */
-	public const OPTION_KEY_DISPLAY = 'drppsm_option_display';
 
-	/**
-	 * Option key for general tab of settings page.
-	 *
-	 * @since 1.0.0
-	 */
-	public const OPTION_KEY_GENERAL = 'drppsm_option_general';
-
-	/**
-	 * Option key for advanced tab of settings page.
-	 *
-	 * @since 1.0.0
-	 */
-	public const OPTION_KEY_ADVANCED = 'drppsm_option_advanced';
 
 	/**
 	 * Option keys used to loop through options and set defaults.
@@ -256,6 +274,8 @@ class Settings {
 		self::OPTION_KEY_GENERAL,
 		self::OPTION_KEY_DISPLAY,
 		self::OPTION_KEY_ADVANCED,
+		self::OPTION_KEY_SERMONS,
+		self::OPTION_KEY_SERIES,
 	);
 
 	/**
@@ -268,7 +288,7 @@ class Settings {
 		self::BIBLE_BOOK            => self::OPTION_KEY_GENERAL,
 		self::COMMENTS              => self::OPTION_KEY_GENERAL,
 		self::COMMON_BASE_SLUG      => self::OPTION_KEY_GENERAL,
-		self::DATE_FORMAT           => self::OPTION_KEY_GENERAL,
+
 		self::DEFAULT_IMAGE         => self::OPTION_KEY_GENERAL,
 		self::MENU_ICON             => self::OPTION_KEY_GENERAL,
 		self::PLAYER                => self::OPTION_KEY_GENERAL,
@@ -280,11 +300,6 @@ class Settings {
 		// Series settings.
 		self::SERIES_SINGULAR       => self::OPTION_KEY_GENERAL,
 		self::SERIES_PLURAL         => self::OPTION_KEY_GENERAL,
-
-		// Sermon settings.
-		self::SERMON_COUNT          => self::OPTION_KEY_GENERAL,
-		self::SERMON_SINGULAR       => self::OPTION_KEY_GENERAL,
-		self::SERMON_PLURAL         => self::OPTION_KEY_GENERAL,
 
 		// Service type settings.
 		self::SERVICE_TYPE_SINGULAR => self::OPTION_KEY_GENERAL,
@@ -312,6 +327,12 @@ class Settings {
 		self::BIBLE_BOOK_SORT       => self::OPTION_KEY_ADVANCED,
 		self::POST_VIEW_COUNT       => self::OPTION_KEY_ADVANCED,
 		self::CRON_INTERVAL         => self::OPTION_KEY_ADVANCED,
+
+		// Sermon settings.
+		self::DATE_FORMAT           => self::OPTION_KEY_SERMONS,
+		self::SERMON_COUNT          => self::OPTION_KEY_SERMONS,
+		self::SERMON_SINGULAR       => self::OPTION_KEY_SERMONS,
+		self::SERMON_PLURAL         => self::OPTION_KEY_SERMONS,
 	);
 
 	/**
@@ -337,7 +358,6 @@ class Settings {
 	 */
 	protected function __construct() {
 		self::init_defaults();
-		Logger::debug( array( 'DEFAULTS' => self::$option_default ) );
 		if ( ! isset( self::$options ) ) {
 			foreach ( self::OPTION_KEYS as $key_name ) {
 				$result = \get_option( $key_name, false );
@@ -348,7 +368,6 @@ class Settings {
 				}
 			}
 		}
-		Logger::debug( array( 'OPTIONS' => self::$options ) );
 	}
 
 	/**
@@ -367,7 +386,7 @@ class Settings {
 				self::BIBLE_BOOK            => 'book',
 				self::COMMENTS              => false,
 				self::COMMON_BASE_SLUG      => false,
-				self::DATE_FORMAT           => 'mm/dd/YY',
+
 				self::DEFAULT_IMAGE         => '',
 				self::MENU_ICON             => 'dashicons-drppsm-holy-spirit',
 				self::PLAYER                => 'plyr',
@@ -391,17 +410,6 @@ class Settings {
 
 				/* translators: series plural */
 				self::SERIES_PLURAL         => __( 'Series', 'drppsm' ),
-
-				// ------------------------------------------------------------
-				// SERMON SETTINGS
-				// ------------------------------------------------------------
-				self::SERMON_COUNT          => 10,
-
-				/* translators: sermon singular */
-				self::SERMON_SINGULAR       => __( 'Sermon', 'drppsm' ),
-
-				/* translators: sermon plural */
-				self::SERMON_PLURAL         => __( 'Sermons', 'drppsm' ),
 
 				/* translators: service type singular */
 				self::SERIES_SINGULAR       => __( 'Service Type', 'drppsm' ),
@@ -441,12 +449,31 @@ class Settings {
 				self::CRON_INTERVAL   => 2,
 			),
 
+			self::OPTION_KEY_SERIES   => array(),
+
+			self::OPTION_KEY_SERMONS  => array(
+				self::DATE_FORMAT     => 'mm/dd/YY',
+				self::SERMON_COUNT    => 10,
+
+				/* translators: sermon singular */
+				self::SERMON_SINGULAR => __( 'Sermon', 'drppsm' ),
+
+				/* translators: sermon plural */
+				self::SERMON_PLURAL   => __( 'Sermons', 'drppsm' ),
+
+				/* translators: service type singular */
+				self::SERIES_SINGULAR => __( 'Service Type', 'drppsm' ),
+
+				/* translators: service type plural */
+				self::SERIES_PLURAL   => __( 'Service Types', 'drppsm' ),
+			),
+
 		);
 	}
 
 
 	/**
-	 * Get options value
+	 * Get options value.
 	 *
 	 * @param string $key Options key.
 	 * @param mixed  $default_value Default value to return if not found.

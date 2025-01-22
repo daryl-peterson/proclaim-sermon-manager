@@ -17,7 +17,7 @@ use CMB2_Boxes;
 use CMB2_Options_Hookup;
 use DRPPSM\Interfaces\Executable;
 use DRPPSM\Interfaces\Registrable;
-
+use DRPPSM\Traits\ExecutableTrait;
 
 /**
  * Admin settings.
@@ -29,6 +29,7 @@ use DRPPSM\Interfaces\Registrable;
  * @since       1.0.0
  */
 class AdminSettings implements Executable, Registrable {
+	use ExecutableTrait;
 
 	/**
 	 * Menu slug.
@@ -39,19 +40,6 @@ class AdminSettings implements Executable, Registrable {
 	 * Tab group.
 	 */
 	const TAB_GROUP = DRPSM_KEY_PREFIX . '_options';
-
-	/**
-	 * Initialize and register.
-	 *
-	 * @return AdminSettings
-	 * @since 1.0.0
-	 */
-	public static function exec(): AdminSettings {
-		$obj = new self();
-		$obj->register();
-
-		return $obj;
-	}
 
 	/**
 	 * Register hooks
@@ -69,9 +57,11 @@ class AdminSettings implements Executable, Registrable {
 		add_action( 'cmb2_admin_init', array( $this, 'register_metaboxes' ) );
 		add_filter( 'submenu_file', array( $this, 'remove_submenus' ) );
 
-		SettingsGeneral::exec();
-		SettingsDisplay::exec();
-		SettingsAdvanced::exec();
+		SPGeneral::exec();
+		SPDisplay::exec();
+		SPSermon::exec();
+		SPAdvanced::exec();
+
 		return true;
 	}
 
@@ -168,7 +158,13 @@ class AdminSettings implements Executable, Registrable {
 
 		global $plugin_page;
 
-		$hidden = apply_filters( DRPPSMF_SETTINGS_RSM, array() );
+		/**
+		 * Get list of submenus to remove.
+		 *
+		 * @param array $hidden Array of submenus to remove.
+		 * @return mixed
+		 */
+		$hidden = apply_filters( Filter::SETTINGS_REMOVE_SUBMENU, array() );
 
 		// Select another submenu item to highlight (optional).
 		if ( $plugin_page && in_array( $plugin_page, $hidden, true ) ) {

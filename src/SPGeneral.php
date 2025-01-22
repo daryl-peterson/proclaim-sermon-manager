@@ -2,7 +2,7 @@
 /**
  * General settings.
  *
- * @package     DRPPSM\SettingsGeneral
+ * @package     DRPPSM\SPGeneral
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
@@ -14,17 +14,19 @@ namespace DRPPSM;
 use CMB2;
 use DRPPSM\Interfaces\Executable;
 use DRPPSM\Interfaces\Registrable;
+use DRPPSM\Traits\ExecutableTrait;
 
 /**
  * General settings.
  *
- * @package     DRPPSM\SettingsGeneral
+ * @package     DRPPSM\SPGeneral
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
  * @since       1.0.0
  */
-class SettingsGeneral extends SettingsBase implements Executable, Registrable {
+class SPGeneral extends SPBase implements Executable, Registrable {
+	use ExecutableTrait;
 
 	/**
 	 * Key used in storing options.
@@ -32,18 +34,6 @@ class SettingsGeneral extends SettingsBase implements Executable, Registrable {
 	 * @var string
 	 */
 	public string $option_key = Settings::OPTION_KEY_GENERAL;
-
-	/**
-	 * Initailize and register hooks.
-	 *
-	 * @return SettingsGeneral
-	 * @since 1.0.0
-	 */
-	public static function exec(): SettingsGeneral {
-		$obj = new self();
-		$obj->register();
-		return $obj;
-	}
 
 	/**
 	 * Register hooks.
@@ -122,24 +112,16 @@ class SettingsGeneral extends SettingsBase implements Executable, Registrable {
 			'parent_slug'  => AdminSettings::SLUG,
 			'tab_group'    => AdminSettings::TAB_GROUP,
 			'tab_title'    => 'General',
+			'display_cb'   => $display_cb,
 		);
-
-		// 'tab_group' property is supported in > 2.4.0.
-		if ( version_compare( CMB2_VERSION, '2.4.0' ) ) {
-			$args['display_cb'] = $display_cb;
-		}
 
 		$cmb = new_cmb2_box( $args );
 		$this->add_seperator( $cmb, __( 'General Settings', 'drppsm' ) );
 		$this->add_player( $cmb );
 		$this->add_menu_icon( $cmb );
 		$this->add_sermon_comments( $cmb );
-		$this->add_date_format( $cmb );
-		$this->sermon_count( $cmb );
 
 		$this->add_seperator( $cmb, __( 'Sermon Labels', 'drppsm' ), true );
-		$this->sermon_single( $cmb );
-		$this->sermon_plural( $cmb );
 		$this->add_common_base_slug( $cmb );
 
 		// Preacher labels.
@@ -224,31 +206,7 @@ class SettingsGeneral extends SettingsBase implements Executable, Registrable {
 		);
 	}
 
-	/**
-	 * Add date format field.
-	 *
-	 * @param CMB2 $cmb CMB2 Object.
-	 * @return void
-	 * @since 1.0.0
-	 */
-	private function add_date_format( CMB2 $cmb ): void {
-		$desc = __( 'Used only in admin area, when creating a new Sermon', 'drppsm' );
-		$cmb->add_field(
-			array(
-				'id'               => Settings::DATE_FORMAT,
-				'name'             => DRPPSM_SETTINGS_DATE_FORMAT_NAME,
-				'type'             => 'select',
-				'show_option_none' => true,
-				'options'          => array(
-					'mm/dd/YY' => 'mm/dd/YY',
-					'dd/mm/YY' => 'dd/mm/YY',
-					'YY/mm/dd' => 'YY/mm/dd',
-					'YY/dd/mm' => 'YY/dd/mm',
-				),
-				'after_row'        => $this->description( $desc ),
-			)
-		);
-	}
+
 
 	/**
 	 * Add sermon comments field.
@@ -267,90 +225,7 @@ class SettingsGeneral extends SettingsBase implements Executable, Registrable {
 		);
 	}
 
-	/**
-	 * Add sermon count field.
-	 *
-	 * @param CMB2 $cmb CMB2 Object.
-	 * @return void
-	 * @since 1.0.0
-	 */
-	private function sermon_count( CMB2 $cmb ): void {
-		$desc = __( 'Affects only the default number, other settings will override it', 'drppsm' );
-		$cmb->add_field(
-			array(
-				'id'         => Settings::SERMON_COUNT,
-				'name'       => DRPPSM_SETTINGS_SERMON_COUNT_NAME,
-				'type'       => 'text',
-				'attributes' => array(
-					'type'    => 'number',
-					'pattern' => '\d*',
-				),
-				'after_row'  => $this->description( $desc ),
-			)
-		);
-	}
 
-	/**
-	 * Add sermon single label.
-	 *
-	 * @param CMB2 $cmb
-	 * @return void
-	 * @since 1.0.0
-	 */
-	private function sermon_single( CMB2 $cmb ): void {
-		$s1 = '<code>' . __( '/sermon/mark', 'drppsm' ) . '</code>';
-		$s2 = '<code>' . __( '/lecture/mark', 'drppsm' ) . '</code>';
-
-		$desc  = DRPPSM_MSG_LABEL_SINGLE . '<br>';
-		$desc .= wp_sprintf(
-			// translators: %1$s Default sermon slug/path. Effectively <code>/sermon/mark</code>.
-			// translators: %2$s Example lecture slug/path. Effectively <code>/lecture/mark</code>.
-			__( 'Changing "Sermon" to "Lecture" would result in %1$s becoming %2$s.', 'drppsm' ),
-			$s1,
-			$s2
-		);
-		$desc .= '<br>' . DRPPSM_MSG_SLUG_NOTE;
-
-		$cmb->add_field(
-			array(
-				'id'        => Settings::SERMON_SINGULAR,
-				'name'      => __( 'Singular Label', 'drppsm' ),
-				'type'      => 'text',
-				'after_row' => $this->description( $desc ),
-			)
-		);
-	}
-
-	/**
-	 * Add sermon plural label.
-	 *
-	 * @param CMB2 $cmb
-	 * @return void
-	 * @since 1.0.0
-	 */
-	private function sermon_plural( CMB2 $cmb ): void {
-		$s1 = '<code>' . __( '/sermons/', 'drppsm' ) . '</code>';
-		$s2 = '<code>' . __( '/lectures/', 'drppsm' ) . '</code>';
-
-		$desc  = DRPPSM_MSG_LABEL_PLURAL . '<br>';
-		$desc .= wp_sprintf(
-			// translators: %1$s Default series slug/path. Effectively <code>/sermons/</code>.
-			// translators: %2$s Example listings slug/path. Effectively <code>/lectures/</code>.
-			__( 'Changing "Sermons" to "Lectures" would result in %1$s becoming %2$s.', 'drppsm' ),
-			$s1,
-			$s2
-		);
-		$desc .= '<br>' . DRPPSM_MSG_SLUG_NOTE;
-
-		$cmb->add_field(
-			array(
-				'id'        => Settings::SERMON_PLURAL,
-				'name'      => __( 'Plural Label', 'drppsm' ),
-				'type'      => 'text',
-				'after_row' => $this->description( $desc ),
-			)
-		);
-	}
 
 	/**
 	 * Service type singular label.

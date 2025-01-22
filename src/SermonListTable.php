@@ -193,15 +193,13 @@ class SermonListTable implements Executable, Registrable {
 					$data = PostTypeUtils::get_view_count( array( 'post_id' => $post->ID ) );
 					break;
 				case 'preached':
-					Logger::debug( 'Preached column' );
-
 					$unix_preached = DateUtils::get( 'U' );
 
 					if ( time() - $unix_preached < DAY_IN_SECONDS ) {
 						// translators: %s: The time. Such as "12 hours".
 						$date = sprintf( __( '%s ago' ), human_time_diff( $unix_preached ) );
 					} else {
-						$date = gmdate( 'Y/m/d', $unix_preached );
+						$date = gmdate( 'Y/m/d H:i', $unix_preached );
 					}
 
 					$data = '<abbr title="' . gmdate( 'Y/m/d g:i:s a', $unix_preached ) . '">' . $date . '</abbr>';
@@ -316,11 +314,11 @@ class SermonListTable implements Executable, Registrable {
 
 			// phpcs:disable
 			$qv['tax_query'] = array(
-				array(
-					'taxonomy' => $tax_stype,
-					'field'    => 'slug',
-					'terms'    => $query->query_vars[ $tax_stype ],
-				),
+			array(
+				'taxonomy' => $tax_stype,
+				'field'    => 'slug',
+				'terms'    => $query->query_vars[ $tax_stype ],
+			),
 			);
 			// phpcs:enable
 
@@ -350,45 +348,40 @@ class SermonListTable implements Executable, Registrable {
 				return $vars;
 			}
 
-			Logger::debug( $vars );
-
 			if ( isset( $vars['orderby'] ) ) {
 
 				// Sorting.
 				switch ( $vars['orderby'] ) {
 					case Meta::DATE:
 						// phpcs:disable
-						$vars = array_merge(
-							$vars,
-							array(
-								'meta_key'       => Meta::DATE,
-								'orderby'        => 'meta_value_num',
-								'meta_value_num' => time(),
-								'meta_compare'   => '<=',
-							)
-						);
+						$vars = array_merge( $vars, array(
+							'meta_key'       => Meta::DATE,
+							'orderby'        => 'meta_value_num',
+							'meta_value_num' => time(),
+							'meta_compare'   => '<=',
+						) );
 						// phpcs:enable
 						break;
 
 					case 'views':
 						// phpcs:disable
 						$vars = array_merge(
-							$vars,
-							array(
-								'meta_key' => 'Views',
-								'orderby'  => 'meta_value_num',
-							)
+						$vars,
+						array(
+							'meta_key' => 'Views',
+							'orderby'  => 'meta_value_num',
+						)
 						);
 						// phpcs:enable
 						break;
 				}
-			}
 
-			if ( isset( $vars[ $this->pt ] ) && trim( $vars[ $this->pt ] ) === '' ) {
-				unset( $vars[ $this->pt ] );
-			}
+				if ( isset( $vars[ $this->pt ] ) && trim( $vars[ $this->pt ] ) === '' ) {
+					unset( $vars[ $this->pt ] );
+				}
 
-			// @codeCoverageIgnoreStart
+				// @codeCoverageIgnoreStart
+			}
 		} catch ( \Throwable $th ) {
 			Logger::error(
 				array(

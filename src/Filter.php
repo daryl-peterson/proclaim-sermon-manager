@@ -47,4 +47,16 @@ class Filter {
 	 * ```
 	 */
 	const TIMER = 'drppsm_timer';
+
+
+	/**
+	 * Filters for remove submenus of admin menu.
+	 *
+	 * - Fires before before sub menus are displayed.
+	 *
+	 * @param array $submenus Sub menus to hide.
+	 * @return array
+	 * @since 1.0.0
+	 */
+	const SETTINGS_REMOVE_SUBMENU = 'drppsm_settings_remove_submenus';
 }

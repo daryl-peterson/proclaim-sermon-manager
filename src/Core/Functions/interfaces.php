@@ -13,7 +13,6 @@ namespace DRPPSM;
 
 defined( 'ABSPATH' ) || exit;
 
-use DRPPSM\Interfaces\BibleLoaderInt;
 use DRPPSM\Interfaces\RequirementsInt;
 use DRPPSM\Interfaces\RolesInt;
 use DRPPSM\Interfaces\TextDomainInt;
@@ -58,16 +57,6 @@ function textdomain(): TextDomainInt {
  */
 function notice(): NoticeInt {
 	return app()->get( NoticeInt::class );
-}
-
-/**
- * Get bible loader interface.
- *
- * @return BibleLoaderInt
- * @since 1.0.0
- */
-function bible_loader(): BibleLoaderInt {
-	return app()->get( BibleLoaderInt::class );
 }
 
 /**

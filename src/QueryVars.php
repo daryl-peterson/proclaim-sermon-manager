@@ -16,6 +16,7 @@ defined( 'ABSPATH' ) || exit;
 use DRPPSM\Constants\Meta;
 use DRPPSM\Interfaces\Executable;
 use DRPPSM\Interfaces\Registrable;
+use WPForms\Logger\Log;
 
 /**
  * Overwrite query vars if conflicts exist.
@@ -63,19 +64,22 @@ class QueryVars implements Executable, Registrable {
 	 */
 	public function overwrite_query_vars( array $query ): array {
 		try {
-			$query_org = $query;
-			$query     = $this->fix_attachment( $query );
+
+			// $attachment = $this->fix_attachment( $query );
 
 			if ( key_exists( DRPPSM_PT_SERMON, $query ) ) {
 				$arg = $query[ DRPPSM_PT_SERMON ];
 
 				$tax = TaxUtils::get_taxonomy_name( $arg );
-				if ( $tax ) {
+
+				if ( $tax && ! key_exists( $tax, $query ) ) {
+					Logger::debug( array( 'TAXONOMY' => $tax ) );
 					$query = array(
 						'post_type' => DRPPSM_PT_SERMON,
 						'taxonomy'  => $tax,
 						'orderby'   => 'name',
 						'order'     => 'ASC',
+
 					);
 
 					$terms = get_terms(
@@ -92,16 +96,35 @@ class QueryVars implements Executable, Registrable {
 							'taxonomy' => $tax,
 							'field'    => 'id',
 							'terms'    => array_values( $terms ),
-							// 'terms'    => array(),
 						),
 					);
 
-					Logger::debug( array( 'QUERY' => $query ) );
+					$orderby = Settings::get( Settings::ARCHIVE_ORDER_BY );
+					if ( 'date_preached' === $orderby ) {
+						$query['meta_query'] = array(
+							'orderby'      => 'meta_value_num',
+							'meta_key'     => Meta::DATE,
+							'meta_value'   => time(),
+							'meta_compare' => '<=',
+						);
+					}
+				}
+			} elseif ( key_exists( 'post_type', $query ) && DRPPSM_PT_SERMON === $query['post_type'] ) {
+				$orderby = Settings::get( Settings::ARCHIVE_ORDER_BY );
+				if ( 'date_preached' === $orderby ) {
+					$query['meta_query'] = array(
+						'orderby'      => 'meta_value_num',
+						'meta_key'     => Meta::DATE,
+						'meta_value'   => time(),
+						'meta_compare' => '<=',
+					);
 				}
 			}
+
+			Logger::debug( array( 'QUERY' => $query ) );
 		} catch ( \Throwable $th ) {
 			FatalError::set( $th );
-			$query = $query_org;
+
 		}
 		return $query;
 	}
@@ -113,11 +136,13 @@ class QueryVars implements Executable, Registrable {
 	 * @return array
 	 * @since 1.0.0
 	 */
-	private function fix_attachment( array $query ): array {
+	private function fix_attachment( array &$query ): bool {
 		global $wp;
 
+		Logger::debug( array( 'QUERY' => $query ) );
+
 		if ( ! key_exists( 'attachment', $query ) ) {
-			return $query;
+			return false;
 		}
 
 		$links = PermaLinks::get();
@@ -135,10 +160,23 @@ class QueryVars implements Executable, Registrable {
 			)
 		);
 		if ( $key ) {
-			unset( $query['attachment'] );
-			$query[ $key ] = $term;
+			$query = array(
+				'post_type' => DRPPSM_PT_SERMON,
+				'orderby'   => 'name',
+				'order'     => 'ASC',
+				'type'      => 'attachment',
+				'tax_query' => array(
+					array(
+						'taxonomy' => $key,
+						'field'    => 'name',
+						'terms'    => $term,
+					),
+				),
+
+			);
+			return true;
 		}
 
-		return $query;
+		return true;
 	}
 }

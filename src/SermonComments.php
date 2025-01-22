@@ -26,18 +26,7 @@ use DRPPSM\Interfaces\Registrable;
  * @since       1.0.0
  */
 class SermonComments implements Registrable, Executable {
-
-	/**
-	 * Initialize and register.
-	 *
-	 * @return SermonComments
-	 * @since 1.0.0
-	 */
-	public static function exec(): SermonComments {
-		$obj = new self();
-		$obj->register();
-		return $obj;
-	}
+	use Traits\ExecutableTrait;
 
 	/**
 	 * Register hooks.

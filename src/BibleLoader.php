@@ -13,9 +13,10 @@ namespace DRPPSM;
 
 defined( 'ABSPATH' ) || exit;
 
-use DRPPSM\Constants\Actions;
 use DRPPSM\Constants\Bible;
-use DRPPSM\Interfaces\BibleLoaderInt;
+use DRPPSM\Interfaces\Executable;
+use DRPPSM\Interfaces\Registrable;
+use DRPPSM\Traits\ExecutableTrait;
 
 /**
  * Loads bible books taxomony data.
@@ -26,7 +27,8 @@ use DRPPSM\Interfaces\BibleLoaderInt;
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
  * @since       1.0.0
  */
-class BibleLoader implements BibleLoaderInt {
+class BibleLoader implements Executable, Registrable {
+	use ExecutableTrait;
 
 	/**
 	 * Bible taxonomy.
@@ -44,18 +46,6 @@ class BibleLoader implements BibleLoaderInt {
 	 */
 	protected function __construct() {
 		$this->tax_bible = DRPPSM_TAX_BOOK;
-	}
-
-	/**
-	 * Initailize and register hooks.
-	 *
-	 * @return BibleLoaderInt
-	 * @since 1.0.0
-	 */
-	public static function exec(): BibleLoaderInt {
-		$obj = new self();
-		$obj->register();
-		return $obj;
 	}
 
 	/**

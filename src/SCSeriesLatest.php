@@ -16,6 +16,7 @@ namespace DRPPSM;
 use DRPPSM\Constants\Meta;
 use DRPPSM\Interfaces\Executable;
 use DRPPSM\Interfaces\Registrable;
+use DRPPSM\Traits\ExecutableTrait;
 use WP_Term;
 
 defined( 'ABSPATH' ) || exit;
@@ -30,6 +31,7 @@ defined( 'ABSPATH' ) || exit;
  * @since       1.0.0
  */
 class SCSeriesLatest extends SCBase implements Executable, Registrable {
+	use ExecutableTrait;
 
 	/**
 	 * Series taxomony.
@@ -58,18 +60,6 @@ class SCSeriesLatest extends SCBase implements Executable, Registrable {
 
 		$this->sc         = DRPPSM_SC_SERIES_LATEST;
 		$this->tax_series = DRPPSM_TAX_SERIES;
-	}
-
-	/**
-	 * Initialize object and preform hooks registration if needed.
-	 *
-	 * @return self
-	 * @since 1.0.0
-	 */
-	public static function exec(): self {
-		$obj = new self();
-		$obj->register();
-		return $obj;
 	}
 
 	/**

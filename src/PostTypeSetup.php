@@ -105,7 +105,7 @@ class PostTypeSetup implements Executable, Registrable {
 
 			foreach ( $list as $post_type ) {
 				$obj = $this->get_post_type( $post_type );
-				$obj->add();
+
 				$taxonomies = (array) $this->get_post_type_taxonomies( $post_type );
 
 				$status[ $post_type ]['status'] = $obj->exist();
@@ -119,6 +119,7 @@ class PostTypeSetup implements Executable, Registrable {
 					$taxonomy->add();
 					$status[ $post_type ]['taxonomies'][ $taxonomy->get_name() ] = $taxonomy->exist();
 				}
+				$obj->add();
 			}
 
 			do_action( Action::AFTER_POST_SETUP );

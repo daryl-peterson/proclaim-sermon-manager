@@ -22,7 +22,7 @@ use CMB2;
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
  * @since       1.0.0
  */
-class SettingsBase {
+class SPBase {
 
 	/**
 	 * Count for separtor so it can be reused.

@@ -14,6 +14,7 @@ namespace DRPPSM;
 defined( 'ABSPATH' ) || exit;
 
 use DRPPSM\Interfaces\NoticeInt;
+use DRPPSM\Traits\ExecutableTrait;
 use DRPPSM\Traits\SingletonTrait;
 
 /**
@@ -28,6 +29,7 @@ use DRPPSM\Traits\SingletonTrait;
 class Notice implements NoticeInt {
 
 	use SingletonTrait;
+	use ExecutableTrait;
 
 	/**
 	 * Options key.
@@ -67,18 +69,6 @@ class Notice implements NoticeInt {
 		}
 		add_action( 'admin_notices', array( $this, 'show_notice' ) );
 		return true;
-	}
-
-	/**
-	 * Get initialize object.
-	 *
-	 * @return NoticeInt
-	 * @since 1.0.0
-	 */
-	public static function exec(): NoticeInt {
-		$obj = new self();
-		$obj->register();
-		return $obj;
 	}
 
 	/**

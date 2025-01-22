@@ -2,7 +2,7 @@
 /**
  * Advanced settings.
  *
- * @package     DRPPSM\SettingsAdvanced
+ * @package     DRPPSM\SPAdvanced
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
@@ -12,18 +12,17 @@
 namespace DRPPSM;
 
 use CMB2;
-use DRPPSM\Constants\Actions;
 
 /**
  * Advanced settings.
  *
- * @package     DRPPSM\SettingsAdvanced
+ * @package     DRPPSM\SPAdvanced
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
  * @since       1.0.0
  */
-class SettingsAdvanced extends SettingsBase {
+class SPAdvanced extends SPBase {
 
 	/**
 	 * Key used in storing options.
@@ -53,7 +52,7 @@ class SettingsAdvanced extends SettingsBase {
 	 */
 	public function register(): ?bool {
 		add_action( Action::SETTINGS_REGISTER_FORM, array( $this, 'register_metaboxes' ) );
-		add_filter( DRPPSMF_SETTINGS_RSM, array( $this, 'set_menu' ) );
+		add_filter( Filter::SETTINGS_REMOVE_SUBMENU, array( $this, 'set_menu' ) );
 		return true;
 	}
 

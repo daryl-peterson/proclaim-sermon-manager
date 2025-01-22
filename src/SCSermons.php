@@ -2,7 +2,7 @@
 /**
  * Sermon shortcode.
  *
- * @package     Proclaim Sermon Manager
+ * @package     DRPPSM\SCSermons
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
@@ -16,18 +16,20 @@ defined( 'ABSPATH' ) || exit;
 use DRPPSM\Constants\Meta;
 use DRPPSM\Interfaces\Executable;
 use DRPPSM\Interfaces\Registrable;
+use DRPPSM\Traits\ExecutableTrait;
 use WP_Query;
 
 /**
  * Sermon shortcode.
  *
- * @package     Proclaim Sermon Manager
+ * @package     DRPPSM\SCSermons
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
  * @since       1.0.0
  */
 class SCSermons extends SCBase implements Executable, Registrable {
+	use ExecutableTrait;
 
 	/**
 	 * Sermons shortcode
@@ -46,18 +48,6 @@ class SCSermons extends SCBase implements Executable, Registrable {
 	protected function __construct() {
 		parent::__construct();
 		$this->sc_sermons = DRPPSM_SC_SERMONS;
-	}
-
-	/**
-	 * Initialize object and preform hooks registration if needed.
-	 *
-	 * @return Executable
-	 * @since 1.0.0
-	 */
-	public static function exec(): Executable {
-		$obj = new self();
-		$obj->register();
-		return $obj;
 	}
 
 	/**

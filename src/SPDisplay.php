@@ -14,6 +14,7 @@ namespace DRPPSM;
 use CMB2;
 use DRPPSM\Interfaces\Executable;
 use DRPPSM\Interfaces\Registrable;
+use DRPPSM\Traits\ExecutableTrait;
 
 /**
  * Display settings.
@@ -24,7 +25,8 @@ use DRPPSM\Interfaces\Registrable;
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
  * @since       1.0.0
  */
-class SettingsDisplay extends SettingsBase implements Executable, Registrable {
+class SPDisplay extends SPBase implements Executable, Registrable {
+	use ExecutableTrait;
 
 	/**
 	 * Key used in storing options.
@@ -35,18 +37,6 @@ class SettingsDisplay extends SettingsBase implements Executable, Registrable {
 	public string $option_key = Settings::OPTION_KEY_DISPLAY;
 
 	/**
-	 * Initailize and register hooks.
-	 *
-	 * @return self
-	 * @since 1.0.0
-	 */
-	public static function exec(): self {
-		$obj = new self();
-		$obj->register();
-		return $obj;
-	}
-
-	/**
 	 * Register hooks.
 	 *
 	 * @return boolean|null Always true.
@@ -54,7 +44,7 @@ class SettingsDisplay extends SettingsBase implements Executable, Registrable {
 	 */
 	public function register(): ?bool {
 		add_action( Action::SETTINGS_REGISTER_FORM, array( $this, 'register_metaboxes' ) );
-		add_filter( DRPPSMF_SETTINGS_RSM, array( $this, 'set_menu' ) );
+		add_filter( Filter::SETTINGS_REMOVE_SUBMENU, array( $this, 'set_menu' ) );
 		return true;
 	}
 

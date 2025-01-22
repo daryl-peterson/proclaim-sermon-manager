@@ -451,6 +451,9 @@ class TaxInfo {
 	 * @since 1.0.0
 	 */
 	public function has_sermons(): bool {
+		if ( ! isset( $this->sermons ) ) {
+			return false;
+		}
 		return $this->sermons->count() > 0;
 	}
 
@@ -500,6 +503,9 @@ class TaxInfo {
 			$this->term_id,
 			-1
 		);
+		if ( ! $sermons ) {
+			$this->sermons = array();
+		}
 
 		$this->sermons = new SermonsInfo( $sermons );
 		foreach ( $sermons as $sermon ) {

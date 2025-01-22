@@ -85,7 +85,9 @@ class TaxList {
 
 		$output = '';
 		if ( isset( $this->data ) && is_array( $this->data ) && count( $this->data ) > 0 ) {
+
 			ob_start();
+
 			get_partial(
 				Templates::ImageList,
 				array(
@@ -95,6 +97,7 @@ class TaxList {
 				)
 			);
 			get_partial( Templates::Pagination, $this->paginate );
+
 			$output .= ob_get_clean();
 		} else {
 			ob_start();

@@ -13,6 +13,7 @@ namespace DRPPSM;
 
 use DRPPSM\Interfaces\Executable;
 use DRPPSM\Interfaces\Registrable;
+use DRPPSM\Traits\ExecutableTrait;
 use DRPPSM\Traits\SingletonTrait;
 
 defined( 'ABSPATH' ) || exit;
@@ -29,6 +30,7 @@ defined( 'ABSPATH' ) || exit;
 class SchedulerJobs implements Executable, Registrable {
 
 	use SingletonTrait;
+	use ExecutableTrait;
 
 	/**
 	 * Jobs queue.
@@ -62,18 +64,6 @@ class SchedulerJobs implements Executable, Registrable {
 		}
 
 		self::$init = false;
-	}
-
-	/**
-	 * Get object instance and register hooks.
-	 *
-	 * @return self
-	 * @since 1.0.0
-	 */
-	public static function exec(): self {
-		$obj = self::get_instance();
-		$obj->register();
-		return $obj;
 	}
 
 	/**

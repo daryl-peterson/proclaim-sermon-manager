@@ -14,7 +14,6 @@ namespace DRPPSM;
 defined( 'ABSPATH' ) || exit;
 
 use DRPPSM\DB\DbUpdates;
-use DRPPSM\Interfaces\BibleLoaderInt;
 use DRPPSM\Interfaces\RolesInt;
 use DRPPSM\Interfaces\TextDomainInt;
 use DRPPSM\Interfaces\NoticeInt;
@@ -25,7 +24,7 @@ use DRPPSM\Logging\LogWritterInt;
 return array(
 	AdminMenu::class         => AdminMenu::class,
 	AdminSettings::class     => AdminSettings::class,
-	BibleLoaderInt::class    => BibleLoader::class,
+	BibleLoader::class       => BibleLoader::class,
 	DbUpdates::class         => DbUpdates::class,
 	ImageSize::class         => ImageSize::class,
 	LogWritterInt::class     => LogFile::class,

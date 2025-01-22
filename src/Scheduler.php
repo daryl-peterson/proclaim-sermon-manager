@@ -15,6 +15,7 @@ use DateTime;
 use DateTimeZone;
 use DRPPSM\Interfaces\Executable;
 use DRPPSM\Interfaces\Registrable;
+use DRPPSM\Traits\ExecutableTrait;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -28,6 +29,7 @@ defined( 'ABSPATH' ) || exit;
  * @since       1.0.0
  */
 class Scheduler implements Executable, Registrable {
+	use ExecutableTrait;
 
 	/**
 	 * Jobs instance.
@@ -97,18 +99,6 @@ class Scheduler implements Executable, Registrable {
 		if ( ! isset( self::$jobs ) ) {
 			self::$jobs = SchedulerJobs::get_instance();
 		}
-	}
-
-	/**
-	 * Initialize and register.
-	 *
-	 * @return self
-	 * @since 1.0.0
-	 */
-	public static function exec(): self {
-		$obj = new self();
-		$obj->register();
-		return $obj;
 	}
 
 	/**

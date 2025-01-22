@@ -113,13 +113,6 @@ class TaxMeta implements Executable, Registrable {
 		$key  = self::get_data_key( $taxonomy );
 		$meta = get_term_meta( $term_id, $key, true );
 
-		Logger::debug(
-			array(
-				'TAXONOMY' => $taxonomy,
-				'TERM_ID'  => $term_id,
-				'META'     => $meta,
-			)
-		);
 		if ( ! isset( $meta ) || ! $meta ) {
 			self::$jobs->add( $taxonomy, $term_id );
 			return null;

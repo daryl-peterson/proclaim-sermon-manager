@@ -1,24 +1,37 @@
 <?php
 /**
- * Bible loader interface.
+ * Executable trait.
  *
- * @package     Proclaim Sermon Manager
+ * @package     DRPPSM\Traits\ExecutableTrait
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
  * @since       1.0.0
  */
 
-namespace DRPPSM\Interfaces;
+namespace DRPPSM\Traits;
 
 /**
- * Bible loader interface.
+ * Executable trait.
  *
- * @package     Proclaim Sermon Manager
+ * @package     DRPPSM\Traits\ExecutableTrait
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
  * @since       1.0.0
  */
-interface BibleLoaderInt extends BaseInt, Registrable {
+trait ExecutableTrait {
+
+	/**
+	 * Initailize and register hooks.
+	 *
+	 * @return self
+	 * @since 1.0.0
+	 */
+	public static function exec(): self {
+		$obj = new self();
+		$obj->register();
+
+		return $obj;
+	}
 }

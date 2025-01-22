@@ -2,7 +2,7 @@
 /**
  * Shortcodes for terms.
  *
- * @package     Proclaim Sermon Manager
+ * @package     DRPPSM\SCTerms
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
@@ -11,24 +11,25 @@
 
 namespace DRPPSM;
 
-use DRPPSM\Constants\Meta;
 use DRPPSM\Constants\Bible;
 use DRPPSM\Interfaces\Executable;
 use DRPPSM\Interfaces\Registrable;
-use WP_Error;
+use DRPPSM\Traits\ExecutableTrait;
 
 defined( 'ABSPATH' ) || exit;
 
 /**
  * Shortcodes for terms.
  *
- * @package     Proclaim Sermon Manager
+ * @package     DRPPSM\SCTerms
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
  * @since       1.0.0
  */
 class SCTerms extends SCBase implements Executable, Registrable {
+	use ExecutableTrait;
+
 	/**
 	 * Terms short code.
 	 *
@@ -46,18 +47,6 @@ class SCTerms extends SCBase implements Executable, Registrable {
 	protected function __construct() {
 		parent::__construct();
 		$this->sc_terms = DRPPSM_SC_TERMS;
-	}
-
-	/**
-	 * Initialize object and preform hooks registration if needed.
-	 *
-	 * @return self
-	 * @since 1.0.0
-	 */
-	public static function exec(): Executable {
-		$obj = new self();
-		$obj->register();
-		return $obj;
 	}
 
 	/**

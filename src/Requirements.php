@@ -14,8 +14,11 @@ namespace DRPPSM;
 defined( 'ABSPATH' ) || exit;
 
 use DRPPSM\Exceptions\PluginException;
+use DRPPSM\Interfaces\Executable;
 use DRPPSM\Interfaces\NoticeInt;
+use DRPPSM\Interfaces\Registrable;
 use DRPPSM\Interfaces\RequirementsInt;
+use DRPPSM\Traits\ExecutableTrait;
 
 /**
  * Run checks to see if plugin can be activated / installed.
@@ -26,7 +29,8 @@ use DRPPSM\Interfaces\RequirementsInt;
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
  * @since       1.0.0
  */
-class Requirements {
+class Requirements implements Executable, Registrable {
+	use ExecutableTrait;
 
 	/**
 	 * Notice interface
@@ -43,18 +47,6 @@ class Requirements {
 	protected function __construct() {
 
 		$this->notice = notice();
-	}
-
-	/**
-	 * Initialize object and preform register hooks if needed.
-	 *
-	 * @return self
-	 * @since 1.0.0
-	 */
-	public static function exec(): self {
-		$obj = new self();
-		$obj->register();
-		return $obj;
 	}
 
 	/**

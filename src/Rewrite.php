@@ -2,7 +2,7 @@
 /**
  * Check if any rewrite conflicts exist.
  *
- * @package     Proclaim Sermon Manager
+ * @package     DRPPSM\Rewrite
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
@@ -11,18 +11,21 @@
 
 namespace DRPPSM;
 
+use DRPPSM\Traits\ExecutableTrait;
+
 defined( 'ABSPATH' ) || exit;
 
 /**
  * Check if any rewrite conflicts exist.
  *
- * @package     Proclaim Sermon Manager
+ * @package     DRPPSM\Rewrite
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
  * @since       1.0.0
  */
 class Rewrite {
+	use ExecutableTrait;
 
 	/**
 	 * Transients.
@@ -31,31 +34,19 @@ class Rewrite {
 	const TRANS_TIMEOUT = DAY_IN_SECONDS;
 
 	/**
-	 * Initialize object and register hooks.
-	 *
-	 * @return Rewrite
-	 * @since 1.0.0
-	 */
-	public static function exec(): Rewrite {
-		$obj = new self();
-		$obj->register();
-		return $obj;
-	}
-
-	/**
 	 * Register hooks.
 	 *
 	 * @return boolean|null True if hooks were registered, otherwise false.
 	 * @since 1.0.0
 	 */
 	public function register(): ?bool {
-		if ( has_action( DRPPSMA_FLUSH_REWRITE, array( $this, 'flush' ) ) ) {
+		if ( has_action( Action::REWRITE_FLUSH, array( $this, 'flush' ) ) ) {
 			return false;
 		}
 
 		add_action( 'activate_plugin', array( $this, 'reset' ), 10, 2 );
 		add_action( 'deactivate_plugin', array( $this, 'reset' ), 10, 2 );
-		add_action( DRPPSMA_FLUSH_REWRITE, array( $this, 'flush' ) );
+		add_action( Action::REWRITE_FLUSH, array( $this, 'flush' ) );
 		return true;
 	}
 

@@ -16,6 +16,7 @@ defined( 'ABSPATH' ) || exit;
 
 use DRPPSM\Interfaces\Executable;
 use DRPPSM\Interfaces\Registrable;
+use DRPPSM\Traits\ExecutableTrait;
 use WP_Term;
 
 /**
@@ -29,6 +30,7 @@ use WP_Term;
  * @since       1.0.0
  */
 class TaxListTable implements Executable, Registrable {
+	use ExecutableTrait;
 
 	/**
 	 * Table columns
@@ -69,18 +71,6 @@ class TaxListTable implements Executable, Registrable {
 			'posts'        => 'Count',
 		);
 		$this->tax     = array_values( DRPPSM_TAX_MAP );
-	}
-
-	/**
-	 * Initialize and register.
-	 *
-	 * @return self
-	 * @since 1.0.0
-	 */
-	public static function exec(): self {
-		$obj = new self();
-		$obj->register();
-		return $obj;
 	}
 
 	/**

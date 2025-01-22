@@ -15,6 +15,7 @@ defined( 'ABSPATH' ) || exit;
 
 use DRPPSM\Interfaces\Executable;
 use DRPPSM\Interfaces\Registrable;
+use DRPPSM\Traits\ExecutableTrait;
 use WP_Term;
 
 /**
@@ -27,6 +28,7 @@ use WP_Term;
  * @since       1.0.0
  */
 class SCSermonImages extends SCBase implements Executable, Registrable {
+	use ExecutableTrait;
 
 	/**
 	 * Taxonomy transient map.
@@ -86,8 +88,6 @@ class SCSermonImages extends SCBase implements Executable, Registrable {
 	 */
 	private string $transient_key;
 
-
-
 	/**
 	 * Initialize object properties.
 	 *
@@ -97,18 +97,6 @@ class SCSermonImages extends SCBase implements Executable, Registrable {
 	protected function __construct() {
 		parent::__construct();
 		$this->sc = DRPPSM_SC_SERMON_IMAGES;
-	}
-
-	/**
-	 * Initialize and preform registration hooks if needed.
-	 *
-	 * @return SCSermonImages
-	 * @since 1.0.0
-	 */
-	public static function exec(): self {
-		$obj = new self();
-		$obj->register();
-		return $obj;
 	}
 
 	/**
