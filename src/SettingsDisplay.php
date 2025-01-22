@@ -2,7 +2,7 @@
 /**
  * Display settings.
  *
- * @package     Proclaim Sermon Manager
+ * @package     DRPPSM\SettingsDisplay
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
@@ -12,14 +12,13 @@
 namespace DRPPSM;
 
 use CMB2;
-use DRPPSM\Constants\Actions;
 use DRPPSM\Interfaces\Executable;
 use DRPPSM\Interfaces\Registrable;
 
 /**
  * Display settings.
  *
- * @package     Proclaim Sermon Manager
+ * @package     DRPPSM\SettingsDisplay
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt

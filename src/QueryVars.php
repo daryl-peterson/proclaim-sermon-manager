@@ -64,8 +64,7 @@ class QueryVars implements Executable, Registrable {
 	public function overwrite_query_vars( array $query ): array {
 		try {
 			$query_org = $query;
-			Logger::debug( array( 'QUERY' => $query ) );
-			$query = $this->fix_attachment( $query );
+			$query     = $this->fix_attachment( $query );
 
 			if ( key_exists( DRPPSM_PT_SERMON, $query ) ) {
 				$arg = $query[ DRPPSM_PT_SERMON ];
@@ -79,14 +78,23 @@ class QueryVars implements Executable, Registrable {
 						'order'     => 'ASC',
 					);
 
-					/*
-					$query['meta_query'] = array(
-						'orderby'      => 'meta_value_num',
-						'meta_key'     => Meta::DATE,
-						'meta_value'   => time(),
-						'meta_compare' => '<=',
+					$terms = get_terms(
+						array(
+							'taxonomy'   => $tax,
+							'fields'     => 'ids',
+							'hide_empty' => true,
+							'number'     => 1,
+						)
 					);
-					*/
+
+					$query['tax_query'] = array(
+						array(
+							'taxonomy' => $tax,
+							'field'    => 'id',
+							'terms'    => array_values( $terms ),
+							// 'terms'    => array(),
+						),
+					);
 
 					Logger::debug( array( 'QUERY' => $query ) );
 				}
@@ -108,7 +116,6 @@ class QueryVars implements Executable, Registrable {
 	private function fix_attachment( array $query ): array {
 		global $wp;
 
-		Logger::debug( array( 'QUERY' => $query ) );
 		if ( ! key_exists( 'attachment', $query ) ) {
 			return $query;
 		}

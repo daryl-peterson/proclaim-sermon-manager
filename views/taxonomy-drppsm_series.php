@@ -12,23 +12,15 @@
 
 namespace DRPPSM;
 
-Logger::debug( $args );
+Logger::debug( array( 'ARGS' => $args ) );
 
 if ( ! did_action( 'get_header' ) ) {
-	get_header();
+	// get_header();
 }
 
 get_partial( 'sermon-wrapper-start' );
 
-if ( have_posts() ) {
-	while ( have_posts() ) {
-		the_post();
-		sermon_excerpt();
-	}
-	wp_reset_postdata();
-} else {
-	get_partial( 'no-posts' );
-}
+$obj = new Series( array( 'display' => 'series' ) );
 
 get_partial( 'sermon-wrapper-end' );
 

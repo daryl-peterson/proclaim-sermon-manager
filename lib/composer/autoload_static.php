@@ -132,6 +132,8 @@ class ComposerStaticInit672fe16c65cc53aa8b66e730cdfce0de
         'DRPPSM\\SCTerms' => __DIR__ . '/../..' . '/src/SCTerms.php',
         'DRPPSM\\Scheduler' => __DIR__ . '/../..' . '/src/Scheduler.php',
         'DRPPSM\\SchedulerJobs' => __DIR__ . '/../..' . '/src/SchedulerJobs.php',
+        'DRPPSM\\Series' => __DIR__ . '/../..' . '/src/Series.php',
+        'DRPPSM\\SeriesSettings' => __DIR__ . '/../..' . '/src/SeriesSettings.php',
         'DRPPSM\\SermonComments' => __DIR__ . '/../..' . '/src/SermonComments.php',
         'DRPPSM\\SermonDetail' => __DIR__ . '/../..' . '/src/SermonDetail.php',
         'DRPPSM\\SermonEdit' => __DIR__ . '/../..' . '/src/SermonEdit.php',

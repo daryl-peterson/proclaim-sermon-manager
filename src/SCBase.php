@@ -11,6 +11,9 @@
 
 namespace DRPPSM;
 
+use DRPPSM\Constants\Meta;
+use WP_Exception;
+
 defined( 'ABSPATH' ) || exit;
 
 /**
@@ -242,5 +245,38 @@ class SCBase {
 		}
 
 		return $result;
+	}
+
+	/**
+	 * Fix orderby.
+	 *
+	 * @param array &$query_args
+	 * @return void
+	 * @throws WP_Exception
+	 */
+	protected function fix_date_orderby( array &$query_args ) {
+
+		$orderby    = $query_args['orderby'];
+		$meta_query = false;
+
+		if ( 'date' === $query_args['orderby'] ) {
+			$setting         = Settings::get( Settings::ARCHIVE_ORDER_BY );
+			$args['orderby'] = $setting;
+		}
+
+		$fix = array( 'preached', 'date_preached', Meta::DATE );
+		if ( in_array( $orderby, $fix, true ) ) {
+			$meta_query = true;
+		}
+
+		if ( $meta_query ) {
+			$query_args['meta_query'] = array(
+				'orderby'      => 'meta_value_num',
+				'meta_key'     => Meta::DATE,
+				'meta_value'   => time(),
+				'meta_compare' => '<=',
+			);
+			unset( $query_args['orderby'] );
+		}
 	}
 }

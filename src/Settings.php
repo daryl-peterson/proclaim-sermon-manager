@@ -11,6 +11,7 @@
 
 namespace DRPPSM;
 
+use DRPPSM\Traits\SingletonTrait;
 use Exception;
 
 /**
@@ -23,6 +24,8 @@ use Exception;
  * @since       1.0.0
  */
 class Settings {
+	use SingletonTrait;
+
 	/**
 	 * Default image key.
 	 *
@@ -102,13 +105,47 @@ class Settings {
 	public const PLAYER      = 'player';
 
 
-	public const HIDE_BOOKS         = 'hide_books';
-	public const HIDE_FILTERS       = 'hide_filters';
-	public const HIDE_PREACHERS     = 'hide_preachers';
-	public const HIDE_SERIES        = 'hide_series';
-	public const HIDE_SERVICE_TYPES = 'hide_service_types';
-	public const HIDE_TOPICS        = 'hide_topics';
+	/**
+	 * Hide all filtering.
+	 *
+	 * @since 1.0.0
+	 */
+	public const HIDE_FILTERS = 'hide_filters';
 
+	/**
+	 * Hide from filtering.
+	 *
+	 * @since 1.0.0
+	 */
+	public const HIDE_BOOKS = 'hide_books';
+
+	/**
+	 * Hide preachers from filtering.
+	 *
+	 * @since 1.0.0
+	 */
+	public const HIDE_PREACHERS = 'hide_preachers';
+
+	/**
+	 * Hide series from filtering.
+	 *
+	 * @since 1.0.0
+	 */
+	public const HIDE_SERIES = 'hide_series';
+
+	/**
+	 * Hide service types from filtering.
+	 *
+	 * @since 1.0.0
+	 */
+	public const HIDE_SERVICE_TYPES = 'hide_service_types';
+
+	/**
+	 * Hide topics from filtering.
+	 *
+	 * @since 1.0.0
+	 */
+	public const HIDE_TOPICS = 'hide_topics';
 
 	/**
 	 * Preacher singular label key.
@@ -258,13 +295,17 @@ class Settings {
 		self::ARCHIVE_ORDER_BY      => self::OPTION_KEY_DISPLAY,
 		self::ARCHIVE_DISABLE_IMAGE => self::OPTION_KEY_DISPLAY,
 
-		self::DISABLE_CSS           => self::OPTION_KEY_DISPLAY,
+
+
+		// Filter settings.
 		self::HIDE_BOOKS            => self::OPTION_KEY_DISPLAY,
 		self::HIDE_FILTERS          => self::OPTION_KEY_DISPLAY,
 		self::HIDE_PREACHERS        => self::OPTION_KEY_DISPLAY,
 		self::HIDE_SERIES           => self::OPTION_KEY_DISPLAY,
 		self::HIDE_SERVICE_TYPES    => self::OPTION_KEY_DISPLAY,
 		self::HIDE_TOPICS           => self::OPTION_KEY_DISPLAY,
+
+		self::DISABLE_CSS           => self::OPTION_KEY_DISPLAY,
 		self::IMAGES_PER_ROW        => self::OPTION_KEY_DISPLAY,
 
 		self::BIBLE_BOOK_LOAD       => self::OPTION_KEY_ADVANCED,
@@ -280,6 +321,35 @@ class Settings {
 	 * @since 1.0.0
 	 */
 	private static array $option_default;
+
+	/**
+	 * Used to store option values.
+	 *
+	 * @var array
+	 * @since 1.0.0
+	 */
+	private static array $options;
+
+	/**
+	 * Constructor.
+	 *
+	 * @since 1.0.0
+	 */
+	protected function __construct() {
+		self::init_defaults();
+		Logger::debug( array( 'DEFAULTS' => self::$option_default ) );
+		if ( ! isset( self::$options ) ) {
+			foreach ( self::OPTION_KEYS as $key_name ) {
+				$result = \get_option( $key_name, false );
+				if ( $result ) {
+					self::$options[ $key_name ] = $result;
+				} else {
+					self::$options[ $key_name ] = array();
+				}
+			}
+		}
+		Logger::debug( array( 'OPTIONS' => self::$options ) );
+	}
 
 	/**
 	 * Initialize private static variables.
@@ -374,16 +444,6 @@ class Settings {
 		);
 	}
 
-	public static function all_peramlinks() {
-		return array(
-			'pt_sermon'        => DRPPSM_PT_SERMON,
-			'tax_bible'        => DRPPSM_TAX_BOOK,
-			'tax_preacher'     => DRPPSM_TAX_PREACHER,
-			'tax_series'       => DRPPSM_TAX_SERIES,
-			'tax_service_type' => DRPPSM_TAX_SERVICE_TYPE,
-			'tax_topics'       => DRPPSM_TAX_TOPIC,
-		);
-	}
 
 	/**
 	 * Get options value
@@ -394,19 +454,26 @@ class Settings {
 	 * @since 1.0.0
 	 */
 	public static function get( string $key, mixed $default_value = null ): mixed {
+		self::get_instance();
 		$option_key = self::get_option_key( $key );
 
 		if ( ! $option_key ) {
 			return $default_value;
 		}
 
-		$options = \get_option( $option_key, array() );
-
-		if ( ! is_array( $options ) || ! key_exists( $key, $options ) ) {
-			return $default_value;
+		if ( ! isset( self::$options[ $option_key ] ) ) {
+			$result = \get_option( $option_key, false );
+			if ( $result ) {
+				self::$options[ $option_key ] = $result;
+			} else {
+				self::$options[ $option_key ] = array();
+			}
 		}
 
-		return $options[ $key ];
+		if ( ! is_array( self::$options[ $option_key ] ) || ! key_exists( $key, self::$options[ $option_key ] ) ) {
+			return $default_value;
+		}
+		return self::$options[ $option_key ][ $key ];
 	}
 
 	/**
@@ -418,7 +485,8 @@ class Settings {
 	 * @since 1.0.0
 	 */
 	public static function get_default( string $key, mixed $default_value = null ): mixed {
-		self::init_defaults();
+		self::get_instance();
+
 		$option_key = self::get_option_key( $key );
 
 		if ( ! isset( self::$option_default[ $option_key ] ) ) {
@@ -440,7 +508,7 @@ class Settings {
 	 * @since 1.0.0
 	 */
 	public static function get_defaults( string $option_key ): ?array {
-		self::init_defaults();
+		self::get_instance();
 
 		if ( ! isset( self::$option_default[ $option_key ] ) ) {
 			return null;
@@ -458,23 +526,23 @@ class Settings {
 	 * @since 1.0.0
 	 */
 	public static function set( string $key, mixed $value ): bool {
-		self::init_defaults();
+		self::get_instance();
+
 		try {
 			$option_key = self::get_option_key( $key );
 			if ( ! $option_key ) {
 				throw new Exception( 'Option key not found : ' . $key );
 			}
 
-			$options = get_option( $option_key, false );
-			if ( ! $options || ! is_array( $options ) ) {
-				$options         = array();
-				$options[ $key ] = $value;
-				\delete_option( $option_key );
-				return \add_option( $option_key, $options, '', true );
+			if ( ! isset( self::$options[ $option_key ] ) ) {
+				self::$options[ $option_key ] = \get_option( $option_key, array() );
 			}
+			if ( ! is_array( self::$options[ $option_key ] ) ) {
+				self::$options[ $option_key ] = array();
 
-			$options[ $key ] = $value;
-			return \update_option( $option_key, $options );
+			}
+			self::$options[ $option_key ][ $key ] = $value;
+			return \update_option( $option_key, self::$options[ $option_key ] );
 		} catch ( \Throwable $th ) {
 			Logger::error(
 				array(
@@ -493,13 +561,13 @@ class Settings {
 	 * @since 1.0.0
 	 */
 	public static function set_defaults() {
-
+		self::get_instance();
 		foreach ( self::OPTION_KEYS as $option_key ) {
-			$result = get_option( $option_key, false );
-
+			$result = \get_option( $option_key, false );
 			if ( ! $result ) {
-				$defauls = self::get_defaults( $option_key );
-				add_option( $option_key, $defauls );
+				$defaults                     = self::get_defaults( $option_key );
+				self::$options[ $option_key ] = $defaults;
+				update_option( $option_key, self::$options[ $option_key ] );
 			}
 		}
 	}

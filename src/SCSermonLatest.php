@@ -136,6 +136,7 @@ class SCSermonLatest extends SCBase implements Executable, Registrable {
 			'orderby'        => $args['orderby'],
 			'post_status'    => 'publish',
 		);
+		$this->fix_date_orderby( $query_args );
 
 		$query_args = $this->set_filter( $args, $query_args );
 
@@ -184,7 +185,14 @@ class SCSermonLatest extends SCBase implements Executable, Registrable {
 			wp_reset_postdata();
 
 			ob_start();
-			get_partial( 'sermon-pagination', $args );
+			get_partial(
+				Templates::Pagination,
+				array(
+					'current' => get_page_number(),
+					'total'   => $query->max_num_pages,
+					'post_id' => $post_id,
+				)
+			);
 			$output .= ob_get_clean();
 
 			ob_start();

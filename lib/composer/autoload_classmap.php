@@ -71,6 +71,8 @@ return array(
     'DRPPSM\\SCTerms' => $baseDir . '/src/SCTerms.php',
     'DRPPSM\\Scheduler' => $baseDir . '/src/Scheduler.php',
     'DRPPSM\\SchedulerJobs' => $baseDir . '/src/SchedulerJobs.php',
+    'DRPPSM\\Series' => $baseDir . '/src/Series.php',
+    'DRPPSM\\SeriesSettings' => $baseDir . '/src/SeriesSettings.php',
     'DRPPSM\\SermonComments' => $baseDir . '/src/SermonComments.php',
     'DRPPSM\\SermonDetail' => $baseDir . '/src/SermonDetail.php',
     'DRPPSM\\SermonEdit' => $baseDir . '/src/SermonEdit.php',

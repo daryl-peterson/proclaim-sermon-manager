@@ -11,6 +11,7 @@
 
 namespace DRPPSM;
 
+use DRPPSM\Constants\Meta;
 use DRPPSM\Constants\Bible;
 use DRPPSM\Interfaces\Executable;
 use DRPPSM\Interfaces\Registrable;
@@ -114,19 +115,9 @@ class SCTerms extends SCBase implements Executable, Registrable {
 			'order'    => $args['order'],
 		);
 
-		// @codingStandardsIgnoreStart
-		if ( 'date' === $query_args['orderby'] ) {
-			$query_args['orderby']        = 'meta_value_num';
-			$query_args['meta_key']       = 'sermon_date';
-			$query_args['meta_compare']   = '<=';
-			$query_args['meta_value_num'] = time();
-		}
-		// @codingStandardsIgnoreEnd
-
 		// Get items.
 		$terms = get_terms( $query_args );
-
-		if ( $terms instanceof WP_Error ) {
+		if ( is_wp_error( $terms ) ) {
 			Logger::error(
 				array(
 					'ERROR' => $terms->get_error_message(),
