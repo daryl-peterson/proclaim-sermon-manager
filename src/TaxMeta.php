@@ -15,6 +15,7 @@ namespace DRPPSM;
 
 use DRPPSM\Interfaces\Executable;
 use DRPPSM\Interfaces\Registrable;
+use stdClass;
 use WP_Term;
 
 defined( 'ABSPATH' ) || exit;
@@ -105,19 +106,40 @@ class TaxMeta implements Executable, Registrable {
 	 *
 	 * @param string $taxonomy Taxonomy name.
 	 * @param int    $term_id Term id.
-	 * @return null|TaxInfo
+	 * @return null|stdClass
 	 * @since 1.0.0
 	 */
-	public function get_taxonomy_meta( string $taxonomy, int $term_id ): ?TaxInfo {
+	public function get_taxonomy_meta( string $taxonomy, int $term_id ): ?stdClass {
+		$suffix     = array( "{$taxonomy}_cnt", "{$taxonomy}_date", "{$taxonomy}_image_id", "{$taxonomy}_image" );
+		$suffix_map = array(
+			"{$taxonomy}_cnt"      => 'cnt',
+			"{$taxonomy}_date"     => 'date',
+			"{$taxonomy}_image_id" => 'image_id',
+			"{$taxonomy}_image"    => 'image',
+		);
 
-		$key  = self::get_data_key( $taxonomy );
-		$meta = get_term_meta( $term_id, $key, true );
+		$meta = get_term_meta( $term_id );
 
-		if ( ! isset( $meta ) || ! $meta ) {
+		if ( ! isset( $meta ) || ! is_array( $meta ) || 0 === count( $meta ) ) {
 			self::$jobs->add( $taxonomy, $term_id );
 			return null;
 		}
-		return $meta;
+
+		$obj = new stdClass();
+		foreach ( $meta as $key => $value ) {
+			if ( ! in_array( $key, $suffix ) ) {
+				unset( $meta[ $key ] );
+				continue;
+			}
+			$obj->{$suffix_map[ $key ]} = maybe_unserialize( $value[0] );
+
+		}
+		$term_obj = get_term_by( 'term_id', $term_id, $taxonomy );
+		if ( $term_obj ) {
+			$obj->object = $term_obj;
+		}
+
+		return $obj;
 	}
 
 	/**

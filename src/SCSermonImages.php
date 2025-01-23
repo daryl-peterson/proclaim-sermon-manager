@@ -16,6 +16,7 @@ defined( 'ABSPATH' ) || exit;
 use DRPPSM\Interfaces\Executable;
 use DRPPSM\Interfaces\Registrable;
 use DRPPSM\Traits\ExecutableTrait;
+use stdClass;
 use WP_Term;
 
 /**
@@ -123,7 +124,7 @@ class SCSermonImages extends SCBase implements Executable, Registrable {
 	 * #### Atts Parameters
 	 * - **per_page** Define how many sermons to show per page. Overrides the WordPress setting.
 	 * - **display** Series or preachers
-	 * - **orderby** Order by name, id, count, slug, term_group, none. (name)
+	 * - **orderby** Order by name, id, count, slug, term_group, date, none. (name)
 	 * - **hide_title** Hides title if set to "yes"
 	 * - **show_description** Shows description if set to "yes"
 	 * - **columns** Number of images per row.
@@ -181,15 +182,25 @@ class SCSermonImages extends SCBase implements Executable, Registrable {
 			return;
 		}
 
-		$list = TaxUtils::get_terms_with_images(
-			array(
-				'taxonomy' => $args['display'],
-				'order'    => $args['order'],
-				'orderby'  => $args['orderby'],
-				'number'   => $this->number,
-				'offset'   => $this->offset,
-			)
+		$tax_query = array(
+			'taxonomy' => $args['display'],
+			'order'    => 'DESC',
+			'orderby'  => 'meta_value_num',
+			'number'   => $this->number,
+			'offset'   => $this->offset,
 		);
+
+		if ( $args['orderby'] === 'date' ) {
+			$tax_query['meta_query'] = array(
+				'orderby'      => 'meta_value_num',
+				'meta_key'     => $args['display'] . '_date',
+				'meta_value'   => time(),
+				'meta_compare' => '<=',
+			);
+		}
+		Logger::debug( $tax_query );
+
+		$list = TaxUtils::get_terms_with_images( $tax_query );
 
 		if ( ! $list ) {
 			return;
@@ -197,14 +208,6 @@ class SCSermonImages extends SCBase implements Executable, Registrable {
 
 		$data  = array();
 		$count = 0;
-
-		$this->transient_key = self::TRANSIENT_MAP[ $args['display'] ];
-		$data                = Transient::get( $this->transient_key );
-
-		if ( $data ) {
-			$this->data = $data;
-			return;
-		}
 
 		/**
 		 * @var WP_Term $item
@@ -224,7 +227,6 @@ class SCSermonImages extends SCBase implements Executable, Registrable {
 			return;
 		}
 		$this->data = $data;
-		Transient::set( $this->transient_key, $this->data );
 	}
 
 	/**
@@ -234,7 +236,7 @@ class SCSermonImages extends SCBase implements Executable, Registrable {
 	 * @return null|TaxInfo
 	 * @since 1.0.0
 	 */
-	private function get_meta( WP_Term $item ): ?TaxInfo {
+	private function get_meta( WP_Term $item ): ?stdClass {
 		$meta = apply_filters( "get_{$item->taxonomy}_meta_extd", $item->taxonomy, $item->term_id );
 		if ( $meta ) {
 			return $meta;
@@ -285,7 +287,7 @@ class SCSermonImages extends SCBase implements Executable, Registrable {
 	private function get_default_args(): array {
 		return array(
 			'display'          => 'series',
-			'order'            => 'ASC',
+			'order'            => 'DESC',
 			'orderby'          => 'name',
 			'size'             => ImageSize::SERMON_MEDIUM,
 			'hide_title'       => false,

@@ -220,26 +220,11 @@ class TaxUtils {
 			$query_args['meta_query'] = self::get_meta_query_images( $taxonomy );
 		}
 
-		$key      = Transient::TERM_COUNT;
-		$key_term = md5( serialize( $query_args ) );
-
-		$options = Transient::get( $key );
-		if ( ! is_array( $options ) ) {
-			$options = array();
-		}
-
-		if ( key_exists( $key_term, $options ) ) {
-			return absint( $options[ $key_term ] );
-		}
-
 		$term_count = get_terms( $query_args );
 		if ( $term_count instanceof WP_Error ) {
 			return 0;
 		}
 		$result = absint( $term_count );
-
-		$options[ $key_term ] = $result;
-		Transient::set( $key, $options );
 		return $result;
 	}
 

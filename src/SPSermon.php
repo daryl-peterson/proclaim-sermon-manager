@@ -14,6 +14,7 @@ namespace DRPPSM;
 use CMB2;
 use DRPPSM\Interfaces\Executable;
 use DRPPSM\Interfaces\Registrable;
+use DRPPSM\Traits\ExecutableTrait;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -27,24 +28,23 @@ defined( 'ABSPATH' ) || exit;
  * @since       1.0.0
  */
 class SPSermon extends SPBase implements Executable, Registrable {
+	use ExecutableTrait;
 
 	/**
 	 * Key used in storing options.
 	 *
 	 * @var string
 	 */
-	public string $option_key = Settings::OPTION_KEY_SERMONS;
+	public string $option_key;
 
 	/**
-	 * Initailize and register hooks.
+	 * Initialize object properties.
 	 *
-	 * @return self
 	 * @since 1.0.0
 	 */
-	public static function exec(): self {
-		$obj = new self();
-		$obj->register();
-		return $obj;
+	protected function __construct() {
+		$this->option_key = Settings::OPTION_KEY_SERMONS;
+		parent::__construct();
 	}
 
 	/**
@@ -94,8 +94,47 @@ class SPSermon extends SPBase implements Executable, Registrable {
 		$this->add_seperator( $cmb, __( 'Sermon Settings', 'drppsm' ) );
 		$this->date_format( $cmb );
 		$this->sermon_count( $cmb );
+		$this->add_seperator( $cmb, __( 'Archive Settings', 'drppsm' ) );
+		$this->archive_order_by( $cmb );
+		$this->archive_order( $cmb );
+		$this->sermon_layout( $cmb );
+
+		$this->common_base_slug( $cmb );
+		$this->add_seperator( $cmb, __( 'Sermon Labels', 'drppsm' ) );
 		$this->sermon_single( $cmb );
 		$this->sermon_plural( $cmb );
+	}
+
+	/**
+	 * Add common base slug.
+	 *
+	 * @param CMB2 $cmb CMB2 Object.
+	 * @return void
+	 * @since 1.0.0
+	 */
+	private function common_base_slug( CMB2 $cmb ): void {
+
+		$desc  = __( 'If this option is checked, the taxonomies would also be under the slug set above.', 'drppsm' );
+		$desc .= $this->dot();
+		$s1    = '<code>' . __( '/sermons/series/jesus', 'drppsm' ) . '</code>';
+		$s2    = '<code>' . __( '/sermons/preacher/mark', 'drppsm' ) . '</code>';
+
+		$desc .= wp_sprintf(
+			// translators: %1$s Example series path, effectively <code>/sermons/series/jesus</code>.
+			// translators: %2$s Example preacher path, effectively <code>/sermons/preacher/mark</code>.
+			__( 'For example, by default, series named “Jesus” would be under %1$s, preacher “Mark” would be under %2$s, and so on.', 'drppsm' ),
+			$s1,
+			$s2
+		);
+
+		$cmb->add_field(
+			array(
+				'id'        => Settings::COMMON_BASE_SLUG,
+				'name'      => __( 'Common Base Slug', 'drppsm' ),
+				'type'      => 'checkbox',
+				'after_row' => $this->description( $desc ),
+			)
+		);
 	}
 
 	/**
@@ -110,7 +149,7 @@ class SPSermon extends SPBase implements Executable, Registrable {
 		$cmb->add_field(
 			array(
 				'id'               => Settings::DATE_FORMAT,
-				'name'             => __( 'Sermon Date Format', 'drppsm' ),
+				'name'             => __( 'Date Format', 'drppsm' ),
 				'type'             => 'select',
 				'show_option_none' => true,
 				'options'          => array(
@@ -120,6 +159,82 @@ class SPSermon extends SPBase implements Executable, Registrable {
 					'YY/dd/mm' => 'YY/dd/mm',
 				),
 				'after_row'        => $this->description( $desc ),
+			)
+		);
+	}
+
+	/**
+	 * Add archive order by.
+	 *
+	 * @param CMB2 $cmb CMB2 object.
+	 * @return void
+	 * @since 1.0.0
+	 */
+	private function archive_order_by( CMB2 $cmb ): void {
+		$desc  = __( 'Changes the way sermons are ordered by default.', 'drppsm' ) . ' ';
+		$desc .= __( 'Affects the RSS feed and shown date as well. Default "Date Preached".', 'drppsm' );
+		$cmb->add_field(
+			array(
+				'id'               => Settings::ARCHIVE_ORDER_BY,
+				'name'             => __( 'Order sermons by', 'drppsm' ),
+				'type'             => 'select',
+				'show_option_none' => true,
+				'options'          => array(
+					'date_preached' => 'Date Preached',
+					'date'          => 'Date Published',
+					'title'         => 'Title',
+					'ID'            => 'ID',
+					'random'        => 'Random',
+				),
+				'after_row'        => $this->description( $desc ),
+			)
+		);
+	}
+
+	/**
+	 * Add archive order.
+	 *
+	 * @param CMB2 $cmb CMB2 object.
+	 * @return void
+	 * @since 1.0.0
+	 */
+	private function archive_order( CMB2 $cmb ): void {
+		$desc = __( 'Related to the setting above. Default descending.', 'drppsm' );
+		$cmb->add_field(
+			array(
+				'id'               => Settings::ARCHIVE_ORDER,
+				'name'             => __( 'Order direction', 'drppsm' ),
+				'type'             => 'select',
+				'show_option_none' => true,
+				'options'          => array(
+					'desc' => 'Descending',
+					'asc'  => 'Ascending',
+				),
+				'after_row'        => $this->description( $desc ),
+			)
+		);
+	}
+
+	/**
+	 * Add sermon layout field.
+	 *
+	 * @param CMB2 $cmb CMB2 Object.
+	 * @return void
+	 * @since 1.0.0
+	 */
+	private function sermon_layout( CMB2 $cmb ): void {
+		$desc = __( 'How sermon archive pages will be displayed.', 'drppsm' );
+		$cmb->add_field(
+			array(
+				'id'        => Settings::SERMON_LAYOUT,
+				'name'      => __( 'Layout', 'drppsm' ),
+				'type'      => 'select',
+				'options'   => array(
+					'grid'    => 'Grid',
+					'row'     => 'Row',
+					'classic' => 'Classic',
+				),
+				'after_row' => $this->description( $desc ),
 			)
 		);
 	}
@@ -136,7 +251,7 @@ class SPSermon extends SPBase implements Executable, Registrable {
 		$cmb->add_field(
 			array(
 				'id'         => Settings::SERMON_COUNT,
-				'name'       => __( 'Sermons Per Page', 'drppsm' ),
+				'name'       => __( 'Per Page', 'drppsm' ),
 				'type'       => 'text',
 				'attributes' => array(
 					'type'    => 'number',

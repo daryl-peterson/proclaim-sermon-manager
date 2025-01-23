@@ -76,10 +76,7 @@ class SPDisplay extends SPBase implements Executable, Registrable {
 		$this->add_seperator( $cmb, __( 'Display Settings', 'drppsm' ) );
 		$this->default_image( $cmb );
 		$this->disable_css( $cmb );
-		$this->add_seperator( $cmb, __( 'Archive Settings', 'drppsm' ) );
 
-		$this->archive_order_by( $cmb );
-		$this->archive_order( $cmb );
 		$this->add_seperator( $cmb, __( 'Sermon Filtering / Sorting', 'drppsm' ) );
 		$this->hide_filtering( $cmb );
 		$this->hide_bible( $cmb );
@@ -137,58 +134,6 @@ class SPDisplay extends SPBase implements Executable, Registrable {
 				'id'        => Settings::DEFAULT_IMAGE,
 				'type'      => 'file',
 				'after_row' => $this->description( $desc ),
-			)
-		);
-	}
-
-	/**
-	 * Add archive order by.
-	 *
-	 * @param CMB2 $cmb CMB2 object.
-	 * @return void
-	 * @since 1.0.0
-	 */
-	private function archive_order_by( CMB2 $cmb ): void {
-		$desc  = __( 'Changes the way sermons are ordered by default.', 'drppsm' ) . ' ';
-		$desc .= __( 'Affects the RSS feed and shown date as well. Default "Date Preached".', 'drppsm' );
-		$cmb->add_field(
-			array(
-				'id'               => Settings::ARCHIVE_ORDER_BY,
-				'name'             => __( 'Order sermons by', 'drppsm' ),
-				'type'             => 'select',
-				'show_option_none' => true,
-				'options'          => array(
-					'date_preached' => 'Date Preached',
-					'date'          => 'Date Published',
-					'title'         => 'Title',
-					'ID'            => 'ID',
-					'random'        => 'Random',
-				),
-				'after_row'        => $this->description( $desc ),
-			)
-		);
-	}
-
-	/**
-	 * Add archive order.
-	 *
-	 * @param CMB2 $cmb CMB2 object.
-	 * @return void
-	 * @since 1.0.0
-	 */
-	private function archive_order( CMB2 $cmb ): void {
-		$desc = __( 'Related to the setting above. Default descending.', 'drppsm' );
-		$cmb->add_field(
-			array(
-				'id'               => Settings::ARCHIVE_ORDER,
-				'name'             => __( 'Order direction', 'drppsm' ),
-				'type'             => 'select',
-				'show_option_none' => true,
-				'options'          => array(
-					'desc' => 'Descending',
-					'asc'  => 'Ascending',
-				),
-				'after_row'        => $this->description( $desc ),
 			)
 		);
 	}

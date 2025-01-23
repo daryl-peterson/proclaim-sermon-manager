@@ -294,20 +294,6 @@ define( 'DRPPSMF_RENDER_SORTING2', 'drppsmf_render_sorting' );
  */
 define( 'DRPPSMF_ADMIN_SERMON', 'drppsmf_admin_sermons' );
 
-/**
- * Filters for remove submenus of admin menu.
- * - Filters are prefixed with drppsmf_
- * - Fires before before sub menus are displayed.
- *
- * @param array $submenus Sub menus to hide.
- * @return array
- * @since 1.0.0
- */
-define( 'DRPPSMF_SETTINGS_RSM', 'drppsmf_settings_rsm' );
-
-
-
-define( 'DRPPSMF_SETTINGS_MM', 'drppsmf_settings_mm' );
 
 /**
  * Get pagination links

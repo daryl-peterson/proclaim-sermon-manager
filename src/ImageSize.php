@@ -11,7 +11,9 @@
 
 namespace DRPPSM;
 
-use WP_Exception;
+use DRPPSM\Interfaces\Executable;
+use DRPPSM\Interfaces\Registrable;
+use DRPPSM\Traits\ExecutableTrait;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -24,7 +26,8 @@ defined( 'ABSPATH' ) || exit;
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
  * @since       1.0.0
  */
-class ImageSize {
+class ImageSize implements Executable, Registrable {
+	use ExecutableTrait;
 
 	/**
 	 * Small image size.
@@ -117,18 +120,6 @@ class ImageSize {
 				false,
 			),
 		);
-	}
-
-	/**
-	 * Initialize and register hooks.
-	 *
-	 * @return self
-	 * @since 1.0.0
-	 */
-	public static function exec(): self {
-		$obj = new self();
-		$obj->register();
-		return $obj;
 	}
 
 	/**

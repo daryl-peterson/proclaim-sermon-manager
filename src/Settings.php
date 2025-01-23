@@ -70,26 +70,7 @@ class Settings {
 	 */
 	public const DEFAULT_IMAGE = 'default_image';
 
-	/**
-	 * Archive order key.
-	 *
-	 * @since 1.0.0
-	 */
-	public const ARCHIVE_ORDER = 'archive_order';
 
-	/**
-	 * Archive order by key.
-	 *
-	 * @since 1.0.0
-	 */
-	public const ARCHIVE_ORDER_BY = 'archive_order_by';
-
-	/**
-	 * Disable sermon images.
-	 *
-	 * @since 1.0.0
-	 */
-	public const ARCHIVE_DISABLE_IMAGE = 'archive_disable_image';
 
 	/**
 	 * Bible book label key.
@@ -212,6 +193,10 @@ class Settings {
 	 */
 	public const SERIES_PLURAL = 'series_plural';
 
+	// ------------------------------------------------------------------------
+	// SERMON SETTINGS.
+	// ------------------------------------------------------------------------
+
 	/**
 	 * Sermon count key.
 	 *
@@ -234,6 +219,39 @@ class Settings {
 	 * @since 1.0.0
 	 */
 	public const SERMON_PLURAL = 'sermon_plural';
+
+	/**
+	 * Sermon layout key.
+	 *
+	 * @since 1.0.0
+	 */
+	public const SERMON_LAYOUT = 'sermon_layout';
+
+	/**
+	 * Sermon archive order key.
+	 *
+	 * @since 1.0.0
+	 */
+	public const ARCHIVE_ORDER = 'archive_order';
+
+	/**
+	 * Sermon archive order by key.
+	 *
+	 * @since 1.0.0
+	 */
+	public const ARCHIVE_ORDER_BY = 'archive_order_by';
+
+	/**
+	 * Disable sermon images.
+	 *
+	 * @since 1.0.0
+	 */
+	public const ARCHIVE_DISABLE_IMAGE = 'archive_disable_image';
+
+	// ------------------------------------------------------------------------
+	// SERVICE TYPE SETTINGS.
+	// ------------------------------------------------------------------------
+
 
 	/**
 	 * Service type singular label key.
@@ -287,7 +305,7 @@ class Settings {
 
 		self::BIBLE_BOOK            => self::OPTION_KEY_GENERAL,
 		self::COMMENTS              => self::OPTION_KEY_GENERAL,
-		self::COMMON_BASE_SLUG      => self::OPTION_KEY_GENERAL,
+
 
 		self::DEFAULT_IMAGE         => self::OPTION_KEY_GENERAL,
 		self::MENU_ICON             => self::OPTION_KEY_GENERAL,
@@ -306,9 +324,7 @@ class Settings {
 		self::SERVICE_TYPE_PLURAL   => self::OPTION_KEY_GENERAL,
 
 
-		self::ARCHIVE_ORDER         => self::OPTION_KEY_DISPLAY,
-		self::ARCHIVE_ORDER_BY      => self::OPTION_KEY_DISPLAY,
-		self::ARCHIVE_DISABLE_IMAGE => self::OPTION_KEY_DISPLAY,
+
 
 
 
@@ -330,9 +346,15 @@ class Settings {
 
 		// Sermon settings.
 		self::DATE_FORMAT           => self::OPTION_KEY_SERMONS,
+		self::COMMON_BASE_SLUG      => self::OPTION_KEY_SERMONS,
+		self::ARCHIVE_ORDER         => self::OPTION_KEY_SERMONS,
+		self::ARCHIVE_ORDER_BY      => self::OPTION_KEY_SERMONS,
+		self::ARCHIVE_DISABLE_IMAGE => self::OPTION_KEY_SERMONS,
 		self::SERMON_COUNT          => self::OPTION_KEY_SERMONS,
 		self::SERMON_SINGULAR       => self::OPTION_KEY_SERMONS,
 		self::SERMON_PLURAL         => self::OPTION_KEY_SERMONS,
+		self::SERMON_LAYOUT         => self::OPTION_KEY_SERMONS,
+
 	);
 
 	/**
@@ -385,7 +407,6 @@ class Settings {
 			self::OPTION_KEY_GENERAL  => array(
 				self::BIBLE_BOOK            => 'book',
 				self::COMMENTS              => false,
-				self::COMMON_BASE_SLUG      => false,
 
 				self::DEFAULT_IMAGE         => '',
 				self::MENU_ICON             => 'dashicons-drppsm-holy-spirit',
@@ -411,12 +432,6 @@ class Settings {
 				/* translators: series plural */
 				self::SERIES_PLURAL         => __( 'Series', 'drppsm' ),
 
-				/* translators: service type singular */
-				self::SERIES_SINGULAR       => __( 'Service Type', 'drppsm' ),
-
-				/* translators: service type plural */
-				self::SERIES_PLURAL         => __( 'Service Types', 'drppsm' ),
-
 				// --------------------------------------------------------------
 				// SERVICE TYPE SETTINGS
 				// --------------------------------------------------------------
@@ -429,17 +444,14 @@ class Settings {
 			),
 
 			self::OPTION_KEY_DISPLAY  => array(
-				self::ARCHIVE_ORDER         => 'desc',
-				self::ARCHIVE_ORDER_BY      => 'date_preached',
-				self::ARCHIVE_DISABLE_IMAGE => false,
-				self::DISABLE_CSS           => false,
-				self::HIDE_BOOKS            => false,
-				self::HIDE_FILTERS          => false,
-				self::HIDE_PREACHERS        => false,
-				self::HIDE_SERIES           => false,
-				self::HIDE_SERVICE_TYPES    => false,
-				self::HIDE_TOPICS           => false,
-				self::IMAGES_PER_ROW        => 3,
+				self::DISABLE_CSS        => false,
+				self::HIDE_BOOKS         => false,
+				self::HIDE_FILTERS       => false,
+				self::HIDE_PREACHERS     => false,
+				self::HIDE_SERIES        => false,
+				self::HIDE_SERVICE_TYPES => false,
+				self::HIDE_TOPICS        => false,
+				self::IMAGES_PER_ROW     => 3,
 
 			),
 			self::OPTION_KEY_ADVANCED => array(
@@ -447,25 +459,26 @@ class Settings {
 				self::BIBLE_BOOK_SORT => false,
 				self::POST_VIEW_COUNT => false,
 				self::CRON_INTERVAL   => 2,
+
 			),
 
 			self::OPTION_KEY_SERIES   => array(),
 
 			self::OPTION_KEY_SERMONS  => array(
-				self::DATE_FORMAT     => 'mm/dd/YY',
-				self::SERMON_COUNT    => 10,
+				self::ARCHIVE_ORDER         => 'desc',
+				self::ARCHIVE_ORDER_BY      => 'date_preached',
+				self::ARCHIVE_DISABLE_IMAGE => false,
+				self::COMMON_BASE_SLUG      => false,
+				self::DATE_FORMAT           => 'mm/dd/YY',
+				self::SERMON_COUNT          => 10,
 
 				/* translators: sermon singular */
-				self::SERMON_SINGULAR => __( 'Sermon', 'drppsm' ),
+				self::SERMON_SINGULAR       => __( 'Sermon', 'drppsm' ),
 
 				/* translators: sermon plural */
-				self::SERMON_PLURAL   => __( 'Sermons', 'drppsm' ),
+				self::SERMON_PLURAL         => __( 'Sermons', 'drppsm' ),
 
-				/* translators: service type singular */
-				self::SERIES_SINGULAR => __( 'Service Type', 'drppsm' ),
-
-				/* translators: service type plural */
-				self::SERIES_PLURAL   => __( 'Service Types', 'drppsm' ),
+				self::SERMON_LAYOUT         => 'grid',
 			),
 
 		);

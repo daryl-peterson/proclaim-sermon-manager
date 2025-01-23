@@ -41,73 +41,33 @@ $size = $args['size'];
 
 <?php
 
+$fmt = get_option( 'date_format' );
+
 /**
- * @var TaxInfo $item Object.
+ * @var stdClass $item Object.
  */
 foreach ( $list as $item ) :
 
-	$object   = $item->term();
-	$book     = false;
-	$preacher = false;
-	$sermon   = false;
-	$topic    = false;
-
-	if ( $item->has_books() ) {
-		$book     = true;
-		$book_cnt = $item->books()->count();
-		$book_lbl = $item->books()->label();
-	}
-
-	if ( $item->has_preachers() ) {
-		$preacher     = true;
-		$preacher_cnt = $item->preachers()->count();
-		$preacher_lbl = $item->preachers()->label();
-	}
-
-	if ( $item->has_sermons() ) {
-		$sermon     = true;
-		$sermon_cnt = $item->sermons()->count();
-		$sermon_lbl = $item->sermons()->label();
-	}
-
-	if ( $item->has_topics() ) {
-		$topic     = true;
-		$topic_cnt = $item->topics()->count();
-		$topic_lbl = $item->topics()->label();
-	}
+	Logger::debug( array( $item, $size ) );
+	$object = $item->object;
+	$link   = get_term_link( $object->term_id );
+	$src    = wp_get_attachment_image_url( $item->image_id, $size );
 
 	?>
 			<li class="<?php echo esc_attr( $cols ); ?>">
 
-			<a href="<?php echo esc_attr( $object->link ); ?>" title="<?php echo esc_attr( $object->name ); ?>">
-				<img src="<?php echo esc_attr( $object->images[ $size ] ); ?>">
+			<a href="<?php echo esc_attr( $link ); ?>" title="<?php echo esc_attr( $object->name ); ?>">
+				<img src="<?php echo esc_attr( $src ); ?>">
 				</a>
 				<div class="list-info">
-					<h5><?php echo esc_html( $object->name ); ?></h5>
-
-					<ul class="list-meta">
-						<?php if ( $sermon ) : ?>
-						<li>
-							<?php echo esc_html( $sermon_lbl ); ?>: <?php echo esc_html( $sermon_cnt ); ?>
-						</li>
-						<?php endif; ?>
-						<?php if ( $preacher ) : ?>
-						<li>
-							<?php echo esc_html( $preacher_lbl ); ?>: <?php echo esc_html( $preacher_cnt ); ?>
-						</li>
-						<?php endif; ?>
-						<?php if ( $topic ) : ?>
-						<li>
-							<?php echo esc_html( $topic_lbl ); ?>: <?php echo esc_html( $topic_cnt ); ?>
-						</li>
-						<?php endif; ?>
-						<?php if ( $book ) : ?>
-						<li>
-							<?php echo esc_html( $book_lbl ); ?>: <?php echo esc_html( $book_cnt ); ?>
-						</li>
-						<?php endif; ?>
-
-					</ul>
+					<h4><?php echo esc_html( $object->name ); ?></h4>
+					<h5><?php echo esc_html( wp_date( $fmt, $item->date ) ); ?></h5>
+					<p><?php echo esc_html( "$item->cnt Messages" ); ?></p>
+					<p class="archive-link">
+						<a href="<?php echo esc_attr( $link ); ?>" title="<?php echo esc_attr( $object->name ); ?>">
+							<?php echo esc_html( 'View Archive' ); ?>
+						</a>
+					</p>
 				</div>
 			</li>
 

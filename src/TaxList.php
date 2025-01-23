@@ -11,6 +11,7 @@
 
 namespace DRPPSM;
 
+use stdClass;
 use WP_Term;
 
 defined( 'ABSPATH' ) || exit;
@@ -166,10 +167,11 @@ class TaxList {
 	 * Get meta data for term.
 	 *
 	 * @param WP_Term $item Term object.
-	 * @return null|TaxInfo
+	 * @return null|stdClass
 	 * @since 1.0.0
 	 */
-	private function get_meta( WP_Term $item ): ?TaxInfo {
+	private function get_meta( WP_Term $item ): ?stdClass {
+
 		$meta = apply_filters( "get_{$item->taxonomy}_meta_extd", $item->taxonomy, $item->term_id );
 		if ( $meta ) {
 			return $meta;

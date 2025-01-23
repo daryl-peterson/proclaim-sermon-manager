@@ -13,6 +13,7 @@ namespace DRPPSM;
 
 use DateTime;
 use DateTimeZone;
+use DRPPSM\Constants\Meta;
 use DRPPSM\Interfaces\Executable;
 use DRPPSM\Interfaces\Registrable;
 use DRPPSM\Traits\ExecutableTrait;
@@ -228,20 +229,20 @@ class Scheduler implements Executable, Registrable {
 
 			// Call action to prevent TaxonomyMeta overwritting data.
 			do_action( 'drppsm_job_runner' );
-
 			Logger::debug( 'JOB RUNNER' );
-			Logger::debug( self::$jobs );
 
 			$jobs = self::$jobs->get_jobs();
 			if ( ! $jobs ) {
 				return;
 			}
 
-			foreach ( $jobs as $taxonomy => $term_ids ) {
+			foreach ( $jobs as $tax_name => $term_ids ) {
 
 				foreach ( $term_ids as $term_id ) {
-
-					TaxMeta::update_term_meta( $taxonomy, absint( $term_id ) );
+					$item = get_term( $term_id, $tax_name );
+					update_term_meta( $item->term_id, "{$tax_name}_cnt", $item->count );
+					$this->set_get_date( $tax_name, $item->term_id );
+					self::$jobs->delete( $tax_name, $term_id );
 				}
 			}
 		} catch ( \Throwable $th ) {
@@ -260,22 +261,71 @@ class Scheduler implements Executable, Registrable {
 	 * @since 1.0.0
 	 */
 	public function complete_build() {
+
 		$tax = array_values( DRPPSM_TAX_MAP );
-		foreach ( $tax as $taxonomy ) {
-			$terms = get_terms(
+		foreach ( $tax as $tax_name ) {
+			$term_list = get_terms(
 				array(
-					'taxonomy'   => $taxonomy,
+					'taxonomy'   => $tax_name,
 					'hide_empty' => true,
 				)
 			);
 
-			if ( is_wp_error( $terms ) || ! is_array( $terms ) || count( $terms ) === 0 ) {
+			if ( is_wp_error( $term_list ) || ! is_array( $term_list ) || count( $term_list ) === 0 ) {
 				continue;
 			}
 
-			foreach ( $terms as $term ) {
-				TaxMeta::update_term_meta( $taxonomy, absint( $term->term_id ) );
+			foreach ( $term_list as $item ) {
+
+				update_term_meta( $item->term_id, "{$tax_name}_cnt", $item->count );
+				$this->set_get_date( $tax_name, $item->term_id );
+
 			}
 		}
+	}
+
+
+	private function set_get_date( string $tax_name, int $term_id, bool $first = true ): void {
+
+		$args = array(
+			'post_type'   => DRPPSM_PT_SERMON,
+			'numberposts' => 1,
+			'order'       => 'ASC',
+			'orderby'     => 'meta_value_num',
+			'tax_query'   => array(
+				array(
+					'taxonomy'         => $tax_name,
+					'field'            => 'term_id',
+					'terms'            => $term_id,
+					'include_children' => false,
+				),
+
+			),
+			'meta_query'  => array(
+				'orderby'      => 'meta_value_num',
+				'meta_key'     => Meta::DATE,
+				'meta_value'   => time(),
+				'meta_compare' => '<=',
+			),
+
+		);
+		$post_list = get_posts( $args );
+
+		if ( is_wp_error( $post_list ) || ! is_array( $post_list ) || ! count( $post_list ) > 0 ) {
+			return;
+		}
+
+		$post_item = array_shift( $post_list );
+		if ( ! $post_item ) {
+			return;
+		}
+
+		$meta = get_post_meta( $post_item->ID, Meta::DATE, true );
+
+		if ( ! isset( $meta ) || empty( $meta ) ) {
+			return;
+		}
+
+		update_term_meta( $term_id, "{$tax_name}_date", $meta );
 	}
 }

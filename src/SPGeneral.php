@@ -121,9 +121,6 @@ class SPGeneral extends SPBase implements Executable, Registrable {
 		$this->add_menu_icon( $cmb );
 		$this->add_sermon_comments( $cmb );
 
-		$this->add_seperator( $cmb, __( 'Sermon Labels', 'drppsm' ), true );
-		$this->add_common_base_slug( $cmb );
-
 		// Preacher labels.
 		$this->add_seperator( $cmb, __( 'Preacher Labels', 'drppsm' ), true );
 		$this->preacher_single( $cmb );
@@ -284,38 +281,6 @@ class SPGeneral extends SPBase implements Executable, Registrable {
 				'id'        => Settings::SERVICE_TYPE_PLURAL,
 				'name'      => __( 'Plural Label', 'drppsm' ),
 				'type'      => 'text',
-				'after_row' => $this->description( $desc ),
-			)
-		);
-	}
-
-	/**
-	 * Add common base slug.
-	 *
-	 * @param CMB2 $cmb CMB2 Object.
-	 * @return void
-	 * @since 1.0.0
-	 */
-	private function add_common_base_slug( CMB2 $cmb ): void {
-
-		$desc  = __( 'If this option is checked, the taxonomies would also be under the slug set above.', 'drppsm' );
-		$desc .= $this->dot();
-		$s1    = '<code>' . __( '/sermons/series/jesus', 'drppsm' ) . '</code>';
-		$s2    = '<code>' . __( '/sermons/preacher/mark', 'drppsm' ) . '</code>';
-
-		$desc .= wp_sprintf(
-			// translators: %1$s Example series path, effectively <code>/sermons/series/jesus</code>.
-			// translators: %2$s Example preacher path, effectively <code>/sermons/preacher/mark</code>.
-			__( 'For example, by default, series named “Jesus” would be under %1$s, preacher “Mark” would be under %2$s, and so on.', 'drppsm' ),
-			$s1,
-			$s2
-		);
-
-		$cmb->add_field(
-			array(
-				'id'        => Settings::COMMON_BASE_SLUG,
-				'name'      => __( 'Common Base Slug', 'drppsm' ),
-				'type'      => 'checkbox',
 				'after_row' => $this->description( $desc ),
 			)
 		);

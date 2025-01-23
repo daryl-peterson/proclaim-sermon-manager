@@ -503,6 +503,7 @@ class TaxInfo {
 			$this->term_id,
 			-1
 		);
+
 		if ( ! $sermons ) {
 			$this->sermons = array();
 		}
