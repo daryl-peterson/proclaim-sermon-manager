@@ -48,7 +48,6 @@ $fmt = get_option( 'date_format' );
  */
 foreach ( $list as $item ) :
 
-	Logger::debug( array( $item, $size ) );
 	$object = $item->object;
 	$link   = get_term_link( $object->term_id );
 	$src    = wp_get_attachment_image_url( $item->image_id, $size );
@@ -62,7 +61,7 @@ foreach ( $list as $item ) :
 				<div class="list-info">
 					<h4><?php echo esc_html( $object->name ); ?></h4>
 					<h5><?php echo esc_html( wp_date( $fmt, $item->date ) ); ?></h5>
-					<p><?php echo esc_html( "$item->cnt Messages" ); ?></p>
+					<p><?php echo esc_html( "$object->count Messages" ); ?></p>
 					<p class="archive-link">
 						<a href="<?php echo esc_attr( $link ); ?>" title="<?php echo esc_attr( $object->name ); ?>">
 							<?php echo esc_html( 'View Archive' ); ?>

@@ -205,9 +205,7 @@ class TaxListTable implements Executable, Registrable {
 				default:
 					break;
 			}
-			$taxonomy = $this->get_tax_name();
 
-			do_action( "check_{$taxonomy}_meta_extd", $taxonomy, $term_id );
 			return $content;
 
 			// @codeCoverageIgnoreStart

@@ -175,19 +175,6 @@ class TaxUtils {
 			return null;
 		}
 
-		$key      = Transient::TERMS_WITH_IMAGES;
-		$key_term = md5( serialize( $query_args ) );
-
-		$options = Transient::get( $key );
-		if ( is_array( $options ) && key_exists( $key_term, $options ) ) {
-			Logger::debug( array( 'OPTIONS' => $options[ $key_term ] ) );
-			return $options[ $key_term ];
-		}
-
-		if ( ! is_array( $options ) ) {
-			$options = array();
-		}
-
 		$list = get_terms( $query_args );
 		if ( is_wp_error( $list ) ) {
 			return null;
@@ -197,8 +184,6 @@ class TaxUtils {
 			$list = array( $list );
 		}
 
-		$options[ $key_term ] = $list;
-		Transient::set( $key, $options );
 		return $list;
 	}
 
@@ -217,11 +202,15 @@ class TaxUtils {
 		);
 
 		if ( $images ) {
-			$query_args['meta_query'] = self::get_meta_query_images( $taxonomy );
+			$query_args = array(
+				'hide_empty' => true,
+				'meta_key'   => $taxonomy . '_date',
+				'fields'     => 'count',
+			);
 		}
 
 		$term_count = get_terms( $query_args );
-		if ( $term_count instanceof WP_Error ) {
+		if ( is_wp_error( $term_count ) ) {
 			return 0;
 		}
 		$result = absint( $term_count );
@@ -417,14 +406,17 @@ class TaxUtils {
 		}
 
 		// @codingStandardsIgnoreStart
-		$query_args['meta_query'][] = self::get_meta_query_images($args['taxonomy']);
 		if ( isset( $args['meta_query'] ) ) {
+			$query_args['meta_query'] = ['relation' => 'AND'];
 			$query_args['meta_query'][] = $args['meta_query'];
 		}
+		$query_args['meta_query'][] = self::get_meta_query_images($args['taxonomy']);
+
 
 		if (isset($args['tax_query'])) {
 			$query_args['tax_query'] = $args['tax_query'];
 		}
+		Logger::debug($query_args);
 		// @codingStandardsIgnoreEnd
 		return $query_args;
 	}

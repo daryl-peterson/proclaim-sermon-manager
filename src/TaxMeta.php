@@ -13,9 +13,11 @@
 
 namespace DRPPSM;
 
+use DRPPSM\Constants\Meta;
 use DRPPSM\Interfaces\Executable;
 use DRPPSM\Interfaces\Registrable;
 use stdClass;
+use WP_Post;
 use WP_Term;
 
 defined( 'ABSPATH' ) || exit;
@@ -28,6 +30,7 @@ defined( 'ABSPATH' ) || exit;
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
  * @since       1.0.0
+ *
  *
  * - Adds Job to queue if meta not found.
  */
@@ -78,27 +81,13 @@ class TaxMeta implements Executable, Registrable {
 		$taxonomies = array_values( DRPPSM_TAX_MAP );
 		foreach ( $taxonomies as $taxonomy ) {
 			add_filter( "get_{$taxonomy}_meta_extd", array( $this, 'get_taxonomy_meta' ), 10, 2 );
-			add_action( "check_{$taxonomy}_meta_extd", array( $this, 'check_taxonomy_meta' ), 10, 2 );
-			add_action( "created_{$taxonomy}", array( $this, 'created_taxonomy' ), 10, 4 );
-			add_action( "edited_{$taxonomy}", array( $this, 'edited_taxonomy' ), 10, 4 );
+			add_action( "created_{$taxonomy}", array( $this, 'created_taxonomy' ), 10, 3 );
+			add_action( "edited_{$taxonomy}", array( $this, 'edited_taxonomy' ), 10, 3 );
 			add_action( "delete_{$taxonomy}", array( $this, 'delete_taxonomy' ), 10, 4 );
 		}
+		$pt = DRPPSM_PT_SERMON;
+		add_action( "edit_post_{$pt}", array( $this, 'post_edit' ), 10, 2 );
 		return true;
-	}
-
-	/**
-	 * Check if taxonomy meta exists. If not, add to job queue.
-	 *
-	 * @param string $taxonomy Taxonomy name.
-	 * @param int    $term_id Term id.
-	 * @since 1.0.0
-	 */
-	public function check_taxonomy_meta( string $taxonomy, int $term_id ): void {
-		$key = self::get_data_key( $taxonomy );
-		$has = metadata_exists( 'term', $term_id, $key );
-		if ( ! $has ) {
-			self::$jobs->add( $taxonomy, $term_id );
-		}
 	}
 
 	/**
@@ -110,9 +99,13 @@ class TaxMeta implements Executable, Registrable {
 	 * @since 1.0.0
 	 */
 	public function get_taxonomy_meta( string $taxonomy, int $term_id ): ?stdClass {
-		$suffix     = array( "{$taxonomy}_cnt", "{$taxonomy}_date", "{$taxonomy}_image_id", "{$taxonomy}_image" );
+		$suffix = array(
+			"{$taxonomy}_date",
+			"{$taxonomy}_image_id",
+			"{$taxonomy}_image",
+		);
+
 		$suffix_map = array(
-			"{$taxonomy}_cnt"      => 'cnt',
 			"{$taxonomy}_date"     => 'date',
 			"{$taxonomy}_image_id" => 'image_id',
 			"{$taxonomy}_image"    => 'image',
@@ -155,21 +148,7 @@ class TaxMeta implements Executable, Registrable {
 		int $tt_id,
 		array $args
 	) {
-		global $taxnow;
-
-		$taxonomy = $taxnow;
-
-		// If taxonomy is not set, get it from term_id.
-		if ( ! isset( $taxonomy ) || empty( $taxonomy ) ) {
-			$taxonomy = get_term_by( 'term_id', $term_id );
-		}
-
-		// If taxonomy is still not set, return.
-		if ( ! isset( $taxonomy ) || empty( $taxonomy ) ) {
-			return;
-		}
-
-		self::$jobs->add( $taxonomy, $term_id );
+		$this->set_term_meta( $term_id, $args );
 	}
 
 	/**
@@ -185,21 +164,7 @@ class TaxMeta implements Executable, Registrable {
 		int $tt_id,
 		array $args
 	) {
-		global $taxnow;
-
-		$taxonomy = $taxnow;
-
-		// If taxonomy is not set, get it from term_id.
-		if ( ! isset( $taxonomy ) || empty( $taxonomy ) ) {
-			$taxonomy = get_term_by( 'term_id', $term_id );
-		}
-
-		// If taxonomy is still not set, return.
-		if ( ! isset( $taxonomy ) || empty( $taxonomy ) ) {
-			return;
-		}
-
-		self::$jobs->add( $taxonomy, $term_id );
+		$this->set_term_meta( $term_id, $args );
 	}
 
 	public function delete_taxonomy(
@@ -218,16 +183,6 @@ class TaxMeta implements Executable, Registrable {
 		);
 	}
 
-	/**
-	 * Get meta key for extended taxonomy meta.
-	 *
-	 * @param string $taxonomy
-	 * @return string
-	 * @since 1.0.0
-	 */
-	public static function get_data_key( string $taxonomy ): string {
-		return "{$taxonomy}_info";
-	}
 
 	public static function get_runner_key( string $taxonomy ): string {
 		return "{$taxonomy}_runner";
@@ -241,16 +196,113 @@ class TaxMeta implements Executable, Registrable {
 	 * @return bool
 	 * @since 1.0.0
 	 */
-	public static function update_term_meta( string $taxonomy, int $term_id ): ?TaxInfo {
-		$obj = new TaxInfo( $taxonomy, absint( $term_id ) );
+	public function update_term_meta( string $taxonomy, int $term_id ): ?TaxInfo {
+		Logger::debug( $term_id, $taxonomy );
 
-		if ( isset( $obj->ready ) && true === $obj->ready ) {
-			$key = self::get_data_key( $taxonomy );
-			update_term_meta( $term_id, $key, $obj );
-			self::$jobs->delete( $taxonomy, $term_id );
-			return $obj;
-
-		}
 		return null;
+	}
+
+	/**
+	 * Set term meta.
+	 *
+	 * @param int   $term_id Term ID.
+	 * @param array $args Arguments.
+	 * @since 1.0.0
+	 */
+	private function set_term_meta( int $term_id, array $args ): void {
+		if ( ! isset( $args['taxonomy'] ) ) {
+			return;
+		}
+		$tax = $args['taxonomy'];
+		if ( ! isset( $args[ $tax . '_image_id' ] ) ) {
+			delete_term_meta( $term_id, $tax . '_image' );
+			delete_term_meta( $term_id, $tax . '_image_id' );
+			delete_term_meta( $term_id, $tax . '_date' );
+			Logger::debug( 'Deleted meta' );
+		} else {
+			$this->set_date_meta( $tax, $term_id, $tax . '_date' );
+		}
+	}
+
+	/**
+	 * Set date meta.
+	 *
+	 * @param string $tax_name Taxonomy name.
+	 * @param int    $term_id Term ID.
+	 * @param string $key_name Meta key name.
+	 * @param bool   $recent Flag to get oldest or newest.
+	 * @since 1.0.0
+	 */
+	private function set_date_meta( string $tax_name, int $term_id, string $key_name, bool $recent = true ): void {
+
+		$order = $recent ? 'ASC' : 'DESC';
+		$args  = array(
+			'post_type'   => DRPPSM_PT_SERMON,
+			'numberposts' => 1,
+			'order'       => $order,
+			'orderby'     => 'meta_value_num',
+			'tax_query'   => array(
+				array(
+					'taxonomy'         => $tax_name,
+					'field'            => 'term_id',
+					'terms'            => $term_id,
+					'include_children' => false,
+				),
+
+			),
+			'meta_query'  => array(
+				'orderby'      => 'meta_value_num',
+				'meta_key'     => Meta::DATE,
+				'meta_value'   => time(),
+				'meta_compare' => '<=',
+			),
+
+		);
+		$post_list = get_posts( $args );
+
+		if ( is_wp_error( $post_list ) || ! is_array( $post_list ) || ! count( $post_list ) > 0 ) {
+			return;
+		}
+
+		$post_item = array_shift( $post_list );
+		if ( ! $post_item ) {
+			return;
+		}
+
+		$meta = get_post_meta( $post_item->ID, Meta::DATE, true );
+
+		if ( ! isset( $meta ) || empty( $meta ) ) {
+			return;
+		}
+		Logger::debug(
+			array(
+				'TERM ID'  => $term_id,
+				'KEY NAME' => $key_name,
+				'META'     => $meta,
+			)
+		);
+
+		update_term_meta( $term_id, $key_name, $meta );
+	}
+
+	/**
+	 * After post edit update term meta.
+	 *
+	 * @param string $tax_name Taxonomy name.
+	 * @param int    $term_id Term ID.
+	 * @since 1.0.0
+	 */
+	public function post_edit( int $post_id, WP_Post $post_item ) {
+		$taxonomies = array_values( DRPPSM_TAX_MAP );
+		$data       = array();
+		foreach ( $taxonomies as $tax_name ) {
+			$term_item = get_the_terms( $post_id, $tax_name );
+			if ( is_wp_error( $term_item ) || ! is_array( $term_item ) || 0 === count( $term_item ) ) {
+				continue;
+			}
+			$term_item = array_shift( $term_item );
+
+			$this->set_date_meta( $tax_name, $term_item->term_id, $tax_name . '_date' );
+		}
 	}
 }

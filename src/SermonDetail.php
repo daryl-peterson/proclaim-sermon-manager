@@ -85,8 +85,7 @@ class SermonDetail implements Initable, Registrable {
 			return false;
 		}
 		// @codeCoverageIgnoreStart
-		$pt         = 'post';
-		$field_type = 'text_date_timestamp';
+		$pt = 'post';
 		add_action( Action::SERMON_EDIT_FORM, array( $this, 'show' ) );
 		add_action( "cmb2_save_{$pt}_fields_{$this->cmb_id}", array( $this, 'save' ), 10, 3 );
 		return true;
@@ -135,22 +134,19 @@ class SermonDetail implements Initable, Registrable {
 	 * @since 1.0.0
 	 */
 	public function save( int $post_ID, array $updated, CMB2 $cmb ): void {
-		Logger::debug( $updated );
 		if ( get_post_type() !== $this->pt_sermon ) {
 			return;
 		}
-		$result = $this->save_service_type( $post_ID, $cmb->data_to_save );
-		$this->save_date( $post_ID, $cmb->data_to_save );
+		$this->save_service_type( $post_ID, $cmb->data_to_save );
+		// $this->save_date( $post_ID, $cmb->data_to_save );
 	}
 
 	private function save_date( int $post_ID, array $data ): bool {
-		Logger::debug( $data );
 		return true;
 		if ( ! isset( $data[ Meta::DATE ] ) ) {
 			return false;
 		}
 		$date = $data[ Meta::DATE ];
-		Logger::debug( $date );
 
 		$date = strtotime( wp_date( 'Y-m-d 00:00:00', strtotime( $date ) ) );
 		update_post_meta( $post_ID, Meta::DATE, $date );

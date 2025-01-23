@@ -120,8 +120,6 @@ class QueryVars implements Executable, Registrable {
 					);
 				}
 			}
-
-			Logger::debug( array( 'QUERY' => $query ) );
 		} catch ( \Throwable $th ) {
 			FatalError::set( $th );
 

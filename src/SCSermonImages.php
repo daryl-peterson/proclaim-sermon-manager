@@ -183,24 +183,24 @@ class SCSermonImages extends SCBase implements Executable, Registrable {
 		}
 
 		$tax_query = array(
-			'taxonomy' => $args['display'],
-			'order'    => 'DESC',
-			'orderby'  => 'meta_value_num',
-			'number'   => $this->number,
-			'offset'   => $this->offset,
+			'taxonomy'   => $args['display'],
+			'hide_empty' => true,
+			'number'     => $this->number,
+			'offset'     => $this->offset,
 		);
 
 		if ( $args['orderby'] === 'date' ) {
-			$tax_query['meta_query'] = array(
-				'orderby'      => 'meta_value_num',
-				'meta_key'     => $args['display'] . '_date',
-				'meta_value'   => time(),
-				'meta_compare' => '<=',
+			$tax_query = array(
+				'hide_empty' => true,
+				'number'     => $this->number,
+				'offset'     => $this->offset,
+				'meta_key'   => $args['display'] . '_date',
+				'orderby'    => 'meta_value_num',
+				'order'      => 'DESC',
 			);
 		}
-		Logger::debug( $tax_query );
 
-		$list = TaxUtils::get_terms_with_images( $tax_query );
+		$list = get_terms( $tax_query );
 
 		if ( ! $list ) {
 			return;

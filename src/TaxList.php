@@ -1,6 +1,6 @@
 <?php
 /**
- * Sermon series class.
+ * Taxonomy image list.
  *
  * @package     DRPPSM\TaxList
  * @author      Daryl Peterson <@gmail.com>
@@ -18,7 +18,7 @@ defined( 'ABSPATH' ) || exit;
 
 
 /**
- * Sermon series class.
+ * Taxonomy image list.
  *
  * @package     DRPPSM\TaxList
  * @author      Daryl Peterson <@gmail.com>
@@ -125,15 +125,16 @@ class TaxList {
 			return;
 		}
 
-		$list = TaxUtils::get_terms_with_images(
-			array(
-				'taxonomy' => $args['display'],
-				'order'    => $args['order'],
-				'orderby'  => $args['orderby'],
-				'number'   => $this->number,
-				'offset'   => $this->offset,
-			)
+		$tax_query = array(
+			'hide_empty' => true,
+			'number'     => $this->number,
+			'offset'     => $this->offset,
+			'meta_key'   => $args['display'] . '_date',
+			'orderby'    => 'meta_value_num',
+			'order'      => 'DESC',
 		);
+
+		$list = get_terms( $tax_query );
 
 		if ( ! $list ) {
 			return;
@@ -214,7 +215,6 @@ class TaxList {
 			'post_id' => $post->ID,
 		);
 	}
-
 
 	/**
 	 * Get default arguments.
