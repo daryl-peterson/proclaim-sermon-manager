@@ -13,23 +13,35 @@ namespace DRPPSM;
 
 defined( 'ABSPATH' ) || exit;
 
+$qv_tax  = get_query_var( 'taxonomy' );
+$qv_term = get_query_var( DRPPSM_TAX_PREACHER );
+
+
 if ( ! did_action( 'get_header' ) ) {
 	get_header();
 }
 
 get_partial( 'sermon-wrapper-start' );
-get_partial( 'content-sermon-filtering' );
 
-if ( have_posts() ) {
+if ( empty( $qv_term ) ) {
+	new TaxImageList(
+		array(
+			'display' => $qv_tax,
+			'size'    => ImageSize::PREACHER_MEDIUM,
+		)
+	);
+} elseif ( have_posts() ) {
+	get_partial( 'content-sermon-filtering' );
 
 	while ( have_posts() ) {
 		the_post();
 		sermon_excerpt();
 	}
-	wp_reset_postdata();
+		wp_reset_postdata();
 } else {
 	get_partial( 'no-posts' );
 }
+
 
 get_partial( 'sermon-wrapper-end' );
 

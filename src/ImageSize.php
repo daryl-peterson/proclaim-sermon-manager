@@ -38,29 +38,29 @@ class ImageSize implements Executable, Registrable {
 	 * @var string
 	 * @since 1.0.0
 	 */
-	public const SERMON_SMALL = 'proclaim_small';
+	public const SERMON_SMALL = 'psm-sermon-small';
 
 	/**
 	 * Medium image size.
 	 *
-	 * - size 300x200
+	 * - size 300x158
 	 * - crop false
 	 *
 	 * @var string
 	 * @since 1.0.0
 	 */
-	public const SERMON_MEDIUM = 'proclaim_medium';
+	public const SERMON_MEDIUM = 'psm-sermon-medium';
 
 	/**
 	 * Wide image size.
 	 *
-	 * - size 940x350
+	 * - size 940x494
 	 * - crop false
 	 *
 	 * @var string
 	 * @since 1.0.0
 	 */
-	public const SERMON_WIDE = 'proclaim_wide';
+	public const SERMON_WIDE = 'psm-sermon-wide';
 
 	/**
 	 * Full image size.
@@ -71,7 +71,13 @@ class ImageSize implements Executable, Registrable {
 	 * @var string
 	 * @since 1.0.0
 	 */
-	public const SERMON_FULL = 'proclaim_full';
+	public const SERMON_FULL = 'psm-sermon-full';
+
+
+	public const PREACHER_MEDIUM = 'psm-preacher-medium';
+	public const PREACHER_FULL   = 'psm-preacher-full';
+
+
 
 	/**
 	 * Image sizes list.
@@ -81,6 +87,7 @@ class ImageSize implements Executable, Registrable {
 		self::SERMON_MEDIUM,
 		self::SERMON_WIDE,
 		self::SERMON_FULL,
+
 	);
 
 	/**
@@ -101,23 +108,33 @@ class ImageSize implements Executable, Registrable {
 			apply_filters( 'drppsm_image_size', self::SERMON_SMALL ) => array(
 				75,
 				75,
-				false,
+				true,
 			),
 
 			apply_filters( 'drppsm_image_size', self::SERMON_MEDIUM ) => array(
 				300,
-				200,
-				false,
+				158,
+				true,
 			),
 			apply_filters( 'drppsm_image_size', self::SERMON_WIDE )   => array(
 				940,
-				350,
-				false,
+				494,
+				true,
 			),
 			apply_filters( 'drppsm_image_size', self::SERMON_FULL )   => array(
 				1200,
 				630,
-				false,
+				true,
+			),
+			apply_filters( 'drppsm_image_size', self::PREACHER_MEDIUM ) => array(
+				150,
+				150,
+				true,
+			),
+			apply_filters( 'drppsm_image_size', self::PREACHER_FULL )   => array(
+				300,
+				300,
+				true,
 			),
 		);
 	}

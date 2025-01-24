@@ -12,25 +12,24 @@
 
 namespace DRPPSM;
 
+$qv_tax  = get_query_var( 'taxonomy' );
+$qv_term = get_query_var( DRPPSM_TAX_SERIES );
+
 if ( ! did_action( 'get_header' ) ) {
 	get_header();
 }
 
 get_partial( 'sermon-wrapper-start' );
-global $wp_query;
 
-$archive = is_archive();
-$qv      = get_query_var( 'taxonomy' );
-Logger::debug(
-	array(
-		'QV' => $qv,
-		$wp_query->query,
-	)
-);
 
 $query = $wp_query->query;
-if ( isset( $query['taxonomy'] ) ) {
-	$obj = new TaxList( array( 'display' => 'series' ) );
+if ( empty( $qv_term ) ) {
+	new TaxImageList(
+		array(
+			'display' => $qv_tax,
+			'size'    => 'drppsm_preacher',
+		)
+	);
 } elseif ( have_posts() ) {
 	while ( have_posts() ) {
 		the_post();

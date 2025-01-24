@@ -26,7 +26,7 @@ defined( 'ABSPATH' ) || exit;
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
  * @since       1.0.0
  */
-class TaxList {
+class TaxImageList {
 
 	/**
 	 * Taxonomy name.
@@ -69,10 +69,17 @@ class TaxList {
 	private int $offset;
 
 
+	/**
+	 * TaxImageList constructor.
+	 *
+	 * @param array $args Shortcode arguments.
+	 * @since 1.0.0
+	 */
 	public function __construct( array $args = array() ) {
-
+		Logger::debug( $args );
 		$defaults = $this->get_default_args();
-		$args     = wp_parse_args( $args, $defaults );
+		$args     = array_merge( $defaults, $args );
+		Logger::debug( $args );
 		$this->set_term_data( $args );
 
 		$this->taxonomy = TaxUtils::get_taxonomy_name( $args['display'] );
@@ -93,7 +100,7 @@ class TaxList {
 				Templates::ImageList,
 				array(
 					'list'    => $this->data,
-					'columns' => 'col' . $args['columns'],
+					'columns' => $args['columns'],
 					'size'    => $args['size'],
 				)
 			);

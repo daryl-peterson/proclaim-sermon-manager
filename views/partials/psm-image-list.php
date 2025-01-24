@@ -29,9 +29,11 @@ if ( ! has_keys( array( 'list', 'columns', 'size' ), $args ) ) {
 }
 
 
-$list = $args['list'];
-$cols = $args['columns'];
-$size = $args['size'];
+$list     = $args['list'];
+$cols     = $args['columns'];
+$cols_str = 'col' . $cols;
+$size     = $args['size'];
+
 ?>
 
 
@@ -42,31 +44,35 @@ $size = $args['size'];
 <?php
 
 $fmt = get_option( 'date_format' );
-
+$cnt = 0;
 /**
  * @var stdClass $item Object.
  */
 foreach ( $list as $item ) :
 
-	$object = $item->object;
-	$link   = get_term_link( $object->term_id );
-	$src    = wp_get_attachment_image_url( $item->image_id, $size );
-
+	$object   = $item->object;
+	$link     = get_term_link( $object->term_id );
+	$src      = wp_get_attachment_image_url( $item->image_id, $size );
+	$cols_str = 'col' . $cols . " $object->taxonomy";
 	?>
-			<li class="<?php echo esc_attr( $cols ); ?>">
 
-			<a href="<?php echo esc_attr( $link ); ?>" title="<?php echo esc_attr( $object->name ); ?>">
-				<img src="<?php echo esc_attr( $src ); ?>">
-				</a>
-				<div class="list-info">
-					<h4><?php echo esc_html( $object->name ); ?></h4>
-					<h5><?php echo esc_html( wp_date( $fmt, $item->date ) ); ?></h5>
-					<p><?php echo esc_html( "$object->count Messages" ); ?></p>
-					<p class="archive-link">
-						<a href="<?php echo esc_attr( $link ); ?>" title="<?php echo esc_attr( $object->name ); ?>">
-							<?php echo esc_html( 'View Archive' ); ?>
-						</a>
-					</p>
+
+
+			<li class="<?php echo esc_attr( $cols_str ); ?>">
+				<div>
+					<a href="<?php echo esc_attr( $link ); ?>" title="<?php echo esc_attr( $object->name ); ?>">
+						<img src="<?php echo esc_attr( $src ); ?>" class="<?php echo esc_attr( $object->taxonomy ); ?>">
+					</a>
+					<div class="list-info">
+						<h4><?php echo esc_html( $object->name ); ?></h4>
+						<h5><?php echo esc_html( wp_date( $fmt, $item->date ) ); ?></h5>
+						<p><?php echo esc_html( "$object->count Messages" ); ?></p>
+						<p class="archive-link">
+							<a href="<?php echo esc_attr( $link ); ?>" title="<?php echo esc_attr( $object->name ); ?>">
+								<?php echo esc_html( 'View Archive' ); ?>
+							</a>
+						</p>
+					</div>
 				</div>
 			</li>
 

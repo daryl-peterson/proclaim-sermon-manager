@@ -151,7 +151,7 @@ class SCSermonImages extends SCBase implements Executable, Registrable {
 				Templates::ImageList,
 				array(
 					'list'    => $this->data,
-					'columns' => 'col' . $args['columns'],
+					'columns' => $args['columns'],
 					'size'    => $args['size'],
 				)
 			);
@@ -233,7 +233,7 @@ class SCSermonImages extends SCBase implements Executable, Registrable {
 	 * Get meta data for term.
 	 *
 	 * @param WP_Term $item Term object.
-	 * @return null|TaxInfo
+	 * @return null|stdClass
 	 * @since 1.0.0
 	 */
 	private function get_meta( WP_Term $item ): ?stdClass {

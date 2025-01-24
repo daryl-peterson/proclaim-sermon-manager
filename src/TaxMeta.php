@@ -189,20 +189,6 @@ class TaxMeta implements Executable, Registrable {
 	}
 
 	/**
-	 * Update term meta.
-	 *
-	 * @param string $taxonomy Taxonomy name.
-	 * @param int    $term_id Term ID.
-	 * @return bool
-	 * @since 1.0.0
-	 */
-	public function update_term_meta( string $taxonomy, int $term_id ): ?TaxInfo {
-		Logger::debug( $term_id, $taxonomy );
-
-		return null;
-	}
-
-	/**
 	 * Set term meta.
 	 *
 	 * @param int   $term_id Term ID.
@@ -220,6 +206,19 @@ class TaxMeta implements Executable, Registrable {
 			delete_term_meta( $term_id, $tax . '_date' );
 			Logger::debug( 'Deleted meta' );
 		} else {
+			$image_id = get_term_meta( $term_id, $tax . '_image_id', true );
+			Logger::debug(
+				array(
+					'TERM ID'  => $term_id,
+					'IMAGE ID' => $image_id,
+				)
+			);
+			if ( ! $image_id && empty( $image_id ) ) {
+				Logger::debug( 'DONT SET DATE META' );
+				delete_term_meta( $term_id, $tax . '_date' );
+				return;
+			}
+
 			$this->set_date_meta( $tax, $term_id, $tax . '_date' );
 		}
 	}
