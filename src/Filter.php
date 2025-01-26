@@ -59,4 +59,15 @@ class Filter {
 	 * @since 1.0.0
 	 */
 	const SETTINGS_REMOVE_SUBMENU = 'drppsm_settings_remove_submenus';
+
+	/**
+	 * Internal filter for image size.
+	 * - Filter image size.
+	 *
+	 * @param string $size Image size.
+	 * @param string $taxonomy Taxonomy name.
+	 * @return string
+	 * @since 1.0.0
+	 */
+	const TAX_IMAGE_SIZE = 'drppsm_tax_image_size';
 }

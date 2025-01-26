@@ -13,7 +13,6 @@
 
 namespace DRPPSM;
 
-use DRPPSM\Constants\Meta;
 use DRPPSM\Interfaces\Executable;
 use DRPPSM\Interfaces\Registrable;
 use DRPPSM\Traits\ExecutableTrait;
@@ -208,7 +207,7 @@ class SCSeriesLatest extends SCBase implements Executable, Registrable {
 			case 'date_preached':
 				$post_args['meta_query'] = array(
 					'orderby'      => 'meta_value_num',
-					'meta_key'     => Meta::DATE,
+					'meta_key'     => SermonMeta::DATE,
 					'meta_value'   => time(),
 					'meta_compare' => '<=',
 				);
@@ -259,7 +258,7 @@ class SCSeriesLatest extends SCBase implements Executable, Registrable {
 			return null;
 		}
 
-		$result = get_term_meta( $series, Meta::SERIES_IMAGE_ID, true );
+		$result = get_term_meta( $series, TaxMeta::SERIES_IMAGE_ID, true );
 		if ( empty( $result ) ) {
 			return null;
 		}

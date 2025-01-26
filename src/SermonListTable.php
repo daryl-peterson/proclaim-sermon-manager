@@ -13,7 +13,6 @@ namespace DRPPSM;
 
 defined( 'ABSPATH' ) || exit;
 
-use DRPPSM\Constants\Meta;
 use DRPPSM\Interfaces\Executable;
 use DRPPSM\Interfaces\Registrable;
 
@@ -107,9 +106,8 @@ class SermonListTable implements Executable, Registrable {
 	public function init(): void {
 
 		$tax  = DRPPSM_TAX_LIST;
-		$key  = Transient::SERMON_LIST_TABLE_INIT;
 		$init = null;
-		// $init = Transient::get( $key );
+
 		if ( is_array( $init ) && key_exists( 'columns', $init ) ) {
 			$this->columns  = $init['columns'];
 			$this->sortable = $init['sortable'];
@@ -132,15 +130,13 @@ class SermonListTable implements Executable, Registrable {
 		$this->columns['preached']     = __( 'Preached', 'drppsm' );
 		$this->columns['date']         = __( 'Published' );
 
-		$this->sortable['preached']     = Meta::DATE;
+		$this->sortable['preached']     = SermonMeta::DATE;
 		$this->sortable['drppsm_views'] = __( 'Views', 'drppsm' );
 
 		$data = array(
 			'columns'  => $this->columns,
 			'sortable' => $this->sortable,
 		);
-
-		Transient::set( $key, $data );
 	}
 
 
@@ -352,10 +348,10 @@ class SermonListTable implements Executable, Registrable {
 
 				// Sorting.
 				switch ( $vars['orderby'] ) {
-					case Meta::DATE:
+					case SermonMeta::DATE:
 						// phpcs:disable
 						$vars = array_merge( $vars, array(
-							'meta_key'       => Meta::DATE,
+							'meta_key'       => SermonMeta::DATE,
 							'orderby'        => 'meta_value_num',
 							'meta_value_num' => time(),
 							'meta_compare'   => '<=',

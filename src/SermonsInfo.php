@@ -11,8 +11,6 @@
 
 namespace DRPPSM;
 
-use DRPPSM\Constants\Meta;
-
 defined( 'ABSPATH' ) || exit;
 
 /**
@@ -110,7 +108,7 @@ class SermonsInfo {
 			$this->names[] = $sermon->post_title;
 			$this->add_id( $sermon->ID );
 
-			$date = get_post_meta( $sermon->ID, Meta::DATE, true );
+			$date = get_post_meta( $sermon->ID, SermonMeta::DATE, true );
 			if ( $date ) {
 				$this->dates[] = $date;
 			} else {

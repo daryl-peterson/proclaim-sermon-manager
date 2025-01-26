@@ -11,7 +11,6 @@
 
 namespace DRPPSM;
 
-use DRPPSM\Constants\Meta;
 use DRPPSM\Interfaces\Executable;
 use DRPPSM\Interfaces\Registrable;
 use WP_Error;
@@ -150,7 +149,7 @@ class SermonImageAttach implements Executable, Registrable {
 			return false;
 		}
 
-		$series_id = get_term_meta( $term->term_id, Meta::SERIES_IMAGE_ID, true );
+		$series_id = get_term_meta( $term->term_id, TaxMeta::SERIES_IMAGE_ID, true );
 		if ( ! isset( $series_id ) || empty( $series_id ) ) {
 			return false;
 		}

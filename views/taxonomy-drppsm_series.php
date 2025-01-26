@@ -15,6 +15,14 @@ namespace DRPPSM;
 $qv_tax  = get_query_var( 'taxonomy' );
 $qv_term = get_query_var( DRPPSM_TAX_SERIES );
 
+
+Logger::debug(
+	array(
+		'qv_tax'  => $qv_tax,
+		'qv_term' => $qv_term,
+	)
+);
+
 if ( ! did_action( 'get_header' ) ) {
 	get_header();
 }
@@ -22,20 +30,16 @@ if ( ! did_action( 'get_header' ) ) {
 get_partial( 'sermon-wrapper-start' );
 
 
-$query = $wp_query->query;
 if ( empty( $qv_term ) ) {
 	new TaxImageList(
 		array(
 			'display' => $qv_tax,
-			'size'    => 'drppsm_preacher',
+			'size'    => get_tax_image_size( 'full', 'medium' ),
 		)
 	);
 } elseif ( have_posts() ) {
-	while ( have_posts() ) {
-		the_post();
-		sermon_excerpt();
-	}
-		wp_reset_postdata();
+	new TaxArchive( $qv_tax, $qv_term );
+	wp_reset_postdata();
 } else {
 	get_partial( 'no-posts' );
 }

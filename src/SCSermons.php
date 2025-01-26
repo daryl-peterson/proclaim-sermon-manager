@@ -13,7 +13,6 @@ namespace DRPPSM;
 
 defined( 'ABSPATH' ) || exit;
 
-use DRPPSM\Constants\Meta;
 use DRPPSM\Interfaces\Executable;
 use DRPPSM\Interfaces\Registrable;
 use DRPPSM\Traits\ExecutableTrait;
@@ -231,7 +230,7 @@ class SCSermons extends SCBase implements Executable, Registrable {
 				// @codingStandardsIgnoreStart
 				$query_args['meta_query'] = array(
 					array(
-						'key'     => Meta::DATE,
+						'key'     => SermonMeta::DATE,
 						'value'   => time(),
 						'type'    => 'numeric',
 						'compare' => '<=',

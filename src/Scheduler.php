@@ -13,7 +13,6 @@ namespace DRPPSM;
 
 use DateTime;
 use DateTimeZone;
-use DRPPSM\Constants\Meta;
 use DRPPSM\Interfaces\Executable;
 use DRPPSM\Interfaces\Registrable;
 use DRPPSM\Traits\ExecutableTrait;
@@ -240,7 +239,6 @@ class Scheduler implements Executable, Registrable {
 
 				foreach ( $term_ids as $term_id ) {
 					$item = get_term( $term_id, $tax_name );
-					update_term_meta( $item->term_id, "{$tax_name}_cnt", $item->count );
 					$this->set_get_date( $tax_name, $item->term_id );
 					self::$jobs->delete( $tax_name, $term_id );
 				}
@@ -277,7 +275,6 @@ class Scheduler implements Executable, Registrable {
 
 			foreach ( $term_list as $item ) {
 
-				update_term_meta( $item->term_id, "{$tax_name}_cnt", $item->count );
 				$this->set_get_date( $tax_name, $item->term_id );
 
 			}
@@ -303,7 +300,7 @@ class Scheduler implements Executable, Registrable {
 			),
 			'meta_query'  => array(
 				'orderby'      => 'meta_value_num',
-				'meta_key'     => Meta::DATE,
+				'meta_key'     => SermonMeta::DATE,
 				'meta_value'   => time(),
 				'meta_compare' => '<=',
 			),
@@ -320,7 +317,7 @@ class Scheduler implements Executable, Registrable {
 			return;
 		}
 
-		$meta = get_post_meta( $post_item->ID, Meta::DATE, true );
+		$meta = get_post_meta( $post_item->ID, SermonMeta::DATE, true );
 
 		if ( ! isset( $meta ) || empty( $meta ) ) {
 			return;

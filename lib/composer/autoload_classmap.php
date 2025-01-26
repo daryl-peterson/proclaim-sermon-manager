@@ -7,6 +7,7 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'Composer\\InstalledVersions' => $vendorDir . '/composer/InstalledVersions.php',
+    'DRPPSM\\About' => $baseDir . '/src/About.php',
     'DRPPSM\\Action' => $baseDir . '/src/Action.php',
     'DRPPSM\\AdminMenu' => $baseDir . '/src/AdminMenu.php',
     'DRPPSM\\AdminSettings' => $baseDir . '/src/AdminSettings.php',
@@ -14,7 +15,6 @@ return array(
     'DRPPSM\\BibleLoader' => $baseDir . '/src/BibleLoader.php',
     'DRPPSM\\Constants\\Bible' => $baseDir . '/src/Core/Constants/Bible.php',
     'DRPPSM\\Constants\\Caps' => $baseDir . '/src/Core/Constants/Caps.php',
-    'DRPPSM\\Constants\\Meta' => $baseDir . '/src/Core/Constants/Meta.php',
     'DRPPSM\\Container' => $baseDir . '/src/Container.php',
     'DRPPSM\\DB\\DbUpdates' => $baseDir . '/src/DB/DbUpdates.php',
     'DRPPSM\\DB\\M001M000P000' => $baseDir . '/src/DB/M001M000P000.php',
@@ -82,9 +82,11 @@ return array(
     'DRPPSM\\SermonFiles' => $baseDir . '/src/SermonFiles.php',
     'DRPPSM\\SermonImageAttach' => $baseDir . '/src/SermonImageAttach.php',
     'DRPPSM\\SermonListTable' => $baseDir . '/src/SermonListTable.php',
+    'DRPPSM\\SermonMeta' => $baseDir . '/src/SermonMeta.php',
     'DRPPSM\\SermonSorting' => $baseDir . '/src/SermonSorting.php',
     'DRPPSM\\SermonsInfo' => $baseDir . '/src/SermonsInfo.php',
     'DRPPSM\\Settings' => $baseDir . '/src/Settings.php',
+    'DRPPSM\\TaxArchive' => $baseDir . '/src/TaxArchive.php',
     'DRPPSM\\TaxImageAttach' => $baseDir . '/src/TaxImageAttach.php',
     'DRPPSM\\TaxImageList' => $baseDir . '/src/TaxImageList.php',
     'DRPPSM\\TaxListTable' => $baseDir . '/src/TaxListTable.php',

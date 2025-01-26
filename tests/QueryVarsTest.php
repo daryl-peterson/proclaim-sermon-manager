@@ -30,7 +30,7 @@ class QueryVarsTest extends BaseTest {
 	}
 
 	public function test_overwrite_query_vars() {
-		$result = $this->obj->overwrite_query_vars( array( 'favicon' ) );
+		$result = $this->obj->overwrite_request_vars( array( 'favicon' ) );
 		$this->assertIsArray( $result );
 
 		$result = $this->obj->register();
@@ -41,13 +41,13 @@ class QueryVarsTest extends BaseTest {
 		$query  = array(
 			'name' => $test->post_name,
 		);
-		$result = $this->obj->overwrite_query_vars( $query );
+		$result = $this->obj->overwrite_request_vars( $query );
 		$this->assertIsArray( $result );
 
-		$result = $this->obj->overwrite_query_vars( array( 'favicon' => true ) );
+		$result = $this->obj->overwrite_request_vars( array( 'favicon' => true ) );
 		$this->assertIsArray( $result );
 
-		$result = $this->obj->overwrite_query_vars( array( 'drppsm_series' => 'test-series' ) );
+		$result = $this->obj->overwrite_request_vars( array( 'drppsm_series' => 'test-series' ) );
 		$this->assertIsArray( $result );
 	}
 }

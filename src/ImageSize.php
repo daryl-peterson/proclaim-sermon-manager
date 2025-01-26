@@ -33,7 +33,7 @@ class ImageSize implements Executable, Registrable {
 	 * Small image size.
 	 *
 	 * - size 75x75
-	 * - crop false
+	 * - crop true
 	 *
 	 * @var string
 	 * @since 1.0.0
@@ -44,7 +44,7 @@ class ImageSize implements Executable, Registrable {
 	 * Medium image size.
 	 *
 	 * - size 300x158
-	 * - crop false
+	 * - crop true
 	 *
 	 * @var string
 	 * @since 1.0.0
@@ -55,7 +55,7 @@ class ImageSize implements Executable, Registrable {
 	 * Wide image size.
 	 *
 	 * - size 940x494
-	 * - crop false
+	 * - crop true
 	 *
 	 * @var string
 	 * @since 1.0.0
@@ -66,7 +66,7 @@ class ImageSize implements Executable, Registrable {
 	 * Full image size.
 	 *
 	 * - size 1200x630
-	 * - crop false
+	 * - crop true
 	 *
 	 * @var string
 	 * @since 1.0.0
@@ -74,10 +74,23 @@ class ImageSize implements Executable, Registrable {
 	public const SERMON_FULL = 'psm-sermon-full';
 
 
+	/**
+	 * Preacher medium image size.
+	 * - size 150x150
+	 * - crop true
+	 *
+	 * @since 1.0.0
+	 */
 	public const PREACHER_MEDIUM = 'psm-preacher-medium';
-	public const PREACHER_FULL   = 'psm-preacher-full';
 
-
+	/**
+	 * Preacher full image size.
+	 * - size 300x300
+	 * - crop true
+	 *
+	 * @since 1.0.0
+	 */
+	public const PREACHER_FULL = 'psm-preacher-full';
 
 	/**
 	 * Image sizes list.
@@ -87,7 +100,22 @@ class ImageSize implements Executable, Registrable {
 		self::SERMON_MEDIUM,
 		self::SERMON_WIDE,
 		self::SERMON_FULL,
+		self::PREACHER_MEDIUM,
+		self::PREACHER_FULL,
+	);
 
+	public const SIZE_MAP = array(
+		DRPPSM_PT_SERMON    => array(
+			'small'  => self::SERMON_SMALL,
+			'medium' => self::SERMON_MEDIUM,
+			'wide'   => self::SERMON_WIDE,
+			'full'   => self::SERMON_FULL,
+		),
+
+		DRPPSM_TAX_PREACHER => array(
+			'medium' => self::PREACHER_MEDIUM,
+			'full'   => self::PREACHER_FULL,
+		),
 	);
 
 	/**
@@ -151,6 +179,48 @@ class ImageSize implements Executable, Registrable {
 		}
 		add_action( 'after_setup_theme', array( $this, 'run' ), 100, 1 );
 		return true;
+	}
+
+	/**
+	 * Get image size name.
+	 *
+	 * @param string $size Image size.
+	 * @param string $taxonomy Taxonomy name.
+	 * @return string
+	 * @since 1.0.0
+	 */
+	public static function get_tax_image_size( string $size, string $taxonomy ) {
+		$tax_name = TaxUtils::get_taxonomy_name( $taxonomy );
+		if ( ! $tax_name ) {
+			return $size;
+		}
+		if ( isset( self::SIZE_MAP[ $tax_name ][ $size ] ) ) {
+			$size = self::SIZE_MAP[ $tax_name ][ $size ];
+		}
+
+		/**
+		 * Allows for the modification of the image size for a taxonomy.
+		 *
+		 * #### Friendly Taxonomy
+		 * - book
+		 * - preacher
+		 * - series
+		 * - topics
+		 *
+		 * #### Internal Taxonomy
+		 * - drppsm_book
+		 * - drppsm_preacher
+		 * - drppsm_series
+		 * - drppsm_topics
+		 *
+		 * @param string $size Image size.
+		 * @param string $taxonomy Taxonomy name.
+		 * @since 1.0.0
+		 * @category filter
+		 */
+		$size = apply_filters( "get_($taxonomy)_image_size", $size, $taxonomy );
+
+		return $size;
 	}
 
 	/**

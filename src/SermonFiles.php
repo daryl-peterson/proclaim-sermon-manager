@@ -13,7 +13,6 @@ namespace DRPPSM;
 
 defined( 'ABSPATH' ) || exit;
 
-use DRPPSM\Constants\Meta;
 use DRPPSM\Interfaces\Initable;
 use DRPPSM\Interfaces\Registrable;
 
@@ -76,7 +75,7 @@ class SermonFiles implements Initable, Registrable {
 			array(
 				'name' => esc_html__( 'Location of MP3', 'drppsm' ),
 				'desc' => esc_html__( 'Upload an audio file or enter an URL.', 'drppsm' ),
-				'id'   => Meta::AUDIO,
+				'id'   => SermonMeta::AUDIO,
 				'type' => 'file',
 				'text' => array(
 					'add_upload_file_text' => 'Add Sermon Audio', // Change upload button text. Default: "Add or Upload File".
@@ -91,7 +90,7 @@ class SermonFiles implements Initable, Registrable {
 					esc_html__( 'Length in %s format (fill out only for remote files, local files will get data calculated by default)', 'drppsm' ),
 					'<code>' . esc_html__( 'hh:mm:ss', 'drppsm' ) . '</code>'
 				),
-				'id'   => Meta::DURATION,
+				'id'   => SermonMeta::DURATION,
 				'type' => 'text',
 			)
 		);
@@ -99,7 +98,7 @@ class SermonFiles implements Initable, Registrable {
 			array(
 				'name' => esc_html__( 'Video Embed Code', 'drppsm' ),
 				'desc' => esc_html__( 'Paste your embed code for Vimeo, Youtube, Facebook, or direct video file here', 'drppsm' ),
-				'id'   => Meta::VIDEO,
+				'id'   => SermonMeta::VIDEO,
 				'type' => 'textarea_code',
 			)
 		);
@@ -107,7 +106,7 @@ class SermonFiles implements Initable, Registrable {
 			array(
 				'name' => esc_html__( 'Video Link', 'drppsm' ),
 				'desc' => esc_html__( 'Paste your link for Vimeo, Youtube, Facebook, or direct video file here', 'drppsm' ),
-				'id'   => Meta::VIDEO_LINK,
+				'id'   => SermonMeta::VIDEO_LINK,
 				'type' => 'text_url',
 			)
 		);
@@ -116,7 +115,7 @@ class SermonFiles implements Initable, Registrable {
 			array(
 				'name'       => esc_html__( 'Sermon Notes', 'drppsm' ),
 				'desc'       => esc_html__( 'Upload  pdf files.', 'drppsm' ),
-				'id'         => Meta::NOTES,
+				'id'         => SermonMeta::NOTES,
 				'type'       => 'file_list',
 				'text'       => array(
 					'add_upload_file_text' => esc_html__( 'Add File', 'drppsm' ),
@@ -132,7 +131,7 @@ class SermonFiles implements Initable, Registrable {
 			array(
 				'name' => esc_html__( 'Bulletin', 'drppsm' ),
 				'desc' => esc_html__( 'Upload pdf files.', 'drppsm' ),
-				'id'   => Meta::BULLETIN,
+				'id'   => SermonMeta::BULLETIN,
 				'type' => 'file_list',
 				'text' => array(
 					'add_upload_file_text' => esc_html__( 'Add File', 'drppsm' ),

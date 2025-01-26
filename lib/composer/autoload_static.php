@@ -68,6 +68,7 @@ class ComposerStaticInit672fe16c65cc53aa8b66e730cdfce0de
 
     public static $classMap = array (
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
+        'DRPPSM\\About' => __DIR__ . '/../..' . '/src/About.php',
         'DRPPSM\\Action' => __DIR__ . '/../..' . '/src/Action.php',
         'DRPPSM\\AdminMenu' => __DIR__ . '/../..' . '/src/AdminMenu.php',
         'DRPPSM\\AdminSettings' => __DIR__ . '/../..' . '/src/AdminSettings.php',
@@ -75,7 +76,6 @@ class ComposerStaticInit672fe16c65cc53aa8b66e730cdfce0de
         'DRPPSM\\BibleLoader' => __DIR__ . '/../..' . '/src/BibleLoader.php',
         'DRPPSM\\Constants\\Bible' => __DIR__ . '/../..' . '/src/Core/Constants/Bible.php',
         'DRPPSM\\Constants\\Caps' => __DIR__ . '/../..' . '/src/Core/Constants/Caps.php',
-        'DRPPSM\\Constants\\Meta' => __DIR__ . '/../..' . '/src/Core/Constants/Meta.php',
         'DRPPSM\\Container' => __DIR__ . '/../..' . '/src/Container.php',
         'DRPPSM\\DB\\DbUpdates' => __DIR__ . '/../..' . '/src/DB/DbUpdates.php',
         'DRPPSM\\DB\\M001M000P000' => __DIR__ . '/../..' . '/src/DB/M001M000P000.php',
@@ -143,9 +143,11 @@ class ComposerStaticInit672fe16c65cc53aa8b66e730cdfce0de
         'DRPPSM\\SermonFiles' => __DIR__ . '/../..' . '/src/SermonFiles.php',
         'DRPPSM\\SermonImageAttach' => __DIR__ . '/../..' . '/src/SermonImageAttach.php',
         'DRPPSM\\SermonListTable' => __DIR__ . '/../..' . '/src/SermonListTable.php',
+        'DRPPSM\\SermonMeta' => __DIR__ . '/../..' . '/src/SermonMeta.php',
         'DRPPSM\\SermonSorting' => __DIR__ . '/../..' . '/src/SermonSorting.php',
         'DRPPSM\\SermonsInfo' => __DIR__ . '/../..' . '/src/SermonsInfo.php',
         'DRPPSM\\Settings' => __DIR__ . '/../..' . '/src/Settings.php',
+        'DRPPSM\\TaxArchive' => __DIR__ . '/../..' . '/src/TaxArchive.php',
         'DRPPSM\\TaxImageAttach' => __DIR__ . '/../..' . '/src/TaxImageAttach.php',
         'DRPPSM\\TaxImageList' => __DIR__ . '/../..' . '/src/TaxImageList.php',
         'DRPPSM\\TaxListTable' => __DIR__ . '/../..' . '/src/TaxListTable.php',

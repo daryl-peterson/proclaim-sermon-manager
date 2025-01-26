@@ -13,7 +13,6 @@
 
 namespace DRPPSM;
 
-use DRPPSM\Constants\Meta;
 use DRPPSM\Interfaces\Executable;
 use DRPPSM\Interfaces\Registrable;
 use stdClass;
@@ -32,10 +31,39 @@ defined( 'ABSPATH' ) || exit;
  * @since       1.0.0
  *
  *
+ *
+ *
  * - Adds Job to queue if meta not found.
  */
 class TaxMeta implements Executable, Registrable {
 
+	/**
+	 * Series attachment post id.
+	 *
+	 * @since 1.0.0
+	 */
+	public const SERIES_IMAGE_ID = 'drppsm_series_image_id';
+
+	/**
+	 * Series image file and path.
+	 *
+	 * @since 1.0.0
+	 */
+	public const SERIES_IMAGE = 'drppsm_series_image';
+
+	/**
+	 * Preacher attachment post id.
+	 *
+	 * @since 1.0.0
+	 */
+	public const PREACHER_IMAGE_ID = 'drppsm_preacher_image_id';
+
+	/**
+	 * Preacher image file and path.
+	 *
+	 * @since 1.0.0
+	 */
+	public const PREACHER_IMAGE = 'drppsm_preacher';
 
 	/**
 	 * SchedulerJobs instance.
@@ -148,6 +176,13 @@ class TaxMeta implements Executable, Registrable {
 		int $tt_id,
 		array $args
 	) {
+		Logger::debug(
+			array(
+				'TERM_ID' => $term_id,
+				'TT_ID'   => $tt_id,
+				'ARGS'    => $args,
+			)
+		);
 		$this->set_term_meta( $term_id, $args );
 	}
 
@@ -164,6 +199,13 @@ class TaxMeta implements Executable, Registrable {
 		int $tt_id,
 		array $args
 	) {
+		Logger::debug(
+			array(
+				'TERM_ID' => $term_id,
+				'TT_ID'   => $tt_id,
+				'ARGS'    => $args,
+			)
+		);
 		$this->set_term_meta( $term_id, $args );
 	}
 
@@ -251,13 +293,20 @@ class TaxMeta implements Executable, Registrable {
 			),
 			'meta_query'  => array(
 				'orderby'      => 'meta_value_num',
-				'meta_key'     => Meta::DATE,
+				'meta_key'     => SermonMeta::DATE,
 				'meta_value'   => time(),
 				'meta_compare' => '<=',
 			),
 
 		);
 		$post_list = get_posts( $args );
+		Logger::debug(
+			array(
+				'TERM ID'  => $term_id,
+				'KEY NAME' => $key_name,
+				'POSTS'    => $post_list,
+			)
+		);
 
 		if ( is_wp_error( $post_list ) || ! is_array( $post_list ) || ! count( $post_list ) > 0 ) {
 			return;
@@ -268,7 +317,7 @@ class TaxMeta implements Executable, Registrable {
 			return;
 		}
 
-		$meta = get_post_meta( $post_item->ID, Meta::DATE, true );
+		$meta = get_post_meta( $post_item->ID, SermonMeta::DATE, true );
 
 		if ( ! isset( $meta ) || empty( $meta ) ) {
 			return;

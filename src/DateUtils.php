@@ -11,7 +11,6 @@
 
 namespace DRPPSM;
 
-use DRPPSM\Constants\Meta;
 use WP_Post;
 
 /**
@@ -54,7 +53,7 @@ class DateUtils {
 		}
 
 		// Check if date is set.
-		$date = get_post_meta( $post->ID, Meta::DATE, true );
+		$date = get_post_meta( $post->ID, SermonMeta::DATE, true );
 		if ( ! $date ) {
 			self::set_timestamp( $post );
 			return false;
@@ -99,7 +98,7 @@ class DateUtils {
 
 	private static function set_timestamp( WP_Post $post ): void {
 		$time = strtotime( $post->post_date );
-		update_post_meta( $post->ID, Meta::DATE, $time );
+		update_post_meta( $post->ID, SermonMeta::DATE, $time );
 	}
 
 	/**

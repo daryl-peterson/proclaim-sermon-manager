@@ -168,9 +168,10 @@ class TaxListTable implements Executable, Registrable {
 
 		$cmb_term->add_field(
 			array(
-				'name' => esc_html__( 'Image', 'drppsm' ),
-				'id'   => $prefix . 'image',
-				'type' => 'file',
+				'name'         => esc_html__( 'Image', 'drppsm' ),
+				'id'           => $prefix . 'image',
+				'type'         => 'file',
+				'preview_size' => array( 150, 150 ),
 			)
 		);
 	}

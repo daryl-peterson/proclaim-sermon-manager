@@ -27,7 +27,7 @@ if ( empty( $qv_term ) ) {
 	new TaxImageList(
 		array(
 			'display' => $qv_tax,
-			'size'    => ImageSize::PREACHER_MEDIUM,
+			'size'    => get_tax_image_size( 'full', 'preacher' ),
 		)
 	);
 } elseif ( have_posts() ) {

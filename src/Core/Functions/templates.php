@@ -12,7 +12,6 @@
 namespace DRPPSM;
 
 use DRPPSM\Constants\Bible;
-use DRPPSM\Constants\Meta;
 use WP_Exception;
 use WP_Post;
 
@@ -294,6 +293,18 @@ function get_sermon_image_url( string $image_size = 'post-thumbnail', bool $fall
 }
 
 /**
+ * Get tax image size.
+ *
+ * @param string $size The image size.
+ * @param string $taxonomy The taxonomy.
+ * @return string
+ * @since 1.0.0
+ */
+function get_tax_image_size( string $size, string $taxonomy ) {
+	return ImageSize::get_tax_image_size( $size, $taxonomy );
+}
+
+/**
  * Get series image
  *
  * @param string           $image_size The image size. Default: "post-thumbnail".
@@ -318,7 +329,7 @@ function get_series_image( string $image_size = 'post-thumbnail', null|int|WP_Po
 	}
 
 	foreach ( $terms as $term ) {
-		$meta = get_term_meta( $term->term_id, Meta::SERIES_IMAGE_ID, true );
+		$meta = get_term_meta( $term->term_id, TaxMeta::SERIES_IMAGE_ID, true );
 		$url  = null;
 		if ( ! empty( $meta ) && false !== $meta ) {
 			$url = wp_get_attachment_image_url( $meta, $image_size );
@@ -347,7 +358,7 @@ function get_preacher_image( string $image_size = 'post-thumbnail' ): ?string {
 	}
 
 	foreach ( $terms as $term ) {
-		$meta = get_term_meta( $term->term_id, Meta::PREACHER_IMAGE_ID, true );
+		$meta = get_term_meta( $term->term_id, TaxMeta::PREACHER_IMAGE_ID, true );
 		$url  = null;
 		if ( ! empty( $meta ) && false !== $meta ) {
 			$url = wp_get_attachment_image_url( $meta, $image_size );

@@ -14,7 +14,6 @@ namespace DRPPSM;
 defined( 'ABSPATH' ) || exit;
 
 use CMB2;
-use DRPPSM\Constants\Meta;
 use DRPPSM\Interfaces\Initable;
 use DRPPSM\Interfaces\Registrable;
 
@@ -143,13 +142,13 @@ class SermonDetail implements Initable, Registrable {
 
 	private function save_date( int $post_ID, array $data ): bool {
 		return true;
-		if ( ! isset( $data[ Meta::DATE ] ) ) {
+		if ( ! isset( $data[ SermonMeta::DATE ] ) ) {
 			return false;
 		}
-		$date = $data[ Meta::DATE ];
+		$date = $data[ SermonMeta::DATE ];
 
 		$date = strtotime( wp_date( 'Y-m-d 00:00:00', strtotime( $date ) ) );
-		update_post_meta( $post_ID, Meta::DATE, $date );
+		update_post_meta( $post_ID, SermonMeta::DATE, $date );
 		return true;
 	}
 
@@ -200,7 +199,7 @@ class SermonDetail implements Initable, Registrable {
 				'name'         => esc_html__( 'Date Preached', 'drppsm' ),
 				// translators: %1 Date preached.
 				// 'desc'         => '<br>' . wp_sprintf( esc_html__( 'format: %s', 'drppsm' ), $format ),
-				'id'           => Meta::DATE,
+				'id'           => SermonMeta::DATE,
 				'type'         => 'text_datetime_timestamp',
 				'autocomplete' => 'off',
 			)
@@ -224,11 +223,11 @@ class SermonDetail implements Initable, Registrable {
 				'desc'             => wp_sprintf(
 					// translators: %1$s The singular label. Default Service Type.
 					// translators: %2$s The plural label. Default Service Types.
-					// translators: %3$s <a href="edit-tags.php?taxonomy=drppsm_service_type&post_type=drppsm" target="_blank">here</a>.
+					// translators: %3$s <a href="edit-tags.php?taxonomy=drppsm_stype&post_type=drppsm" target="_blank">here</a>.
 					esc_html__( 'Select the %1$s. Modify the %2$s %3$s.', 'drppsm' ),
 					strtolower( TaxUtils::get_taxonomy_field( $this->tax_service_type, 'singular_name' ) ),
 					strtolower( TaxUtils::get_taxonomy_field( $this->tax_service_type, 'label' ) ),
-					'<a href="' . admin_url( 'edit-tags.php?taxonomy=drppsm_service_type&post_type=drppsm' ) . '" target="_blank">here</a>'
+					'<a href="' . admin_url( 'edit-tags.php?taxonomy=drppsm_stype&post_type=drppsm' ) . '" target="_blank">here</a>'
 				),
 				'id'               => $this->tax_service_type,
 				'type'             => 'select',
@@ -246,7 +245,7 @@ class SermonDetail implements Initable, Registrable {
 	 * @since 1.0.0
 	 */
 	private function add_bible_passage( CMB2 $cmb ): void {
-		$meta = Meta::BIBLE_PASSAGE;
+		$meta = SermonMeta::BIBLE_PASSAGE;
 
 		$desc = wp_sprintf(
 			// translators: %1$s Bible book.
@@ -279,7 +278,7 @@ class SermonDetail implements Initable, Registrable {
 		/**
 		 * Description meta.
 		 */
-		$meta = Meta::DESCRIPTION;
+		$meta = SermonMeta::DESCRIPTION;
 		$cmb->add_field(
 			array(
 				'id'      => $meta,

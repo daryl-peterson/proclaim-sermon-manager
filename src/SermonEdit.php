@@ -72,7 +72,7 @@ class SermonEdit implements Executable, Registrable {
 		}
 
 		add_action( 'pre_get_posts', array( $this, 'fix_ordering' ), 90 );
-		add_filter( 'use_block_editor_for_post_type', array( $this, 'disable_gutenberg' ), 10, 2 );
+		add_filter( 'use_block_editor_for_post_type', array( $this, 'use_block_editor' ), 10, 2 );
 		add_action( 'cmb2_admin_init', array( $this, 'show_meta_boxes' ) );
 		add_action( 'admin_menu', array( $this, 'remove_meta_boxes' ) );
 
@@ -88,8 +88,9 @@ class SermonEdit implements Executable, Registrable {
 	 * @param string  $post_type Post type.
 	 * @return boolean
 	 */
-	public function disable_gutenberg( bool $current_status, string $post_type ): bool {
-		if ( $this->post_type === $post_type ) {
+	public function use_block_editor( bool $current_status, string $post_type ): bool {
+		$disable = array( $this->post_type, 'wpfc_sermon' );
+		if ( in_array( $post_type, $disable, true ) ) {
 			return false;
 		}
 

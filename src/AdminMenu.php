@@ -57,6 +57,7 @@ class AdminMenu implements Executable, Registrable {
 
 		add_action( 'admin_menu', array( $this, 'fix_title' ), 100 );
 		add_action( 'admin_menu', array( $this, 'add_import_export' ), 110 );
+		add_action( 'admin_menu', array( $this, 'about' ), 111 );
 		return true;
 	}
 
@@ -79,6 +80,17 @@ class AdminMenu implements Executable, Registrable {
 				return;
 			}
 		}
+	}
+
+	public function about(): void {
+		add_submenu_page(
+			'edit.php?post_type=' . DRPPSM_PT_SERMON,
+			DRPPSM_TITLE . ' ' . __( 'About', 'drppsm' ),
+			__( 'About', 'drppsm' ),
+			Caps::MANAGE_SETTINGS,
+			'psm-about',
+			array( $this, 'load_about' )
+		);
 	}
 
 	/**
@@ -105,5 +117,8 @@ class AdminMenu implements Executable, Registrable {
 	 * @since 1.0.0
 	 */
 	public function load_import_export() {
+	}
+
+	public function load_about() {
 	}
 }

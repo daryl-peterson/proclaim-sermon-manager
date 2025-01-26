@@ -11,7 +11,6 @@
 
 namespace DRPPSM;
 
-use DRPPSM\Constants\Meta;
 use WP_Exception;
 
 defined( 'ABSPATH' ) || exit;
@@ -264,7 +263,7 @@ class SCBase {
 			$args['orderby'] = $setting;
 		}
 
-		$fix = array( 'preached', 'date_preached', Meta::DATE );
+		$fix = array( 'preached', 'date_preached', SermonMeta::DATE );
 		if ( in_array( $orderby, $fix, true ) ) {
 			$meta_query = true;
 		}
@@ -272,7 +271,7 @@ class SCBase {
 		if ( $meta_query ) {
 			$query_args['meta_query'] = array(
 				'orderby'      => 'meta_value_num',
-				'meta_key'     => Meta::DATE,
+				'meta_key'     => SermonMeta::DATE,
 				'meta_value'   => time(),
 				'meta_compare' => '<=',
 			);
