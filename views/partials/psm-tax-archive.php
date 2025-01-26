@@ -21,3 +21,39 @@ if ( ! isset( $args ) || ! is_array( $args ) ) {
 	render_html( $failure );
 	return;
 }
+
+if ( ! has_keys( array( 'list' ), $args ) ) {
+	render_html( $failure );
+	return;
+}
+$list = $args['list'];
+
+/**
+ * @var \WP_Post $item_first Post object.
+ */
+$item_first = array_shift( $list );
+Logger::debug(
+	array(
+		'FIRST ITEM' => $item_first,
+		'LIST'       => $list,
+	)
+);
+?>
+<div id="drppsm-sc-wrapper">
+
+	<div id="drppsm-archive-header">
+		<h2><?php echo esc_html( $item_first->post_title ); ?></h2>
+	</div>
+
+<?php
+
+
+foreach ( $list as $item ) :
+	Logger::debug( $item );
+
+
+	?>
+
+
+<?php endforeach; ?>
+</div>

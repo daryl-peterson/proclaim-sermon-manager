@@ -39,6 +39,55 @@ class TaxArchive {
 	private string $tax_name;
 
 	/**
+	 * Used in paginated queries, per_page
+	 *
+	 * @var int
+	 * @since 1.0.0
+	 */
+	private int $per_page;
+
+	/**
+	 * Order.
+	 *
+	 * @var string
+	 * @since 1.0.0
+	 */
+	private string $order;
+
+	/**
+	 * Order by.
+	 *
+	 * @var string
+	 * @since 1.0.0
+	 */
+	private string $orderby;
+
+
+	/**
+	 * Used in paginated queries, per_page
+	 *
+	 * @var int
+	 * @since 1.0.0
+	 */
+	private int $number;
+
+	/**
+	 * Query offset.
+	 *
+	 * @var int
+	 * @since 1.0.0
+	 */
+	private int $offset;
+
+	/**
+	 * Pagination arguments.
+	 *
+	 * @var array
+	 * @since 1.0.0
+	 */
+	private null|array $paginate;
+
+	/**
 	 * Term slug.
 	 *
 	 * @var string
@@ -55,12 +104,22 @@ class TaxArchive {
 	 */
 	private ?WP_Term $term;
 
+	/**
+	 * Template data.
+	 *
+	 * @var array
+	 * @since 1.0.0
+	 */
+	private null|array $data;
+
+	private array $args;
+
 
 	/**
 	 * Initialize object.
 	 *
-	 * @param string $tax_name
-	 * @param string $term_name
+	 * @param string $tax_name Taxonomy name.
+	 * @param string $term_name Term name.
 	 * @return void
 	 * @since 1.0.0
 	 */
@@ -79,8 +138,37 @@ class TaxArchive {
 		} else {
 			$this->term = $term;
 		}
-		$data = $this->get_post_data();
-		Logger::debug( $data );
+		$this->set_params();
+		$this->set_pagination();
+		$this->data = $this->get_post_data();
+		$this->render();
+
+		Logger::debug( $this->data );
+	}
+
+
+	private function render() {
+		$output = '';
+		if ( isset( $this->data ) && is_array( $this->data ) && count( $this->data ) > 0 ) {
+
+			ob_start();
+
+			get_partial(
+				Templates::TaxArchive,
+				array(
+					'list' => $this->data,
+
+				)
+			);
+			get_partial( Templates::Pagination, $this->paginate );
+
+			$output .= ob_get_clean();
+		} else {
+			ob_start();
+			get_partial( 'no-posts' );
+			$output .= ob_get_clean();
+		}
+		echo $output;
 	}
 
 	/**
@@ -90,38 +178,12 @@ class TaxArchive {
 	 * @since 1.0.0
 	 */
 	private function get_post_data(): mixed {
-		$per_page = Settings::get( Settings::SERMON_COUNT );
-		$order    = Settings::get( Settings::ARCHIVE_ORDER );
-		$orderby  = Settings::get( Settings::ARCHIVE_ORDER_BY );
 
-		$args = array(
-			'post_type'      => DRPPSM_PT_SERMON,
-			'orderby'        => 'meta_value_num',
-			'order'          => $order,
-			'posts_per_page' => $per_page,
-			'tax_query'      => array(
-				array(
-					'taxonomy' => $this->tax_name,
-					'field'    => 'term_id',
-					'terms'    => $this->term->term_id,
-				),
-			),
-		);
-
-		if ( $orderby === 'date_preached' ) {
-			$args['meta_query'] = array(
-				'orderby'      => 'meta_value_num',
-				'meta_key'     => SermonMeta::DATE,
-				'meta_value'   => time(),
-				'meta_compare' => '<=',
-			);
-			$args['orderby']    = 'meta_value_num';
-			$args['order']      = $order;
-		}
-
-		$data = get_posts( $args );
+		$data = get_posts( $this->args );
 		foreach ( $data as $key => $post_item ) {
-			$data[ $key ] = $this->set_sermon_meta( $post_item );
+			$post_item    = $this->get_sermon_meta( $post_item );
+			$post_item    = $this->get_sermon_terms( $post_item );
+			$data[ $key ] = $post_item;
 		}
 		return $data;
 	}
@@ -133,7 +195,7 @@ class TaxArchive {
 	 * @return WP_Post
 	 * @since 1.0.0
 	 */
-	private function set_sermon_meta( WP_Post $post_item ): WP_Post {
+	private function get_sermon_meta( WP_Post $post_item ): WP_Post {
 		$meta = SermonMeta::get_meta( $post_item->ID );
 
 		$fmt_date = get_option( 'date_format' );
@@ -152,5 +214,129 @@ class TaxArchive {
 			$post_item->meta->date = date_i18n( $fmt, $post_item->meta->date );
 		}
 		return $post_item;
+	}
+
+	/**
+	 * Get sermon terms.
+	 *
+	 * @param WP_Post $post_item
+	 * @return WP_Post
+	 * @since 1.0.0
+	 */
+	private function get_sermon_terms( WP_Post $post_item ): WP_Post {
+
+		foreach ( DRPPSM_TAX_MAP as $tax_key => $tax_name ) {
+			$terms = get_the_terms( $post_item, $tax_name );
+			if ( is_wp_error( $terms ) || ! is_array( $terms ) || 0 === count( $terms ) ) {
+				$post_item->{$tax_key} = null;
+				continue;
+			}
+			$term                  = array_shift( $terms );
+			$post_item->{$tax_key} = $term;
+		}
+
+		return $post_item;
+	}
+
+	/**
+	 * Set query params.
+	 *
+	 * @return void
+	 * @since 1.0.0
+	 */
+	private function set_params() {
+		$this->per_page = Settings::get( Settings::SERMON_COUNT );
+		$this->order    = Settings::get( Settings::ARCHIVE_ORDER );
+		$this->orderby  = Settings::get( Settings::ARCHIVE_ORDER_BY );
+
+		$args = array(
+			'post_type'      => DRPPSM_PT_SERMON,
+			'orderby'        => 'meta_value_num',
+			'order'          => $this->order,
+			'posts_per_page' => $this->per_page,
+			'tax_query'      => array(
+				array(
+					'taxonomy' => $this->tax_name,
+					'field'    => 'term_id',
+					'terms'    => $this->term->term_id,
+				),
+			),
+		);
+
+		if ( $this->orderby === 'date_preached' ) {
+			$args['meta_query'] = array(
+				'orderby'      => 'meta_value_num',
+				'meta_key'     => SermonMeta::DATE,
+				'meta_value'   => time(),
+				'meta_compare' => '<=',
+			);
+			$args['orderby']    = 'meta_value_num';
+			$args['order']      = $this->order;
+			$args['meta_key']   = SermonMeta::DATE;
+		}
+		$this->args = $args;
+	}
+
+	/**
+	 * Set pagination data.
+	 *
+	 * @return void
+	 * @since 1.0.0
+	 */
+	private function set_pagination() {
+		global $post;
+
+		$this->paginate = null;
+
+		$term_count = $this->get_post_count();
+		if ( ! $term_count ) {
+			return;
+		}
+
+		$tpp           = $this->per_page;
+		$max_num_pages = ceil( $term_count / $tpp );
+		$paged         = get_page_number();
+
+		// Calculate term offset
+		$offset = ( ( $paged - 1 ) * $tpp );
+
+		// We can now get our terms and paginate it
+		$this->number = $tpp;
+		$this->offset = $offset;
+
+		$this->paginate = array(
+
+			'current' => $paged,
+			'total'   => $max_num_pages,
+			'post_id' => $post->ID,
+		);
+	}
+
+	/**
+	 * Get post count.
+	 *
+	 * @return int Post count.
+	 * @since 1.0.0
+	 */
+	private function get_post_count(): int {
+		$args = $this->args;
+
+		$args['fields']         = 'ids';
+		$args['posts_per_page'] = -1;
+
+		$unset = array(
+			'meta_query',
+			'orderby',
+			'order',
+		);
+		foreach ( $unset as $key ) {
+			if ( key_exists( $key, $args ) ) {
+				unset( $args[ $key ] );
+			}
+		}
+		$posts  = get_posts( $args );
+		$result = count( $posts );
+
+		return $result;
 	}
 }
