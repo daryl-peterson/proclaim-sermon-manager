@@ -99,18 +99,6 @@ function get_post_field( $post_type, $field_name ): ?string {
  */
 function get_type_def( string $item_name ): mixed {
 	return null;
-	$key   = Transient::TYPE_DEF;
-	$trans = Transient::get( $key );
-
-	if ( ! $trans ) {
-		return $trans;
-	}
-
-	if ( ! key_exists( $item_name, $trans ) ) {
-		return null;
-	}
-
-	return $trans[ $item_name ];
 }
 
 /**
@@ -123,14 +111,6 @@ function get_type_def( string $item_name ): mixed {
  */
 function set_type_def( string $item_name, mixed $item_value ): void {
 	return;
-	$key = Transient::TYPE_DEF;
-
-	$trans = Transient::get( $key );
-	if ( ! is_array( $trans ) ) {
-		$trans = array();
-	}
-	$trans[ $item_name ] = $item_value;
-	Transient::set( $key, $trans );
 }
 
 /**

@@ -77,23 +77,6 @@ class TaxUtils {
 	 */
 	public static function get_term_options( $taxonomy = 'category', bool $full = false ): array {
 
-		$key      = Transient::TERM_OPTS;
-		$key_name = $taxonomy;
-
-		if ( $full ) {
-			$key_name = $taxonomy . '_full';
-		}
-
-		$options = Transient::get( $key );
-
-		if ( ! is_array( $options ) ) {
-			$options = array();
-		}
-
-		if ( is_array( $options ) && isset( $options[ $key_name ] ) ) {
-			return $options[ $key_name ];
-		}
-
 		$args['taxonomy']   = $taxonomy;
 		$args['hide_empty'] = false;
 		$terms              = get_terms( $args );
@@ -121,9 +104,6 @@ class TaxUtils {
 			}
 		}
 
-		$options[ $key_name ] = $term_options;
-
-		Transient::set( $key, $options );
 		return $term_options;
 	}
 

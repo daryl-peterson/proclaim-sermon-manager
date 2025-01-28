@@ -32,12 +32,7 @@ $list = $args['list'];
  * @var \WP_Post $item_first Post object.
  */
 $item_first = array_shift( $list );
-Logger::debug(
-	array(
-		'FIRST ITEM' => $item_first,
-		'LIST'       => $list,
-	)
-);
+
 ?>
 <div id="drppsm-sc-wrapper">
 
@@ -49,7 +44,6 @@ Logger::debug(
 
 
 foreach ( $list as $item ) :
-	Logger::debug( $item );
 
 
 	?>

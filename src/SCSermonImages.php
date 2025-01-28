@@ -32,16 +32,6 @@ class SCSermonImages extends SCBase implements Executable, Registrable {
 	use ExecutableTrait;
 
 	/**
-	 * Taxonomy transient map.
-	 */
-	public const TRANSIENT_MAP = array(
-		DRPPSM_TAX_BOOK     => Transient::BOOK_INFO,
-		DRPPSM_TAX_PREACHER => Transient::PREACHER_INFO,
-		DRPPSM_TAX_SERIES   => Transient::SERIES_INFO,
-		DRPPSM_TAX_TOPIC    => Transient::TOPIC_INFO,
-	);
-
-	/**
 	 * Shortcode name.
 	 *
 	 * @var string

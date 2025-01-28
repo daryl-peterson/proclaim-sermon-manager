@@ -179,12 +179,27 @@ class TaxArchive {
 	 */
 	private function get_post_data(): mixed {
 
+		$args = $this->args;
+		if ( isset( $args['meta_query'] ) ) {
+			unset( $args['meta_query'] );
+		}
+
+		$trans_key = "drppsm_{$this->tax_name}_{$this->term->term_id }";
+		$trans     = Transient::get( $trans_key );
+
+		if ( $trans ) {
+			Logger::debug( 'Using transient' );
+			return $trans;
+		}
+
 		$data = get_posts( $this->args );
 		foreach ( $data as $key => $post_item ) {
 			$post_item    = $this->get_sermon_meta( $post_item );
 			$post_item    = $this->get_sermon_terms( $post_item );
 			$data[ $key ] = $post_item;
 		}
+		Transient::set( $trans_key, $data, Transient::TAX_ARCHIVE_TTL );
+
 		return $data;
 	}
 
