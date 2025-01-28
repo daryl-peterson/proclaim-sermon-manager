@@ -469,7 +469,7 @@ class Settings {
 				self::ARCHIVE_ORDER_BY      => 'date_preached',
 				self::ARCHIVE_DISABLE_IMAGE => false,
 				self::COMMON_BASE_SLUG      => false,
-				self::DATE_FORMAT           => 'mm/dd/YY',
+				self::DATE_FORMAT           => 'F j, Y',
 				self::SERMON_COUNT          => 10,
 
 				/* translators: sermon singular */

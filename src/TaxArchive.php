@@ -162,7 +162,7 @@ class TaxArchive {
 			ob_start();
 
 			get_partial(
-				Templates::TaxArchive,
+				Templates::TAX_ARCHIVE,
 				array(
 					'list' => $this->data,
 
@@ -221,9 +221,7 @@ class TaxArchive {
 	private function get_sermon_meta( WP_Post $post_item ): WP_Post {
 		$meta = SermonMeta::get_meta( $post_item->ID );
 
-		$fmt_date = get_option( 'date_format' );
-		$fmt_time = get_option( 'time_format' );
-		$fmt      = $fmt_date . ' ' . $fmt_time;
+		$fmt = Settings::get( Settings::DATE_FORMAT );
 
 		$post_item->meta = new stdClass();
 
@@ -254,8 +252,7 @@ class TaxArchive {
 				$post_item->{$tax_name} = null;
 				continue;
 			}
-			$term = array_shift( $terms );
-
+			$term                   = array_shift( $terms );
 			$post_item->{$tax_name} = $term;
 		}
 

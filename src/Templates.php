@@ -41,9 +41,33 @@ class Templates implements Executable, Registrable {
 	 * @var string
 	 * @since 1.0.0
 	 */
-	const string TaxImageList = 'psm-tax-images';
+	const string TAX_IMAGE_LIST = 'psm-tax-images';
 
-	const string TaxArchive = 'psm-tax-archive';
+	/**
+	 * Taxonomy archive template.
+	 *
+	 * @var string
+	 * @since 1.0.0
+	 */
+	const string TAX_ARCHIVE = 'psm-tax-archive';
+
+	/**
+	 * Wrapper start template.
+	 *
+	 * @var string
+	 * @since 1.0.0
+	 */
+	const string WRAPPER_START = 'psm-wrapper-start';
+
+	/**
+	 * Wrapper end template.
+	 *
+	 * @var string
+	 * @since 1.0.0
+	 */
+	const string WRAPPER_END = 'psm-wrapper-end';
+
+	const string META_ITEM = 'psm-meta-item';
 
 	/**
 	 * Post type

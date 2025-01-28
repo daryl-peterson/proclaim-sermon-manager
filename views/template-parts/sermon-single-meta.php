@@ -24,7 +24,7 @@ if ( ! isset( $args ) || ! is_array( $args ) ) {
 
 // Check if requirements are met.
 foreach ( $requirements as $req ) {
-	if ( ! isset( $argsp[ $req ] ) ) {
+	if ( ! isset( $args[ $req ] ) ) {
 		return;
 	}
 }
@@ -33,6 +33,6 @@ foreach ( $requirements as $req ) {
 <div class="drppsm-single-meta-item">
 	<div class="drppsm-single-meta-prefix"><?php echo esc_html( $args['item_label'] ); ?></div>
 	<div class="drppsm-single-meta-text">
-		<?php echo esc_html( $args['item_value'] ); ?>
+		<?php echo $args['item_value']; ?>
 	</div>
 </div>

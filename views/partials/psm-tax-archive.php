@@ -33,22 +33,33 @@ $list = $args['list'];
  */
 $item_first = array_shift( $list );
 
+$preacher = null;
 if ( isset( $item_first->drppsm_preacher ) ) {
+	$preacher = $item_first->drppsm_preacher->name;
+}
 
-	/** @var \WP_Term $preacher_term */
-	$preacher_term = $item_first->drppsm_preacher;
-	$preacher_lbl  = get_taxonomy_field( $preacher_term->taxonomy, 'singular_name' );
-	$preacher      = $preacher_term->name;
+$date = null;
+if ( isset( $item_first->meta->date ) ) {
+	$date = $item_first->meta->date;
 }
 
 ?>
-<div id="drppsm-sc-wrapper">
+<div id="drppsm-archive">
 
-	<div id="drppsm-archive-header">
-		<h2><?php echo esc_html( $item_first->post_title ); ?></h2>
-		<h3><?php echo esc_html( $preacher_lbl ); ?> : <?php echo esc_html( $preacher ); ?></h3>
+	<div class="header">
+		<h2 class="title">
+			<?php echo esc_html( $item_first->post_title ); ?>
+		</h2>
+		<?php if ( $preacher ) : ?>
+			<h3 class="meta">
+				<?php echo esc_html( $preacher ); ?> - <?php echo esc_html( $date ); ?>
+			</h3>
+		<?php endif; ?>
 	</div>
+	<!-- /#drppsm-archive-header -->
+	<div class="media">
 
+	</div>
 <?php
 
 
@@ -60,3 +71,4 @@ foreach ( $list as $item ) :
 
 <?php endforeach; ?>
 </div>
+<!-- /#drppsm-archive -->

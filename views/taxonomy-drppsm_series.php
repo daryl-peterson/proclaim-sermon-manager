@@ -27,7 +27,7 @@ if ( ! did_action( 'get_header' ) ) {
 	get_header();
 }
 
-get_partial( 'sermon-wrapper-start' );
+get_partial( Templates::WRAPPER_START );
 
 
 if ( empty( $qv_term ) ) {
@@ -45,7 +45,7 @@ if ( empty( $qv_term ) ) {
 }
 
 
-get_partial( 'sermon-wrapper-end' );
+get_partial( Templates::WRAPPER_END );
 
 if ( ! did_action( 'get_footer' ) ) {
 	get_footer();

@@ -97,7 +97,7 @@ class TaxImageList {
 			ob_start();
 
 			get_partial(
-				Templates::TaxImageList,
+				Templates::TAX_IMAGE_LIST,
 				array(
 					'list'    => $this->data,
 					'columns' => $args['columns'],

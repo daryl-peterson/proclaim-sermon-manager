@@ -148,17 +148,18 @@ class SPSermon extends SPBase implements Executable, Registrable {
 		$desc = __( 'Used only in admin area, when creating a new Sermon', 'drppsm' );
 		$cmb->add_field(
 			array(
-				'id'               => Settings::DATE_FORMAT,
-				'name'             => __( 'Date Format', 'drppsm' ),
-				'type'             => 'select',
-				'show_option_none' => true,
-				'options'          => array(
-					'mm/dd/YY' => 'mm/dd/YY',
-					'dd/mm/YY' => 'dd/mm/YY',
-					'YY/mm/dd' => 'YY/mm/dd',
-					'YY/dd/mm' => 'YY/dd/mm',
+				'id'        => Settings::DATE_FORMAT,
+				'name'      => __( 'Date Format', 'drppsm' ),
+				'type'      => 'select',
+				'options'   => array(
+					'F j, Y, g:i A' => 'Febuary 15, 1971, 5:00 AM',
+					'F j, Y'        => 'Febuary 15, 1971',
+					'M j, Y'        => 'Feb 15, 1971',
+					'm/d/Y'         => '02/15/1971',
+					'Y/m/d'         => '1971/02/15',
+					'Y-m-d'         => '1971-02-15',
 				),
-				'after_row'        => $this->description( $desc ),
+				'after_row' => $this->description( $desc ),
 			)
 		);
 	}
