@@ -75,6 +75,30 @@
 #drppsm-archive .meta-item .label {
   font-weight: bold;
 }
+#drppsm-archive table {
+  border: none;
+  border-radius: 0;
+}
+#drppsm-archive table tr td {
+  border: none;
+  border-radius: 0;
+}
+#drppsm-archive table tr.odd {
+  background-color: #f1f1f1;
+}
+#drppsm-archive table tr.even {
+  background-color: #fff;
+}
+#drppsm-archive table tr.odd td.title-cell,
+#drppsm-archive table tr.even td.title-cell {
+  color: #000000;
+  font-weight: 700;
+  text-align: left;
+  padding: 7px 7px 7px 12px;
+}
+#drppsm-archive .media {
+  min-height: 300px;
+}
 @media (max-width: 800px) {
   #drppsm-archive {
     padding: 0;

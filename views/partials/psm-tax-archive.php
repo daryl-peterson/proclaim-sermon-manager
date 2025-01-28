@@ -43,6 +43,7 @@ if ( isset( $item_first->meta->date ) ) {
 	$date = $item_first->meta->date;
 }
 
+$cnt = 0;
 ?>
 <div id="drppsm-archive">
 
@@ -60,15 +61,66 @@ if ( isset( $item_first->meta->date ) ) {
 	<div class="media">
 
 	</div>
+	<!-- /#drppsm-archive-media -->
+	<div class="detail">
+	<h3 class="more-from">
+		More from
+	</h3>
+		<div class="share-details">
+			<ul>
+
+			</ul>
+		</div>
+	</div>
+
+<?php if ( count( $list ) > 0 ) : ?>
+	<table>
+		<tbody>
+<?php endif; ?>
+
 <?php
-
-
 foreach ( $list as $item ) :
-
-
+	++$cnt;
+	$tr_class = 'odd';
+	if ( $cnt % 2 === 0 ) :
+		$tr_class = 'even';
+	endif;
 	?>
+	<tr class="<?php echo esc_attr( $tr_class ); ?>">
+		<td class="title-cell">
+			<?php echo esc_html( $item->post_title ); ?>
+		</td>
+
+		<td class="preacher-cell">
+			<?php
+			if ( isset( $item->drppsm_preacher ) ) {
+				echo esc_html( $item->drppsm_preacher->name );
+			}
+			?>
+		</td>
+		<td class="date-cell">
+			<?php
+			if ( isset( $item->meta->date ) ) {
+				echo esc_html( $item->meta->date );
+			}
+			?>
+
+		</td>
+		<td class="watch-cell">
+
+		</td>
+		<td class="listen-cell">
+
+		</td>
+	</tr>
 
 
 <?php endforeach; ?>
+
+<?php if ( count( $list ) > 0 ) : ?>
+		</tbody>
+	</table>
+<?php endif; ?>
+
 </div>
 <!-- /#drppsm-archive -->

@@ -175,6 +175,20 @@ class QueryVars implements Executable, Registrable {
 
 		$term = $request[ $tax_name ];
 
+		$qv_search = array(
+			'page',
+			'paged',
+		);
+
+		$paging = null;
+		foreach ( $qv_search as $key ) {
+			if ( key_exists( $key, $request ) ) {
+				$paging = $key;
+				$paged  = $request[ $key ];
+				break;
+			}
+		}
+
 		$request = array(
 			'post_type'  => DRPPSM_PT_SERMON,
 			'taxonomy'   => $tax_name,
@@ -185,7 +199,11 @@ class QueryVars implements Executable, Registrable {
 			'query_type' => 'term',
 		);
 
-		Logger::debug( array( 'MOD 	REQUEST' => $request ) );
+		if ( $paging ) {
+			$request[ $paging ] = $paged;
+		}
+
+		Logger::debug( array( 'MOD REQUEST' => $request ) );
 		return;
 	}
 

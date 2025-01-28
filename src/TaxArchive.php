@@ -145,8 +145,6 @@ class TaxArchive {
 		$this->set_pagination();
 		$this->data = $this->get_post_data();
 		$this->render();
-
-		Logger::debug( $this->data );
 	}
 
 	/**
@@ -192,7 +190,8 @@ class TaxArchive {
 			unset( $args['meta_query'] );
 		}
 
-		$trans_key = "{$this->tax_name}_{$this->term->term_id }";
+		$page      = get_page_number();
+		$trans_key = "{$this->tax_name}_{$this->term->term_id }_{$page}";
 		$trans     = Transient::get( $trans_key );
 
 		if ( $trans ) {
@@ -200,7 +199,10 @@ class TaxArchive {
 			return $trans;
 		}
 
-		$data = get_posts( $this->args );
+		Logger::debug( $args );
+		$this->args['number'] = $this->number;
+		$this->args['offset'] = $this->offset;
+		$data                 = get_posts( $this->args );
 		foreach ( $data as $key => $post_item ) {
 			$post_item    = $this->get_sermon_meta( $post_item );
 			$post_item    = $this->get_sermon_terms( $post_item );

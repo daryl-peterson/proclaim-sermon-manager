@@ -174,13 +174,19 @@ function unquote( mixed $item ): mixed {
  * @since 1.0.0
  */
 function get_page_number(): int {
-	if ( get_query_var( 'paged' ) ) {
-		$paged = get_query_var( 'paged' );
-	} elseif ( get_query_var( 'page' ) ) {
-		$paged = get_query_var( 'page' );
-	} else {
-		$paged = 1;
+	$qv_search = array(
+		'page',
+		'paged',
+	);
+
+	foreach ( $qv_search as $key ) {
+		$var = get_query_var( $key, false );
+		if ( $var ) {
+			return $var;
+		}
 	}
+
+	$paged = 1;
 	return $paged;
 }
 
@@ -236,6 +242,7 @@ function add_query_vars( array $vars ): array {
 
 	$friendly = array_keys( DRPPSM_TAX_MAP );
 	$vars     = array_merge( $vars, $friendly );
+	$vars[]   = 'play';
 	return $vars;
 }
 

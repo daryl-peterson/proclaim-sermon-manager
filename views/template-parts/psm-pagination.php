@@ -1,8 +1,8 @@
 <?php
 /**
- * Sermon pagination template.
+ * Pagination template.
  *
- * @package     DRPPSM/Views/Partials
+ * @package     DRPPSM
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
@@ -17,52 +17,25 @@ if ( ! isset( $args ) || ! is_array( $args ) ) {
 	return;
 }
 
-$required = array(
-	'current',
-	'total',
-	'post_id',
-);
-foreach ( $required as $must_have ) {
-	if ( ! key_exists( $must_have, $args ) ) {
-		return;
-	}
+if ( ! has_keys( array( 'current', 'total' ), $args ) ) {
+	return;
 }
 
 if ( key_exists( 'disable_pagination', $args ) && 1 === $args['disable_pagination'] ) {
-	Logger::debug( 'HERE 2' );
 	return;
 }
 
-
-$add_args = array();
-
 $paginate_vars = array(
-	's',
-	'p',
-	'post_type',
-	'page_id',
+	'format'   => '?page=%#%',
+	'current'  => $args['current'],
+	'total'    => $args['total'],
+	'end_size' => 3,
 );
 
-foreach ( $paginate_vars as $query_var_name ) {
-	$query_var = get_query_var( $query_var_name );
-	if ( $query_var ) {
-		$add_args[ $query_var_name ] = $query_var;
-	}
-}
-
-$paginate_links = paginate_links(
-	array(
-		'base'     => preg_replace( '/\/\?.*/', '', rtrim( get_permalink( $args['post_id'] ), '/' ) ) . '/%_%',
-		'current'  => $args['current'],
-		'total'    => $args['total'],
-		'end_size' => 3,
-		'add_args' => $add_args,
-	)
-);
+$paginate_links = paginate_links( $paginate_vars );
 
 if ( ! isset( $paginate_links ) ) {
 	return;
-
 }
 
 
@@ -74,7 +47,7 @@ if ( ! isset( $paginate_links ) ) {
 	render_html( $paginate_links );
 
 	// key variable.
-	$paged_var = absint( get_query_var( 'paged' ) );
+	$paged_var = absint( get_query_var( 'page' ) );
 	if ( ! $paged_var ) {
 		$paged_var = 1;
 	}
@@ -85,10 +58,3 @@ if ( ! isset( $paginate_links ) ) {
 
 	?>
 </div>
-<?php
-Logger::debug(
-	array(
-		'ARGS'  => $args,
-		'PAGED' => $paged_var,
-	)
-);

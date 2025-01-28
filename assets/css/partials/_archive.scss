@@ -36,6 +36,40 @@
 		font-weight: bold;
 	}
 
+	table {
+		border: none;
+		-moz-border-radius: 0;
+		-webkit-border-radius: 0;
+		border-radius: 0;
+	}
+
+	table tr td {
+		border: none;
+		-moz-border-radius: 0;
+		-webkit-border-radius: 0;
+		border-radius: 0;
+	}
+
+	table tr.odd {
+		background-color: #f1f1f1;
+	}
+
+	table tr.even {
+		background-color: #fff;
+	}
+
+	table tr.odd td.title-cell,
+	table tr.even td.title-cell {
+		color: #000000;
+		font-weight: 700;
+		text-align: left;
+		padding: 7px 7px 7px 12px;
+	}
+
+	.media {
+		min-height: 300px;
+	}
+
 	@media(max-width: 800px) {
 		padding: 0;
 	}
