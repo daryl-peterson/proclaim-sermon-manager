@@ -53,6 +53,8 @@ function get_taxonomy_field( $taxonomy, $field_name ): ?string {
 		return null;
 	}
 
+	Logger::debug( $tax );
+
 	if ( isset( $tax->$field_name ) ) {
 		return $tax->$field_name;
 	}

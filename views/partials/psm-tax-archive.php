@@ -33,11 +33,20 @@ $list = $args['list'];
  */
 $item_first = array_shift( $list );
 
+if ( isset( $item_first->drppsm_preacher ) ) {
+
+	/** @var \WP_Term $preacher_term */
+	$preacher_term = $item_first->drppsm_preacher;
+	$preacher_lbl  = get_taxonomy_field( $preacher_term->taxonomy, 'singular_name' );
+	$preacher      = $preacher_term->name;
+}
+
 ?>
 <div id="drppsm-sc-wrapper">
 
 	<div id="drppsm-archive-header">
 		<h2><?php echo esc_html( $item_first->post_title ); ?></h2>
+		<h3><?php echo esc_html( $preacher_lbl ); ?> : <?php echo esc_html( $preacher ); ?></h3>
 	</div>
 
 <?php

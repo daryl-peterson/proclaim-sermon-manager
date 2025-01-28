@@ -14,6 +14,7 @@ namespace DRPPSM;
 use DRPPSM\Constants\Bible;
 use WP_Exception;
 use WP_Post;
+use WP_Term;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -341,11 +342,13 @@ function get_series_image( string $image_size = 'post-thumbnail', null|int|WP_Po
 	return $url;
 }
 
+
 /**
  * Get the preach image for the current post.
  *
  * @param string $image_size The image size. Default: "post-thumbnail".
  * @return null|string
+ * @since 1.0.0
  */
 function get_preacher_image( string $image_size = 'post-thumbnail' ): ?string {
 	global $post;

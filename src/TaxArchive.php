@@ -11,8 +11,6 @@
 
 namespace DRPPSM;
 
-use CPM\Sermon;
-use DateTimeZone;
 use stdClass;
 use WP_Post;
 use WP_Term;
@@ -62,7 +60,6 @@ class TaxArchive {
 	 */
 	private string $orderby;
 
-
 	/**
 	 * Used in paginated queries, per_page
 	 *
@@ -95,7 +92,6 @@ class TaxArchive {
 	 */
 	private string $slug;
 
-
 	/**
 	 * Term object.
 	 *
@@ -112,6 +108,12 @@ class TaxArchive {
 	 */
 	private null|array $data;
 
+	/**
+	 * Query arguments.
+	 *
+	 * @var array
+	 * @since 1.0.0
+	 */
 	private array $args;
 
 
@@ -127,6 +129,7 @@ class TaxArchive {
 		$this->tax_name = $tax_name;
 		$this->slug     = $slug;
 		$this->term     = null;
+		$this->data     = null;
 
 		$term = get_term_by( 'slug', $this->slug, $this->tax_name );
 		if ( is_wp_error( $term ) || ! $term ) {
@@ -146,7 +149,12 @@ class TaxArchive {
 		Logger::debug( $this->data );
 	}
 
-
+	/**
+	 * Render template.
+	 *
+	 * @return void
+	 * @since 1.0.0
+	 */
 	private function render() {
 		$output = '';
 		if ( isset( $this->data ) && is_array( $this->data ) && count( $this->data ) > 0 ) {
@@ -184,7 +192,7 @@ class TaxArchive {
 			unset( $args['meta_query'] );
 		}
 
-		$trans_key = "drppsm_{$this->tax_name}_{$this->term->term_id }";
+		$trans_key = "{$this->tax_name}_{$this->term->term_id }";
 		$trans     = Transient::get( $trans_key );
 
 		if ( $trans ) {
@@ -240,14 +248,15 @@ class TaxArchive {
 	 */
 	private function get_sermon_terms( WP_Post $post_item ): WP_Post {
 
-		foreach ( DRPPSM_TAX_MAP as $tax_key => $tax_name ) {
+		foreach ( DRPPSM_TAX_MAP as $tax_name ) {
 			$terms = get_the_terms( $post_item, $tax_name );
 			if ( is_wp_error( $terms ) || ! is_array( $terms ) || 0 === count( $terms ) ) {
-				$post_item->{$tax_key} = null;
+				$post_item->{$tax_name} = null;
 				continue;
 			}
-			$term                  = array_shift( $terms );
-			$post_item->{$tax_key} = $term;
+			$term = array_shift( $terms );
+
+			$post_item->{$tax_name} = $term;
 		}
 
 		return $post_item;
