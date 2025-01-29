@@ -54,8 +54,11 @@ class AdminSettings implements Executable, Registrable {
 		}
 		Settings::set_defaults();
 
+		$object_type = 'options-page';
+
 		add_action( 'cmb2_admin_init', array( $this, 'register_metaboxes' ) );
 		add_filter( 'submenu_file', array( $this, 'remove_submenus' ) );
+		// add_action( "cmb2_save_{$object_type}_fields", array( $this, 'after_save' ), 10, 4 );
 
 		SPGeneral::exec();
 		SPDisplay::exec();
@@ -74,6 +77,19 @@ class AdminSettings implements Executable, Registrable {
 	public function register_metaboxes() {
 		$cb = array( $this, 'display_with_tabs' );
 		do_action( Action::SETTINGS_REGISTER_FORM, $cb );
+	}
+
+
+
+	public function after_save( mixed $object_id, mixed $cmb_id, mixed $updated, mixed $cmb ) {
+		Logger::debug(
+			array(
+				'object_id' => $object_id,
+				'cmb_id'    => $cmb_id,
+				'updated'   => $updated,
+				'cmb'       => $cmb,
+			)
+		);
 	}
 
 	/**

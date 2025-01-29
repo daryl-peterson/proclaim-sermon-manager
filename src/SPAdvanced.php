@@ -81,7 +81,6 @@ class SPAdvanced extends SPBase {
 		);
 
 		$cmb = new_cmb2_box( $args );
-		$this->add_seperator( $cmb, __( 'Bible Settings', 'drppsm' ) );
 		$this->bible_book_load( $cmb );
 		$this->bible_book_sort( $cmb );
 		$this->post_view_count( $cmb );
@@ -103,10 +102,13 @@ class SPAdvanced extends SPBase {
 		);
 		$cmb->add_field(
 			array(
-				'id'        => Settings::BIBLE_BOOK_LOAD,
-				'name'      => __( 'Load Books', 'drppsm' ),
-				'type'      => 'checkbox',
-				'after_row' => $this->description( $desc ),
+				'id'         => Settings::BIBLE_BOOK_LOAD,
+				'name'       => __( 'Load Books', 'drppsm' ),
+				'type'       => 'checkbox',
+				'after_row'  => $this->description( $desc ),
+				'before_row' => function () {
+					$this->add_section( __( 'Bible Settings', 'drppsm' ) );
+				},
 			)
 		);
 	}

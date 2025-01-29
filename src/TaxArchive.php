@@ -199,10 +199,15 @@ class TaxArchive {
 			return $trans;
 		}
 
-		Logger::debug( $args );
+		// Set arguments from pagination.
 		$this->args['number'] = $this->number;
 		$this->args['offset'] = $this->offset;
-		$data                 = get_posts( $this->args );
+
+		$data = get_posts( $this->args );
+
+		/**
+		 * @var WP_Post $post_item
+		 */
 		foreach ( $data as $key => $post_item ) {
 			$post_item    = $this->get_sermon_meta( $post_item );
 			$post_item    = $this->get_sermon_terms( $post_item );

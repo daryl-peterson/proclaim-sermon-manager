@@ -11,6 +11,8 @@
 
 namespace DRPPSM;
 
+use WP_Exception;
+
 defined( 'ABSPATH' ) || exit;
 
 /**
@@ -39,14 +41,20 @@ class Transient {
 	public const TERM_OPTS = 'drppsm_term_opts';
 
 
-	public const TAX_ARCHIVE     = 'drppsm_tax_archive';
+	/**
+	 * Tax archive ttl.
+	 *
+	 * @since 1.0.0
+	 */
 	public const TAX_ARCHIVE_TTL = HOUR_IN_SECONDS;
 
-
-	public static function key( string $prefix, mixed $args ): string {
-		return esc_sql( $prefix . '_' . md5( serialize( $args ) ) );
-	}
-
+	/**
+	 * Get transient.
+	 *
+	 * @param string $key Key name.
+	 * @return mixed
+	 * @since 1.0.0
+	 */
 	public static function get( string $key ): mixed {
 
 		$result = get_transient( $key );
@@ -60,10 +68,38 @@ class Transient {
 		return $result;
 	}
 
+	/**
+	 * Set transient.
+	 *
+	 * @param string $key Key name.
+	 * @param mixed  $value Value to add.
+	 * @param int    $expiration Expiration time.
+	 * @return bool
+	 * @since 1.0.0
+	 */
 	public static function set( string $key, mixed $value, int $expiration = 0 ): bool {
 		$value  = maybe_serialize( $value );
 		$result = set_transient( $key, $value, $expiration );
 
 		return $result;
+	}
+
+	/**
+	 * Delete all transients with a wildcard.
+	 *
+	 * @param string $wildcard Wildcard to match.
+	 * @return void
+	 * @since 1.0.0
+	 */
+	public static function delete( string $wildcard ) {
+		global $wpdb;
+
+		Logger::debug( $wildcard );
+		$wpdb->query(
+			$wpdb->prepare(
+				"DELETE FROM $wpdb->options WHERE option_name LIKE %s",
+				$wildcard
+			)
+		);
 	}
 }

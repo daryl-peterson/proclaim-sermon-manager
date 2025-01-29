@@ -73,11 +73,10 @@ class SPDisplay extends SPBase implements Executable, Registrable {
 		);
 
 		$cmb = new_cmb2_box( $args );
-		$this->add_seperator( $cmb, __( 'Display Settings', 'drppsm' ) );
 		$this->default_image( $cmb );
 		$this->disable_css( $cmb );
 
-		$this->add_seperator( $cmb, __( 'Sermon Filtering / Sorting', 'drppsm' ) );
+		// Filtering
 		$this->hide_filtering( $cmb );
 		$this->hide_bible( $cmb );
 		$this->hide_preachers( $cmb );
@@ -85,7 +84,6 @@ class SPDisplay extends SPBase implements Executable, Registrable {
 		$this->hide_service_types( $cmb );
 		$this->hide_topics( $cmb );
 
-		$this->add_seperator( $cmb, __( 'Image Lists', 'drppsm' ) );
 		$this->images_per_row( $cmb );
 	}
 
@@ -111,6 +109,9 @@ class SPDisplay extends SPBase implements Executable, Registrable {
 					'4' => 'Four',
 				),
 				'after_row'        => $this->description( $desc ),
+				'before_row'       => function () {
+					$this->add_section( __( 'Image Lists', 'drppsm' ) );
+				},
 			)
 		);
 	}
@@ -130,10 +131,13 @@ class SPDisplay extends SPBase implements Executable, Registrable {
 
 		$cmb->add_field(
 			array(
-				'name'      => __( 'Default Image', 'drppsm' ),
-				'id'        => Settings::DEFAULT_IMAGE,
-				'type'      => 'file',
-				'after_row' => $this->description( $desc ),
+				'name'       => __( 'Default Image', 'drppsm' ),
+				'id'         => Settings::DEFAULT_IMAGE,
+				'type'       => 'file',
+				'after_row'  => $this->description( $desc ),
+				'before_row' => function () {
+					$this->add_section( __( 'Display Settings', 'drppsm' ) );
+				},
 			)
 		);
 	}
@@ -168,9 +172,12 @@ class SPDisplay extends SPBase implements Executable, Registrable {
 
 		$cmb->add_field(
 			array(
-				'id'   => Settings::HIDE_FILTERS,
-				'name' => __( 'Hide Filtering', 'drppsm' ),
-				'type' => 'checkbox',
+				'id'         => Settings::HIDE_FILTERS,
+				'name'       => __( 'Hide Filtering', 'drppsm' ),
+				'type'       => 'checkbox',
+				'before_row' => function () {
+					$this->add_section( __( 'Sermon Filtering / Sorting', 'drppsm' ) );
+				},
 			)
 		);
 	}

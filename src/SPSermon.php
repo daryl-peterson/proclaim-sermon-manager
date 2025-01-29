@@ -91,16 +91,12 @@ class SPSermon extends SPBase implements Executable, Registrable {
 		);
 
 		$cmb = new_cmb2_box( $args );
-		$this->add_seperator( $cmb, __( 'Sermon Settings', 'drppsm' ) );
 		$this->date_format( $cmb );
 		$this->sermon_count( $cmb );
-		$this->add_seperator( $cmb, __( 'Archive Settings', 'drppsm' ) );
 		$this->archive_order_by( $cmb );
 		$this->archive_order( $cmb );
 		$this->sermon_layout( $cmb );
-
 		$this->common_base_slug( $cmb );
-		$this->add_seperator( $cmb, __( 'Sermon Labels', 'drppsm' ) );
 		$this->sermon_single( $cmb );
 		$this->sermon_plural( $cmb );
 	}
@@ -148,10 +144,10 @@ class SPSermon extends SPBase implements Executable, Registrable {
 		$desc = __( 'Used only in admin area, when creating a new Sermon', 'drppsm' );
 		$cmb->add_field(
 			array(
-				'id'        => Settings::DATE_FORMAT,
-				'name'      => __( 'Date Format', 'drppsm' ),
-				'type'      => 'select',
-				'options'   => array(
+				'id'         => Settings::DATE_FORMAT,
+				'name'       => __( 'Date Format', 'drppsm' ),
+				'type'       => 'select',
+				'options'    => array(
 					'F j, Y, g:i A' => 'Febuary 15, 1971, 5:00 AM',
 					'F j, Y'        => 'Febuary 15, 1971',
 					'M j, Y'        => 'Feb 15, 1971',
@@ -159,7 +155,11 @@ class SPSermon extends SPBase implements Executable, Registrable {
 					'Y/m/d'         => '1971/02/15',
 					'Y-m-d'         => '1971-02-15',
 				),
-				'after_row' => $this->description( $desc ),
+				'after_row'  => $this->description( $desc ),
+				'before_row' => function () {
+					$this->add_section( __( 'Sermon Settings', 'drppsm' ) );
+				},
+
 			)
 		);
 	}
@@ -188,6 +188,9 @@ class SPSermon extends SPBase implements Executable, Registrable {
 					'random'        => 'Random',
 				),
 				'after_row'        => $this->description( $desc ),
+				'before_row'       => function () {
+					$this->add_section( __( 'Archive Settings', 'drppsm' ) );
+				},
 			)
 		);
 	}
@@ -286,10 +289,13 @@ class SPSermon extends SPBase implements Executable, Registrable {
 
 		$cmb->add_field(
 			array(
-				'id'        => Settings::SERMON_SINGULAR,
-				'name'      => __( 'Singular Label', 'drppsm' ),
-				'type'      => 'text',
-				'after_row' => $this->description( $desc ),
+				'id'         => Settings::SERMON_SINGULAR,
+				'name'       => __( 'Singular Label', 'drppsm' ),
+				'type'       => 'text',
+				'after_row'  => $this->description( $desc ),
+				'before_row' => function () {
+					$this->add_section( __( 'Sermon Labels', 'drppsm' ) );
+				},
 			)
 		);
 	}

@@ -30,9 +30,6 @@ defined( 'ABSPATH' ) || exit;
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
  * @since       1.0.0
  *
- *
- *
- *
  * - Adds Job to queue if meta not found.
  */
 class TaxMeta implements Executable, Registrable {
@@ -207,28 +204,28 @@ class TaxMeta implements Executable, Registrable {
 			)
 		);
 		$this->set_term_meta( $term_id, $args );
+		Transient::delete( '%drppsm_series_%' );
 	}
 
+	/**
+	 * Taxonomy has been deleted.
+	 *
+	 * @param int     $term_id Term ID.
+	 * @param int     $tax_id Taxonomy ID.
+	 * @param WP_Term $deleted_term Term object.
+	 * @param array   $bject_ids
+	 * @return void
+	 */
 	public function delete_taxonomy(
 		int $term_id,
 		int $tax_id,
 		WP_Term $deleted_term,
 		array $bject_ids
 	) {
-		Logger::debug(
-			array(
-				'TERM_ID' => $term_id,
-				'TAX_ID'  => $tax_id,
-				'TERM'    => $deleted_term,
-				'OBJECTS' => $bject_ids,
-			)
-		);
+
+		Transient::delete( '%drppsm_series_%' );
 	}
 
-
-	public static function get_runner_key( string $taxonomy ): string {
-		return "{$taxonomy}_runner";
-	}
 
 	/**
 	 * Set term meta.
@@ -236,33 +233,33 @@ class TaxMeta implements Executable, Registrable {
 	 * @param int   $term_id Term ID.
 	 * @param array $args Arguments.
 	 * @since 1.0.0
+	 *
+	 * @todo Verify this is correct.
 	 */
 	private function set_term_meta( int $term_id, array $args ): void {
 		if ( ! isset( $args['taxonomy'] ) ) {
 			return;
 		}
 		$tax = $args['taxonomy'];
-		if ( ! isset( $args[ $tax . '_image_id' ] ) ) {
-			delete_term_meta( $term_id, $tax . '_image' );
-			delete_term_meta( $term_id, $tax . '_image_id' );
-			delete_term_meta( $term_id, $tax . '_date' );
-			Logger::debug( 'Deleted meta' );
-		} else {
-			$image_id = get_term_meta( $term_id, $tax . '_image_id', true );
-			Logger::debug(
-				array(
-					'TERM ID'  => $term_id,
-					'IMAGE ID' => $image_id,
-				)
-			);
-			if ( ! $image_id && empty( $image_id ) ) {
-				Logger::debug( 'DONT SET DATE META' );
-				delete_term_meta( $term_id, $tax . '_date' );
-				return;
-			}
 
-			$this->set_date_meta( $tax, $term_id, $tax . '_date' );
+		if ( ! isset( $args[ $tax . '_image_id' ] ) ) {
+			return;
 		}
+
+		$image_id = get_term_meta( $term_id, $tax . '_image_id', true );
+		Logger::debug(
+			array(
+				'TERM ID'  => $term_id,
+				'IMAGE ID' => $image_id,
+			)
+		);
+		if ( ! $image_id && empty( $image_id ) ) {
+			Logger::debug( 'DONT SET DATE META' );
+			delete_term_meta( $term_id, $tax . '_date' );
+			return;
+		}
+
+		$this->set_date_meta( $tax, $term_id, $tax . '_date' );
 	}
 
 	/**
@@ -352,5 +349,6 @@ class TaxMeta implements Executable, Registrable {
 
 			$this->set_date_meta( $tax_name, $term_item->term_id, $tax_name . '_date' );
 		}
+		Transient::delete( '%drppsm_series_%' );
 	}
 }

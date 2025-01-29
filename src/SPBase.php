@@ -99,6 +99,18 @@ class SPBase {
 		return update_option( $this->option_key, $options, true );
 	}
 
+	/**
+	 * Add section heading.
+	 *
+	 * @param string $title Section title.
+	 * @return void
+	 * @since 1.0.0
+	 */
+	protected function add_section( string $title ) {
+		echo "<h3 class='seperator'>" . esc_html( $title ) . "</h3>\n";
+		echo "<hr>\n";
+	}
+
 
 	/**
 	 * Move description to a new line.
@@ -119,28 +131,5 @@ class SPBase {
 	 */
 	protected function dot(): string {
 		return '<span class="spacer"></span>';
-	}
-
-	/**
-	 * Add heading seperator.
-	 *
-	 * @param CMB2   $cmb CMB2 object.
-	 * @param string $title Title for separator.
-	 * @return void
-	 * @since 1.0.0
-	 */
-	protected function add_seperator( CMB2 $cmb, string $title ): void {
-		++$this->separator_count;
-		$args = array(
-			'id'            => 'heading_' . $this->separator_count,
-			'name'          => $title,
-			'type'          => 'heading',
-			'repeatable'    => true,
-			'render_row_cb' => function () use ( $title ) {
-				echo "<h3 class='seperator'>" . esc_html( $title ) . '</h3><hr>';
-			},
-		);
-
-		$cmb->add_field( $args );
 	}
 }

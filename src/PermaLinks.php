@@ -77,25 +77,27 @@ class PermaLinks {
 	/**
 	 * Add permalink.
 	 *
-	 * @param string $taxonomy Taxonomy name.
+	 * @param string $taxonomy Post type or taxonomy name.
 	 * @param string $slug     Slug name.
 	 * @return string
 	 * @since 1.0.0
 	 */
-	public static function add( string $taxonomy, string $slug ): string {
+	public static function add( string $obj_name, string $slug ): string {
 		self::get_instance();
 
 		$prefix = '';
 
-		if ( self::$common_slug ) {
-			$prefix = self::$sermons . '/';
+		if ( $obj_name !== DRPPSM_PT_SERMON ) {
+			if ( self::$common_slug ) {
+				$prefix = self::$sermons . '/';
+			}
 		}
 
 		$slug = trim( $prefix . sanitize_title( $slug ) );
 		$slug = untrailingslashit( $slug );
 		$slug = strtolower( $slug );
 
-		self::$permalinks[ $taxonomy ] = $slug;
+		self::$permalinks[ $obj_name ] = $slug;
 
 		return $slug;
 	}

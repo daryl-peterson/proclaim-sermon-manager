@@ -107,7 +107,11 @@ foreach ( $list as $item ) :
 
 		</td>
 		<td class="watch-cell">
-
+			<?php
+			if ( isset( $item->meta->video_link ) ) {
+				echo esc_html( 'watch' );
+			}
+			?>
 		</td>
 		<td class="listen-cell">
 

@@ -69,12 +69,10 @@ class QueryVars implements Executable, Registrable {
 			return $limit;
 		}
 		if ( key_exists( 'query_type', $query->query ) && $query->query['query_type'] === 'term' ) {
-			Logger::debug( array( 'LIMIT' => 'LIMIT 1' ) );
 			return 'LIMIT 1';
 		}
 
 		if ( key_exists( 'query_type', $query->query ) && $query->query['query_type'] === 'tax' ) {
-			Logger::debug( array( 'LIMIT' => 'LIMIT 1' ) );
 			return 'LIMIT 1';
 		}
 		return $limit;

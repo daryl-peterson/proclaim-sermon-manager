@@ -191,6 +191,44 @@ function get_page_number(): int {
 }
 
 /**
+ * Filter pagination links.
+ *
+ * @param string $link Link to filter.
+ * @return string
+ * @since 1.0.0
+ */
+function filter_pagination( $link ) {
+
+	$permalinks = PermaLinks::get();
+	$parsed_url = wp_parse_url( $link );
+
+	if ( ! $parsed_url ) {
+		return $link;
+	}
+
+	// Check if the URL contains any of the permalinks.
+	$found = false;
+	foreach ( $permalinks as $permalink ) {
+		if ( strpos( $parsed_url['path'], '/' . $permalink ) !== false ) {
+			$found = true;
+			break;
+		}
+	}
+
+	// If none of the permalinks are found, return the original link.
+	if ( ! $found ) {
+		return $link;
+	}
+
+	// Remove the 'play' query parameter if it exists.
+	$link = filter_input( INPUT_GET, 'play' ) ? remove_query_arg( 'play', $link ) : $link;
+
+	return $link;
+}
+
+add_filter( 'paginate_links', __NAMESPACE__ . '\\filter_pagination' );
+
+/**
  * Cast object to standard class.
  *
  * @param mixed $source_obj

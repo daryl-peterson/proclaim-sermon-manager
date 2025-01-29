@@ -116,27 +116,19 @@ class SPGeneral extends SPBase implements Executable, Registrable {
 		);
 
 		$cmb = new_cmb2_box( $args );
-		$this->add_seperator( $cmb, __( 'General Settings', 'drppsm' ) );
 		$this->add_player( $cmb );
 		$this->add_menu_icon( $cmb );
 		$this->add_sermon_comments( $cmb );
 
 		// Preacher labels.
-		$this->add_seperator( $cmb, __( 'Preacher Labels', 'drppsm' ), true );
 		$this->preacher_single( $cmb );
 		$this->preacher_plural( $cmb );
 
 		// Series labels.
-		$this->add_seperator( $cmb, __( 'Series Labels', 'drppsm' ), true );
 		$this->series_single( $cmb );
 		$this->series_plural( $cmb );
 
 		// Service type labels.
-		$this->add_seperator(
-			$cmb,
-			__( 'Service Type Labels', 'drppsm' ),
-			true
-		);
 		$this->service_type_singular( $cmb );
 		$this->service_type_plural( $cmb );
 	}
@@ -163,6 +155,9 @@ class SPGeneral extends SPBase implements Executable, Registrable {
 					'none'         => 'Browser HTML5',
 				),
 				'after_row'        => $this->description( $desc ),
+				'before_row'       => function () {
+					$this->add_section( __( 'General Settings', 'drppsm' ) );
+				},
 			)
 		);
 	}
@@ -247,10 +242,13 @@ class SPGeneral extends SPBase implements Executable, Registrable {
 
 		$cmb->add_field(
 			array(
-				'id'        => Settings::SERVICE_TYPE_SINGULAR,
-				'name'      => __( 'Singular Label', 'drppsm' ),
-				'type'      => 'text',
-				'after_row' => $this->description( $desc ),
+				'id'         => Settings::SERVICE_TYPE_SINGULAR,
+				'name'       => __( 'Singular Label', 'drppsm' ),
+				'type'       => 'text',
+				'after_row'  => $this->description( $desc ),
+				'before_row' => function () {
+					$this->add_section( __( 'Service Type Labels', 'drppsm' ) );
+				},
 			)
 		);
 	}
@@ -310,10 +308,13 @@ class SPGeneral extends SPBase implements Executable, Registrable {
 
 		$cmb->add_field(
 			array(
-				'id'        => Settings::SERIES_SINGULAR,
-				'name'      => __( 'Singular Label', 'drppsm' ),
-				'type'      => 'text',
-				'after_row' => $this->description( $desc ),
+				'id'         => Settings::SERIES_SINGULAR,
+				'name'       => __( 'Singular Label', 'drppsm' ),
+				'type'       => 'text',
+				'after_row'  => $this->description( $desc ),
+				'before_row' => function () {
+					$this->add_section( __( 'Series Labels', 'drppsm' ) );
+				},
 			)
 		);
 	}
@@ -374,10 +375,13 @@ class SPGeneral extends SPBase implements Executable, Registrable {
 
 		$cmb->add_field(
 			array(
-				'id'        => Settings::PREACHER_SINGULAR,
-				'name'      => __( 'Singular Label', 'drppsm' ),
-				'type'      => 'text',
-				'after_row' => $this->description( $desc ),
+				'id'         => Settings::PREACHER_SINGULAR,
+				'name'       => __( 'Singular Label', 'drppsm' ),
+				'type'       => 'text',
+				'after_row'  => $this->description( $desc ),
+				'before_row' => function () {
+					$this->add_section( __( 'Preacher Labels', 'drppsm' ) );
+				},
 			)
 		);
 	}

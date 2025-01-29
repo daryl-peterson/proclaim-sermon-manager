@@ -36,6 +36,7 @@ $slug      = strtolower(
 		)
 	)
 );
+PermaLinks::add( DRPPSM_PT_SERMON, $plural );
 
 $result = array(
 	'labels'              => array(
