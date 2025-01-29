@@ -31,13 +31,8 @@ if ( empty( $qv_term ) ) {
 		)
 	);
 } elseif ( have_posts() ) {
-	get_partial( 'content-sermon-filtering' );
-
-	while ( have_posts() ) {
-		the_post();
-		sermon_excerpt();
-	}
-		wp_reset_postdata();
+	new TaxArchive( $qv_tax, $qv_term );
+	wp_reset_postdata();
 } else {
 	get_partial( 'no-posts' );
 }

@@ -1,27 +1,29 @@
 /**
  * Fontend jquery script.
  *
- * @package Sermon Manager
+ * @package Proclaim Sermon Manager
  * @since 1.0.0
  */
 
 (function ($) {
-	function remove_url_parameter(url, parameter) {
-		// Create a URL object
-		var urlObj = new URL(url);
+	var drppsm_fe = {
+		remove_url_parameter(url, parameter) {
+			// Create a URL object
+			var urlObj = new URL(url);
 
-		// Get the search parameters
-		var params = new URLSearchParams(urlObj.search);
+			// Get the search parameters
+			var params = new URLSearchParams(urlObj.search);
 
-		// Delete the specified parameter
-		params.delete(parameter);
+			// Delete the specified parameter
+			params.delete(parameter);
 
-		// Reconstruct the URL
-		urlObj.search = params.toString();
+			// Reconstruct the URL
+			urlObj.search = params.toString();
 
-		// Return the updated URL
-		return urlObj.toString();
-	}
+			// Return the updated URL
+			return urlObj.toString();
+		}
+	};
 
 	$(document).ready(
 		function () {
@@ -31,9 +33,7 @@
 					e.preventDefault();
 
 					var id = $(this).data('id');
-					console.log(id);
-
-					var url = remove_url_parameter(window.location.href, 'play');
+					var url = drppsm_fe.remove_url_parameter(window.location.href, 'play');
 
 					if (url.indexOf('?') > -1) {
 						window.location.href = url + '&play=' + id;

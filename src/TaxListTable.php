@@ -106,9 +106,9 @@ class TaxListTable implements Executable, Registrable {
 	 */
 	public function cmb(): void {
 		foreach ( $this->tax as $taxonomy ) {
-			if ( $taxonomy !== $this->tax_bible ) {
+			// if ( $taxonomy !== $this->tax_bible ) {
 				$this->add_image_field( $taxonomy );
-			}
+			// }
 		}
 	}
 
@@ -122,7 +122,7 @@ class TaxListTable implements Executable, Registrable {
 	public function set_columns( array $columns ): array {
 		unset( $columns );
 		if ( $this->get_tax_name() === $this->tax_bible ) {
-			unset( $this->columns['drppsm-image'] );
+			// unset( $this->columns['drppsm-image'] );
 		}
 		return $this->columns;
 	}
@@ -311,7 +311,7 @@ class TaxListTable implements Executable, Registrable {
 
 		$ds   = DIRECTORY_SEPARATOR;
 		$url  = Helper::get_url();
-		$url .= 'assets' . $ds . 'images' . $ds . 'blank-preacher-min.png';
+		$url .= 'assets' . $ds . 'images' . $ds . 'add-image.png';
 
 		return $url;
 	}

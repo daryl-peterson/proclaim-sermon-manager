@@ -50,9 +50,12 @@ $cnt = 0;
  */
 foreach ( $list as $item ) :
 
-	$object   = $item->object;
-	$link     = get_term_link( $object->term_id );
-	$src      = wp_get_attachment_image_url( $item->image_id, $size );
+	$object = $item->object;
+	$link   = get_term_link( $object->term_id );
+	$src    = null;
+	if ( isset( $item->image_id ) ) {
+		$src = wp_get_attachment_image_url( $item->image_id, $size );
+	}
 	$cols_str = 'col' . $cols . " $object->taxonomy";
 	?>
 
@@ -60,9 +63,11 @@ foreach ( $list as $item ) :
 
 			<li class="<?php echo esc_attr( $cols_str ); ?>">
 				<div>
+					<?php if ( $src ) : ?>
 					<a href="<?php echo esc_attr( $link ); ?>" title="<?php echo esc_attr( $object->name ); ?>">
 						<img src="<?php echo esc_attr( $src ); ?>" class="<?php echo esc_attr( $object->taxonomy ); ?>">
 					</a>
+					<?php endif; ?>
 					<div class="list-info">
 						<h4><?php echo esc_html( $object->name ); ?></h4>
 						<h5><?php echo esc_html( wp_date( $fmt, $item->date ) ); ?></h5>

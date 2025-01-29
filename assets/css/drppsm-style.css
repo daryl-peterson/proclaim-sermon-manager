@@ -103,6 +103,7 @@
 #drppsm-archive table {
   border: none;
   border-radius: 0;
+  color: rgb(54, 54, 54);
 }
 #drppsm-archive table tr td {
   border: none;
@@ -114,6 +115,18 @@
 #drppsm-archive table tr.even {
   background-color: #fff;
 }
+#drppsm-archive table tr.active {
+  background-color: rgb(8, 106, 254);
+  color: #fff;
+}
+#drppsm-archive table tr.active a {
+  text-decoration: none;
+  color: #fff;
+}
+#drppsm-archive table a {
+  text-decoration: none;
+  color: rgb(8, 106, 254);
+}
 #drppsm-archive table tr.odd td.title-cell,
 #drppsm-archive table tr.even td.title-cell {
   color: #000000;
@@ -121,14 +134,49 @@
   text-align: left;
   padding: 7px 7px 7px 12px;
 }
-@media (max-width: 800px) {
+@media (max-height: 500px) {
   #drppsm-archive {
     padding: 0;
   }
 }
-@media (max-height: 500px) {
+@media (max-width: 800px) {
   #drppsm-archive {
     padding: 0;
+  }
+  #drppsm-archive table tr {
+    display: block;
+  }
+  #drppsm-archive table tr.odd td.preacher-cell,
+  #drppsm-archive table tr.odd td.date-cell,
+  #drppsm-archive table tr.even td.preacher-cell,
+  #drppsm-archive table tr.even td.date-cell,
+  #drppsm-archive table tr.active td.preacher-cell,
+  #drppsm-archive table tr.active td.date-cell {
+    display: block;
+    font-size: 15px !important;
+    text-align: center;
+    padding: 0 7px 2px 12px;
+    word-wrap: break-word !important;
+  }
+  #drppsm-archive table tr.odd td.title-cell,
+  #drppsm-archive table tr.even td.title-cell,
+  #drppsm-archive table tr.active td.title-cell {
+    display: block;
+    color: #000000;
+    font-size: 16px;
+    font-weight: 700;
+    text-align: center;
+    padding: 7px 7px 7px 12px;
+  }
+  #drppsm-archive table tr.odd td.watch-cell,
+  #drppsm-archive table tr.even td.watch-cell,
+  #drppsm-archive table tr.active td.watch-cell {
+    display: block;
+    text-align: center;
+    padding: 0px;
+  }
+  #drppsm-archive table tr.active td {
+    color: #ffffff;
   }
 }
 

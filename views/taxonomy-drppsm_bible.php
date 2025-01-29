@@ -1,6 +1,6 @@
 <?php
 /**
- * Sermon no records.
+ * Bible taxonomy archive.
  *
  * @package     DRPPSM
  * @subpackage  Template
@@ -12,25 +12,42 @@
 
 namespace DRPPSM;
 
-defined( 'ABSPATH' ) || exit;
+$qv_tax  = get_query_var( 'taxonomy' );
+$qv_term = get_query_var( DRPPSM_TAX_BOOK );
+$qv_play = get_query_var( 'play' );
+
+
+Logger::debug(
+	array(
+		'qv_tax'  => $qv_tax,
+		'qv_term' => $qv_term,
+		'qv_play' => $qv_play,
+	)
+);
 
 if ( ! did_action( 'get_header' ) ) {
 	get_header();
 }
 
-get_partial( 'sermon-wrapper-start' );
+get_partial( Templates::WRAPPER_START );
 
-if ( have_posts() ) {
-	while ( have_posts() ) {
-		the_post();
-		sermon_excerpt();
-	}
+
+if ( empty( $qv_term ) ) {
+	new TaxImageList(
+		array(
+			'display' => $qv_tax,
+			'size'    => get_tax_image_size( 'full', 'medium' ),
+		)
+	);
+} elseif ( have_posts() ) {
+	new TaxArchive( $qv_tax, $qv_term );
 	wp_reset_postdata();
 } else {
 	get_partial( 'no-posts' );
 }
 
-get_partial( 'sermon-wrapper-end' );
+
+get_partial( Templates::WRAPPER_END );
 
 if ( ! did_action( 'get_footer' ) ) {
 	get_footer();

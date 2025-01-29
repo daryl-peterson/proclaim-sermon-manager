@@ -29,12 +29,24 @@ if ( ! has_keys( array( 'list' ), $args ) ) {
 $list = $args['list'];
 
 $play = get_query_var( 'play' );
-Logger::debug( 'Play : ' . $play );
+if ( $play && ! empty( $play ) ) {
+
+	if ( key_exists( $play, $list ) ) {
+		$item_first = $list[ $play ];
+	} else {
+		$first_key  = array_key_first( $list );
+		$item_first = $list[ $first_key ];
+	}
+} else {
+	$first_key  = array_key_first( $list );
+	$item_first = $list[ $first_key ];
+}
+
 
 /**
  * @var \WP_Post $item_first Post object.
  */
-$item_first = array_shift( $list );
+
 
 $preacher = null;
 if ( isset( $item_first->drppsm_preacher ) ) {
@@ -98,6 +110,10 @@ foreach ( $list as $item ) :
 	if ( $cnt % 2 === 0 ) :
 		$tr_class = 'even';
 	endif;
+
+	if ( $item->ID === $item_first->ID ) {
+		$tr_class = 'active';
+	}
 	?>
 	<tr class="<?php echo esc_attr( $tr_class ); ?>">
 		<td class="title-cell">

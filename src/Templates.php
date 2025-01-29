@@ -69,6 +69,8 @@ class Templates implements Executable, Registrable {
 
 	const string META_ITEM = 'psm-meta-item';
 
+	const string SERMON_SORTING = 'psm-sermon-sorting';
+
 	/**
 	 * Post type
 	 *

@@ -147,6 +147,46 @@ class TaxArchive {
 		$this->render();
 	}
 
+	private function test() {
+
+		$terms       = get_terms( DRPPSM_TAX_SERIES );
+		$posts_array = get_posts(
+			array(
+				'posts_per_page' => -1,
+				'post_type'      => DRPPSM_PT_SERMON,
+				'tax_query'      => array(
+					array(
+						'taxonomy' => DRPPSM_TAX_SERIES,
+						'field'    => 'slug',
+						'terms'    => wp_list_pluck( $terms, 'slug' ),
+					),
+				),
+			)
+		);
+
+		/*
+		//fetch all reviews which have no assigned term in 'review-product'
+		$taxonomy  = 'review-product';
+		$post_type = 'reviews';
+		$args = [
+			'post_type' => $post_type,
+			'tax_query' => [
+				[
+					'taxonomy' => $taxonomy,
+					'terms'    => get_terms( $taxonomy, [ 'fields' => 'ids'  ] ),
+					'operator' => 'NOT IN'
+				]
+			]
+		];
+
+		$query = new \WP_Query( $args );
+
+
+		*/
+
+		Logger::debug( $posts_array );
+	}
+
 	/**
 	 * Render template.
 	 *
@@ -158,11 +198,11 @@ class TaxArchive {
 		if ( isset( $this->data ) && is_array( $this->data ) && count( $this->data ) > 0 ) {
 
 			ob_start();
-
 			get_partial(
 				Templates::TAX_ARCHIVE,
 				array(
 					'list' => $this->data,
+					'term' => $this->term,
 
 				)
 			);
@@ -203,12 +243,13 @@ class TaxArchive {
 		$this->args['number'] = $this->number;
 		$this->args['offset'] = $this->offset;
 
-		$data = get_posts( $this->args );
+		$post_data = get_posts( $this->args );
+		$data      = array();
 
 		/**
 		 * @var WP_Post $post_item
 		 */
-		foreach ( $data as $key => $post_item ) {
+		foreach ( $post_data as $post_item ) {
 			$post_item              = $this->get_sermon_meta( $post_item );
 			$post_item              = $this->get_sermon_terms( $post_item );
 			$data[ $post_item->ID ] = $post_item;

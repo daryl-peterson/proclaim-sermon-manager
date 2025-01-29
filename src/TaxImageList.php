@@ -95,7 +95,7 @@ class TaxImageList {
 		if ( isset( $this->data ) && is_array( $this->data ) && count( $this->data ) > 0 ) {
 
 			ob_start();
-
+			// echo sermon_sorting();
 			get_partial(
 				Templates::TAX_IMAGE_LIST,
 				array(
