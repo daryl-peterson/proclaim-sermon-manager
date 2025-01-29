@@ -14,12 +14,14 @@ namespace DRPPSM;
 
 $qv_tax  = get_query_var( 'taxonomy' );
 $qv_term = get_query_var( DRPPSM_TAX_SERIES );
+$qv_play = get_query_var( 'play' );
 
 
 Logger::debug(
 	array(
 		'qv_tax'  => $qv_tax,
 		'qv_term' => $qv_term,
+		'qv_play' => $qv_play,
 	)
 );
 

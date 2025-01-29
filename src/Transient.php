@@ -11,8 +11,6 @@
 
 namespace DRPPSM;
 
-use WP_Exception;
-
 defined( 'ABSPATH' ) || exit;
 
 /**
@@ -59,12 +57,7 @@ class Transient {
 
 		$result = get_transient( $key );
 		$result = maybe_unserialize( $result );
-		Logger::debug(
-			array(
-				'KEY'    => $key,
-				'RESULT' => $result,
-			)
-		);
+
 		return $result;
 	}
 
@@ -94,7 +87,6 @@ class Transient {
 	public static function delete( string $wildcard ) {
 		global $wpdb;
 
-		Logger::debug( $wildcard );
 		$wpdb->query(
 			$wpdb->prepare(
 				"DELETE FROM $wpdb->options WHERE option_name LIKE %s",

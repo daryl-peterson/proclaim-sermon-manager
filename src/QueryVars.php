@@ -171,21 +171,9 @@ class QueryVars implements Executable, Registrable {
 			return;
 		}
 
+		$request_org = $request;
+
 		$term = $request[ $tax_name ];
-
-		$qv_search = array(
-			'page',
-			'paged',
-		);
-
-		$paging = null;
-		foreach ( $qv_search as $key ) {
-			if ( key_exists( $key, $request ) ) {
-				$paging = $key;
-				$paged  = $request[ $key ];
-				break;
-			}
-		}
 
 		$request = array(
 			'post_type'  => DRPPSM_PT_SERMON,
@@ -197,11 +185,18 @@ class QueryVars implements Executable, Registrable {
 			'query_type' => 'term',
 		);
 
-		if ( $paging ) {
-			$request[ $paging ] = $paged;
+		$qv_search = array(
+			'page',
+			'paged',
+			'play',
+		);
+
+		foreach ( $qv_search as $key ) {
+			if ( key_exists( $key, $request_org ) ) {
+				$request[ $key ] = $request_org[ $key ];
+			}
 		}
 
-		Logger::debug( array( 'MOD REQUEST' => $request ) );
 		return;
 	}
 

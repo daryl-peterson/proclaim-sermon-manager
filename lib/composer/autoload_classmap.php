@@ -49,6 +49,7 @@ return array(
     'DRPPSM\\Logging\\LogWritterAbs' => $baseDir . '/src/Core/Logging/LogWritterAbs.php',
     'DRPPSM\\Logging\\LogWritterInt' => $baseDir . '/src/Core/Logging/LogWritterInt.php',
     'DRPPSM\\Logging\\LoggerInt' => $baseDir . '/src/Core/Logging/LoggerInt.php',
+    'DRPPSM\\MediaPlayer' => $baseDir . '/src/MediaPlayer.php',
     'DRPPSM\\Notice' => $baseDir . '/src/Notice.php',
     'DRPPSM\\Options' => $baseDir . '/src/Options.php',
     'DRPPSM\\PermaLinks' => $baseDir . '/src/PermaLinks.php',

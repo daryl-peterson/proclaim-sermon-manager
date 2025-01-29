@@ -110,6 +110,7 @@ class ComposerStaticInit672fe16c65cc53aa8b66e730cdfce0de
         'DRPPSM\\Logging\\LogWritterAbs' => __DIR__ . '/../..' . '/src/Core/Logging/LogWritterAbs.php',
         'DRPPSM\\Logging\\LogWritterInt' => __DIR__ . '/../..' . '/src/Core/Logging/LogWritterInt.php',
         'DRPPSM\\Logging\\LoggerInt' => __DIR__ . '/../..' . '/src/Core/Logging/LoggerInt.php',
+        'DRPPSM\\MediaPlayer' => __DIR__ . '/../..' . '/src/MediaPlayer.php',
         'DRPPSM\\Notice' => __DIR__ . '/../..' . '/src/Notice.php',
         'DRPPSM\\Options' => __DIR__ . '/../..' . '/src/Options.php',
         'DRPPSM\\PermaLinks' => __DIR__ . '/../..' . '/src/PermaLinks.php',

@@ -13,9 +13,9 @@ namespace DRPPSM;
 
 defined( 'ABSPATH' ) || exit;
 
-use DRPPSM\Helper;
 use DRPPSM\Interfaces\Executable;
 use DRPPSM\Interfaces\Registrable;
+use DRPPSM\Traits\ExecutableTrait;
 
 /**
  * Queue scritps / styles.
@@ -27,14 +27,8 @@ use DRPPSM\Interfaces\Registrable;
  * @since       1.0.0
  */
 class QueueScripts implements Registrable, Executable {
+	use ExecutableTrait;
 
-	/**
-	 * Version
-	 *
-	 * @var string
-	 * @since 1.0.0
-	 */
-	private string $ver;
 
 	/**
 	 * Initialize object properties.
@@ -43,19 +37,6 @@ class QueueScripts implements Registrable, Executable {
 	 */
 	protected function __construct() {
 		include_pluggable();
-		$this->ver = \wp_rand( 1, 999 );
-	}
-
-	/**
-	 * Initialize and register hooks.
-	 *
-	 * @return QueueScripts
-	 * @since 1.0.0
-	 */
-	public static function exec(): QueueScripts {
-		$obj = new static();
-		$obj->register();
-		return $obj;
 	}
 
 	/**
@@ -65,65 +46,119 @@ class QueueScripts implements Registrable, Executable {
 	 * @since 1.0.0
 	 */
 	public function register(): ?bool {
-		add_action( 'wp_enqueue_scripts', array( $this, 'front_end' ) );
 
-		if ( ! is_admin() || has_action( 'admin_init', array( $this, 'init_script_styles' ) ) ) {
-			return true;
+		if ( has_action( 'init', array( $this, 'register_scripts_styles' ) ) ) {
+			return false;
 		}
+		add_action( 'init', array( $this, 'register_scripts_styles' ) );
+		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
+		add_action( 'wp_footer', array( $this, 'enqueue_scripts' ) );
 
-		add_action( 'admin_init', array( $this, 'init_script_styles' ) );
-		add_action( 'admin_enqueue_scripts', array( $this, 'load' ) );
-		add_action( 'admin_footer', array( $this, 'footer' ) );
+		// add_action( 'admin_init', array( $this, 'register_admin_scripts_styles' ) );
+		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
+		add_action( 'admin_footer', array( $this, 'admin_footer' ) );
 
 		return true;
 	}
 
 	/**
-	 * Queue style for front ent.
+	 * Queue style for frontend.
 	 *
 	 * @return void
 	 * @since 1.0.0
 	 */
-	public function front_end(): void {
-		$url  = Helper::get_url() . 'assets';
-		$file = $url . '/css/drppsm-style.css';
-		wp_enqueue_style( 'drppsm-style', $file, array(), '1.0.0' );
+	public function enqueue_scripts(): void {
+
+		wp_enqueue_style( 'drppsm-style' );
+		wp_enqueue_style( 'drppsm-plyr-css' );
+		wp_enqueue_style( 'drppsm-icons' );
+
+		wp_enqueue_script( 'drppsm-plyr' );
+		wp_enqueue_script( 'drppsm-plyr-loader' );
+		wp_enqueue_script( 'drppsm-frontend' );
 	}
 
 	/**
-	 * Register styles / scripts
+	 * Register scripts and styles.
 	 *
 	 * @return void
 	 * @since 1.0.0
 	 */
-	public function init_script_styles() {
-		$url = Helper::get_url() . 'assets';
+	public function register_scripts_styles() {
+		$plyr_ver = '3.7.8';
 
-		$file = $url . '/css/drppsm-admin.css';
-		wp_register_style(
-			'drppsm-admin-style',
-			$file,
+		// DRPPSM_URL
+		wp_register_script(
+			'drppsm-plyr',
+			DRPPSM_URL . 'assets/lib/plyr/plyr.polyfilled.js',
 			array(),
-			$this->ver
+			$plyr_ver
 		);
 
-		$file = $url . '/css/drppsm-icons.css';
-		wp_register_style(
-			'drppsm-admin-icons',
-			$file,
-			array(),
-			$this->ver
+		wp_register_script(
+			'drppsm-plyr-loader',
+			DRPPSM_URL . 'assets/js/plyr' . ( ( defined( 'WP_DEBUG' ) && WP_DEBUG === true ) ? '' : '.min' ) . '.js',
+			array( 'drppsm-plyr' ),
+			DRPPSM_VER
 		);
 
-		$file = $url . '/js/admin.min.js';
+		wp_register_script(
+			'drppsm-fb-video',
+			DRPPSM_URL . 'assets/lib/facebook/fb-video.js',
+			array(),
+			DRPPSM_VER
+		);
+
+		wp_register_script(
+			'drppsm-frontend',
+			DRPPSM_URL . 'assets/js/frontend.js',
+			array(),
+			DRPPSM_VER
+		);
+
 		wp_register_script(
 			'drppsm-admin-script',
-			$file,
+			DRPPSM_URL . 'assets/js/admin' . ( ( defined( 'WP_DEBUG' ) && WP_DEBUG === true ) ? '' : '.min' ) . '.js',
 			array(),
-			$this->ver,
-			true
+			DRPPSM_VER,
+		);
+
+		wp_register_style(
+			'drppsm-plyr-css',
+			DRPPSM_URL . 'assets/lib/plyr/plyr.css',
+			array(),
+			$plyr_ver
+		);
+
+		wp_register_style(
+			'drppsm-style',
+			DRPPSM_URL . 'assets/css/drppsm-style.css',
+			array(),
+			DRPPSM_VER
+		);
+
+		wp_register_style(
+			'drppsm-admin-style',
+			DRPPSM_URL . 'assets/css/admin/drppsm-admin.css',
+			array(),
+			DRPPSM_VER
+		);
+
+		wp_register_style(
+			'drppsm-admin-icons',
+			DRPPSM_URL . 'assets/css/admin/drppsm-icons.css',
+			array(),
+			DRPPSM_VER
+		);
+
+		wp_register_style(
+			'drppsm-icons',
+			DRPPSM_URL . 'assets/css/icons/drppsm-general.css',
+			array(),
+			DRPPSM_VER
 		);
 	}
+
 
 	/**
 	 * Load registered scripts.
@@ -131,15 +166,17 @@ class QueueScripts implements Registrable, Executable {
 	 * @return void
 	 * @since 1.0.0
 	 */
-	public function load(): void {
-		if ( is_admin() ) {
-			// @codeCoverageIgnoreStart
-			wp_enqueue_style( 'drppsm-admin-style' );
-			wp_enqueue_style( 'drppsm-admin-icons' );
-
-			wp_enqueue_media();
-			// @codeCoverageIgnoreEnd
+	public function admin_enqueue_scripts(): void {
+		if ( ! is_admin() ) {
+			return;
 		}
+
+		// @codeCoverageIgnoreStart
+		wp_enqueue_style( 'drppsm-admin-style' );
+		wp_enqueue_style( 'drppsm-admin-icons' );
+
+		wp_enqueue_media();
+		// @codeCoverageIgnoreEnd
 	}
 
 	/**
@@ -148,7 +185,7 @@ class QueueScripts implements Registrable, Executable {
 	 * @return void
 	 * @since 1.0.0
 	 */
-	public function footer() {
+	public function admin_footer() {
 		if ( ! is_admin() ) {
 			return;
 		}

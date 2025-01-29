@@ -64,6 +64,27 @@
   font-style: italic;
   font-size: 20px;
 }
+#drppsm-archive .btn-sm {
+  font-size: 24px;
+  vertical-align: middle;
+  height: 24px;
+  width: 24px;
+  display: inline-block;
+}
+#drppsm-archive .btn-md {
+  font-size: 32px;
+  vertical-align: middle;
+  height: 32px;
+  width: 32px;
+  display: inline-block;
+}
+#drppsm-archive .btn-medium-lg {
+  font-size: 48px;
+  vertical-align: middle;
+  height: 48px;
+  width: 48px;
+  display: inline-block;
+}
 #drppsm-archive .meta-item {
   display: inline-flex;
   color: #000;
@@ -74,6 +95,10 @@
 }
 #drppsm-archive .meta-item .label {
   font-weight: bold;
+}
+#drppsm-archive .media {
+  min-height: 300px;
+  margin: 24px 0;
 }
 #drppsm-archive table {
   border: none;
@@ -95,9 +120,6 @@
   font-weight: 700;
   text-align: left;
   padding: 7px 7px 7px 12px;
-}
-#drppsm-archive .media {
-  min-height: 300px;
 }
 @media (max-width: 800px) {
   #drppsm-archive {

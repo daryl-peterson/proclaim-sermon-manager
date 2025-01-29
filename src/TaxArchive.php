@@ -209,9 +209,9 @@ class TaxArchive {
 		 * @var WP_Post $post_item
 		 */
 		foreach ( $data as $key => $post_item ) {
-			$post_item    = $this->get_sermon_meta( $post_item );
-			$post_item    = $this->get_sermon_terms( $post_item );
-			$data[ $key ] = $post_item;
+			$post_item              = $this->get_sermon_meta( $post_item );
+			$post_item              = $this->get_sermon_terms( $post_item );
+			$data[ $post_item->ID ] = $post_item;
 		}
 		Transient::set( $trans_key, $data, Transient::TAX_ARCHIVE_TTL );
 

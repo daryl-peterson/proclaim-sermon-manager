@@ -28,6 +28,9 @@ if ( ! has_keys( array( 'list' ), $args ) ) {
 }
 $list = $args['list'];
 
+$play = get_query_var( 'play' );
+Logger::debug( 'Play : ' . $play );
+
 /**
  * @var \WP_Post $item_first Post object.
  */
@@ -42,6 +45,11 @@ $date = null;
 if ( isset( $item_first->meta->date ) ) {
 	$date = $item_first->meta->date;
 }
+
+$poster = get_sermon_image_url( ImageSize::SERMON_WIDE, true, true, $item_first );
+Logger::debug( 'Poster : ' . $poster );
+Logger::debug( $item_first );
+
 
 $cnt = 0;
 ?>
@@ -59,7 +67,12 @@ $cnt = 0;
 	</div>
 	<!-- /#drppsm-archive-header -->
 	<div class="media">
+		<?php
+		if ( isset( $item_first->meta->video_link ) ) {
 
+			echo MediaPlayer::render_video( $item_first->meta->video_link, true, $poster );
+		}
+		?>
 	</div>
 	<!-- /#drppsm-archive-media -->
 	<div class="detail">
@@ -109,7 +122,7 @@ foreach ( $list as $item ) :
 		<td class="watch-cell">
 			<?php
 			if ( isset( $item->meta->video_link ) ) {
-				echo esc_html( 'watch' );
+				echo '<a data-id="' . esc_attr( $item->ID ) . '" class="drppsm-play-video btn-md"></a>';
 			}
 			?>
 		</td>

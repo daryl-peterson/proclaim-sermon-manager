@@ -131,6 +131,32 @@ function has_keys( array $keys, array $array ): bool {
 }
 
 /**
+ * Return single sermon meta key content from inside a loop.
+ *
+ * @param string       $meta_key The meta key name.
+ * @param WP_Post|null $post     The sermon post object.
+ *
+ * @return mixed|null The meta key content/null if it's blank.
+ * @since 1.0.0
+ */
+function get_sermon_meta( $meta_key = '', $post = null ): mixed {
+	if ( null === $post ) {
+		global $post;
+	}
+
+	if ( $post === null ) {
+		return null;
+	}
+
+	$data = get_post_meta( $post->ID, $meta_key, true );
+	if ( '' !== $data ) {
+		return $data;
+	}
+
+	return null;
+}
+
+/**
  * Removes all sorts of quotes from a string.
  *
  * @see   http://unicode.org/cldr/utility/confusables.jsp?a=%22&r=None
