@@ -58,9 +58,14 @@ if ( isset( $item_first->meta->date ) ) {
 	$date = $item_first->meta->date;
 }
 
+
 $poster = get_sermon_image_url( ImageSize::SERMON_WIDE, true, true, $item_first );
-Logger::debug( 'Poster : ' . $poster );
-Logger::debug( $item_first );
+Logger::debug(
+	array(
+		'SERMON' => $item_first,
+		'POSTER' => $poster,
+	)
+);
 
 
 $cnt = 0;
@@ -141,9 +146,6 @@ foreach ( $list as $item ) :
 				echo '<a data-id="' . esc_attr( $item->ID ) . '" class="drppsm-play-video btn-md"></a>';
 			}
 			?>
-		</td>
-		<td class="listen-cell">
-
 		</td>
 	</tr>
 

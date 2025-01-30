@@ -11,6 +11,7 @@
 
 namespace DRPPSM;
 
+use DateTime;
 use ReflectionObject;
 use stdClass;
 use WP_Post_Type;
@@ -154,6 +155,27 @@ function get_sermon_meta( $meta_key = '', $post = null ): mixed {
 	}
 
 	return null;
+}
+
+
+/**
+ * Round a date to the nearest minute interval.
+ *
+ * @param string $date_str Date string.
+ * @param string $format Date format.
+ * @param int    $minuteInterval Minute interval.
+ * @return mixed
+ * @since 1.0.0
+ */
+function date_round( string $date_str, string $format = 'U', $minuteInterval = 10 ): string {
+	$date_time = new DateTime( $date_str );
+
+	$date_time->setTime(
+		$date_time->format( 'H' ),
+		round( $date_time->format( 'i' ) / $minuteInterval ) * $minuteInterval,
+		0
+	);
+	return $date_time->format( $format );
 }
 
 /**

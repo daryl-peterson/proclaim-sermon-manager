@@ -249,7 +249,14 @@ function get_sermon_image_url( string $image_size = 'post-thumbnail', bool $fall
 	$sermon_image = get_the_post_thumbnail_url( $post, $image_size );
 
 	// Get the series image.
-	$series_image = get_series_image( $image_size );
+	$series_image = get_series_image( $image_size, $post );
+	Logger::debug(
+		array(
+			'SERMON' => $sermon_image,
+			'SERIES' => $series_image,
+			'POST'   => $post,
+		)
+	);
 
 	$image = null;
 

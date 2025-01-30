@@ -155,7 +155,7 @@
     display: block;
     font-size: 15px !important;
     text-align: center;
-    padding: 0 7px 2px 12px;
+    padding: 0px;
     word-wrap: break-word !important;
   }
   #drppsm-archive table tr.odd td.title-cell,
@@ -166,17 +166,18 @@
     font-size: 16px;
     font-weight: 700;
     text-align: center;
-    padding: 7px 7px 7px 12px;
+    padding: 4px 0px;
   }
   #drppsm-archive table tr.odd td.watch-cell,
   #drppsm-archive table tr.even td.watch-cell,
   #drppsm-archive table tr.active td.watch-cell {
     display: block;
     text-align: center;
-    padding: 0px;
+    padding: 0px 0px 4px 0px;
   }
-  #drppsm-archive table tr.active td {
-    color: #ffffff;
+  #drppsm-archive table tr.active td,
+  #drppsm-archive table tr.active td.title-cell {
+    color: #ffffff !important;
   }
 }
 

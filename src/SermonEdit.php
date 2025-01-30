@@ -2,7 +2,7 @@
 /**
  * Admin sermon post edit / add.
  *
- * @package     Proclaim Sermon Manager
+ * @package     DRPPSM\SermonEdit
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
@@ -13,23 +13,24 @@ namespace DRPPSM;
 
 defined( 'ABSPATH' ) || exit;
 
-use DRPPSM\Constants\Actions;
 use DRPPSM\Interfaces\Executable;
 use DRPPSM\Interfaces\Registrable;
 use DRPPSM\SermonDetail;
 use DRPPSM\SermonFiles;
 use DRPPSM\TaxUtils;
+use DRPPSM\Traits\ExecutableTrait;
 
 /**
  * Admin sermon post edit / add.
  *
- * @package     Proclaim Sermon Manager
+ * @package     DRPPSM\SermonEdit
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
  * @since       1.0.0
  */
 class SermonEdit implements Executable, Registrable {
+	use ExecutableTrait;
 
 	/**
 	 * Post type
@@ -49,18 +50,6 @@ class SermonEdit implements Executable, Registrable {
 	}
 
 	/**
-	 * Initalize and register.
-	 *
-	 * @return SermonEdit
-	 * @since 1.0.0
-	 */
-	public static function exec(): SermonEdit {
-		$obj = new self();
-		$obj->register();
-		return $obj;
-	}
-
-	/**
 	 * Register hooks.
 	 *
 	 * @return null|bool Returns true as default.
@@ -76,8 +65,8 @@ class SermonEdit implements Executable, Registrable {
 		add_action( 'cmb2_admin_init', array( $this, 'show_meta_boxes' ) );
 		add_action( 'admin_menu', array( $this, 'remove_meta_boxes' ) );
 
-		SermonDetail::init()->register();
-		SermonFiles::init()->register();
+		SermonDetail::exec();
+		SermonFiles::exec();
 		return true;
 	}
 

@@ -204,7 +204,7 @@ class TaxMeta implements Executable, Registrable {
 			)
 		);
 		$this->set_term_meta( $term_id, $args );
-		Transient::delete( '%drppsm_series_%' );
+		Transient::delete_all();
 	}
 
 	/**
@@ -223,9 +223,8 @@ class TaxMeta implements Executable, Registrable {
 		array $bject_ids
 	) {
 
-		Transient::delete( '%drppsm_series_%' );
+		Transient::delete_all();
 	}
-
 
 	/**
 	 * Set term meta.
@@ -349,6 +348,6 @@ class TaxMeta implements Executable, Registrable {
 
 			$this->set_date_meta( $tax_name, $term_item->term_id, $tax_name . '_date' );
 		}
-		Transient::delete( '%drppsm_series_%' );
+		Transient::delete_all();
 	}
 }

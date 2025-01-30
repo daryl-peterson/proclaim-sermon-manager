@@ -30,8 +30,10 @@ trait ExecutableTrait {
 	 */
 	public static function exec(): self {
 		$obj = new self();
-		$obj->register();
 
+		if ( method_exists( $obj, 'register' ) ) {
+			$obj->register();
+		}
 		return $obj;
 	}
 }

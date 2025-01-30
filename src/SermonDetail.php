@@ -2,7 +2,7 @@
 /**
  * Show sermon deail meta box.
  *
- * @package     Proclaim Sermon Manager
+ * @package     DRPPSM\SermonDetail
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
@@ -14,20 +14,21 @@ namespace DRPPSM;
 defined( 'ABSPATH' ) || exit;
 
 use CMB2;
-use DRPPSM\Interfaces\Initable;
+use DRPPSM\Interfaces\Executable;
 use DRPPSM\Interfaces\Registrable;
-
+use DRPPSM\Traits\ExecutableTrait;
 
 /**
  * Show sermon deail meta box.
  *
- * @package     Proclaim Sermon Manager
+ * @package     DRPPSM\SermonDetail
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
  * @since       1.0.0
  */
-class SermonDetail implements Initable, Registrable {
+class SermonDetail implements Executable, Registrable {
+	use ExecutableTrait;
 
 	/**
 	 * Post type.
@@ -61,16 +62,6 @@ class SermonDetail implements Initable, Registrable {
 		$this->pt_sermon        = DRPPSM_PT_SERMON;
 		$this->tax_service_type = DRPPSM_TAX_SERVICE_TYPE;
 		$this->cmb_id           = 'drppsm_details';
-	}
-
-	/**
-	 * Get initialize object.
-	 *
-	 * @return self
-	 * @since 1.0.0
-	 */
-	public static function init(): self {
-		return new self();
 	}
 
 	/**
@@ -137,18 +128,101 @@ class SermonDetail implements Initable, Registrable {
 			return;
 		}
 		$this->save_service_type( $post_ID, $cmb->data_to_save );
-		// $this->save_date( $post_ID, $cmb->data_to_save );
+		$this->save_date( $post_ID, $cmb->data_to_save );
+		$this->save_books( $post_ID, $cmb->data_to_save );
 	}
 
-	private function save_date( int $post_ID, array $data ): bool {
-		return true;
-		if ( ! isset( $data[ SermonMeta::DATE ] ) ) {
+	/**
+	 * Save bible books.
+	 *
+	 * - Uses Main bible passage.
+	 * - If books are already set, doesn't update.
+	 *
+	 * @param int   $post_ID Post ID.
+	 * @param array $data Data array.
+	 * @return bool Returns true if books we saved.
+	 * @since 1.0.0
+	 */
+	private function save_books( int $post_ID, array $data ): bool {
+
+		// Not set so bail.
+		if ( ! isset( $data[ SermonMeta::BIBLE_PASSAGE ] ) ) {
 			return false;
 		}
-		$date = $data[ SermonMeta::DATE ];
 
-		$date = strtotime( wp_date( 'Y-m-d 00:00:00', strtotime( $date ) ) );
-		update_post_meta( $post_ID, SermonMeta::DATE, $date );
+		// Already set so bail.
+		if ( isset( $data['tax_input']['drppsm_bible'] ) && ! empty( $data['tax_input']['drppsm_bible'] ) ) {
+			return false;
+		}
+
+		$result  = false;
+		$passage = $data[ SermonMeta::BIBLE_PASSAGE ];
+
+		$parts = explode( ',', $passage );
+		foreach ( $parts as $value ) {
+			$book = explode( ':', $value );
+			$book = $book[0];
+			$book = trim( substr( $book, 0, -1 ) );
+
+			$result = wp_set_post_terms( $post_ID, $book, 'drppsm_bible', true );
+
+			if ( is_wp_error( $result ) ) {
+				Logger::error( $result->get_error_message() );
+				$result = false;
+			} else {
+				$result = true;
+			}
+		}
+		return $result;
+	}
+
+	/**
+	 * Save date preached.
+	 *
+	 * @param int   $post_ID Post ID.
+	 * @param array $data Data array.
+	 * @return bool Returns true if date was saved, otherwise false.
+	 * @since 1.0.0
+	 */
+	private function save_date( int $post_ID, array $data ): bool {
+
+		// Already set so bail.
+		if ( isset( $data[ SermonMeta::DATE ]['date'] ) && ! empty( $data[ SermonMeta::DATE ]['date'] ) ) {
+			return false;
+		}
+
+		$check = array(
+			'year'   => 'aa',
+			'month'  => 'mm',
+			'day'    => 'jj',
+			'hour'   => 'hh',
+			'minute' => 'mn',
+		);
+
+		// Make sure all keys exist.
+		foreach ( $check as $check_key ) {
+			if ( ! isset( $data[ $check_key ] ) || empty( $data[ $check_key ] ) ) {
+				return false;
+			}
+		}
+
+		$date_str  = $data[ $check['year'] ] . '-';
+		$date_str .= $data[ $check['month'] ] . '-';
+		$date_str .= $data[ $check['day'] ] . ' ';
+		$date_str .= $data[ $check['hour'] ] . ':' . $data[ $check['minute'] ];
+
+		$date  = date_i18n( 'Y-m-d H:i', strtotime( $date_str ) );
+		$stamp = abs( date_round( $date, 'U', 15 ) );
+
+		Logger::debug(
+			array(
+				'date_str' => $date_str,
+				'date'     => $date,
+				'rounded'  => $stamp,
+			)
+		);
+		update_post_meta( $post_ID, SermonMeta::DATE, $stamp );
+
 		return true;
 	}
 
@@ -161,8 +235,6 @@ class SermonDetail implements Initable, Registrable {
 	 * @since 1.0.0
 	 */
 	private function save_service_type( int $post_ID, array $data ): bool {
-
-		Logger::debug( $data );
 
 		$term = get_term_by(
 			'id',

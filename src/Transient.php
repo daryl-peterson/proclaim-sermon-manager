@@ -94,4 +94,16 @@ class Transient {
 			)
 		);
 	}
+
+	/**
+	 * Delete all transients.
+	 *
+	 * @return void
+	 * @since 1.0.0
+	 */
+	public static function delete_all() {
+		foreach ( DRPPSM_TAX_MAP as  $tax_name ) {
+			self::delete( '%transient%' . $tax_name . '_%' );
+		}
+	}
 }

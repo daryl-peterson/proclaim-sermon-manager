@@ -13,8 +13,9 @@ namespace DRPPSM;
 
 defined( 'ABSPATH' ) || exit;
 
-use DRPPSM\Interfaces\Initable;
+use DRPPSM\Interfaces\Executable;
 use DRPPSM\Interfaces\Registrable;
+use DRPPSM\Traits\ExecutableTrait;
 
 /**
  * Sermon files meta boxes.
@@ -24,18 +25,11 @@ use DRPPSM\Interfaces\Registrable;
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
  * @since       1.0.0
+ *
+ * @todo Allow for custom ordering of fields.
  */
-class SermonFiles implements Initable, Registrable {
-
-	/**
-	 * Get initialized object.
-	 *
-	 * @return SermonFiles
-	 * @since 1.0.0
-	 */
-	public static function init(): SermonFiles {
-		return new self();
-	}
+class SermonFiles implements Executable, Registrable {
+	use ExecutableTrait;
 
 	/**
 	 * Register hooks.
@@ -71,6 +65,25 @@ class SermonFiles implements Initable, Registrable {
 				'show_names'   => true,
 			)
 		);
+
+		$cmb->add_field(
+			array(
+				'name' => esc_html__( 'Video Link', 'drppsm' ),
+				'desc' => esc_html__( 'Paste your link for Vimeo, Youtube, Facebook, or direct video file here', 'drppsm' ),
+				'id'   => SermonMeta::VIDEO_LINK,
+				'type' => 'text_url',
+			)
+		);
+
+		$cmb->add_field(
+			array(
+				'name' => esc_html__( 'Video Embed Code', 'drppsm' ),
+				'desc' => esc_html__( 'Paste your embed code for Vimeo, Youtube, Facebook, or direct video file here', 'drppsm' ),
+				'id'   => SermonMeta::VIDEO,
+				'type' => 'textarea_code',
+			)
+		);
+
 		$cmb->add_field(
 			array(
 				'name' => esc_html__( 'Location of MP3', 'drppsm' ),
@@ -92,22 +105,6 @@ class SermonFiles implements Initable, Registrable {
 				),
 				'id'   => SermonMeta::DURATION,
 				'type' => 'text',
-			)
-		);
-		$cmb->add_field(
-			array(
-				'name' => esc_html__( 'Video Embed Code', 'drppsm' ),
-				'desc' => esc_html__( 'Paste your embed code for Vimeo, Youtube, Facebook, or direct video file here', 'drppsm' ),
-				'id'   => SermonMeta::VIDEO,
-				'type' => 'textarea_code',
-			)
-		);
-		$cmb->add_field(
-			array(
-				'name' => esc_html__( 'Video Link', 'drppsm' ),
-				'desc' => esc_html__( 'Paste your link for Vimeo, Youtube, Facebook, or direct video file here', 'drppsm' ),
-				'id'   => SermonMeta::VIDEO_LINK,
-				'type' => 'text_url',
 			)
 		);
 
