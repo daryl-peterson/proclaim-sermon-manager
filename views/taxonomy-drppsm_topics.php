@@ -13,26 +13,6 @@ namespace DRPPSM;
 
 defined( 'ABSPATH' ) || exit;
 
-if ( ! did_action( 'get_header' ) ) {
-	get_header();
-}
-
-get_partial( 'sermon-wrapper-start' );
-get_partial( 'content-sermon-filtering' );
-
-if ( have_posts() ) {
-
-	while ( have_posts() ) {
-		the_post();
-		sermon_excerpt();
-	}
-	wp_reset_postdata();
-} else {
-	get_partial( 'no-posts' );
-}
-
-get_partial( 'sermon-wrapper-end' );
-
-if ( ! did_action( 'get_footer' ) ) {
-	get_footer();
-}
+$term_name  = DRPPSM_TAX_TOPIC;
+$image_size = 'full';
+require_once 'taxonomy.php';

@@ -91,6 +91,14 @@ class QueryVars implements Executable, Registrable {
 
 			$request_org = $request;
 
+			$compare = array(
+				'post_type' => DRPPSM_PT_SERMON,
+			);
+
+			if ( $compare === $request ) {
+				Logger::debug( array( 'ARRAYS ARE EQUAL' ) );
+			}
+
 			// It's not for anything we are concerned with.
 			if ( ! $this->is_concerned( $request ) ) {
 				return $request;

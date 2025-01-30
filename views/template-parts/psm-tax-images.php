@@ -1,6 +1,6 @@
 <?php
 /**
- * Image grid.
+ * Taxonomy Image grid.
  *
  * @package     DRPPSM
  * @author      Daryl Peterson <@gmail.com>
@@ -13,21 +13,14 @@ namespace DRPPSM;
 
 defined( 'ABSPATH' ) || exit;
 
-
+// These must be defined before including psm-check-args.
 $template = str_replace( '.php', '', basename( __FILE__ ) );
-$failure  = '<p><b>' . DRPPSM_TITLE . '</b>: Partial "<i>' . esc_html( $template ) . '</i>" loaded incorrectly.</p>';
+$required = array( 'list', 'columns', 'size' );
 
-if ( ! isset( $args ) || ! is_array( $args ) ) {
-	Logger::error( 'Args variable does not exist. Template : ' . $template );
-	render_html( $failure );
+$result = require_once 'psm-check-args.php';
+if ( ! $result ) {
 	return;
 }
-
-if ( ! has_keys( array( 'list', 'columns', 'size' ), $args ) ) {
-	render_html( $failure );
-	return;
-}
-
 
 $list     = $args['list'];
 $cols     = $args['columns'];
@@ -35,7 +28,6 @@ $cols_str = 'col' . $cols;
 $size     = $args['size'];
 
 ?>
-
 
 <div id="drppsm-sc-wrapper">
 	<div id="drppsm-image-list">

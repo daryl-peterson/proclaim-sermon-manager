@@ -14,8 +14,6 @@ namespace DRPPSM;
 $qv_tax  = get_query_var( 'taxonomy' );
 $qv_term = get_query_var( 'type' );
 
-global $wp_query;
-
 Logger::debug(
 	array(
 		'qv_tax'   => $qv_tax,

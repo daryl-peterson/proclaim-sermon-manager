@@ -13,19 +13,15 @@ namespace DRPPSM;
 
 defined( 'ABSPATH' ) || exit;
 
+// These must be defined before including psm-check-args.
 $template = str_replace( '.php', '', basename( __FILE__ ) );
-$failure  = '<p><b>' . DRPPSM_TITLE . '</b>: Partial "<i>' . esc_html( $template ) . '</i>" loaded incorrectly.</p>';
+$required = array( 'list' );
 
-if ( ! isset( $args ) || ! is_array( $args ) ) {
-	Logger::error( 'Args variable does not exist. Template : ' . $template );
-	render_html( $failure );
+$result = require_once 'psm-check-args.php';
+if ( ! $result ) {
 	return;
 }
 
-if ( ! has_keys( array( 'list' ), $args ) ) {
-	render_html( $failure );
-	return;
-}
 $list = $args['list'];
 
 $play = get_query_var( 'play' );

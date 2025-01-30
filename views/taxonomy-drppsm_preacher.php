@@ -13,33 +13,6 @@ namespace DRPPSM;
 
 defined( 'ABSPATH' ) || exit;
 
-$qv_tax  = get_query_var( 'taxonomy' );
-$qv_term = get_query_var( DRPPSM_TAX_PREACHER );
-
-
-if ( ! did_action( 'get_header' ) ) {
-	get_header();
-}
-
-get_partial( 'sermon-wrapper-start' );
-
-if ( empty( $qv_term ) ) {
-	new TaxImageList(
-		array(
-			'display' => $qv_tax,
-			'size'    => get_tax_image_size( 'full', 'preacher' ),
-		)
-	);
-} elseif ( have_posts() ) {
-	new TaxArchive( $qv_tax, $qv_term );
-	wp_reset_postdata();
-} else {
-	get_partial( 'no-posts' );
-}
-
-
-get_partial( 'sermon-wrapper-end' );
-
-if ( ! did_action( 'get_footer' ) ) {
-	get_footer();
-}
+$term_name  = DRPPSM_TAX_PREACHER;
+$image_size = 'full';
+require_once 'taxonomy.php';

@@ -11,24 +11,8 @@
 
 namespace DRPPSM;
 
-if ( ! did_action( 'get_header' ) ) {
-	get_header();
-}
+defined( 'ABSPATH' ) || exit;
 
-get_partial( 'sermon-wrapper-start' );
-
-if ( have_posts() ) {
-	while ( have_posts() ) {
-		the_post();
-		sermon_excerpt();
-	}
-	wp_reset_postdata();
-} else {
-	get_partial( 'no-posts' );
-}
-
-get_partial( 'sermon-wrapper-end' );
-
-if ( ! did_action( 'get_footer' ) ) {
-	get_footer();
-}
+$term_name  = DRPPSM_TAX_SERVICE_TYPE;
+$image_size = 'full';
+require_once 'taxonomy.php';
