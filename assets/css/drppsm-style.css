@@ -586,7 +586,10 @@
 #drppsm-image-list li.col4 {
   flex: 0 0 23%;
 }
-#drppsm-image-list .list-info {
+#drppsm-image-list li.col1 .list-info,
+#drppsm-image-list li.col2 .list-info,
+#drppsm-image-list li.col3 .list-info,
+#drppsm-image-list li.col4 .list-info {
   padding: 1em;
   background-color: white;
   border: 1px solid #e0e0e0;
@@ -612,6 +615,18 @@
   font-weight: 300;
   font-style: italic;
   margin: 0;
+}
+#drppsm-image-list li.row {
+  flex: 0 0 100%;
+  display: inline-flex;
+}
+#drppsm-image-list li.row .sermon-image {
+  width: 30%;
+}
+#drppsm-image-list li.row .list-info {
+  width: 68%;
+  padding: 20px;
+  background-color: white;
 }
 @media (max-width: 800px) {
   #drppsm-image-list li.col1,
@@ -639,6 +654,17 @@
   }
   #drppsm-image-list .list-info p {
     font-size: 14px;
+  }
+  #drppsm-image-list li.row {
+    display: initial;
+  }
+  #drppsm-image-list li.row .sermon-image {
+    width: auto;
+  }
+  #drppsm-image-list li.row .list-info {
+    width: auto;
+    padding: 20px;
+    text-align: center;
   }
 }
 @media (max-height: 500px) {

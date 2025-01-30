@@ -56,7 +56,10 @@
 		flex: 0 0 23%;
 	}
 
-	.list-info {
+	li.col1 .list-info,
+	li.col2 .list-info,
+	li.col3 .list-info,
+	li.col4 .list-info {
 		padding: 1em;
 		background-color: white;
 		border: 1px solid #e0e0e0;
@@ -85,6 +88,21 @@
 		font-weight: 300;
 		font-style: italic;
 		margin: 0;
+	}
+
+	li.row {
+		flex: 0 0 100%;
+		display: inline-flex;
+	}
+
+	li.row .sermon-image {
+		width: 30%;
+	}
+
+	li.row .list-info {
+		width: 68%;
+		padding: 20px;
+		background-color: white;
 	}
 
 	@media(max-width: 800px) {
@@ -119,6 +137,21 @@
 
 		.list-info p {
 			font-size: 14px;
+		}
+
+		li.row {
+
+			display: initial
+		}
+
+		li.row .sermon-image {
+			width: auto;
+		}
+
+		li.row .list-info {
+			width: auto;
+			padding: 20px;
+			text-align: center;
 		}
 
 	}

@@ -82,6 +82,7 @@ return array(
     'DRPPSM\\SermonEdit' => $baseDir . '/src/SermonEdit.php',
     'DRPPSM\\SermonFiles' => $baseDir . '/src/SermonFiles.php',
     'DRPPSM\\SermonImageAttach' => $baseDir . '/src/SermonImageAttach.php',
+    'DRPPSM\\SermonImageList' => $baseDir . '/src/SermonImageList.php',
     'DRPPSM\\SermonListTable' => $baseDir . '/src/SermonListTable.php',
     'DRPPSM\\SermonMeta' => $baseDir . '/src/SermonMeta.php',
     'DRPPSM\\SermonSorting' => $baseDir . '/src/SermonSorting.php',

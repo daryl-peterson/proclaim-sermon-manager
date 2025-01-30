@@ -46,6 +46,14 @@ class Transient {
 	 */
 	public const TAX_ARCHIVE_TTL = HOUR_IN_SECONDS;
 
+
+	/**
+	 * Sermon image list ttl.
+	 *
+	 * @since 1.0.0
+	 */
+	public const SERMON_IMAGE_LIST_TTL = HOUR_IN_SECONDS;
+
 	/**
 	 * Get transient.
 	 *
@@ -105,5 +113,8 @@ class Transient {
 		foreach ( DRPPSM_TAX_MAP as  $tax_name ) {
 			self::delete( '%transient%' . $tax_name . '_%' );
 		}
+
+		$pt = DRPPSM_PT_SERMON . '_imagelist';
+		self::delete( '%transient%' . $pt . '_%' );
 	}
 }

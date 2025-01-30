@@ -51,7 +51,7 @@ if ( isset( $item_first->drppsm_preacher ) ) {
 
 $date = null;
 if ( isset( $item_first->meta->date ) ) {
-	$date = $item_first->meta->date;
+	$date = format_date( absint( $item_first->meta->date ) );
 }
 
 
@@ -131,7 +131,8 @@ foreach ( $list as $item ) :
 		<td class="date-cell">
 			<?php
 			if ( isset( $item->meta->date ) ) {
-				echo esc_html( $item->meta->date );
+				$date = format_date( absint( $item->meta->date ) );
+				echo esc_html( $date );
 			}
 			?>
 

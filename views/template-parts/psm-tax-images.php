@@ -37,6 +37,7 @@ $size     = $args['size'];
 
 $fmt = get_option( 'date_format' );
 $cnt = 0;
+
 /**
  * @var stdClass $item Object.
  */
@@ -62,7 +63,7 @@ foreach ( $list as $item ) :
 					<?php endif; ?>
 					<div class="list-info">
 						<h4><?php echo esc_html( $object->name ); ?></h4>
-						<h5><?php echo esc_html( wp_date( $fmt, $item->date ) ); ?></h5>
+						<h5><?php echo esc_html( format_date( absint( $item->date ) ) ); ?></h5>
 						<p><?php echo esc_html( "$object->count Messages" ); ?></p>
 						<p class="archive-link">
 							<a href="<?php echo esc_attr( $link ); ?>" title="<?php echo esc_attr( $object->name ); ?>">

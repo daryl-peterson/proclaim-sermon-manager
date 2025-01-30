@@ -2,7 +2,7 @@
 /**
  * Sermon archive template.
  *
- * @package     DRPPSM/Views/
+ * @package     DRPPSM
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
@@ -14,13 +14,7 @@ namespace DRPPSM;
 $qv_tax  = get_query_var( 'taxonomy' );
 $qv_term = get_query_var( 'type' );
 
-Logger::debug(
-	array(
-		'qv_tax'   => $qv_tax,
-		'qv_term'  => $qv_term,
-		'wp_query' => $wp_query,
-	)
-);
+
 
 /**
  * Make sure array exist. Other functions will need it.
@@ -34,14 +28,11 @@ if ( ! did_action( 'get_header' ) ) {
 }
 
 get_partial( 'sermon-wrapper-start' );
-get_partial( 'content-sermon-filtering' );
+echo sermon_sorting();
 
 if ( have_posts() ) {
+	new SermonImageList();
 
-	while ( have_posts() ) {
-		the_post();
-		sermon_excerpt( $args );
-	}
 	wp_reset_postdata();
 } else {
 	get_partial( 'no-posts' );

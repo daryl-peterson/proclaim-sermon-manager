@@ -15,6 +15,7 @@ use CMB2;
 use DRPPSM\Interfaces\Executable;
 use DRPPSM\Interfaces\Registrable;
 use DRPPSM\Traits\ExecutableTrait;
+use WPForms\Vendor\Stripe\Util\Set;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -44,6 +45,7 @@ class SPSermon extends SPBase implements Executable, Registrable {
 	 */
 	protected function __construct() {
 		$this->option_key = Settings::OPTION_KEY_SERMONS;
+
 		parent::__construct();
 	}
 
@@ -55,6 +57,8 @@ class SPSermon extends SPBase implements Executable, Registrable {
 	 * @since 1.0.0
 	 */
 	public function register(): ?bool {
+		$object_type = 'options-page';
+		$id          = $this->option_key;
 
 		if ( ! is_admin() || has_action( Action::SETTINGS_REGISTER_FORM, array( $this, 'register_metaboxes' ) ) ) {
 			return false;
@@ -62,6 +66,7 @@ class SPSermon extends SPBase implements Executable, Registrable {
 
 		add_action( Action::SETTINGS_REGISTER_FORM, array( $this, 'register_metaboxes' ) );
 		add_filter( Filter::SETTINGS_REMOVE_SUBMENU, array( $this, 'set_menu' ) );
+		add_action( "cmb2_save_{$object_type}_fields_{$id}", array( $this, 'check' ), 10, 3 );
 		return true;
 	}
 
@@ -99,6 +104,50 @@ class SPSermon extends SPBase implements Executable, Registrable {
 		$this->common_base_slug( $cmb );
 		$this->sermon_single( $cmb );
 		$this->sermon_plural( $cmb );
+	}
+
+	/**
+	 * Check if settings changed.
+	 *
+	 * @param string     $object_id Object ID.
+	 * @param null|array $updated List of fields that were updated.
+	 * @param CMB2       $cmb CMB2 Object.
+	 * @return void
+	 * @since 1.0.0
+	 */
+	public function check( string $object_id, null|array $updated, CMB2 $cmb ) {
+
+		$flush_check = array(
+			Settings::SERMON_SINGULAR,
+			Settings::SERMON_PLURAL,
+			Settings::COMMON_BASE_SLUG,
+
+		);
+		$trans_check = array(
+			Settings::SERMON_COUNT,
+			Settings::ARCHIVE_ORDER_BY,
+			Settings::ARCHIVE_ORDER,
+		);
+
+		$delete = false;
+		foreach ( $trans_check as $value ) {
+			if ( in_array( $value, $updated, true ) ) {
+				Logger::debug( 'Deleting all transients' );
+				Transient::delete_all();
+				$delete = true;
+				break;
+			}
+		}
+
+		foreach ( $flush_check as $value ) {
+			if ( in_array( $value, $updated, true ) ) {
+				flush_rewrite_rules( true );
+				if ( ! $delete ) {
+					Transient::delete_all();
+				}
+				break;
+			}
+		}
 	}
 
 	/**
@@ -233,11 +282,7 @@ class SPSermon extends SPBase implements Executable, Registrable {
 				'id'        => Settings::SERMON_LAYOUT,
 				'name'      => __( 'Layout', 'drppsm' ),
 				'type'      => 'select',
-				'options'   => array(
-					'grid'    => 'Grid',
-					'row'     => 'Row',
-					'classic' => 'Classic',
-				),
+				'options'   => Settings::SERMON_LAYOUT_OPTS,
 				'after_row' => $this->description( $desc ),
 			)
 		);

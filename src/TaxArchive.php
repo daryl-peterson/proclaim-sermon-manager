@@ -278,10 +278,6 @@ class TaxArchive {
 			$post_item->meta->{$meta_key} = $meta_value;
 		}
 
-		// Format date.
-		if ( isset( $post_item->meta->date ) && ! empty( $post_item->meta->date ) ) {
-			$post_item->meta->date = date_i18n( $fmt, $post_item->meta->date );
-		}
 		return $post_item;
 	}
 
@@ -357,7 +353,7 @@ class TaxArchive {
 
 		$this->paginate = null;
 
-		$term_count = $this->get_post_count();
+		$term_count = get_post_count( $this->args );
 		if ( ! $term_count ) {
 			return;
 		}
@@ -379,33 +375,5 @@ class TaxArchive {
 			'total'   => $max_num_pages,
 			'post_id' => $post->ID,
 		);
-	}
-
-	/**
-	 * Get post count.
-	 *
-	 * @return int Post count.
-	 * @since 1.0.0
-	 */
-	private function get_post_count(): int {
-		$args = $this->args;
-
-		$args['fields']         = 'ids';
-		$args['posts_per_page'] = -1;
-
-		$unset = array(
-			'meta_query',
-			'orderby',
-			'order',
-		);
-		foreach ( $unset as $key ) {
-			if ( key_exists( $key, $args ) ) {
-				unset( $args[ $key ] );
-			}
-		}
-		$posts  = get_posts( $args );
-		$result = count( $posts );
-
-		return $result;
 	}
 }

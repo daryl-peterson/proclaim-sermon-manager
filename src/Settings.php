@@ -281,7 +281,16 @@ class Settings {
 	 */
 	public const IMAGES_PER_ROW = 'images_per_row';
 
-
+	/**
+	 * Sermon layout options.
+	 *
+	 * @since 1.0.0
+	 */
+	public const SERMON_LAYOUT_OPTS = array(
+		Templates::SERMON_LAYOUT_ROW    => 'Row',
+		Templates::SERMON_LAYOUT_COL    => 'Column',
+		Templates::SERMON_LAYOUT_CLASIC => 'Clasic',
+	);
 
 	/**
 	 * Option keys used to loop through options and set defaults.
@@ -295,6 +304,8 @@ class Settings {
 		self::OPTION_KEY_SERMONS,
 		self::OPTION_KEY_SERIES,
 	);
+
+
 
 	/**
 	 * Option key map, used to map option to page.
@@ -478,7 +489,7 @@ class Settings {
 				/* translators: sermon plural */
 				self::SERMON_PLURAL         => __( 'Sermons', 'drppsm' ),
 
-				self::SERMON_LAYOUT         => 'grid',
+				self::SERMON_LAYOUT         => 'row',
 			),
 
 		);

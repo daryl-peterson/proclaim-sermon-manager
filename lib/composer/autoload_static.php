@@ -143,6 +143,7 @@ class ComposerStaticInit672fe16c65cc53aa8b66e730cdfce0de
         'DRPPSM\\SermonEdit' => __DIR__ . '/../..' . '/src/SermonEdit.php',
         'DRPPSM\\SermonFiles' => __DIR__ . '/../..' . '/src/SermonFiles.php',
         'DRPPSM\\SermonImageAttach' => __DIR__ . '/../..' . '/src/SermonImageAttach.php',
+        'DRPPSM\\SermonImageList' => __DIR__ . '/../..' . '/src/SermonImageList.php',
         'DRPPSM\\SermonListTable' => __DIR__ . '/../..' . '/src/SermonListTable.php',
         'DRPPSM\\SermonMeta' => __DIR__ . '/../..' . '/src/SermonMeta.php',
         'DRPPSM\\SermonSorting' => __DIR__ . '/../..' . '/src/SermonSorting.php',

@@ -68,13 +68,16 @@ class QueryVars implements Executable, Registrable {
 		if ( ! $query->is_post_type_archive( DRPPSM_PT_SERMON ) ) {
 			return $limit;
 		}
-		if ( key_exists( 'query_type', $query->query ) && $query->query['query_type'] === 'term' ) {
+
+		if ( ! key_exists( 'query_type', $query->query ) ) {
+			return $limit;
+		}
+
+		$qt = $query->query['query_type'];
+		if ( in_array( $qt, array( 'drppsm_term', 'drppsm_tax', 'drppsm_post' ) ) ) {
 			return 'LIMIT 1';
 		}
 
-		if ( key_exists( 'query_type', $query->query ) && $query->query['query_type'] === 'tax' ) {
-			return 'LIMIT 1';
-		}
 		return $limit;
 	}
 
@@ -91,12 +94,9 @@ class QueryVars implements Executable, Registrable {
 
 			$request_org = $request;
 
-			$compare = array(
-				'post_type' => DRPPSM_PT_SERMON,
-			);
-
-			if ( $compare === $request ) {
-				Logger::debug( array( 'ARRAYS ARE EQUAL' ) );
+			$result = $this->set_post_query( $request );
+			if ( $result ) {
+				return $result;
 			}
 
 			// It's not for anything we are concerned with.
@@ -190,7 +190,7 @@ class QueryVars implements Executable, Registrable {
 			'meta_key'   => SermonMeta::DATE,
 			'orderby'    => 'meta_value_num',
 			'order'      => 'DESC',
-			'query_type' => 'term',
+			'query_type' => 'drppsm_term',
 		);
 
 		$qv_search = array(
@@ -245,7 +245,7 @@ class QueryVars implements Executable, Registrable {
 			'taxonomy'   => $tax,
 			'orderby'    => 'name',
 			'order'      => 'ASC',
-			'query_type' => 'tax',
+			'query_type' => 'drppsm_tax',
 		);
 
 		// Get a term to use.
@@ -268,5 +268,29 @@ class QueryVars implements Executable, Registrable {
 		);
 
 		return true;
+	}
+
+	/**
+	 * Set post query.
+	 *
+	 * @param array $request Query array.
+	 * @return array|false
+	 * @since 1.0.0
+	 */
+	private function set_post_query( array $request ) {
+
+		$compare = array(
+			'post_type' => DRPPSM_PT_SERMON,
+		);
+		if ( isset( $request['page'] ) ) {
+			$compare['page'] = $request['page'];
+		}
+
+		if ( $compare === $request ) {
+			$compare['query_type'] = 'drppsm_post';
+			return $compare;
+		}
+
+		return false;
 	}
 }

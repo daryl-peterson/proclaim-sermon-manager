@@ -342,6 +342,18 @@ function get_series_image( string $image_size = 'post-thumbnail', null|int|WP_Po
 	return $url;
 }
 
+/**
+ * Format date timestamp.
+ *
+ * @param int $date Date timestamp.
+ * @return string
+ */
+function format_date( int $date ): string {
+	$fmt    = Settings::get( Settings::DATE_FORMAT );
+	$result = wp_date( $fmt, $date );
+	return $result;
+}
+
 
 /**
  * Get the preach image for the current post.

@@ -333,3 +333,32 @@ function add_query_vars( array $vars ): array {
 }
 
 add_filter( 'query_vars', __NAMESPACE__ . '\\add_query_vars' );
+
+
+/**
+ * Get post count.
+ *
+ * @param array $args Query arguments.
+ * @return int
+ * @since 1.0.0
+ */
+function get_post_count( array $args = array() ): int {
+
+	$args['fields']         = 'ids';
+	$args['posts_per_page'] = -1;
+
+	$unset = array(
+		'meta_query',
+		'orderby',
+		'order',
+	);
+	foreach ( $unset as $key ) {
+		if ( key_exists( $key, $args ) ) {
+			unset( $args[ $key ] );
+		}
+	}
+	$posts  = get_posts( $args );
+	$result = count( $posts );
+
+	return $result;
+}

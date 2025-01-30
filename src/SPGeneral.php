@@ -50,7 +50,7 @@ class SPGeneral extends SPBase implements Executable, Registrable {
 		}
 
 		add_action( Action::SETTINGS_REGISTER_FORM, array( $this, 'register_metaboxes' ) );
-		add_action( "cmb2_save_{$object_type}_fields_{$id}", array( $this, 'flush_check' ), 10, 3 );
+		add_action( "cmb2_save_{$object_type}_fields_{$id}", array( $this, 'check' ), 10, 3 );
 		return true;
 	}
 
@@ -63,28 +63,23 @@ class SPGeneral extends SPBase implements Executable, Registrable {
 	 * @return void
 	 * @since 1.0.0
 	 */
-	public function flush_check( string $object_id, null|array $updated, CMB2 $cmb ) {
+	public function check( string $object_id, null|array $updated, CMB2 $cmb ) {
 
 		$check = array(
-			'archive_slug',
-			'drppsm_preacher',
-			'drppsm_stype',
-			'preacher_label',
-			'service_type_label',
-			'common_base_slug',
+			Settings::PREACHER_SINGULAR,
+			Settings::PREACHER_PLURAL,
+			Settings::SERIES_SINGULAR,
+			Settings::SERIES_PLURAL,
+			Settings::SERVICE_TYPE_SINGULAR,
+			Settings::SERVICE_TYPE_PLURAL,
 		);
 
-		$flush = false;
 		foreach ( $check as $value ) {
 
 			if ( in_array( $value, $updated, true ) ) {
-				$flush = true;
+				do_action( Action::REWRITE_FLUSH );
 				break;
 			}
-		}
-
-		if ( $flush ) {
-			do_action( Action::REWRITE_FLUSH );
 		}
 	}
 

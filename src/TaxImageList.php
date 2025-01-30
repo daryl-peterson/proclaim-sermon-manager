@@ -76,10 +76,10 @@ class TaxImageList {
 	 * @since 1.0.0
 	 */
 	public function __construct( array $args = array() ) {
-		Logger::debug( $args );
+
 		$defaults = $this->get_default_args();
 		$args     = array_merge( $defaults, $args );
-		Logger::debug( $args );
+
 		$this->set_term_data( $args );
 
 		$this->taxonomy = TaxUtils::get_taxonomy_name( $args['display'] );
@@ -132,6 +132,16 @@ class TaxImageList {
 			return;
 		}
 
+		$page      = get_page_number();
+		$tax       = $args['display'];
+		$trans_key = "{$tax}_imagelist_{$page}";
+		$data      = Transient::get( $trans_key );
+		if ( $data ) {
+			Logger::debug( 'Using transient' );
+			$this->data = $data;
+			return;
+		}
+
 		$tax_query = array(
 			'hide_empty' => true,
 			'number'     => $this->number,
@@ -168,6 +178,7 @@ class TaxImageList {
 			return;
 		}
 		$this->data = $data;
+		Transient::set( $trans_key, $data, Transient::TAX_ARCHIVE_TTL );
 	}
 
 

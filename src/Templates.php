@@ -67,9 +67,45 @@ class Templates implements Executable, Registrable {
 	 */
 	const string WRAPPER_END = 'psm-wrapper-end';
 
+	/**
+	 * Meta item template.
+	 *
+	 * @var string
+	 * @since 1.0.0
+	 */
 	const string META_ITEM = 'psm-meta-item';
 
+	/**
+	 * Sermon sorting template.
+	 *
+	 * @var string
+	 * @since 1.0.0
+	 */
 	const string SERMON_SORTING = 'psm-sermon-sorting';
+
+	/**
+	 * Sermon column layout.
+	 *
+	 * @var string
+	 * @since 1.0.0
+	 */
+	const string SERMON_LAYOUT_COL = 'psm-sermon-col';
+
+	/**
+	 * Sermon row layout.
+	 *
+	 * @var string
+	 * @since 1.0.0
+	 */
+	const string SERMON_LAYOUT_ROW = 'psm-sermon-row';
+
+	/**
+	 * Sermon clasic layout.
+	 *
+	 * @var string
+	 * @since 1.0.0
+	 */
+	const string SERMON_LAYOUT_CLASIC = 'psm-sermon-clasic';
 
 	/**
 	 * Post type
