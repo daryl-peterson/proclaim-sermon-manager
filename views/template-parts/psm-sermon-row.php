@@ -43,10 +43,12 @@ $cnt = 0;
  * @var WP_Post $item Post object.
  */
 foreach ( $list as $item ) :
+	Logger::debug( array( 'item' => $item ) );
 
 	$src      = null;
-	$preacher = null;
-	$date     = null;
+	$preacher = '';
+	$date     = '';
+	$passage  = '';
 
 	$cols_str = 'col' . $cols;
 
@@ -63,6 +65,11 @@ foreach ( $list as $item ) :
 		$date = format_date( strtotime( $item->post_date ) );
 	}
 
+	// Get passage.
+	if ( isset( $item->meta->bible_passage ) ) {
+		$passage = $item->meta->bible_passage;
+	}
+
 	/**
 	 * @var ?WP_Term $item->drppsm_preacher
 	 */
@@ -70,41 +77,37 @@ foreach ( $list as $item ) :
 		$preacher = $item->drppsm_preacher;
 	}
 
-	$link      = get_permalink( $item );
 	$link_text = __( 'View ', 'drppsm' );
+	$link      = get_permalink( $item );
+
+	if ( ! $link ) {
+		$link      = '';
+		$link_text = '';
+	}
+
 	?>
 
-
-
 			<li class="row">
-
-					<div class="sermon-image">
-						<?php if ( $src ) : ?>
+				<div class="sermon-image">
+					<?php if ( $src ) : ?>
+					<a href="<?php echo esc_attr( $link ); ?>" title="<?php echo esc_attr( $item->post_title ); ?>">
+						<img src="<?php echo esc_attr( $src ); ?>" class="drppsm_series">
+					</a>
+					<?php endif; ?>
+				</div>
+				<div class="list-info">
+					<div class="title"><?php echo esc_html( $item->post_title ); ?>&nbsp;</div>
+					<div class="date"><?php echo esc_html( $date ); ?>&nbsp;</div>
+					<div class="preacher"><?php echo esc_html( $preacher->name ); ?>&nbsp;</div>
+					<div class="passage"><?php echo esc_html( $passage ); ?>&nbsp;</div>
+					<div class="archive-link">
 						<a href="<?php echo esc_attr( $link ); ?>" title="<?php echo esc_attr( $item->post_title ); ?>">
-							<img src="<?php echo esc_attr( $src ); ?>" class="drppsm_series">
+							<?php echo esc_html( $link_text ); ?>
+							&nbsp;
 						</a>
-						<?php endif; ?>
-					</div>
-					<div class="list-info">
-						<h4><?php echo esc_html( $item->post_title ); ?></h4>
-
-						<?php if ( $preacher ) : ?>
-							<h5><?php echo esc_html( $preacher->name ); ?></h5>
-						<?php endif; ?>
-
-						<?php if ( $date ) : ?>
-							<h5><?php echo esc_html( $date ); ?></h5>
-						<?php endif; ?>
-
-						<?php if ( $link ) : ?>
-						<p class="archive-link">
-							<a href="<?php echo esc_attr( $link ); ?>" title="<?php echo esc_attr( $item->post_title ); ?>">
-								<?php echo esc_html( $link_text ); ?>
-							</a>
-						</p>
-						<?php endif; ?>
 					</div>
 
+				</div>
 			</li>
 
 	<?php

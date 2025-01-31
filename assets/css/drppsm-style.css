@@ -557,12 +557,8 @@
   padding: 0;
   list-style: none !important;
 }
-#drppsm-image-list li img {
-  -o-object-fit: fill;
-     object-fit: fill;
-  width: 100%;
-}
-#drppsm-image-list li img.drppsm_series {
+#drppsm-image-list li img.drppsm_series,
+#drppsm-image-list li img.drppsm_sermon {
   -o-object-fit: cover;
      object-fit: cover;
   width: 100%;
@@ -593,7 +589,6 @@
   padding: 1em;
   background-color: white;
   border: 1px solid #e0e0e0;
-  height: 50%;
   text-align: center;
   color: #000;
 }
@@ -605,10 +600,51 @@
   text-overflow: ellipsis;
   overflow: hidden;
 }
+#drppsm-image-list .list-info .title {
+  display: block;
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 0;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
 #drppsm-image-list .list-info h5 {
   font-size: 15px;
   font-weight: 300;
   margin: 0;
+}
+#drppsm-image-list .list-info .preacher {
+  display: block;
+  font-size: 15px;
+  font-weight: 400;
+  font-style: italic;
+  margin: 0;
+}
+#drppsm-image-list .list-info .date,
+#drppsm-image-list .list-info .text,
+#drppsm-image-list .list-info .text-italic {
+  display: block;
+  font-size: 15px;
+  font-weight: 300;
+  margin: 0;
+}
+#drppsm-image-list .list-info .text-italic {
+  font-style: italic;
+}
+#drppsm-image-list .list-info .passage {
+  display: block;
+  font-size: 12px;
+  font-weight: 300;
+  margin: 0;
+}
+#drppsm-image-list .list-info .archive-link {
+  text-decoration: none;
+}
+#drppsm-image-list .list-info .archive-link a {
+  text-decoration: none;
+  color: rgb(8, 106, 254);
+  margin-bottom: 10px;
 }
 #drppsm-image-list .list-info p {
   font-size: 15px;
@@ -635,6 +671,7 @@
   #drppsm-image-list li.col3,
   #drppsm-image-list li.col4 {
     flex: 0 0 100%;
+    margin-bottom: 24px;
   }
   #drppsm-image-list li.col3 img.drppsm_series,
   #drppsm-image-list li.col3 img.drppsm_preacher,
@@ -683,6 +720,14 @@
     flex: 0 0 30%;
   }
   #drppsm-image-list li.col4 {
-    flex: 0 0 22%;
+    flex: 0 0 30%;
+  }
+  #drppsm-image-list .list-info .title {
+    font-size: 16px;
+  }
+  #drppsm-image-list .list-info .preacher,
+  #drppsm-image-list .list-info .date,
+  #drppsm-image-list .list-info .text {
+    font-size: 14px;
   }
 }/*# sourceMappingURL=drppsm-style.css.map */

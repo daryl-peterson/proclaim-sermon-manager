@@ -23,12 +23,8 @@
 
 	}
 
-	li img {
-		object-fit: fill;
-		width: 100%;
-	}
-
-	li img.drppsm_series {
+	li img.drppsm_series,
+	li img.drppsm_sermon {
 		object-fit: cover;
 		width: 100%;
 		aspect-ratio: 1.9;
@@ -63,7 +59,7 @@
 		padding: 1em;
 		background-color: white;
 		border: 1px solid #e0e0e0;
-		height: 50%;
+		//height: 50%;
 		text-align: center;
 		color: #000;
 	}
@@ -77,10 +73,59 @@
 		overflow: hidden;
 	}
 
+	.list-info .title {
+		display: block;
+		font-size: 18px;
+		font-weight: 700;
+		margin-bottom: 0;
+		white-space: nowrap;
+		text-overflow: ellipsis;
+		overflow: hidden;
+	}
+
 	.list-info h5 {
 		font-size: 15px;
 		font-weight: 300;
 		margin: 0;
+	}
+
+	.list-info .preacher {
+		display: block;
+		font-size: 15px;
+		font-weight: 400;
+		font-style: italic;
+		margin: 0;
+	}
+
+	.list-info .date,
+	.list-info .text,
+	.list-info .text-italic {
+		display: block;
+		font-size: 15px;
+		font-weight: 300;
+		margin: 0;
+	}
+
+	.list-info .text-italic {
+		font-style: italic;
+	}
+
+	.list-info .passage {
+		display: block;
+		font-size: 12px;
+		font-weight: 300;
+		margin: 0;
+	}
+
+	.list-info .archive-link {
+		text-decoration: none;
+
+	}
+
+	.list-info .archive-link a {
+		text-decoration: none;
+		color: rgb(8, 106, 254);
+		margin-bottom: 10px;
 	}
 
 	.list-info p {
@@ -113,6 +158,7 @@
 		li.col3,
 		li.col4 {
 			flex: 0 0 100%;
+			margin-bottom: 24px;
 		}
 
 		li.col3 img.drppsm_series,
@@ -140,7 +186,6 @@
 		}
 
 		li.row {
-
 			display: initial
 		}
 
@@ -177,7 +222,17 @@
 		}
 
 		li.col4 {
-			flex: 0 0 22%;
+			flex: 0 0 30%;
+		}
+
+		.list-info .title {
+			font-size: 16px;
+		}
+
+		.list-info .preacher,
+		.list-info .date,
+		.list-info .text {
+			font-size: 14px;
 		}
 
 	}

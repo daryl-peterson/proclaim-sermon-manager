@@ -43,9 +43,15 @@ $cnt = 0;
  */
 foreach ( $list as $item ) :
 
-	$object = $item->object;
-	$link   = get_term_link( $object->term_id );
-	$src    = null;
+	if ( isset( $item->object ) ) {
+		$object = $item->object;
+	} else {
+		continue;
+	}
+
+
+	$link = get_term_link( $object->term_id );
+	$src  = null;
 	if ( isset( $item->image_id ) ) {
 		$src = wp_get_attachment_image_url( $item->image_id, $size );
 	}
@@ -62,14 +68,14 @@ foreach ( $list as $item ) :
 					</a>
 					<?php endif; ?>
 					<div class="list-info">
-						<h4><?php echo esc_html( $object->name ); ?></h4>
-						<h5><?php echo esc_html( format_date( absint( $item->date ) ) ); ?></h5>
-						<p><?php echo esc_html( "$object->count Messages" ); ?></p>
-						<p class="archive-link">
+						<div class="title"><?php echo esc_html( $object->name ); ?>&nbsp;</div>
+						<div class="date"><?php echo esc_html( format_date( absint( $item->date ) ) ); ?>&nbsp;</div>
+						<div class="text-italic"><?php echo esc_html( "$object->count Messages" ); ?>&nbsp;</div>
+						<div class="archive-link">
 							<a href="<?php echo esc_attr( $link ); ?>" title="<?php echo esc_attr( $object->name ); ?>">
 								<?php echo esc_html( 'View Archive' ); ?>
 							</a>
-						</p>
+						</div>
 					</div>
 				</div>
 			</li>

@@ -11,11 +11,6 @@
 
 namespace DRPPSM;
 
-$qv_tax  = get_query_var( 'taxonomy' );
-$qv_term = get_query_var( 'type' );
-
-
-
 /**
  * Make sure array exist. Other functions will need it.
  */
@@ -32,7 +27,6 @@ echo sermon_sorting();
 
 if ( have_posts() ) {
 	new SermonImageList();
-
 	wp_reset_postdata();
 } else {
 	get_partial( 'no-posts' );
