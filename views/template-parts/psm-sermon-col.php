@@ -43,7 +43,7 @@ $cnt = 0;
  * @var WP_Post $item Post object.
  */
 foreach ( $list as $item ) :
-	Logger::debug( array( 'item' => $item ) );
+
 	$src      = null;
 	$preacher = ' ';
 	$date     = ' ';
@@ -85,8 +85,6 @@ foreach ( $list as $item ) :
 	}
 
 	?>
-
-
 
 			<li class="<?php echo esc_attr( $cols_str ); ?>">
 

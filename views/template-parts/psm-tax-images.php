@@ -43,7 +43,12 @@ $cnt = 0;
  */
 foreach ( $list as $item ) :
 
+
 	if ( isset( $item->object ) ) {
+
+		/**
+		* @var WP_Term $object Object.
+		*/
 		$object = $item->object;
 	} else {
 		continue;

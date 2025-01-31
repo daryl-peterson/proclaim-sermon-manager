@@ -43,7 +43,6 @@ $cnt = 0;
  * @var WP_Post $item Post object.
  */
 foreach ( $list as $item ) :
-	Logger::debug( array( 'item' => $item ) );
 
 	$src      = null;
 	$preacher = '';
