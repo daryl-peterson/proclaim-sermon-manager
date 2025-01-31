@@ -27,6 +27,9 @@ $cols     = $args['columns'];
 $cols_str = 'col' . $cols;
 $size     = $args['size'];
 
+$no_image_text = __( 'Coming Soon', 'drppsm' );
+
+
 ?>
 
 <div id="drppsm-sc-wrapper">
@@ -54,11 +57,18 @@ foreach ( $list as $item ) :
 		continue;
 	}
 
+	$permalinks = PermaLinks::get();
+	$test       = implode( '/', array( get_site_url(), $permalinks['drppsm_sermon'] ) ) . '/?drppsm_series=' . $object->slug;
 
-	$link = get_term_link( $object->term_id );
-	$src  = null;
+	$no_image = false;
+	$link     = get_term_link( $object->term_id );
+
+	$src = null;
 	if ( isset( $item->image_id ) ) {
 		$src = wp_get_attachment_image_url( $item->image_id, $size );
+	} else {
+		$tax_name = $object->taxonomy;
+		$src      = DRPPSM_URL . "assets/images/coming-soon-{$taxonomy}.jpg";
 	}
 	$cols_str = 'col' . $cols . " $object->taxonomy";
 	?>
@@ -67,11 +77,14 @@ foreach ( $list as $item ) :
 
 			<li class="<?php echo esc_attr( $cols_str ); ?>">
 				<div>
+					<div class="img-container">
+
 					<?php if ( $src ) : ?>
 					<a href="<?php echo esc_attr( $link ); ?>" title="<?php echo esc_attr( $object->name ); ?>">
 						<img src="<?php echo esc_attr( $src ); ?>" class="<?php echo esc_attr( $object->taxonomy ); ?>">
 					</a>
 					<?php endif; ?>
+					</div>
 					<div class="list-info">
 						<div class="title"><?php echo esc_html( $object->name ); ?>&nbsp;</div>
 						<div class="date"><?php echo esc_html( format_date( absint( $item->date ) ) ); ?>&nbsp;</div>

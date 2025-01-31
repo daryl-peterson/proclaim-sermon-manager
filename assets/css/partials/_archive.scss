@@ -61,8 +61,13 @@
 	}
 
 	.media {
-		min-height: 300px;
 		margin: 24px 0;
+	}
+
+	.poster {
+		background-size: cover;
+		background-position: center;
+		width: 100%;
 	}
 
 	table {
@@ -153,7 +158,7 @@
 		table tr.active td.watch-cell {
 			display: block;
 			text-align: center;
-			padding: 0px 0px 4px 0px;
+			padding: 10px;
 		}
 
 		table tr.active td,

@@ -84,6 +84,16 @@ foreach ( $list as $item ) :
 		$link_text = ' ';
 	}
 
+	if ( isset( $item->drppsm_series ) ) {
+		$series = $item->drppsm_series;
+
+		$link = get_term_link( $series );
+		if ( ! is_wp_error( $link ) ) {
+			$link_text = get_taxonomy_field( $series->taxonomy, 'label' );
+			$link     .= '?play=' . $item->ID;
+		}
+	}
+
 	?>
 
 			<li class="<?php echo esc_attr( $cols_str ); ?>">

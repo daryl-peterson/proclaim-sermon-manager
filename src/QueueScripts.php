@@ -76,6 +76,20 @@ class QueueScripts implements Registrable, Executable {
 		wp_enqueue_script( 'drppsm-plyr' );
 		wp_enqueue_script( 'drppsm-plyr-loader' );
 		wp_enqueue_script( 'drppsm-frontend' );
+
+		$permalinks = PermaLinks::get();
+
+		$data = array();
+		foreach ( $permalinks as $tax => $url ) {
+			$url          = get_site_url() . '/' . $url . '/';
+			$data[ $tax ] = $url;
+		}
+
+		wp_localize_script(
+			'drppsm-frontend',
+			'drppsm_info',
+			$data
+		);
 	}
 
 	/**

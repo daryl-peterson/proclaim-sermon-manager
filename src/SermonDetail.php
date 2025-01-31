@@ -130,6 +130,30 @@ class SermonDetail implements Executable, Registrable {
 		$this->save_service_type( $post_ID, $cmb->data_to_save );
 		$this->save_date( $post_ID, $cmb->data_to_save );
 		$this->save_books( $post_ID, $cmb->data_to_save );
+		$this->save_series( $post_ID, $cmb->data_to_save );
+		Logger::debug( $cmb->data_to_save );
+	}
+
+	/**
+	 * Save series.
+	 *
+	 * @param int   $post_ID Post ID.
+	 * @param array $data Data array.
+	 * @return bool Returns true if series was saved, otherwise false.
+	 * @since 1.0.0
+	 */
+	private function save_series( int $post_ID, array $data ): bool {
+		// Already set so bail.
+		if ( isset( $data['tax_input']['drppsm_series'] ) && ! empty( $data['tax_input']['drppsm_series'] ) ) {
+			return false;
+		}
+		$result = wp_set_post_terms( $post_ID, 'None', 'drppsm_series' );
+		if ( is_wp_error( $result ) ) {
+
+			return false;
+		}
+
+		return false;
 	}
 
 	/**
@@ -163,6 +187,11 @@ class SermonDetail implements Executable, Registrable {
 			$book = explode( ':', $value );
 			$book = $book[0];
 			$book = trim( substr( $book, 0, -1 ) );
+
+			$term = get_term_by( 'name', $book, 'drppsm_bible' );
+			if ( ! $term ) {
+				continue;
+			}
 
 			$result = wp_set_post_terms( $post_ID, $book, 'drppsm_bible', true );
 

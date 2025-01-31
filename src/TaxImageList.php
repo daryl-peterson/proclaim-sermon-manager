@@ -45,6 +45,14 @@ class TaxImageList {
 	private null|array $paginate;
 
 	/**
+	 * Used in paginated queries, per_page
+	 *
+	 * @var int
+	 * @since 1.0.0
+	 */
+	private int $per_page;
+
+	/**
 	 * Template data.
 	 *
 	 * @var array
@@ -68,6 +76,14 @@ class TaxImageList {
 	 */
 	private int $offset;
 
+	/**
+	 * Query arguments.
+	 *
+	 * @var array
+	 * @since 1.0.0
+	 */
+	private array $args;
+
 
 	/**
 	 * TaxImageList constructor.
@@ -80,8 +96,6 @@ class TaxImageList {
 		$defaults = $this->get_default_args();
 		$args     = array_merge( $defaults, $args );
 
-		$this->set_term_data( $args );
-
 		$this->taxonomy = TaxUtils::get_taxonomy_name( $args['display'] );
 		if ( ! $this->taxonomy ) {
 			return;
@@ -89,13 +103,15 @@ class TaxImageList {
 
 		$args['display'] = $this->taxonomy;
 		$args['post_id'] = get_the_ID();
-		$this->set_term_data( $args );
+		$this->set_params( $args );
+		$this->set_pagination();
+		$this->set_term_data();
 
 		$output = '';
 		if ( isset( $this->data ) && is_array( $this->data ) && count( $this->data ) > 0 ) {
 
 			ob_start();
-			// echo sermon_sorting();
+			echo sermon_sorting();
 			get_partial(
 				Templates::TAX_IMAGE_LIST,
 				array(
@@ -115,43 +131,49 @@ class TaxImageList {
 		echo $output;
 	}
 
+	private function set_params( array $args ): void {
+		$this->per_page = $args['per_page'];
+		$this->args     = array(
+			'hide_empty' => true,
+			'meta_key'   => $this->taxonomy . '_date',
+			'orderby'    => 'meta_value_num',
+			'order'      => 'DESC',
+		);
+	}
+
+
 	/**
 	 * Set term data needed for template.
 	 *
-	 * @param array $args Shortcode arguments.
 	 * @return void
 	 * @since 1.0.0
 	 */
-	private function set_term_data( array $args ): void {
+	private function set_term_data(): void {
 
-		$this->data     = null;
-		$this->paginate = null;
+		$this->data = null;
 
-		$this->set_pagination( $args );
 		if ( ! $this->paginate ) {
 			return;
 		}
 
 		$page      = get_page_number();
-		$tax       = $args['display'];
+		$tax       = $this->taxonomy;
 		$trans_key = "{$tax}_imagelist_{$page}";
 		$data      = Transient::get( $trans_key );
 		if ( $data ) {
-			Logger::debug( 'Using transient' );
+			Logger::debug( "Transient found : $trans_key" );
 			$this->data = $data;
 			return;
+		} else {
+			Logger::debug( "Transient not found : $trans_key" );
 		}
 
-		$tax_query = array(
-			'hide_empty' => true,
-			'number'     => $this->number,
-			'offset'     => $this->offset,
-			'meta_key'   => $args['display'] . '_date',
-			'orderby'    => 'meta_value_num',
-			'order'      => 'DESC',
-		);
+		$args               = $this->args;
+		$args['hide_empty'] = true;
+		$args['number']     = $this->number;
+		$args['offset']     = $this->offset;
 
-		$list = get_terms( $tax_query );
+		$list = get_terms( $args );
 
 		if ( ! $list ) {
 			return;
@@ -181,7 +203,6 @@ class TaxImageList {
 		Transient::set( $trans_key, $data, Transient::TAX_ARCHIVE_TTL );
 	}
 
-
 	/**
 	 * Get meta data for term.
 	 *
@@ -201,29 +222,27 @@ class TaxImageList {
 	/**
 	 * Set pagination data.
 	 *
-	 * @param array $args Shortcode arguments.
 	 * @return void
 	 * @since 1.0.0
 	 */
-	private function set_pagination( array $args ): void {
+	private function set_pagination(): void {
 		global $post;
 
 		$this->paginate = null;
 
-		$term_count = TaxUtils::get_term_count( DRPPSM_TAX_SERIES, true );
-		if ( ! $term_count ) {
+		$term_count = $this->get_term_count();
+		if ( 0 === $term_count ) {
 			return;
 		}
 
-		$tpp           = $args['per_page'];
-		$max_num_pages = ceil( $term_count / $tpp );
+		$max_num_pages = ceil( $term_count / $this->per_page );
 		$paged         = get_page_number();
 
 		// Calculate term offset
-		$offset = ( ( $paged - 1 ) * $tpp );
+		$offset = ( ( $paged - 1 ) * $this->per_page );
 
 		// We can now get our terms and paginate it
-		$this->number = $tpp;
+		$this->number = $this->per_page;
 		$this->offset = $offset;
 
 		$this->paginate = array(
@@ -232,6 +251,39 @@ class TaxImageList {
 			'total'   => $max_num_pages,
 			'post_id' => $post->ID,
 		);
+	}
+
+	/**
+	 * Get term count.
+	 *
+	 * @return int
+	 */
+	private function get_term_count(): int {
+		$args = $this->args;
+
+		$args['fields']         = 'ids';
+		$args['posts_per_page'] = -1;
+
+		$unset = array(
+			'orderby',
+			'order',
+		);
+
+		foreach ( $unset as $key ) {
+			if ( key_exists( $key, $args ) ) {
+				unset( $args[ $key ] );
+			}
+		}
+
+		$terms = get_terms( $args );
+
+		if ( ! is_wp_error( $terms ) ) {
+			$result = count( $terms );
+		} else {
+			$result = 0;
+		}
+
+		return $result;
 	}
 
 	/**
@@ -248,7 +300,7 @@ class TaxImageList {
 			'hide_title' => false,
 			'image_size' => ImageSize::SERMON_MEDIUM,
 			'columns'    => Settings::get( Settings::IMAGES_PER_ROW ),
-			'per_page'   => 6,
+			'per_page'   => Settings::get( Settings::SERMON_COUNT ),
 		);
 	}
 }

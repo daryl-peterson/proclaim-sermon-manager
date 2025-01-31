@@ -198,6 +198,7 @@ class TaxArchive {
 		if ( isset( $this->data ) && is_array( $this->data ) && count( $this->data ) > 0 ) {
 
 			ob_start();
+			echo sermon_sorting();
 			get_partial(
 				Templates::TAX_ARCHIVE,
 				array(
@@ -276,6 +277,40 @@ class TaxArchive {
 		// Set meta object properties.
 		foreach ( $meta as $meta_key => $meta_value ) {
 			$post_item->meta->{$meta_key} = $meta_value;
+		}
+
+		$types = array(
+			array(
+				'type'   => 'video',
+				'detail' => 'video_link',
+				'obj'    => $post_item->meta->video_link,
+
+			),
+			array(
+				'type'   => 'video',
+				'detail' => 'video_embed',
+				'obj'    => $post_item->meta->video,
+			),
+			array(
+				'type'   => 'audio',
+				'detail' => 'audio',
+				'obj'    => $post_item->meta->audio,
+			),
+		);
+
+		$post_item->has_video   = false;
+		$post_item->has_audio   = false;
+		$post_item->media_types = array();
+
+		foreach ( $types as $item ) {
+			if ( ! empty( $item['obj'] && 'video' === $item['type'] ) ) {
+				$post_item->has_video     = true;
+				$post_item->media_types[] = $item['detail'];
+			}
+			if ( ! empty( $item['obj'] && 'audio' === $item['type'] ) ) {
+				$post_item->has_audio     = true;
+				$post_item->media_types[] = $item['detail'];
+			}
 		}
 
 		return $post_item;

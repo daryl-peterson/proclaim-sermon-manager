@@ -76,8 +76,8 @@ class SermonMeta {
 		$meta = array();
 		foreach ( self::META_LIST as $meta_key => $meta_name ) {
 			$meta_value = get_post_meta( $post_id, $meta_key, true );
-			if ( $empty ) {
-				$meta[ $meta_name ] = $meta_value;
+			if ( $empty && empty( $meta_value ) ) {
+				$meta[ $meta_name ] = null;
 				continue;
 			}
 

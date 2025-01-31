@@ -318,24 +318,6 @@ function cast_stdclass( $source_obj ): mixed {
 }
 
 /**
- * Add taxonomy query vars.
- *
- * @param array $vars Current query vars.
- * @return array
- * @since 1.0.0
- */
-function add_query_vars( array $vars ): array {
-
-	$friendly = array_keys( DRPPSM_TAX_MAP );
-	$vars     = array_merge( $vars, $friendly );
-	$vars[]   = 'play';
-	return $vars;
-}
-
-add_filter( 'query_vars', __NAMESPACE__ . '\\add_query_vars' );
-
-
-/**
  * Get post count.
  *
  * @param array $args Query arguments.

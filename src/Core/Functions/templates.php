@@ -12,6 +12,7 @@
 namespace DRPPSM;
 
 use DRPPSM\Constants\Bible;
+use Predis\Command\Argument\Server\To;
 use WP_Exception;
 use WP_Post;
 use WP_Term;
@@ -399,12 +400,24 @@ function get_term_dropdown( string $taxonomy, string $default_value ): string {
 	// Reset var.
 	$html = "\n" . PHP_EOL;
 
-	$terms = get_terms(
-		array(
-			'taxonomy'   => $taxonomy,
-			'hide_empty' => false, // todo: add option to disable/enable this globally.
-		)
-	);
+	$terms     = null;
+	$trans_key = "{$taxonomy}_dropdown";
+	$data      = Transient::get( $trans_key );
+
+	if ( $data ) {
+		Logger::debug( 'Using transient.' );
+		$terms = $data;
+	}
+
+	if ( ! $terms ) {
+		$terms = get_terms(
+			array(
+				'taxonomy'   => $taxonomy,
+				'hide_empty' => true, // todo: add option to disable/enable this globally.
+			)
+		);
+		Transient::set( $trans_key, $terms, Transient::TAX_ARCHIVE_TTL );
+	}
 
 	if ( DRPPSM_TAX_BOOK === $taxonomy && ! Settings::get( Settings::BIBLE_BOOK_SORT, false ) ) {
 		// Book order.
@@ -449,5 +462,6 @@ function get_term_dropdown( string $taxonomy, string $default_value ): string {
 	 * @category filter
 	 * @since 1.0.0
 	 */
-	return apply_filters( 'drppsmf_get_term_dropdown', $html, $taxonomy, $default_value, $terms, $current_slug );
+	$result = apply_filters( 'drppsmf_get_term_dropdown', $html, $taxonomy, $default_value, $terms, $current_slug );
+	return $result;
 }

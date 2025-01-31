@@ -42,10 +42,35 @@ foreach ( $requirements as $req ) {
 if ( 'none' === $args['visibility'] || is_tax_filtering_disabled( $args ) ) {
 	return;
 }
+// onchange="if(this.options[this.selectedIndex].value !== ''){return this.form.submit()}else{window.location = window.location.href.split('?')[0];}"
+
+$browse = __( 'Browse', 'drppsm' );
+
+$sermons   = get_post_field( DRPPSM_PT_SERMON, 'label' );
+$books     = get_taxonomy_field( DRPPSM_TAX_BOOK, 'label' );
+$series    = get_taxonomy_field( DRPPSM_TAX_SERIES, 'label' );
+$topics    = get_taxonomy_field( DRPPSM_TAX_TOPIC, 'label' );
+$preachers = get_taxonomy_field( DRPPSM_TAX_PREACHER, 'label' );
 
 ?>
 
+
 <div id="<?php echo esc_html( $args['id'] ); ?>" class="<?php echo esc_html( $args['classes'] ); ?>">
+<div class="drppsm-browse" style="display: inline-block">
+	<select
+		id="drppsm_browse"
+		name="drppsm_browse"
+		title="Browse"
+		autocomplete="off">
+		<option value=""><?php echo esc_html( $browse ); ?></option>
+		<option value="drppsm_bible"><?php echo esc_html( $books ); ?></option>
+		<option value="drppsm_preacher"><?php echo esc_html( $preachers ); ?></option>
+		<option value="drppsm_sermon"><?php echo esc_html( $sermons ); ?></option>
+		<option value="drppsm_series"><?php echo esc_html( $series ); ?></option>
+		<option value="drppsm_topics"><?php echo esc_html( $topics ); ?></option>
+	</select>
+</div>
+
 <?php
 
 foreach ( $filters as $filter ) {
@@ -66,19 +91,17 @@ foreach ( $filters as $filter ) {
 	$options    = get_term_dropdown( $tax_var, '' );
 	?>
 	<div class="<?php echo esc_attr( $class_name ); ?>" style="display: inline-block">
-		<form action="<?php echo esc_attr( $act ); ?>" method="get">
-			<select
-				id="<?php echo esc_attr( $tax_var ); ?>"
-				name="<?php echo esc_attr( $tax_var ); ?>"
-				title="<?php echo esc_attr( $title_var ); ?>"
-				onchange="if(this.options[this.selectedIndex].value !== ''){return this.form.submit()}else{window.location = window.location.href.split('?')[0];}"
-				autocomplete="off"
-				<?php echo esc_attr( $disabled ); ?>>
+		<select
+			id="<?php echo esc_attr( $tax_var ); ?>"
+			name="<?php echo esc_attr( $tax_var ); ?>"
+			title="<?php echo esc_attr( $title_var ); ?>"
 
-				<option value=""><?php echo esc_html( $title_var ); ?></option>
-				<?php render_html( $options ); ?>
-			</select>
-		</form>
+			autocomplete="off"
+			<?php echo esc_attr( $disabled ); ?>>
+
+			<option value=""><?php echo esc_html( $title_var ); ?></option>
+			<?php render_html( $options ); ?>
+		</select>
 	</div>
 	<?php
 }

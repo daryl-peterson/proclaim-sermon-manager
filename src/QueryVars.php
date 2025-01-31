@@ -43,7 +43,24 @@ class QueryVars implements Executable, Registrable {
 
 		add_filter( 'request', array( $this, 'overwrite_request_vars' ) );
 		add_action( 'post_limits', array( $this, 'post_limits' ), 10, 2 );
+		add_filter( 'query_vars', array( $this, 'add_query_vars' ), 10, 1 );
 		return true;
+	}
+
+
+	/**
+	 * Add query vars.
+	 *
+	 * @param array $vars Query vars.
+	 * @return array
+	 * @since 1.0.0
+	 */
+	public function add_query_vars( array $vars ): array {
+		$friendly = array_keys( DRPPSM_TAX_MAP );
+		$vars     = array_merge( $vars, $friendly );
+		$vars[]   = 'play';
+		$vars[]   = 'player';
+		return $vars;
 	}
 
 	/**
@@ -197,6 +214,7 @@ class QueryVars implements Executable, Registrable {
 			'page',
 			'paged',
 			'play',
+			'player',
 		);
 
 		foreach ( $qv_search as $key ) {
@@ -240,6 +258,8 @@ class QueryVars implements Executable, Registrable {
 			return false;
 		}
 
+		$request_org = $request;
+
 		$request = array(
 			'post_type'  => DRPPSM_PT_SERMON,
 			'taxonomy'   => $tax,
@@ -266,6 +286,10 @@ class QueryVars implements Executable, Registrable {
 				'terms'    => array_values( $terms ),
 			),
 		);
+
+		if ( key_exists( 'page', $request_org ) ) {
+			$request['page'] = $request_org['page'];
+		}
 
 		return true;
 	}

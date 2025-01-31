@@ -24,7 +24,8 @@ if ( ! $result ) {
 
 $list = $args['list'];
 
-$play = get_query_var( 'play' );
+$play   = get_query_var( 'play' );
+$player = get_query_var( 'player' );
 if ( $play && ! empty( $play ) ) {
 
 	if ( key_exists( $play, $list ) ) {
@@ -45,11 +46,13 @@ if ( $play && ! empty( $play ) ) {
 
 
 $preacher = null;
+$date     = null;
+
 if ( isset( $item_first->drppsm_preacher ) ) {
 	$preacher = $item_first->drppsm_preacher->name;
 }
 
-$date = null;
+
 if ( isset( $item_first->meta->date ) ) {
 	$date = format_date( absint( $item_first->meta->date ) );
 }
@@ -58,10 +61,11 @@ if ( isset( $item_first->meta->date ) ) {
 $poster = get_sermon_image_url( ImageSize::SERMON_WIDE, true, true, $item_first );
 Logger::debug(
 	array(
-		'SERMON' => $item_first,
 		'POSTER' => $poster,
+		'ITEM'   => $item_first,
 	)
 );
+
 
 
 $cnt = 0;
@@ -81,8 +85,14 @@ $cnt = 0;
 	<!-- /#drppsm-archive-header -->
 	<div class="media">
 		<?php
-		if ( isset( $item_first->meta->video_link ) ) {
 
+		if ( ! $item_first->has_video && $item_first->has_audio ) {
+			if ( $poster ) {
+				echo '<img src="' . esc_url( $poster ) . '" class="poster" alt="' . esc_attr( $item_first->post_title ) . '" />';
+			}
+			echo MediaPlayer::render_audio( $item_first->meta->audio );
+		}
+		if ( $item_first->has_video ) {
 			echo MediaPlayer::render_video( $item_first->meta->video_link, true, $poster );
 		}
 		?>
@@ -127,6 +137,7 @@ foreach ( $list as $item ) :
 				echo esc_html( $item->drppsm_preacher->name );
 			}
 			?>
+			&nbsp;
 		</td>
 		<td class="date-cell">
 			<?php
@@ -135,12 +146,15 @@ foreach ( $list as $item ) :
 				echo esc_html( $date );
 			}
 			?>
-
+			&nbsp;
 		</td>
 		<td class="watch-cell">
 			<?php
-			if ( isset( $item->meta->video_link ) ) {
+			if ( $item->has_video ) {
 				echo '<a data-id="' . esc_attr( $item->ID ) . '" class="drppsm-play-video btn-md"></a>';
+			}
+			if ( $item->has_audio ) {
+				echo '<a data-id="' . esc_attr( $item->ID ) . '" class="drppsm-play-audio btn-md"></a>';
 			}
 			?>
 		</td>
