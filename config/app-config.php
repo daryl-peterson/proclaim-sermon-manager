@@ -20,11 +20,13 @@ use DRPPSM\Interfaces\NoticeInt;
 use DRPPSM\Logging\LogFile;
 use DRPPSM\Logging\LoggerInt;
 use DRPPSM\Logging\LogWritterInt;
+use DRPPSM\ShortCodes\Codes;
 
 return array(
 	AdminMenu::class         => AdminMenu::class,
 	AdminSettings::class     => AdminSettings::class,
 	BibleLoader::class       => BibleLoader::class,
+	Codes::class             => Codes::class,
 	DbUpdates::class         => DbUpdates::class,
 	ImageSize::class         => ImageSize::class,
 	LogWritterInt::class     => LogFile::class,
@@ -53,6 +55,6 @@ return array(
 	TaxListTable::class      => TaxListTable::class,
 	TaxMeta::class           => TaxMeta::class,
 	TextDomainInt::class     => TextDomain::class,
-	Templates::class         => Templates::class,
+	Template::class          => Template::class,
 	Timer::class             => Timer::class,
 );

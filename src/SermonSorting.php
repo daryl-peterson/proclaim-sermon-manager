@@ -175,7 +175,7 @@ class SermonSorting implements Executable {
 					'args'               => $args,
 				);
 				ob_start();
-				get_partial( Templates::SERMON_SORTING, $temp );
+				get_partial( Template::SERMON_SORTING, $temp );
 				$content .= ob_get_clean();
 			}
 

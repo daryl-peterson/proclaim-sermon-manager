@@ -32,7 +32,7 @@ defined( 'ABSPATH' ) || exit;
  * @since 1.0.0
  */
 function get_partial( string $name, array $args = array() ) {
-	Templates::exec()->get_partial( $name, $args );
+	TemplateFiles::exec()->get_partial( $name, $args );
 }
 
 /**
@@ -44,7 +44,7 @@ function get_partial( string $name, array $args = array() ) {
  * @since 1.0.0
  */
 function locate_partial( string $name, array $args = array() ): ?string {
-	return Templates::exec()->locate_partial( $name, $args );
+	return TemplateFiles::exec()->locate_partial( $name, $args );
 }
 
 /**

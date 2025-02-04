@@ -9,25 +9,8 @@
  * @since       1.0.0
  */
 
-use DRPPSM\Templates;
-
 use function DRPPSM\sermon_excerpt;
 
-/**
- * Get partial template.
- *
- * - `/wp-contents/themes/<theme_name>/partials/<partial_name>.php`
- * - `/wp-contents/themes/<theme_name>/template-parts/<partial_name>.php`
- * - `/wp-contents/themes/<theme_name>/<partial_name>.php`
- *
- * @param string $name File name.
- * @param array  $args Array of variables to pass to template.
- * @return void
- * @since 1.0.0
- */
-function drppsm_get_partial( string $name, array $args = array() ): void {
-	Templates::exec()->get_partial( $name, $args );
-}
 
 /**
  * Get sermon excerpt

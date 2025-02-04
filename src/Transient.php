@@ -44,7 +44,7 @@ class Transient {
 	 *
 	 * @since 1.0.0
 	 */
-	public const TAX_ARCHIVE_TTL = HOUR_IN_SECONDS;
+	public const TAX_ARCHIVE_TTL = 8 * HOUR_IN_SECONDS;
 
 
 	/**
@@ -52,7 +52,7 @@ class Transient {
 	 *
 	 * @since 1.0.0
 	 */
-	public const SERMON_IMAGE_LIST_TTL = HOUR_IN_SECONDS;
+	public const SERMON_IMAGE_LIST_TTL = 8 * HOUR_IN_SECONDS;
 
 	/**
 	 * Get transient.

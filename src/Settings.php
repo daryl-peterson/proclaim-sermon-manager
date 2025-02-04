@@ -287,9 +287,9 @@ class Settings {
 	 * @since 1.0.0
 	 */
 	public const SERMON_LAYOUT_OPTS = array(
-		Templates::SERMON_LAYOUT_ROW    => 'Row',
-		Templates::SERMON_LAYOUT_COL    => 'Column',
-		Templates::SERMON_LAYOUT_CLASIC => 'Clasic',
+		Template::SERMON_LAYOUT_ROW    => 'Row',
+		Template::SERMON_LAYOUT_COL    => 'Column',
+		Template::SERMON_LAYOUT_CLASIC => 'Clasic',
 	);
 
 	/**

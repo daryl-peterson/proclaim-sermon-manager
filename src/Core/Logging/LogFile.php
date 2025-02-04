@@ -152,7 +152,10 @@ class LogFile extends LogWritterAbs implements LogWritterInt {
 	 * @since 1.0.0
 	 */
 	public function truncate(): bool {
-		define( 'DRPPSM_DOING_TRUNCATE', true );
+		if ( ! defined( 'DRPPSM_DOING_TRUNCATE' ) ) {
+			define( 'DRPPSM_DOING_TRUNCATE', true );
+		}
+
 		// @codeCoverageIgnoreStart
 		try {
 			// phpcs:disable

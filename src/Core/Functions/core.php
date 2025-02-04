@@ -339,6 +339,11 @@ function get_post_count( array $args = array() ): int {
 			unset( $args[ $key ] );
 		}
 	}
+	Logger::debug( $args );
+
+	$cnt = wp_count_posts( DRPPSM_PT_SERMON )->publish;
+	return $cnt;
+
 	$posts  = get_posts( $args );
 	$result = count( $posts );
 

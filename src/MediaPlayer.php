@@ -27,6 +27,9 @@ class MediaPlayer {
 	}
 
 
+	public static function render() {
+	}
+
 	/**
 	 * Renders the video player.
 	 *

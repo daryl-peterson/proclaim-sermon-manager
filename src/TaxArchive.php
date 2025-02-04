@@ -147,46 +147,6 @@ class TaxArchive {
 		$this->render();
 	}
 
-	private function test() {
-
-		$terms       = get_terms( DRPPSM_TAX_SERIES );
-		$posts_array = get_posts(
-			array(
-				'posts_per_page' => -1,
-				'post_type'      => DRPPSM_PT_SERMON,
-				'tax_query'      => array(
-					array(
-						'taxonomy' => DRPPSM_TAX_SERIES,
-						'field'    => 'slug',
-						'terms'    => wp_list_pluck( $terms, 'slug' ),
-					),
-				),
-			)
-		);
-
-		/*
-		//fetch all reviews which have no assigned term in 'review-product'
-		$taxonomy  = 'review-product';
-		$post_type = 'reviews';
-		$args = [
-			'post_type' => $post_type,
-			'tax_query' => [
-				[
-					'taxonomy' => $taxonomy,
-					'terms'    => get_terms( $taxonomy, [ 'fields' => 'ids'  ] ),
-					'operator' => 'NOT IN'
-				]
-			]
-		];
-
-		$query = new \WP_Query( $args );
-
-
-		*/
-
-		Logger::debug( $posts_array );
-	}
-
 	/**
 	 * Render template.
 	 *
@@ -200,14 +160,14 @@ class TaxArchive {
 			ob_start();
 			echo sermon_sorting();
 			get_partial(
-				Templates::TAX_ARCHIVE,
+				Template::TAX_ARCHIVE,
 				array(
 					'list' => $this->data,
 					'term' => $this->term,
 
 				)
 			);
-			get_partial( Templates::Pagination, $this->paginate );
+			get_partial( Template::Pagination, $this->paginate );
 
 			$output .= ob_get_clean();
 		} else {
@@ -236,8 +196,8 @@ class TaxArchive {
 		$trans     = Transient::get( $trans_key );
 
 		if ( $trans ) {
-			Logger::debug( 'Using transient' );
-			return $trans;
+			// Logger::debug( 'Using transient' );
+			// return $trans;
 		}
 
 		// Set arguments from pagination.
@@ -251,9 +211,9 @@ class TaxArchive {
 		 * @var WP_Post $post_item
 		 */
 		foreach ( $post_data as $post_item ) {
-			$post_item              = $this->get_sermon_meta( $post_item );
-			$post_item              = $this->get_sermon_terms( $post_item );
-			$data[ $post_item->ID ] = $post_item;
+			// $post_item              = $this->get_sermon_meta( $post_item );
+			// $post_item              = $this->get_sermon_terms( $post_item );
+			$data[ $post_item->ID ] = new Sermon( $post_item );
 		}
 		Transient::set( $trans_key, $data, Transient::TAX_ARCHIVE_TTL );
 
@@ -268,6 +228,9 @@ class TaxArchive {
 	 * @since 1.0.0
 	 */
 	private function get_sermon_meta( WP_Post $post_item ): WP_Post {
+
+		new Sermon( $post_item );
+
 		$meta = SermonMeta::get_meta( $post_item->ID );
 
 		$fmt = Settings::get( Settings::DATE_FORMAT );

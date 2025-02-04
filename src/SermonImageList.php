@@ -11,7 +11,6 @@
 
 namespace DRPPSM;
 
-use stdClass;
 use WP_Post;
 
 defined( 'ABSPATH' ) || exit;
@@ -95,8 +94,34 @@ class SermonImageList {
 		$this->set_params();
 		$this->set_pagination();
 		$this->data = $this->get_post_data();
-		$this->render();
 	}
+
+
+	public function show_data() {
+		$args = array(
+			'list'    => $this->data,
+			'columns' => Settings::get( Settings::IMAGES_PER_ROW ),
+			'size'    => 'wide',
+		);
+
+		$layout = Settings::get( Settings::SERMON_LAYOUT );
+
+		Logger::debug( 'Layout: ' . $layout );
+
+		// get_partial( $layout, $args );
+		get_partial(
+			$layout,
+			array(
+				'list'    => $this->data,
+				'columns' => Settings::get( Settings::IMAGES_PER_ROW ),
+				'size'    => 'wide',
+			)
+		);
+
+		// get_partial( Templates::Pagination, $this->paginate );
+	}
+
+
 
 	/**
 	 * Render the archive.
@@ -104,7 +129,7 @@ class SermonImageList {
 	 * @return void
 	 * @since 1.0.0
 	 */
-	private function render() {
+	public function render() {
 		$output = '';
 
 		$layout = Settings::get( Settings::SERMON_LAYOUT );
@@ -120,7 +145,7 @@ class SermonImageList {
 					'size'    => 'wide',
 				)
 			);
-			get_partial( Templates::Pagination, $this->paginate );
+			get_partial( Template::Pagination, $this->paginate );
 
 			$output .= ob_get_clean();
 		} else {
@@ -177,7 +202,7 @@ class SermonImageList {
 		$trans     = Transient::get( $trans_key );
 
 		if ( $trans ) {
-			Logger::debug( 'Using transient' );
+			Logger::debug( "Using transient : $trans_key" );
 			return $trans;
 		}
 
@@ -192,9 +217,7 @@ class SermonImageList {
 		 * @var WP_Post $post_item
 		 */
 		foreach ( $post_data as $post_item ) {
-			$post_item              = $this->get_sermon_meta( $post_item );
-			$post_item              = $this->get_sermon_terms( $post_item );
-			$data[ $post_item->ID ] = $post_item;
+			$data[ $post_item->ID ] = new Sermon( $post_item );
 		}
 		Transient::set( $trans_key, $data, Transient::SERMON_IMAGE_LIST_TTL );
 		return $data;
@@ -233,46 +256,5 @@ class SermonImageList {
 			'total'   => $max_num_pages,
 			'post_id' => $post->ID,
 		);
-	}
-
-	/**
-	 * Set sermon meta.
-	 *
-	 * @param WP_Post $post_item
-	 * @return WP_Post
-	 * @since 1.0.0
-	 */
-	private function get_sermon_meta( WP_Post $post_item ): WP_Post {
-		$meta = SermonMeta::get_meta( $post_item->ID );
-
-		$post_item->meta = new stdClass();
-
-		// Set meta object properties.
-		foreach ( $meta as $meta_key => $meta_value ) {
-			$post_item->meta->{$meta_key} = $meta_value;
-		}
-		return $post_item;
-	}
-
-	/**
-	 * Get sermon terms.
-	 *
-	 * @param WP_Post $post_item
-	 * @return WP_Post
-	 * @since 1.0.0
-	 */
-	private function get_sermon_terms( WP_Post $post_item ): WP_Post {
-
-		foreach ( DRPPSM_TAX_MAP as $tax_name ) {
-			$terms = get_the_terms( $post_item, $tax_name );
-			if ( is_wp_error( $terms ) || ! is_array( $terms ) || 0 === count( $terms ) ) {
-				$post_item->{$tax_name} = null;
-				continue;
-			}
-			$term                   = array_shift( $terms );
-			$post_item->{$tax_name} = $term;
-		}
-
-		return $post_item;
 	}
 }

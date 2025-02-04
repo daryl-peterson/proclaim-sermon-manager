@@ -20,7 +20,7 @@ if ( ! did_action( 'get_header' ) ) {
 	get_header();
 }
 
-get_partial( Templates::WRAPPER_START );
+get_partial( Template::WRAPPER_START );
 
 
 if ( empty( $qv_term ) ) {
@@ -37,7 +37,7 @@ if ( empty( $qv_term ) ) {
 	get_partial( 'no-posts' );
 }
 
-get_partial( Templates::WRAPPER_END );
+get_partial( Template::WRAPPER_END );
 
 if ( ! did_action( 'get_footer' ) ) {
 	get_footer();

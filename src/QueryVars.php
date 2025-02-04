@@ -113,11 +113,23 @@ class QueryVars implements Executable, Registrable {
 
 			$result = $this->set_post_query( $request );
 			if ( $result ) {
+				Logger::debug(
+					array(
+						'FINAL REQUEST' => $result,
+						'ORG REQUEST'   => $request_org,
+					)
+				);
 				return $result;
 			}
 
 			// It's not for anything we are concerned with.
 			if ( ! $this->is_concerned( $request ) ) {
+				Logger::debug(
+					array(
+						'FINAL REQUEST' => $result,
+						'ORG REQUEST'   => $request_org,
+					)
+				);
 				return $request;
 			}
 

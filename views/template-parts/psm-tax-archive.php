@@ -41,44 +41,26 @@ if ( $play && ! empty( $play ) ) {
 
 
 /**
- * @var \WP_Post $item_first Post object.
+ * @var Sermon $item_first Post object.
  */
 
+$post_first = $item_first->post;
+$preacher   = $item_first->preacher;
+$meta       = $item_first->meta;
+$date       = $meta->date();
 
-$preacher = null;
-$date     = null;
-
-if ( isset( $item_first->drppsm_preacher ) ) {
-	$preacher = $item_first->drppsm_preacher->name;
-}
-
-
-if ( isset( $item_first->meta->date ) ) {
-	$date = format_date( absint( $item_first->meta->date ) );
-}
-
-
-$poster = get_sermon_image_url( ImageSize::SERMON_WIDE, true, true, $item_first );
-Logger::debug(
-	array(
-		'POSTER' => $poster,
-		'ITEM'   => $item_first,
-	)
-);
-
-
-
-$cnt = 0;
+$poster = get_sermon_image_url( ImageSize::SERMON_WIDE, true, true, $post_first );
+$cnt    = 0;
 ?>
 <div id="drppsm-archive">
 
 	<div class="header">
 		<h2 class="title">
-			<?php echo esc_html( $item_first->post_title ); ?>
+			<?php echo esc_html( $post_first->post_title ); ?>
 		</h2>
 		<?php if ( $preacher ) : ?>
 			<h3 class="meta">
-				<?php echo esc_html( $preacher ); ?> - <?php echo esc_html( $date ); ?>
+				<?php echo esc_html( $preacher->name() ); ?> - <?php echo esc_html( $date ); ?>
 			</h3>
 		<?php endif; ?>
 	</div>
@@ -86,14 +68,15 @@ $cnt = 0;
 	<div class="media">
 		<?php
 
-		if ( ! $item_first->has_video && $item_first->has_audio ) {
+		if ( ( ! $meta->has_video() && $meta->has_audio() ) || ( $meta->has_video() && $player === 'audio' ) ) {
 			if ( $poster ) {
-				echo '<img src="' . esc_url( $poster ) . '" class="poster" alt="' . esc_attr( $item_first->post_title ) . '" />';
+				echo '<img src="' . esc_url( $poster ) . '" class="poster" alt="' . esc_attr( $post_first->post_title ) . '" />';
 			}
-			echo MediaPlayer::render_audio( $item_first->meta->audio );
-		}
-		if ( $item_first->has_video ) {
-			echo MediaPlayer::render_video( $item_first->meta->video_link, true, $poster );
+			echo MediaPlayer::render_audio( $meta->audio );
+		} elseif ( $item_first->meta->has_video() ) {
+			echo MediaPlayer::render_video( $meta->video_link, true, $poster );
+		} else {
+			echo '<img src="' . esc_url( $poster ) . '" class="poster" alt="' . esc_attr( $post_first->post_title ) . '" />';
 		}
 		?>
 	</div>
@@ -122,39 +105,32 @@ foreach ( $list as $item ) :
 		$tr_class = 'even';
 	endif;
 
-	if ( $item->ID === $item_first->ID ) {
+	$post_item = $item->post;
+	$preacher  = $item->preacher;
+	$meta      = $item->meta;
+
+
+	if ( $post_item->ID === $post_first->ID ) {
 		$tr_class = 'active';
 	}
 	?>
 	<tr class="<?php echo esc_attr( $tr_class ); ?>">
 		<td class="title-cell">
-			<?php echo esc_html( $item->post_title ); ?>
+			<?php echo esc_html( $post_item->post_title ); ?>
 		</td>
-
 		<td class="preacher-cell">
-			<?php
-			if ( isset( $item->drppsm_preacher ) ) {
-				echo esc_html( $item->drppsm_preacher->name );
-			}
-			?>
-			&nbsp;
+			<?php echo esc_html( $preacher->name() ); ?>&nbsp;
 		</td>
 		<td class="date-cell">
-			<?php
-			if ( isset( $item->meta->date ) ) {
-				$date = format_date( absint( $item->meta->date ) );
-				echo esc_html( $date );
-			}
-			?>
-			&nbsp;
+			<?php echo esc_html( $meta->date() ); ?>&nbsp;
 		</td>
 		<td class="watch-cell">
 			<?php
-			if ( $item->has_video ) {
-				echo '<a data-id="' . esc_attr( $item->ID ) . '" class="drppsm-play-video btn-md"></a>';
+			if ( $item->meta->has_video() ) {
+				echo '<a data-id="' . esc_attr( $post_item->ID ) . '" class="drppsm-play-video btn-md"></a>';
 			}
-			if ( $item->has_audio ) {
-				echo '<a data-id="' . esc_attr( $item->ID ) . '" class="drppsm-play-audio btn-md"></a>';
+			if ( $item->meta->has_audio() ) {
+				echo '<a data-id="' . esc_attr( $post_item->ID ) . '" class="drppsm-play-audio btn-md"></a>';
 			}
 			?>
 		</td>

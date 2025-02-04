@@ -77,6 +77,7 @@
   height: 32px;
   width: 32px;
   display: inline-block;
+  margin-right: 10px;
 }
 #drppsm-archive .btn-medium-lg {
   font-size: 48px;
@@ -568,7 +569,8 @@
   width: 100%;
   aspect-ratio: 1.9;
 }
-#drppsm-image-list li img.drppsm_preacher {
+#drppsm-image-list li img.drppsm_preacher,
+#drppsm-image-list li img.drppsm_topics {
   -o-object-fit: cover;
      object-fit: cover;
   width: 100%;
@@ -602,23 +604,24 @@
 #drppsm-image-list li.col4 {
   flex: 0 0 23%;
 }
-#drppsm-image-list li.col1 .list-info,
-#drppsm-image-list li.col2 .list-info,
-#drppsm-image-list li.col3 .list-info,
-#drppsm-image-list li.col4 .list-info {
-  padding: 1em;
+#drppsm-image-list .list-wrap {
+  margin: 0;
+  padding: 0;
   background-color: white;
   border: 1px solid #e0e0e0;
   text-align: center;
   color: #000;
 }
-#drppsm-image-list .list-info h4 {
-  font-size: 18px;
-  font-weight: 700;
-  margin-bottom: 0;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  overflow: hidden;
+#drppsm-image-list .list-image {
+  margin: 0;
+  padding: 0;
+}
+#drppsm-image-list li.col1 .list-info,
+#drppsm-image-list li.col2 .list-info,
+#drppsm-image-list li.col3 .list-info,
+#drppsm-image-list li.col4 .list-info {
+  margin: 0;
+  padding: 0 20px 20px 20px;
 }
 #drppsm-image-list .list-info .title {
   display: block;
@@ -629,10 +632,8 @@
   text-overflow: ellipsis;
   overflow: hidden;
 }
-#drppsm-image-list .list-info h5 {
-  font-size: 15px;
-  font-weight: 300;
-  margin: 0;
+#drppsm-image-list li.col4 .list-info .title {
+  font-size: 16px;
 }
 #drppsm-image-list .list-info .preacher {
   display: block;
@@ -646,7 +647,7 @@
 #drppsm-image-list .list-info .text-italic {
   display: block;
   font-size: 15px;
-  font-weight: 300;
+  font-weight: 400;
   margin: 0;
 }
 #drppsm-image-list .list-info .text-italic {
@@ -665,6 +666,8 @@
   text-decoration: none;
   color: rgb(8, 106, 254);
   margin-bottom: 10px;
+  font-size: 16px;
+  font-weight: 700;
 }
 #drppsm-image-list .list-info p {
   font-size: 15px;
@@ -698,16 +701,6 @@
   #drppsm-image-list li.col4 img.drppsm_series,
   #drppsm-image-list li.col4 img.drppsm_preacher {
     height: auto;
-  }
-  #drppsm-image-list .list-info h4 {
-    font-size: 16px;
-    font-weight: 700;
-    margin-bottom: 0;
-  }
-  #drppsm-image-list .list-info h5 {
-    font-size: 14px;
-    font-weight: 300;
-    margin-top: 0;
   }
   #drppsm-image-list .list-info p {
     font-size: 14px;

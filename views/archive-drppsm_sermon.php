@@ -18,7 +18,9 @@ if ( ! isset( $args ) ) {
 	$args = array();
 }
 
-if ( ! did_action( 'get_header' ) ) {
+if ( wp_is_block_theme() ) {
+	get_partial( 'header' );
+} elseif ( ! did_action( 'get_header' ) ) {
 	get_header();
 }
 
@@ -34,6 +36,10 @@ if ( have_posts() ) {
 
 get_partial( 'sermon-wrapper-end' );
 
-if ( ! did_action( 'get_footer' ) ) {
+
+
+if ( wp_is_block_theme() ) {
+	get_footer();
+} elseif ( ! did_action( 'get_footer' ) ) {
 	get_footer();
 }

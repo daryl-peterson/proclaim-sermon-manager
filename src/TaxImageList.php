@@ -113,14 +113,14 @@ class TaxImageList {
 			ob_start();
 			echo sermon_sorting();
 			get_partial(
-				Templates::TAX_IMAGE_LIST,
+				Template::TAX_IMAGE_LIST,
 				array(
 					'list'    => $this->data,
 					'columns' => $args['columns'],
 					'size'    => $args['size'],
 				)
 			);
-			get_partial( Templates::Pagination, $this->paginate );
+			get_partial( Template::Pagination, $this->paginate );
 
 			$output .= ob_get_clean();
 		} else {

@@ -12,7 +12,6 @@
 namespace DRPPSM;
 
 defined( 'ABSPATH' ) || exit;
-use WP_Post;
 
 // These must be defined before including psm-check-args.
 $template = str_replace( '.php', '', basename( __FILE__ ) );
@@ -40,48 +39,42 @@ $fmt = get_option( 'date_format' );
 $cnt = 0;
 
 /**
- * @var WP_Post $item Post object.
+ * @var Sermon $item Post object.
  */
 foreach ( $list as $item ) :
 
 	$src      = null;
-	$preacher = '';
-	$date     = '';
-	$passage  = '';
-
 	$cols_str = 'col' . $cols;
 
+	$post_item = $item->post;
+	$meta      = $item->meta;
+	$preacher  = $item->preacher;
+	$series    = $item->series;
+
+
 	// Skip if no image.
-	$src = get_sermon_image_url( $size, true, true, $item );
+	$src = get_sermon_image_url( $size, true, true, $post_item );
 	if ( ! $src ) {
 		continue;
 	}
 
-	// Get date.
-	if ( isset( $item->meta->date ) ) {
-		$date = format_date( absint( $item->meta->date ) );
-	} else {
-		$date = format_date( strtotime( $item->post_date ) );
-	}
-
-	// Get passage.
-	if ( isset( $item->meta->bible_passage ) ) {
-		$passage = $item->meta->bible_passage;
-	}
-
-	/**
-	 * @var ?WP_Term $item->drppsm_preacher
-	 */
-	if ( isset( $item->drppsm_preacher ) ) {
-		$preacher = $item->drppsm_preacher;
-	}
+	$date    = $meta->date();
+	$passage = $meta->get_bible_passage();
 
 	$link_text = __( 'View ', 'drppsm' );
-	$link      = get_permalink( $item );
+	$link      = $item->link;
 
-	if ( ! $link ) {
-		$link      = '';
-		$link_text = '';
+	if ( $series->has_term() ) {
+		$terms = $series->terms();
+		$term  = $terms[0];
+
+		$link = get_term_link( $term );
+		if ( ! is_wp_error( $link ) ) {
+			$link .= '?play=' . $post_item->ID;
+		} else {
+			$link      = '';
+			$link_text = '';
+		}
 	}
 
 	?>
@@ -89,18 +82,18 @@ foreach ( $list as $item ) :
 			<li class="row">
 				<div class="sermon-image">
 					<?php if ( $src ) : ?>
-					<a href="<?php echo esc_attr( $link ); ?>" title="<?php echo esc_attr( $item->post_title ); ?>">
+					<a href="<?php echo esc_attr( $link ); ?>" title="<?php echo esc_attr( $post_item->post_title ); ?>">
 						<img src="<?php echo esc_attr( $src ); ?>" class="drppsm_series">
 					</a>
 					<?php endif; ?>
 				</div>
 				<div class="list-info">
-					<div class="title"><?php echo esc_html( $item->post_title ); ?>&nbsp;</div>
+					<div class="title"><?php echo esc_html( $post_item->post_title ); ?>&nbsp;</div>
 					<div class="date"><?php echo esc_html( $date ); ?>&nbsp;</div>
-					<div class="preacher"><?php echo esc_html( $preacher->name ); ?>&nbsp;</div>
+					<div class="preacher"><?php echo esc_html( $preacher->name() ); ?>&nbsp;</div>
 					<div class="passage"><?php echo esc_html( $passage ); ?>&nbsp;</div>
 					<div class="archive-link">
-						<a href="<?php echo esc_attr( $link ); ?>" title="<?php echo esc_attr( $item->post_title ); ?>">
+						<a href="<?php echo esc_attr( $link ); ?>" title="<?php echo esc_attr( $post_item->post_title ); ?>">
 							<?php echo esc_html( $link_text ); ?>
 							&nbsp;
 						</a>

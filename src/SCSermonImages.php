@@ -138,14 +138,14 @@ class SCSermonImages extends SCBase implements Executable, Registrable {
 		if ( isset( $this->data ) && is_array( $this->data ) && count( $this->data ) > 0 ) {
 			ob_start();
 			get_partial(
-				Templates::TAX_IMAGE_LIST,
+				Template::TAX_IMAGE_LIST,
 				array(
 					'list'    => $this->data,
 					'columns' => $args['columns'],
 					'size'    => $args['size'],
 				)
 			);
-			get_partial( Templates::Pagination, $this->paginate );
+			get_partial( Template::Pagination, $this->paginate );
 			$output .= ob_get_clean();
 		} else {
 			ob_start();
