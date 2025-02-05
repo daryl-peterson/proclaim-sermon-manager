@@ -405,7 +405,7 @@ function get_term_dropdown( string $taxonomy, string $default_value ): string {
 	$data      = Transient::get( $trans_key );
 
 	if ( $data ) {
-		Logger::debug( 'Using transient.' );
+		Logger::debug( "Using transient : $trans_key" );
 		$terms = $data;
 	}
 
@@ -416,7 +416,7 @@ function get_term_dropdown( string $taxonomy, string $default_value ): string {
 				'hide_empty' => true, // todo: add option to disable/enable this globally.
 			)
 		);
-		Transient::set( $trans_key, $terms, Transient::TAX_ARCHIVE_TTL );
+		Transient::set( $trans_key, $terms, Transient::TTL_12_HOURS );
 	}
 
 	if ( DRPPSM_TAX_BOOK === $taxonomy && ! Settings::get( Settings::BIBLE_BOOK_SORT, false ) ) {

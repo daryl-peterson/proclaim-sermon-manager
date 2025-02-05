@@ -1,26 +1,40 @@
 <?php
 /**
- * Taxonomy Archive Class
+ * Taxonomy archive class.
  *
- * @package     DRPPSM\TaxArchive
+ * - Used for viewing sermons by taxonomy.
+ *
+ * @package     DRPPSM\ShortCodes\TaxArchive
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
  * @since       1.0.0
  */
 
-namespace DRPPSM;
+namespace DRPPSM\ShortCodes;
 
+use DRPPSM\Logger;
+use DRPPSM\Sermon;
+use DRPPSM\SermonMeta;
+use DRPPSM\Settings;
+use DRPPSM\Template;
+use DRPPSM\Transient;
 use stdClass;
 use WP_Post;
 use WP_Term;
 
+use function DRPPSM\get_page_number;
+use function DRPPSM\get_partial;
+use function DRPPSM\sermon_sorting;
+
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Taxonomy Archive Class
+ * Taxonomy archive class.
  *
- * @package     DRPPSM\TaxArchive
+ * - Used for viewing sermons by taxonomy.
+ *
+ * @package     DRPPSM\ShortCodes\TaxArchive
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
@@ -154,7 +168,9 @@ class TaxArchive {
 	 * @since 1.0.0
 	 */
 	private function render() {
-		$output = '';
+		$output  = '';
+		$output .= FileTemplate::start();
+
 		if ( isset( $this->data ) && is_array( $this->data ) && count( $this->data ) > 0 ) {
 
 			ob_start();
@@ -175,6 +191,8 @@ class TaxArchive {
 			get_partial( 'no-posts' );
 			$output .= ob_get_clean();
 		}
+		$output .= FileTemplate::end();
+
 		echo $output;
 	}
 
@@ -196,8 +214,8 @@ class TaxArchive {
 		$trans     = Transient::get( $trans_key );
 
 		if ( $trans ) {
-			// Logger::debug( 'Using transient' );
-			// return $trans;
+			Logger::debug( "Using transient : $trans_key" );
+			return $trans;
 		}
 
 		// Set arguments from pagination.
@@ -215,90 +233,9 @@ class TaxArchive {
 			// $post_item              = $this->get_sermon_terms( $post_item );
 			$data[ $post_item->ID ] = new Sermon( $post_item );
 		}
-		Transient::set( $trans_key, $data, Transient::TAX_ARCHIVE_TTL );
+		Transient::set( $trans_key, $data, Transient::TTL_12_HOURS );
 
 		return $data;
-	}
-
-	/**
-	 * Set sermon meta.
-	 *
-	 * @param WP_Post $post_item
-	 * @return WP_Post
-	 * @since 1.0.0
-	 */
-	private function get_sermon_meta( WP_Post $post_item ): WP_Post {
-
-		new Sermon( $post_item );
-
-		$meta = SermonMeta::get_meta( $post_item->ID );
-
-		$fmt = Settings::get( Settings::DATE_FORMAT );
-
-		$post_item->meta = new stdClass();
-
-		// Set meta object properties.
-		foreach ( $meta as $meta_key => $meta_value ) {
-			$post_item->meta->{$meta_key} = $meta_value;
-		}
-
-		$types = array(
-			array(
-				'type'   => 'video',
-				'detail' => 'video_link',
-				'obj'    => $post_item->meta->video_link,
-
-			),
-			array(
-				'type'   => 'video',
-				'detail' => 'video_embed',
-				'obj'    => $post_item->meta->video,
-			),
-			array(
-				'type'   => 'audio',
-				'detail' => 'audio',
-				'obj'    => $post_item->meta->audio,
-			),
-		);
-
-		$post_item->has_video   = false;
-		$post_item->has_audio   = false;
-		$post_item->media_types = array();
-
-		foreach ( $types as $item ) {
-			if ( ! empty( $item['obj'] && 'video' === $item['type'] ) ) {
-				$post_item->has_video     = true;
-				$post_item->media_types[] = $item['detail'];
-			}
-			if ( ! empty( $item['obj'] && 'audio' === $item['type'] ) ) {
-				$post_item->has_audio     = true;
-				$post_item->media_types[] = $item['detail'];
-			}
-		}
-
-		return $post_item;
-	}
-
-	/**
-	 * Get sermon terms.
-	 *
-	 * @param WP_Post $post_item
-	 * @return WP_Post
-	 * @since 1.0.0
-	 */
-	private function get_sermon_terms( WP_Post $post_item ): WP_Post {
-
-		foreach ( DRPPSM_TAX_MAP as $tax_name ) {
-			$terms = get_the_terms( $post_item, $tax_name );
-			if ( is_wp_error( $terms ) || ! is_array( $terms ) || 0 === count( $terms ) ) {
-				$post_item->{$tax_name} = null;
-				continue;
-			}
-			$term                   = array_shift( $terms );
-			$post_item->{$tax_name} = $term;
-		}
-
-		return $post_item;
 	}
 
 	/**
@@ -351,7 +288,11 @@ class TaxArchive {
 
 		$this->paginate = null;
 
-		$term_count = get_post_count( $this->args );
+		if ( ! $this->term ) {
+			return;
+		}
+
+		$term_count = $this->term->count;
 		if ( ! $term_count ) {
 			return;
 		}

@@ -316,36 +316,3 @@ function cast_stdclass( $source_obj ): mixed {
 		return $source_obj;
 	}
 }
-
-/**
- * Get post count.
- *
- * @param array $args Query arguments.
- * @return int
- * @since 1.0.0
- */
-function get_post_count( array $args = array() ): int {
-
-	$args['fields']         = 'ids';
-	$args['posts_per_page'] = -1;
-
-	$unset = array(
-		'meta_query',
-		'orderby',
-		'order',
-	);
-	foreach ( $unset as $key ) {
-		if ( key_exists( $key, $args ) ) {
-			unset( $args[ $key ] );
-		}
-	}
-	Logger::debug( $args );
-
-	$cnt = wp_count_posts( DRPPSM_PT_SERMON )->publish;
-	return $cnt;
-
-	$posts  = get_posts( $args );
-	$result = count( $posts );
-
-	return $result;
-}

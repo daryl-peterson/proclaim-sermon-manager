@@ -229,7 +229,10 @@ class TaxBase {
 	 * @since 1.0.0
 	 */
 	public function has_term(): bool {
-		if ( count( $this->terms ) > 0 ) {
+
+		$terms = $this->fix_terms();
+
+		if ( count( $terms ) > 0 ) {
 			return true;
 		}
 		return false;
@@ -242,6 +245,27 @@ class TaxBase {
 	 * @since 1.0.0
 	 */
 	public function count(): int {
-		return count( $this->terms );
+		$terms = $this->fix_terms();
+		return count( $terms );
+	}
+
+	/**
+	 * Fix terms array.
+	 *
+	 * - Remove none term.
+	 *
+	 * @return array
+	 * @since 1.0.0
+	 */
+	private function fix_terms() {
+		$terms = $this->terms;
+
+		foreach ( $terms as $key => $term ) {
+			if ( $term->slug === 'none' ) {
+				unset( $terms[ $key ] );
+				break;
+			}
+		}
+		return $terms;
 	}
 }

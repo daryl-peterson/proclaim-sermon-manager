@@ -25,34 +25,25 @@ defined( 'ABSPATH' ) || exit;
 class Transient {
 
 	/**
-	 * Type definitions post, taxonomy.
+	 * TTL 8 hours.
 	 *
 	 * @since 1.0.0
 	 */
-	public const TYPE_DEF = 'drppsm_defs';
+	public const TTL_8_HOURS = 8 * HOUR_IN_SECONDS;
 
 	/**
-	 * Term optiion list. Use in cmb select options.
+	 * TTL 12 hours.
 	 *
 	 * @since 1.0.0
 	 */
-	public const TERM_OPTS = 'drppsm_term_opts';
-
+	public const TTL_12_HOURS = 12 * HOUR_IN_SECONDS;
 
 	/**
-	 * Tax archive ttl.
+	 * TTL 24 hours.
 	 *
 	 * @since 1.0.0
 	 */
-	public const TAX_ARCHIVE_TTL = 8 * HOUR_IN_SECONDS;
-
-
-	/**
-	 * Sermon image list ttl.
-	 *
-	 * @since 1.0.0
-	 */
-	public const SERMON_IMAGE_LIST_TTL = 8 * HOUR_IN_SECONDS;
+	public const TTL_24_HOURS = DAY_IN_SECONDS;
 
 	/**
 	 * Get transient.
@@ -92,7 +83,7 @@ class Transient {
 	 * @return void
 	 * @since 1.0.0
 	 */
-	public static function delete( string $wildcard ) {
+	public static function delete( string $wildcard ): void {
 		global $wpdb;
 
 		$wpdb->query(
@@ -109,12 +100,11 @@ class Transient {
 	 * @return void
 	 * @since 1.0.0
 	 */
-	public static function delete_all() {
+	public static function delete_all(): void {
 		foreach ( DRPPSM_TAX_MAP as  $tax_name ) {
 			$key = '%transient%' . $tax_name . '_%';
 			Logger::debug( 'Deleting: ' . $key );
 			self::delete( '%transient%' . $tax_name . '_%' );
-
 		}
 
 		$pt = DRPPSM_PT_SERMON . '_imagelist';

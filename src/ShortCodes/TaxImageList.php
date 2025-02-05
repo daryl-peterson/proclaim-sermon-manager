@@ -2,17 +2,27 @@
 /**
  * Taxonomy image list.
  *
- * @package     DRPPSM\TaxList
+ * @package     DRPPSM\ShortCodes\TaxList
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
  * @since       1.0.0
  */
 
-namespace DRPPSM;
+namespace DRPPSM\ShortCodes;
 
+use DRPPSM\ImageSize;
+use DRPPSM\Logger;
+use DRPPSM\Settings;
+use DRPPSM\TaxUtils;
+use DRPPSM\Template;
+use DRPPSM\Transient;
 use stdClass;
 use WP_Term;
+
+use function DRPPSM\get_page_number;
+use function DRPPSM\get_partial;
+use function DRPPSM\sermon_sorting;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -20,7 +30,7 @@ defined( 'ABSPATH' ) || exit;
 /**
  * Taxonomy image list.
  *
- * @package     DRPPSM\TaxList
+ * @package     DRPPSM\ShortCodes\TaxList
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
@@ -113,16 +123,7 @@ class TaxImageList {
 	private function show_template( array $args ) {
 		$output = '';
 
-		$block = wp_is_block_theme();
-
-		if ( ! $block ) {
-			ob_start();
-			if ( ! did_action( 'get_header' ) ) {
-				get_header();
-			}
-			get_partial( Template::WRAPPER_START );
-			$output .= ob_get_clean();
-		}
+		$output .= FileTemplate::start();
 
 		if ( isset( $this->data ) && is_array( $this->data ) && count( $this->data ) > 0 ) {
 
@@ -145,14 +146,7 @@ class TaxImageList {
 			$output .= ob_get_clean();
 		}
 
-		if ( ! $block ) {
-			ob_start();
-			get_partial( Template::WRAPPER_END );
-			if ( ! did_action( 'get_footer' ) ) {
-				get_footer();
-			}
-			$output .= ob_get_clean();
-		}
+		$output .= FileTemplate::end();
 
 		echo $output;
 	}
@@ -226,7 +220,7 @@ class TaxImageList {
 			return;
 		}
 		$this->data = $data;
-		Transient::set( $trans_key, $data, Transient::TAX_ARCHIVE_TTL );
+		Transient::set( $trans_key, $data, Transient::TTL_12_HOURS );
 	}
 
 	/**

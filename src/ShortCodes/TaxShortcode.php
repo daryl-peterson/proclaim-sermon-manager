@@ -13,8 +13,6 @@ namespace DRPPSM\ShortCodes;
 
 use DRPPSM\Interfaces\Registrable;
 use DRPPSM\Logger;
-use DRPPSM\TaxArchive;
-use DRPPSM\TaxImageList;
 
 use function DRPPSM\get_partial;
 
@@ -30,8 +28,6 @@ defined( 'ABSPATH' ) || exit;
  * @since       1.0.0
  */
 class TaxShortcode implements Registrable {
-
-
 
 	/**
 	 * Shortcode name.

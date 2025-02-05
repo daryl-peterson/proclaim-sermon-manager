@@ -90,6 +90,11 @@ class SermonImageList {
 	 */
 	private array $args;
 
+	/**
+	 * Initialize object properties.
+	 *
+	 * @since 1.0.0
+	 */
 	public function __construct() {
 		$this->set_params();
 		$this->set_pagination();
@@ -194,7 +199,7 @@ class SermonImageList {
 		foreach ( $post_data as $post_item ) {
 			$data[ $post_item->ID ] = new Sermon( $post_item );
 		}
-		Transient::set( $trans_key, $data, Transient::SERMON_IMAGE_LIST_TTL );
+		Transient::set( $trans_key, $data, Transient::TTL_12_HOURS );
 		return $data;
 	}
 
@@ -209,7 +214,7 @@ class SermonImageList {
 
 		$this->paginate = null;
 
-		$term_count = get_post_count( $this->args );
+		$term_count = wp_count_posts( DRPPSM_PT_SERMON )->publish;
 		if ( ! $term_count ) {
 			return;
 		}

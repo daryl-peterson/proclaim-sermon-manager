@@ -58,9 +58,8 @@ foreach ( $list as $item ) :
 		continue;
 	}
 
-	$date    = $meta->date();
-	$passage = $meta->get_bible_passage();
-
+	$date      = $meta->date();
+	$passage   = $meta->get_bible_passage();
 	$link_text = __( 'View ', 'drppsm' );
 	$link      = $item->link;
 
@@ -68,12 +67,9 @@ foreach ( $list as $item ) :
 		$terms = $series->terms();
 		$term  = $terms[0];
 
-		$link = get_term_link( $term );
-		if ( ! is_wp_error( $link ) ) {
-			$link .= '?play=' . $post_item->ID;
-		} else {
-			$link      = '';
-			$link_text = '';
+		$link_tmp = get_term_link( $term );
+		if ( ! is_wp_error( $link_tmp ) ) {
+			$link = $link_tmp . '?play=' . $post_item->ID;
 		}
 	}
 

@@ -140,6 +140,7 @@ class TemplateBlocks implements Executable, Registrable {
 		foreach ( get_object_taxonomies( $this->pt ) as $taxonomy ) {
 			if ( is_tax( $taxonomy ) ) {
 				$template_name = "taxonomy-$taxonomy";
+				break;
 			}
 		}
 
@@ -176,14 +177,6 @@ class TemplateBlocks implements Executable, Registrable {
 		$new_block->post_types     = array( $this->pt );
 
 		$query_result[] = $new_block;
-
-		Logger::debug(
-			array(
-				'query_result'  => $query_result,
-				'query'         => $query,
-				'template_type' => $template_type,
-			)
-		);
 
 		return $query_result;
 	}
@@ -238,7 +231,7 @@ class TemplateBlocks implements Executable, Registrable {
 	}
 
 	/**
-	 * Add custom taxonomy template for the wzkb_category taxonomy.
+	 * Add custom taxonomy template.
 	 *
 	 * @param array $templates Array of found templates.
 	 * @return array Updated array of found templates.
@@ -265,32 +258,19 @@ class TemplateBlocks implements Executable, Registrable {
 	 * @return array Updated array of found templates.
 	 * @since 1.0.0
 	 */
-	private function add_custom_template( $templates, $type, $post_type, $template_name ) {
-
-		$msg = array(
-			'TEMPLATES'     => $templates,
-			'TYPE'          => $type,
-			'POST TYPE'     => $post_type,
-			'TEMPLATE NAME' => $template_name,
-		);
+	private function add_custom_template( $templates, $type, $post_type, $template_name ): array {
 
 		if ( in_array( $template_name, $templates, true ) ) {
-			Logger::debug( $msg );
 			return $templates;
 		}
 
 		if ( in_array( $type, array( 'archive', 'index', 'search' ), true ) ) {
 			array_unshift( $templates, $template_name );
-			$msg['TEMPLATES'] = $templates;
-			Logger::debug( $msg );
 			return $templates;
 		}
 
 		if ( 'single' === $type && is_singular( $post_type ) ) {
 			array_unshift( $templates, $template_name );
-
-			$msg['TEMPLATES'] = $templates;
-			Logger::debug( $msg );
 			return $templates;
 		}
 		return $templates;
@@ -303,7 +283,7 @@ class TemplateBlocks implements Executable, Registrable {
 	 * @return string The content of the template file.
 	 * @since 1.0.0
 	 */
-	public static function get_template_content( $template ) {
+	public static function get_template_content( $template ): string {
 		ob_start();
 		include $template;
 		return ob_get_clean();
@@ -312,11 +292,11 @@ class TemplateBlocks implements Executable, Registrable {
 	/**
 	 * Replaces placeholders with corresponding shortcode output.
 	 *
-	 * @param string $template_contents The template content containing placeholders.
+	 * @param string $template_contents The template with placeholders.
 	 * @return string The updated template with shortcodes replaced by their output.
 	 * @since 1.0.0
 	 */
-	public static function replace_placeholders_with_shortcodes( $template_contents ) {
+	public static function replace_placeholders_with_shortcodes( string $template_contents ): string {
 		// Regular expression to match placeholders like {{shortcode param="value"}}.
 		$pattern = '/\{\{([a-zA-Z_]+)(.*?)\}\}/';
 
@@ -345,8 +325,7 @@ class TemplateBlocks implements Executable, Registrable {
 	 * Locate the path to the template.
 	 *
 	 * @param string $name Template name.
-	 * @param array  $args Arguments array used to pass to filter.
-	 * @return null|string
+	 * @return null|string String if found, null if not.
 	 * @since 1.0.0
 	 */
 	public function locate_template( string $name ): ?string {
