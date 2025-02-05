@@ -15,11 +15,5 @@ namespace DRPPSM;
 defined( 'ABSPATH' ) || exit;
 
 
-$term_name  = DRPPSM_TAX_BOOK;
-$image_size = 'full';
-require_once 'taxonomy.php';
-
-/*
-$result = do_shortcode( '[drppsm_bible]' );
-echo $result;
-*/
+$qv_tax = get_query_var( 'taxonomy' );
+echo do_shortcode( '[' . $qv_tax . ']' );

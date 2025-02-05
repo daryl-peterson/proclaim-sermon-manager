@@ -112,6 +112,18 @@ class TaxImageList {
 
 	private function show_template( array $args ) {
 		$output = '';
+
+		$block = wp_is_block_theme();
+
+		if ( ! $block ) {
+			ob_start();
+			if ( ! did_action( 'get_header' ) ) {
+				get_header();
+			}
+			get_partial( Template::WRAPPER_START );
+			$output .= ob_get_clean();
+		}
+
 		if ( isset( $this->data ) && is_array( $this->data ) && count( $this->data ) > 0 ) {
 
 			ob_start();
@@ -132,6 +144,16 @@ class TaxImageList {
 			get_partial( 'no-posts' );
 			$output .= ob_get_clean();
 		}
+
+		if ( ! $block ) {
+			ob_start();
+			get_partial( Template::WRAPPER_END );
+			if ( ! did_action( 'get_footer' ) ) {
+				get_footer();
+			}
+			$output .= ob_get_clean();
+		}
+
 		echo $output;
 	}
 
@@ -165,9 +187,9 @@ class TaxImageList {
 		$trans_key = "{$tax}_imagelist_{$page}";
 		$data      = Transient::get( $trans_key );
 		if ( $data ) {
-			// Logger::debug( "Transient found : $trans_key" );
-			// $this->data = $data;
-			// return;
+			Logger::debug( "Transient found : $trans_key" );
+			$this->data = $data;
+			return;
 		} else {
 			Logger::debug( "Transient not found : $trans_key" );
 		}
@@ -234,7 +256,12 @@ class TaxImageList {
 
 		$this->paginate = null;
 
-		$term_count = $this->get_term_count();
+		$term_count = wp_count_terms(
+			array(
+				'taxonomy'   => $this->taxonomy,
+				'hide_empty' => true,
+			)
+		);
 		if ( 0 === $term_count ) {
 			return;
 		}
@@ -255,39 +282,6 @@ class TaxImageList {
 			'total'   => $max_num_pages,
 			'post_id' => $post->ID,
 		);
-	}
-
-	/**
-	 * Get term count.
-	 *
-	 * @return int
-	 */
-	private function get_term_count(): int {
-		$args = $this->args;
-
-		$args['fields']         = 'ids';
-		$args['posts_per_page'] = -1;
-
-		$unset = array(
-			'orderby',
-			'order',
-		);
-
-		foreach ( $unset as $key ) {
-			if ( key_exists( $key, $args ) ) {
-				unset( $args[ $key ] );
-			}
-		}
-
-		$terms = get_terms( $args );
-
-		if ( ! is_wp_error( $terms ) ) {
-			$result = count( $terms );
-		} else {
-			$result = 0;
-		}
-
-		return $result;
 	}
 
 	/**

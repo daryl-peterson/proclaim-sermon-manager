@@ -14,6 +14,5 @@ namespace DRPPSM;
 
 defined( 'ABSPATH' ) || exit;
 
-$term_name  = DRPPSM_TAX_SERIES;
-$image_size = 'full';
-require_once 'taxonomy.php';
+$qv_tax = get_query_var( 'taxonomy' );
+echo do_shortcode( '[' . $qv_tax . ']' );
