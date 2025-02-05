@@ -29,11 +29,18 @@ defined( 'ABSPATH' ) || exit;
 class Codes implements Executable, Registrable {
 	use ExecutableTrait;
 
+	/**
+	 * Register short codes.
+	 *
+	 * @return bool|null
+	 */
 	public function register(): ?bool {
 		Books::exec();
 		Preachers::exec();
 		SermonArchive::exec();
 		Series::exec();
+		SeriesLatest::exec();
+		Sorting::exec();
 		Topics::exec();
 		return true;
 	}

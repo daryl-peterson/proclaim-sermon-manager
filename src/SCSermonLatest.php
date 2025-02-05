@@ -130,14 +130,15 @@ class SCSermonLatest extends SCBase implements Executable, Registrable {
 
 		$query_args = $this->set_filter( $args, $query_args );
 
+		$query = new WP_Query( $query_args );
+
 		Logger::debug(
 			array(
+				'QUERY'      => $query,
 				'QUERY ARGS' => $query_args,
 				'ARGS'       => $args,
 			)
 		);
-
-		$query = new WP_Query( $query_args );
 
 		// Add query and post_id to the args.
 		$args['query']   = $query;

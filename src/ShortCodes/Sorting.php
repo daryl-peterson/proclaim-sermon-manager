@@ -9,11 +9,16 @@
  * @since       1.0.0
  */
 
-namespace DRPPSM;
+namespace DRPPSM\ShortCodes;
 
 use DRPPSM\Interfaces\Executable;
 use DRPPSM\Interfaces\Registrable;
+use DRPPSM\Logger;
+use DRPPSM\SCBase;
 use DRPPSM\Traits\ExecutableTrait;
+
+use function DRPPSM\get_visibility_settings;
+use function DRPPSM\sermon_sorting;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -26,7 +31,7 @@ defined( 'ABSPATH' ) || exit;
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
  * @since       1.0.0
  */
-class SCSermonSorting extends SCBase implements Executable, Registrable {
+class Sorting extends SCBase implements Executable, Registrable {
 	use ExecutableTrait;
 
 	/**
@@ -45,7 +50,7 @@ class SCSermonSorting extends SCBase implements Executable, Registrable {
 	 */
 	protected function __construct() {
 		parent::__construct();
-		$this->sc = DRPPSM_SC_SERMON_SORTING;
+		$this->sc = 'drppsm_sorting';
 	}
 
 	/**

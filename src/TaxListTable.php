@@ -310,8 +310,9 @@ class TaxListTable implements Executable, Registrable {
 		}
 
 		$ds   = DIRECTORY_SEPARATOR;
-		$url  = Helper::get_url();
+		$url  = DRPPSM_URL;
 		$url .= 'assets' . $ds . 'images' . $ds . 'add-image.png';
+		Logger::debug( array( 'URL' => $url ) );
 
 		return $url;
 	}

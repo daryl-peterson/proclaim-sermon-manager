@@ -1,8 +1,8 @@
 <?php
 /**
- * Tax base shortcode.
+ * Shortcode base class.
  *
- * @package     DRPPSM\ShortCodes\TaxShortcode
+ * @package     NameSpace\ShortCodes\ShortCodeBase
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
@@ -14,21 +14,20 @@ namespace DRPPSM\ShortCodes;
 use DRPPSM\Interfaces\Registrable;
 use DRPPSM\Logger;
 
-use function DRPPSM\get_partial;
+use function DRPPSM\unquote;
 
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Tax base shortcode.
+ * Shortcode base class.
  *
- * @package     DRPPSM\ShortCodes\TaxShortcode
+ * @package     NameSpace\ShortCodes\ShortCodeBase
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
  * @since       1.0.0
  */
-class TaxShortcode implements Registrable {
-
+abstract class ShortCode implements Registrable {
 	/**
 	 * Shortcode name.
 	 *
@@ -36,6 +35,14 @@ class TaxShortcode implements Registrable {
 	 * @since 1.0.0
 	 */
 	protected string $sc;
+
+	/**
+	 * Taxomony name.
+	 *
+	 * @var string
+	 * @since 1.0.0
+	 */
+	protected string $tax;
 
 	/**
 	 * Image size.
@@ -61,42 +68,24 @@ class TaxShortcode implements Registrable {
 	}
 
 	/**
-	 * Display the series.
+	 * Display shortcode output.
 	 *
 	 * @param array $atts Shortcode attributes.
 	 * @return string
 	 * @since 1.0.0
 	 */
-	public function show( array $atts ): string {
+	abstract public function show( array $atts ): string;
 
-		$qv_tax  = get_query_var( 'taxonomy' );
-		$qv_term = get_query_var( $this->sc );
-		$qv_play = get_query_var( 'play' );
-
-		$args = array(
-			'display' => $this->sc,
-			'size'    => $this->size,
-		);
-		Logger::debug(
-			array(
-				'tax'  => $qv_tax,
-				'term' => $qv_term,
-				'play' => $qv_play,
-				'args' => $args,
-				'atts' => $atts,
-			)
-		);
-
-		ob_start();
-		if ( empty( $qv_term ) ) {
-			new TaxImageList( $args );
-		} elseif ( have_posts() ) {
-			new TaxArchive( $qv_tax, $qv_term );
-			wp_reset_postdata();
-		} else {
-			get_partial( 'no-posts' );
+	/**
+	 * Fix the attributes / parameters.
+	 *
+	 * @param array $atts
+	 * @return array
+	 */
+	public function fix_atts( array $atts ): array {
+		foreach ( $atts as &$att ) {
+			$att = unquote( $att );
 		}
-		$result = ob_get_clean();
-		return $result;
+		return $atts;
 	}
 }

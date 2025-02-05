@@ -103,14 +103,18 @@ class TaxImageList {
 	 */
 	public function __construct( array $args = array() ) {
 
-		$defaults = $this->get_default_args();
-		$args     = array_merge( $defaults, $args );
-		Logger::debug( $args );
+		if ( ! isset( $args['display'] ) ) {
+			return;
+		}
 
 		$this->taxonomy = TaxUtils::get_taxonomy_name( $args['display'] );
 		if ( ! $this->taxonomy ) {
 			return;
 		}
+
+		$defaults = $this->get_default_args();
+		$args     = array_merge( $defaults, $args );
+		Logger::debug( $args );
 
 		$args['display'] = $this->taxonomy;
 		$args['post_id'] = get_the_ID();
@@ -192,6 +196,9 @@ class TaxImageList {
 		$args['hide_empty'] = true;
 		$args['number']     = $this->number;
 		$args['offset']     = $this->offset;
+		Logger::debug( $args );
+
+		// @todo Add sorting by bible book
 
 		$list = get_terms( $args );
 

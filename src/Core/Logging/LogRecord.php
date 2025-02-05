@@ -12,7 +12,6 @@
 
 namespace DRPPSM\Logging;
 
-use DRPPSM\Helper;
 /**
  * Log record format
  *
@@ -98,7 +97,7 @@ class LogRecord {
 			$this->get_trace_info( $trace, $start );
 		}
 
-		$dir        = Helper::get_plugin_dir();
+		$dir        = DRPPSM_PATH;
 		$this->file = str_replace( $dir, '', $this->file );
 	}
 

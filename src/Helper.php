@@ -28,28 +28,6 @@ use ReflectionClass;
 class Helper {
 
 	/**
-	 * Create a key for options ect.. with the KEY_PREFIX.
-	 *
-	 * @param string $name Name of key to create.
-	 * @param string $delimiter Delimiter to use for key.
-	 * @return string
-	 */
-	public static function get_key_name( string $name, string $delimiter = '_' ): string {
-		$prefix = DRPSM_KEY_PREFIX;
-
-		$name = trim( trim( $name, '-_' ) );
-
-		$len = strlen( $prefix . $delimiter );
-		if ( strlen( $name ) > $len ) {
-			if ( substr( $name, 0, $len ) === $prefix . $delimiter ) {
-				return $name;
-			}
-		}
-
-		return strtolower( $prefix . $delimiter . $name );
-	}
-
-	/**
 	 * Get plugin directory.
 	 *
 	 * @return string
@@ -88,18 +66,6 @@ class Helper {
 	}
 
 	/**
-	 * Get is compatible from options.
-	 *
-	 * @return boolean
-	 */
-	public static function is_compatible(): bool {
-		$transient = self::get_key_name( 'compatible' );
-		$result    = (bool) get_transient( $transient );
-
-		return $result;
-	}
-
-	/**
 	 * Check if a plugin is active.
 	 *
 	 * @param string $name The name of the plugin.
@@ -115,21 +81,6 @@ class Helper {
 		// @codeCoverageIgnoreEnd
 
 		return is_plugin_active( $name );
-	}
-
-	/**
-	 * Wrapper function for set_transient.
-	 * - Add a the prefix used for this plugin.
-	 *
-	 * @param string  $transient  Transient name.
-	 * @param mixed   $value      Transient value.
-	 * @param integer $expire     Optional. Time until expiration in seconds. Default 0 (no expiration).
-	 * @return boolean
-	 */
-	public static function set_transient( string $transient, mixed $value, int $expire = 0 ): bool {
-		$transient = self::get_key_name( $transient );
-
-		return set_transient( $transient, $value, $expire );
 	}
 
 	/**

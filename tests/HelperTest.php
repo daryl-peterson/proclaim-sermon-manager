@@ -26,13 +26,6 @@ use DRPPSM\Helper;
 class HelperTest extends BaseTest {
 
 	public function test_misc() {
-		$result = Helper::get_key_name( 'blah' );
-		$this->assertIsString( $result );
-
-		$key    = Helper::get_key_name( '_blah' );
-		$result = Helper::get_key_name( DRPSM_KEY_PREFIX . '_blah' );
-		$this->assertIsString( $result );
-		$this->assertEquals( $key, $result );
 
 		$result = Helper::get_plugin_dir();
 		$this->assertIsString( $result );
@@ -42,9 +35,6 @@ class HelperTest extends BaseTest {
 
 		$result = Helper::get_slug();
 		$this->assertIsString( $result );
-
-		$result = Helper::is_compatible();
-		$this->assertIsBool( $result );
 
 		$result = Helper::gmt_to_local( gmdate( DATE_ISO8601 ) );
 		$this->assertNotNull( $result );
@@ -60,13 +50,6 @@ class HelperTest extends BaseTest {
 		$this->assertIsArray( $result );
 	}
 
-	public function test_set_transient() {
-		$key = Helper::get_key_name( 'delete_me' );
-		delete_transient( $key );
-
-		$result = Helper::set_transient( 'delete_me', true, 10 );
-		$this->assertTrue( $result );
-	}
 
 	public function test_get_short_name() {
 		$result = Helper::get_short_name( $this );

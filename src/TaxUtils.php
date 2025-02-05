@@ -151,6 +151,7 @@ class TaxUtils {
 	public static function get_terms_with_images( array $args ): ?array {
 
 		$query_args = self::get_query_args_images( $args );
+		Logger::debug( $query_args );
 		if ( ! isset( $query_args ) ) {
 			return null;
 		}
