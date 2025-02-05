@@ -19,12 +19,12 @@ if ( ! isset( $args ) ) {
 }
 
 if ( wp_is_block_theme() ) {
-	get_partial( 'header' );
+	block_template_part( 'header' );
 } elseif ( ! did_action( 'get_header' ) ) {
 	get_header();
 }
 
-get_partial( 'sermon-wrapper-start' );
+get_partial( Template::WRAPPER_START );
 echo sermon_sorting();
 
 if ( have_posts() ) {
@@ -34,12 +34,12 @@ if ( have_posts() ) {
 	get_partial( 'no-posts' );
 }
 
-get_partial( 'sermon-wrapper-end' );
+get_partial( Template::WRAPPER_END );
 
 
 
 if ( wp_is_block_theme() ) {
-	get_footer();
+	block_template_part( 'footer' );
 } elseif ( ! did_action( 'get_footer' ) ) {
 	get_footer();
 }

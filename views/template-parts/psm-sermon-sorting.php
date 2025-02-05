@@ -56,7 +56,7 @@ $preachers = get_taxonomy_field( DRPPSM_TAX_PREACHER, 'label' );
 
 
 <div id="<?php echo esc_html( $args['id'] ); ?>" class="<?php echo esc_html( $args['classes'] ); ?>">
-<div class="drppsm-browse" style="display: inline-block">
+<div class="drppsm-browse">
 	<select
 		id="drppsm_browse"
 		name="drppsm_browse"
@@ -90,7 +90,7 @@ foreach ( $filters as $filter ) {
 	$disabled   = ! empty( $args[ $filter['taxonomy'] ] ) && 'disable' === $args['visibility'] ? 'disabled' : '';
 	$options    = get_term_dropdown( $tax_var, '' );
 	?>
-	<div class="<?php echo esc_attr( $class_name ); ?>" style="display: inline-block">
+	<div class="<?php echo esc_attr( $class_name ); ?>">
 		<select
 			id="<?php echo esc_attr( $tax_var ); ?>"
 			name="<?php echo esc_attr( $tax_var ); ?>"

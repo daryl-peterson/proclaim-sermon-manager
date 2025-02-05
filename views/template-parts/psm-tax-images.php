@@ -45,7 +45,7 @@ $cnt = 0;
  * @var stdClass $item Object.
  */
 foreach ( $list as $item ) :
-
+	Logger::debug( array( 'Item' => $item ) );
 
 	if ( isset( $item->object ) ) {
 
@@ -60,12 +60,14 @@ foreach ( $list as $item ) :
 	$permalinks = PermaLinks::get();
 	$test       = implode( '/', array( get_site_url(), $permalinks['drppsm_sermon'] ) ) . '/?drppsm_series=' . $object->slug;
 
-	$no_image = false;
-	$link     = get_term_link( $object->term_id );
+	$no_image  = false;
+	$link      = get_term_link( $object->term_id );
+	$img_class = $object->taxonomy;
 
 	$src = null;
 	if ( isset( $item->image_id ) ) {
 		$src = wp_get_attachment_image_url( $item->image_id, $size );
+		Logger::debug( "Image found: $src" );
 	}
 	if ( ! $src ) {
 		$tax_name = $object->taxonomy;
@@ -77,23 +79,24 @@ foreach ( $list as $item ) :
 
 
 			<li class="<?php echo esc_attr( $cols_str ); ?>">
+				<div class="list-wrap">
+					<div class="list-image">
 
-				<div class="img-container">
-
-				<?php if ( $src ) : ?>
-				<a href="<?php echo esc_attr( $link ); ?>" title="<?php echo esc_attr( $object->name ); ?>">
-					<img src="<?php echo esc_attr( $src ); ?>" class="<?php echo esc_attr( $object->taxonomy ); ?>">
-				</a>
-				<?php endif; ?>
-				</div>
-				<div class="list-info">
-					<div class="title"><?php echo esc_html( $object->name ); ?>&nbsp;</div>
-					<div class="date"><?php echo esc_html( format_date( absint( $item->date ) ) ); ?>&nbsp;</div>
-					<div class="text-italic"><?php echo esc_html( "$object->count Messages" ); ?>&nbsp;</div>
-					<div class="archive-link">
-						<a href="<?php echo esc_attr( $link ); ?>" title="<?php echo esc_attr( $object->name ); ?>">
-							<?php echo esc_html( 'View Archive' ); ?>
-						</a>
+					<?php if ( $src ) : ?>
+					<a href="<?php echo esc_attr( $link ); ?>" title="<?php echo esc_attr( $object->name ); ?>">
+						<img src="<?php echo esc_attr( $src ); ?>" class="<?php echo esc_attr( $img_class ); ?>">
+					</a>
+					<?php endif; ?>
+					</div>
+					<div class="list-info">
+						<div class="title"><?php echo esc_html( $object->name ); ?>&nbsp;</div>
+						<div class="date"><?php echo esc_html( format_date( absint( $item->date ) ) ); ?>&nbsp;</div>
+						<div class="text-italic"><?php echo esc_html( "$object->count Messages" ); ?>&nbsp;</div>
+						<div class="archive-link">
+							<a href="<?php echo esc_attr( $link ); ?>" title="<?php echo esc_attr( $object->name ); ?>">
+								<?php echo esc_html( 'View Archive' ); ?>
+							</a>
+						</div>
 					</div>
 				</div>
 

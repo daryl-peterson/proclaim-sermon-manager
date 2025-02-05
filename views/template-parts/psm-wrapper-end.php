@@ -13,7 +13,6 @@ defined( 'ABSPATH' ) || exit;
 
 ?>
 
-		</main>
-		<!-- #main -->
-	</div>
-	<!-- #primary -->
+
+</article>
+<!-- #drppsm-wrapper -->

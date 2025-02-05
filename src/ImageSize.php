@@ -81,7 +81,7 @@ class ImageSize implements Executable, Registrable {
 	 *
 	 * @since 1.0.0
 	 */
-	public const PREACHER_MEDIUM = 'psm-preacher-medium';
+	public const TAX_MEDIUM = 'psm-preacher-medium';
 
 	/**
 	 * Preacher full image size.
@@ -90,7 +90,7 @@ class ImageSize implements Executable, Registrable {
 	 *
 	 * @since 1.0.0
 	 */
-	public const PREACHER_FULL = 'psm-preacher-full';
+	public const TAX_FULL = 'psm-preacher-full';
 
 	/**
 	 * Image sizes list.
@@ -100,8 +100,8 @@ class ImageSize implements Executable, Registrable {
 		self::SERMON_MEDIUM,
 		self::SERMON_WIDE,
 		self::SERMON_FULL,
-		self::PREACHER_MEDIUM,
-		self::PREACHER_FULL,
+		self::TAX_MEDIUM,
+		self::TAX_FULL,
 	);
 
 	public const SIZE_MAP = array(
@@ -112,9 +112,26 @@ class ImageSize implements Executable, Registrable {
 			'full'   => self::SERMON_FULL,
 		),
 
+		DRPPSM_TAX_BOOK     => array(
+			'medium' => self::TAX_MEDIUM,
+			'full'   => self::TAX_FULL,
+		),
+
 		DRPPSM_TAX_PREACHER => array(
-			'medium' => self::PREACHER_MEDIUM,
-			'full'   => self::PREACHER_FULL,
+			'medium' => self::TAX_MEDIUM,
+			'full'   => self::TAX_FULL,
+		),
+
+		DRPPSM_TAX_TOPIC    => array(
+			'medium' => self::TAX_MEDIUM,
+			'full'   => self::TAX_FULL,
+		),
+
+		DRPPSM_TAX_SERIES   => array(
+			'medium' => self::SERMON_MEDIUM,
+			'full'   => self::SERMON_FULL,
+			'wide'   => self::SERMON_WIDE,
+			'full'   => self::SERMON_FULL,
 		),
 	);
 
@@ -154,12 +171,12 @@ class ImageSize implements Executable, Registrable {
 				630,
 				true,
 			),
-			apply_filters( 'drppsm_image_size', self::PREACHER_MEDIUM ) => array(
+			apply_filters( 'drppsm_image_size', self::TAX_MEDIUM ) => array(
 				150,
 				150,
 				true,
 			),
-			apply_filters( 'drppsm_image_size', self::PREACHER_FULL )   => array(
+			apply_filters( 'drppsm_image_size', self::TAX_FULL )   => array(
 				300,
 				300,
 				true,

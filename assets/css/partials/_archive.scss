@@ -13,6 +13,13 @@
 		width: 100%;
 		font-weight: 700;
 		font-size: 32px;
+		margin: 0;
+	}
+
+	.header .title::before {
+		content: "";
+		background: inherit;
+		margin: 0;
 	}
 
 	.header .meta {
@@ -20,6 +27,7 @@
 		width: 100%;
 		font-style: italic;
 		font-size: 20px;
+		margin: 0;
 	}
 
 	.btn-sm {
@@ -72,11 +80,20 @@
 	}
 
 	table {
+		/*
 		border: none;
 		-moz-border-radius: 0;
 		-webkit-border-radius: 0;
 		border-radius: 0;
-		color: rgb(54, 54, 54);
+		*/
+		color: #000;
+		width: 100%;
+		border-collapse: separate;
+		border-spacing: 0;
+		border: 1px solid #adadad;
+		margin: 0px 0px 20px 0px;
+		font-size: 16px;
+		font-family: 'Noto Sans', sans-serif;
 	}
 
 	table tr td {
@@ -84,6 +101,7 @@
 		-moz-border-radius: 0;
 		-webkit-border-radius: 0;
 		border-radius: 0;
+		padding: 10px;
 	}
 
 	table tr.odd {
@@ -115,7 +133,11 @@
 		color: #000000;
 		font-weight: 700;
 		text-align: left;
-		padding: 7px 7px 7px 12px;
+	}
+
+	table tr.odd td.preacher-cell,
+	table tr.even td.preacher-cell {
+		font-style: italic;
 	}
 
 	@media (max-height: 500px) {
@@ -168,6 +190,14 @@
 		}
 	}
 
+}
+
+#drppsm-pagination {
+	margin: 10px;
+
+	&-pagination>.page-numbers {
+		margin: 0 4px;
+	}
 }
 
 .drppsm-archive {

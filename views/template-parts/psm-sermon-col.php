@@ -28,6 +28,7 @@ $list     = $args['list'];
 $cols     = $args['columns'];
 $cols_str = 'col' . $cols;
 $size     = $args['size'];
+Logger::debug( array( 'ARGS' => $args ) );
 
 ?>
 

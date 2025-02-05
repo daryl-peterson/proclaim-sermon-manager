@@ -12,7 +12,7 @@
 defined( 'ABSPATH' ) || exit;
 
 ?>
-<div id="primary" class="content-area">
-	<main id="main" class="site-main drppsm-wrapper">
+<article id="drppsm-wrapper">
+
 
 

@@ -41,7 +41,7 @@ if ( ! isset( $paginate_links ) ) {
 
 ?>
 
-<div id="drppsm-sermons-pagination">
+<div id="drppsm-pagination">
 	<?php
 
 	render_html( $paginate_links );

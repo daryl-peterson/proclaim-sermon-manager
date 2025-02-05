@@ -1,0 +1,19 @@
+#drppsm-wrapper {
+	max-width: 1200px;
+	margin-top: 20px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+@media (max-width: 800px) {
+	#drppsm-wrapper {
+		margin: 20px;
+	}
+}
+
+@media (max-height: 500px) {
+	#drppsm-wrapper {
+		margin: 20px;
+	}
+
+}

@@ -1,8 +1,8 @@
 <?php
 /**
- * Short codes list
+ * Series list short code.
  *
- * @package     DRPPSM\ShortCodes\Codes
+ * @package     DRPPSM\ShortCodes\SeriesList
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
@@ -12,29 +12,29 @@
 namespace DRPPSM\ShortCodes;
 
 use DRPPSM\Interfaces\Executable;
-use DRPPSM\Interfaces\Registrable;
 use DRPPSM\Traits\ExecutableTrait;
 
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Short codes list
+ * Series list short code.
  *
- * @package     DRPPSM\ShortCodes\Codes
+ * @package     DRPPSM\ShortCodes\SeriesList
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
  * @since       1.0.0
  */
-class Codes implements Executable, Registrable {
+class Series extends TaxShortcode implements Executable {
 	use ExecutableTrait;
 
-	public function register(): ?bool {
-		Books::exec();
-		Preachers::exec();
-		SermonArchive::exec();
-		Series::exec();
-		Topics::exec();
-		return true;
+	/**
+	 * Initialize object properties.
+	 *
+	 * @since 1.0.0
+	 */
+	protected function __construct() {
+		$this->sc   = 'drppsm_series';
+		$this->size = 'psm-sermon-medium';
 	}
 }

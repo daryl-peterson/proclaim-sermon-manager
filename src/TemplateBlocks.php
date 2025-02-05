@@ -34,7 +34,21 @@ class TemplateBlocks implements Executable, Registrable {
 
 	use ExecutableTrait;
 
-	protected string $pt;
+	/**
+	 * Post type
+	 *
+	 * @var string
+	 * @since 1.0.0
+	 */
+	private string $pt;
+
+	/**
+	 * Path for plugin templates.
+	 *
+	 * @var array
+	 * @since 1.0.0
+	 */
+	private array $path_plugin;
 
 	/**
 	 * Initialize object properties.
@@ -42,16 +56,24 @@ class TemplateBlocks implements Executable, Registrable {
 	 * @since 1.0.0
 	 */
 	protected function __construct() {
-		$this->pt = 'drppsm_sermon';
+		$this->pt          = 'drppsm_sermon';
+		$this->path_plugin = array(
+			DRPPSM_PATH . 'views/partials/',
+			DRPPSM_PATH . 'views/template-parts/',
+			DRPPSM_PATH . 'views/',
+		);
 	}
 
 	/**
 	 * Register hooks.
 	 *
 	 * @return bool|null
+	 * @see https://developer.wordpress.org/reference/hooks/type_template_hierarchy/
+	 * @see https://developer.wordpress.org/reference/hooks/get_block_templates/
 	 * @since 1.0.0
 	 */
 	public function register(): ?bool {
+
 		if ( ! wp_is_block_theme() ) {
 			return false;
 		}
@@ -86,6 +108,7 @@ class TemplateBlocks implements Executable, Registrable {
 	 * @since 1.0.0
 	 */
 	public function manage_block_templates( $query_result, $query, $template_type ) {
+		global $post;
 
 		Logger::debug(
 			array(
@@ -98,7 +121,6 @@ class TemplateBlocks implements Executable, Registrable {
 			return $query_result;
 		}
 
-		global $post;
 		if ( ( empty( $post ) && ! is_admin() ) || ( ! empty( $post ) && $this->pt !== $post->post_type ) ) {
 			Logger::debug( 'NOT OURS' );
 			return $query_result;
@@ -113,8 +135,12 @@ class TemplateBlocks implements Executable, Registrable {
 			$template_name = "single-{$this->pt}";
 		} elseif ( is_post_type_archive( $this->pt ) ) {
 			$template_name = "archive-{$this->pt}";
-		} elseif ( is_tax( get_object_taxonomies( $this->pt ) ) ) {
-			// $template_name = str_replace( '.php', '', $this->get_tax_template() );
+		}
+
+		foreach ( get_object_taxonomies( $this->pt ) as $taxonomy ) {
+			if ( is_tax( $taxonomy ) ) {
+				$template_name = "taxonomy-$taxonomy";
+			}
 		}
 
 		if ( ! $template_name ) {
@@ -125,7 +151,11 @@ class TemplateBlocks implements Executable, Registrable {
 		if ( file_exists( $template_file_path ) ) {
 			$block_source = 'theme';
 		} else {
-			$template_file_path = DRPPSM_PATH . 'views/' . $template_name . '.html';
+			$template_file_path = $this->locate_template( $template_name );
+		}
+
+		if ( ! $template_file_path ) {
+			return $query_result;
 		}
 
 		$template_contents = self::get_template_content( $template_file_path );
@@ -190,7 +220,8 @@ class TemplateBlocks implements Executable, Registrable {
 	 * Add custom archive template custom post type.
 	 *
 	 * @param array $templates Array of found templates.
-	 * @return array Updated array of found templates.
+	 * @return array Found templates.
+	 * @since 1.0.0
 	 */
 	public function add_custom_index_template( $templates ) {
 		return $this->add_custom_archive_template( $templates );
@@ -225,7 +256,7 @@ class TemplateBlocks implements Executable, Registrable {
 	}
 
 	/**
-	 * Add custom template for the wz_knowledgebase custom post type and wzkb_category taxonomy.
+	 * Add custom template for custom post type and taxonomy.
 	 *
 	 * @param array  $templates Array of found templates.
 	 * @param string $type Type of template (archive, single, taxonomy).
@@ -247,14 +278,6 @@ class TemplateBlocks implements Executable, Registrable {
 			Logger::debug( $msg );
 			return $templates;
 		}
-
-		/*
-		if ( in_array( $template_name, $templates, true ) ||
-			( in_array( $template_name . '.php', $templates, true ) ) ) {
-			Logger::debug( $msg );
-			return $templates;
-		}
-		*/
 
 		if ( in_array( $type, array( 'archive', 'index', 'search' ), true ) ) {
 			array_unshift( $templates, $template_name );
@@ -316,5 +339,41 @@ class TemplateBlocks implements Executable, Registrable {
 		// Run the preg_replace_callback to find and replace all placeholders.
 		$result = preg_replace_callback( $pattern, $callback, $template_contents );
 		return $result;
+	}
+
+	/**
+	 * Locate the path to the template.
+	 *
+	 * @param string $name Template name.
+	 * @param array  $args Arguments array used to pass to filter.
+	 * @return null|string
+	 * @since 1.0.0
+	 */
+	public function locate_template( string $name ): ?string {
+
+		$partial = null;
+		$name    = $this->fix_template_name( $name );
+		foreach ( $this->path_plugin as $path ) {
+			if ( file_exists( $path . $name ) ) {
+				$partial = $path . $name;
+				break;
+			}
+		}
+
+		return $partial;
+	}
+
+	/**
+	 * Make sure template name ends with .php .
+	 *
+	 * @param string $name Template name.
+	 * @return string
+	 * @since 1.0.0
+	 */
+	private function fix_template_name( string $name ): string {
+		if ( false === strpos( $name, '.html' ) ) {
+			$name .= '.html';
+		}
+		return $name;
 	}
 }

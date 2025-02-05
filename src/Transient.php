@@ -111,10 +111,14 @@ class Transient {
 	 */
 	public static function delete_all() {
 		foreach ( DRPPSM_TAX_MAP as  $tax_name ) {
+			$key = '%transient%' . $tax_name . '_%';
+			Logger::debug( 'Deleting: ' . $key );
 			self::delete( '%transient%' . $tax_name . '_%' );
+
 		}
 
 		$pt = DRPPSM_PT_SERMON . '_imagelist';
 		self::delete( '%transient%' . $pt . '_%' );
+		wp_cache_flush();
 	}
 }

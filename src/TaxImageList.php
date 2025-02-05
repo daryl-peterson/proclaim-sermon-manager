@@ -95,6 +95,7 @@ class TaxImageList {
 
 		$defaults = $this->get_default_args();
 		$args     = array_merge( $defaults, $args );
+		Logger::debug( $args );
 
 		$this->taxonomy = TaxUtils::get_taxonomy_name( $args['display'] );
 		if ( ! $this->taxonomy ) {
@@ -106,7 +107,10 @@ class TaxImageList {
 		$this->set_params( $args );
 		$this->set_pagination();
 		$this->set_term_data();
+		$this->show_template( $args );
+	}
 
+	private function show_template( array $args ) {
 		$output = '';
 		if ( isset( $this->data ) && is_array( $this->data ) && count( $this->data ) > 0 ) {
 
@@ -161,9 +165,9 @@ class TaxImageList {
 		$trans_key = "{$tax}_imagelist_{$page}";
 		$data      = Transient::get( $trans_key );
 		if ( $data ) {
-			Logger::debug( "Transient found : $trans_key" );
-			$this->data = $data;
-			return;
+			// Logger::debug( "Transient found : $trans_key" );
+			// $this->data = $data;
+			// return;
 		} else {
 			Logger::debug( "Transient not found : $trans_key" );
 		}

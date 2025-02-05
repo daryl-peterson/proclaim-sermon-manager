@@ -94,34 +94,9 @@ class SermonImageList {
 		$this->set_params();
 		$this->set_pagination();
 		$this->data = $this->get_post_data();
+
+		$this->show_template();
 	}
-
-
-	public function show_data() {
-		$args = array(
-			'list'    => $this->data,
-			'columns' => Settings::get( Settings::IMAGES_PER_ROW ),
-			'size'    => 'wide',
-		);
-
-		$layout = Settings::get( Settings::SERMON_LAYOUT );
-
-		Logger::debug( 'Layout: ' . $layout );
-
-		// get_partial( $layout, $args );
-		get_partial(
-			$layout,
-			array(
-				'list'    => $this->data,
-				'columns' => Settings::get( Settings::IMAGES_PER_ROW ),
-				'size'    => 'wide',
-			)
-		);
-
-		// get_partial( Templates::Pagination, $this->paginate );
-	}
-
-
 
 	/**
 	 * Render the archive.
@@ -129,7 +104,7 @@ class SermonImageList {
 	 * @return void
 	 * @since 1.0.0
 	 */
-	public function render() {
+	public function show_template() {
 		$output = '';
 
 		$layout = Settings::get( Settings::SERMON_LAYOUT );
@@ -142,7 +117,7 @@ class SermonImageList {
 				array(
 					'list'    => $this->data,
 					'columns' => Settings::get( Settings::IMAGES_PER_ROW ),
-					'size'    => 'wide',
+					'size'    => 'psm-sermon-medium',
 				)
 			);
 			get_partial( Template::Pagination, $this->paginate );
