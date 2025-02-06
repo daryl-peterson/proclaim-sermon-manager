@@ -73,9 +73,10 @@ class ImageSizeTest extends BaseTest {
 		$this->assertTrue( $result );
 
 		$sizes = ImageSize::LIST;
+		Logger::debug( $sizes );
 		$this->assertIsArray( $sizes );
 
-		foreach ( $sizes as $name => $value ) {
+		foreach ( $sizes as $name ) {
 			$result = has_image_size( $name );
 			$this->assertTrue( $result );
 		}

@@ -7,7 +7,7 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'DRPPSM\\Traits\\' => array($baseDir . '/src/Core/Traits'),
-    'DRPPSM\\Tests\\' => array($baseDir . '/tests'),
+    'DRPPSM\\Tests\\' => array($baseDir . '/tests/unit'),
     'DRPPSM\\Logging\\' => array($baseDir . '/src/Core/Logging'),
     'DRPPSM\\Interfaces\\' => array($baseDir . '/src/Core/Interfaces'),
     'DRPPSM\\Exceptions\\' => array($baseDir . '/src/Core/Exceptions'),

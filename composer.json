@@ -26,7 +26,7 @@
 			"DRPPSM\\Interfaces\\": "src/Core/Interfaces",
 			"DRPPSM\\Logging\\": "src/Core/Logging",
 			"DRPPSM\\Traits\\": "src/Core/Traits",
-			"DRPPSM\\Tests\\": "tests/"
+			"DRPPSM\\Tests\\": "tests/unit/"
 		},
 		"files": [
 			"src/Core/Functions/facades.php",

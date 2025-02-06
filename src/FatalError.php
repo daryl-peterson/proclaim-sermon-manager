@@ -47,6 +47,7 @@ class FatalError {
 	public static function exist(): bool {
 
 		$options = get_option( self::$option_key, array() );
+		Logger::debug( $options );
 		if ( ! is_array( $options ) || ! key_exists( self::$option_name, $options ) ) {
 			return false;
 		}
@@ -56,19 +57,19 @@ class FatalError {
 	/**
 	 * Check if any fatal errors occured.
 	 *
-	 * @return void
+	 * @return ?bool
 	 * @since 1.0.0
 	 */
-	public static function check(): void {
+	public static function check(): ?bool {
 
 		$options = get_option( self::$option_key, array() );
 		if ( ! is_array( $options ) || ! key_exists( self::$option_name, $options ) ) {
-			return;
+			return false;
 		}
 
 		$error = $options[ self::$option_name ];
 		if ( ! $error ) {
-			return;
+			return false;
 		}
 
 		$name = DRPPSM_TITLE;
@@ -88,30 +89,32 @@ class FatalError {
 
 		unset( $options[ self::$option_name ] );
 		update_option( self::$option_key, $options );
-		Deactivator::run();
 
 		// @codeCoverageIgnoreStart
 		if ( ! defined( DRPPSM_TESTING ) ) {
+			Deactivator::run();
 			wp_die( wp_kses( $message, allowed_html() ), wp_kses_data( DRPPSM_TITLE ) );
 		}
 		// @codeCoverageIgnoreEnd
+
+		return true;
 	}
 
 	/**
 	 * Store error message in options table.
 	 *
 	 * @param \Throwable $th Throwable interface.
-	 * @return void
+	 * @return bool
 	 * @since 1.0.0
 	 */
-	public static function set( \Throwable $th ): void {
+	public static function set( \Throwable $th ): bool {
 
 		$options = get_option( self::$option_key, array() );
 		if ( ! is_array( $options ) || ! key_exists( self::$option_name, $options ) ) {
 			$options = array();
 		}
 		$options[ self::$option_name ] = $th->getMessage();
-		update_option( self::$option_key, $options );
+		$result                        = update_option( self::$option_key, $options );
 
 		Logger::error(
 			array(
@@ -119,6 +122,8 @@ class FatalError {
 				'TRACE'   => (array) $th->getTrace(),
 			)
 		);
+
+		return $result;
 
 		// phpcs:ignore
 		// wp_die( wp_kses_data( $th->getMint "string"; found "\Throwable" for $messageessage() ) );

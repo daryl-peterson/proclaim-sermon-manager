@@ -55,4 +55,5 @@ return array(
 	TextDomainInt::class     => TextDomain::class,
 	Template::class          => Template::class,
 	Timer::class             => Timer::class,
+	Dashboard::class         => Dashboard::class,
 );

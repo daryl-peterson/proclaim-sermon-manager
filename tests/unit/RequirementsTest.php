@@ -11,6 +11,8 @@
 
 namespace DRPPSM\Tests;
 
+use DRPPSM\Requirements;
+
 /**
  * Test requirements.
  *
@@ -22,5 +24,14 @@ namespace DRPPSM\Tests;
  */
 class RequirementsTest extends BaseTest {
 
+	public Requirements $obj;
 
+	public function setup(): void {
+		$this->obj = Requirements::exec();
+	}
+
+	public function test_register() {
+		$result = $this->obj->register();
+		$this->assertFalse( $result );
+	}
 }

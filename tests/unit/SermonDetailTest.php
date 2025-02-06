@@ -21,7 +21,7 @@ class SermonDetailTest extends BaseTest {
 	private SermonDetail $obj;
 
 	public function setup(): void {
-		$this->obj = SermonDetail::init();
+		$this->obj = SermonDetail::exec();
 	}
 	public function test_register() {
 		$result = $this->obj->register();

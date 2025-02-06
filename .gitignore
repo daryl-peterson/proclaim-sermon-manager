@@ -1,3 +1,6 @@
-.misc/
-.phpcsignore
-phpcs-report.txt
+tests/phpcs
+tests/phpcbf
+tests/phpcs-report.txt
+tests/.phpcsignore
+tests/reports/*
+tests/cache/*

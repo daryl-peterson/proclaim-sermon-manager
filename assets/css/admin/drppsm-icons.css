@@ -10,80 +10,81 @@
 	font-style: normal;
 }
 
-[class*='dashicons-drppsm-']:before {
+[class^='dashicons-drppsm']:before,
+[class*='dashicons-drppsm']:before {
 	display: inline-block;
-	font-family: 'drppsm';
-	font-style: normal;
-	font-weight: normal;
+	font-family: 'drppsm' !important;
+	font-style: normal !important;
+	font-weight: normal !important;
 	line-height: 1;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale
 }
 
 .dashicons-drppsm-pulpit:before {
-	content: '\0041';
+	content: '\0041' !important;
 }
 
 .dashicons-drppsm-megaphone:before {
-	content: '\0042';
+	content: '\0042' !important;
 }
 
 .dashicons-drppsm-calvary:before {
-	content: '\0043';
+	content: '\0043' !important;
 }
 
 .dashicons-drppsm-bible:before {
-	content: '\0044';
+	content: '\0044' !important;
 }
 
 .dashicons-drppsm-bible-alt:before {
-	content: '\0045';
+	content: '\0045' !important;
 }
 
 .dashicons-drppsm-fish:before {
-	content: '\0046';
+	content: '\0046' !important;
 }
 
 .dashicons-drppsm-fish-alt:before {
-	content: '\0047';
+	content: '\0047' !important;
 }
 
 .dashicons-drppsm-sermon:before {
-	content: '\0048';
+	content: '\0048' !important;
 }
 
 .dashicons-drppsm-sermon-inv:before {
-	content: '\0049';
+	content: '\0049' !important;
 }
 
 .dashicons-drppsm-cross:before {
-	content: '\004a';
+	content: '\004a' !important;
 }
 
 .dashicons-drppsm-cross-alt:before {
-	content: '\004b';
+	content: '\004b' !important;
 }
 
 .dashicons-drppsm-praying:before {
-	content: '\004c';
+	content: '\004c' !important;
 }
 
 .dashicons-drppsm-holy-spirit:before {
-	content: '\004d';
+	content: '\004d' !important;
 }
 
 .dashicons-drppsm-candle:before {
-	content: '\004e';
+	content: '\004e' !important;
 }
 
 .dashicons-drppsm-church:before {
-	content: '\0050';
+	content: '\0050' !important;
 }
 
 .dashicons-drppsm-church-alt:before {
-	content: '\004f';
+	content: '\004f' !important;
 }
 
 .dashicons-drppsm-pulpit-alt:before {
-	content: '\0051';
+	content: '\0051' !important;
 }
