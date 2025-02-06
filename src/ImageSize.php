@@ -15,7 +15,9 @@ use DRPPSM\Interfaces\Executable;
 use DRPPSM\Interfaces\Registrable;
 use DRPPSM\Traits\ExecutableTrait;
 
+// @codeCoverageIgnoreStart
 defined( 'ABSPATH' ) || exit;
+// @codeCoverageIgnoreEnd
 
 /**
  * Image sizes.
@@ -206,7 +208,7 @@ class ImageSize implements Executable, Registrable {
 	 * @return string
 	 * @since 1.0.0
 	 */
-	public static function get_tax_image_size( string $size, string $taxonomy ) {
+	public static function get_tax_image_size( string $size, string $taxonomy ): string {
 		$tax_name = TaxUtils::get_taxonomy_name( $taxonomy );
 		if ( ! $tax_name ) {
 			return $size;
@@ -250,12 +252,6 @@ class ImageSize implements Executable, Registrable {
 		$result = false;
 		try {
 
-			// @codeCoverageIgnoreStart
-			if ( ! function_exists( '\add_image_size' ) ) {
-				return false;
-			}
-			// @codeCoverageIgnoreEnd
-
 			foreach ( $this->sizes as $name => $settings ) {
 				add_image_size( $name, ...$settings );
 			}
@@ -269,8 +265,11 @@ class ImageSize implements Executable, Registrable {
 				}
 				// @codeCoverageIgnoreEnd
 			}
+
+			// @codeCoverageIgnoreStart
 		} catch ( \Throwable $th ) {
 			FatalError::set( $th );
+			// @codeCoverageIgnoreEnd
 		}
 		return $result;
 	}

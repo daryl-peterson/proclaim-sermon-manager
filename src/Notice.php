@@ -11,7 +11,9 @@
 
 namespace DRPPSM;
 
+// @codeCoverageIgnoreStart
 defined( 'ABSPATH' ) || exit;
+// @codeCoverageIgnoreEnd
 
 use DRPPSM\Interfaces\NoticeInt;
 use DRPPSM\Traits\ExecutableTrait;
@@ -79,16 +81,15 @@ class Notice implements NoticeInt {
 	 */
 	public function show_notice(): ?string {
 		$options = get_option( $this->option_key, array() );
+
+		Logger::debug( array( 'OPTIONS' => $options ) );
+
 		if ( ! is_array( $options ) || ! isset( $options[ $this->option_name ] ) ) {
 			return null;
 		}
 
 		$html   = null;
 		$option = $options[ $this->option_name ];
-
-		if ( ! isset( $option ) ) {
-			return null;
-		}
 
 		$title        = esc_html( isset( $option['title'] ) ? $option['title'] : '' );
 		$message      = isset( $option['message'] ) ? $option['message'] : false;
@@ -117,7 +118,9 @@ class Notice implements NoticeInt {
 	public function delete(): void {
 		$options = get_option( $this->option_key, array() );
 		if ( ! is_array( $options ) || ! isset( $options[ $this->option_name ] ) ) {
+			// @codeCoverageIgnoreStart
 			return;
+			// @codeCoverageIgnoreEnd
 		}
 		unset( $options[ $this->option_name ] );
 		update_option( $this->option_key, $options );
@@ -194,7 +197,7 @@ class Notice implements NoticeInt {
 		if ( ! is_array( $options ) || ! isset( $options[ $this->option_name ] ) ) {
 			$options = array();
 		}
-		$options[ $this->option_key ] = $option_value;
+		$options[ $this->option_name ] = $option_value;
 		return update_option( $this->option_key, $options );
 	}
 }

@@ -11,7 +11,7 @@
 
 namespace DRPPSM;
 
-defined( 'ABSPATH' ) || exit;
+// defined( 'ABSPATH' ) || exit;
 
 use DRPPSM\Traits\SingletonTrait;
 
@@ -106,14 +106,16 @@ class PermaLinks {
 	 * Get permalink.
 	 *
 	 * @param string $taxonomy Taxonomy name.
-	 * @return string
+	 * @return bool
 	 * @since 1.0.0
 	 */
-	public static function delete( string $taxonomy ): void {
+	public static function delete( string $taxonomy ): bool {
 		self::get_instance();
 		if ( isset( self::$permalinks[ $taxonomy ] ) ) {
 			unset( self::$permalinks[ $taxonomy ] );
+			return true;
 		}
+		return false;
 	}
 
 	/**
@@ -123,7 +125,7 @@ class PermaLinks {
 	 * @since 1.0.0
 	 */
 	private static function init_sermons(): void {
-		if ( ! isset( self::$sermons ) ) {
+		if ( ! isset( self::$sermons ) || defined( DRPPSM_TESTING ) ) {
 			self::$sermons = sanitize_title( Settings::get( Settings::SERMON_PLURAL ) );
 		}
 	}
@@ -135,7 +137,7 @@ class PermaLinks {
 	 * @since 1.0.0
 	 */
 	private static function init_common_slug(): void {
-		if ( ! isset( self::$common_slug ) ) {
+		if ( ! isset( self::$common_slug ) || defined( DRPPSM_TESTING ) ) {
 			self::$common_slug = Settings::get( Settings::COMMON_BASE_SLUG );
 		}
 	}
@@ -147,7 +149,7 @@ class PermaLinks {
 	 * @since 1.0.0
 	 */
 	private static function init_permalinks(): void {
-		if ( ! isset( self::$permalinks ) ) {
+		if ( ! isset( self::$permalinks ) || defined( DRPPSM_TESTING ) ) {
 			self::$permalinks = array();
 		}
 	}

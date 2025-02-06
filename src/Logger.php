@@ -11,7 +11,9 @@
 
 namespace DRPPSM;
 
+// @codeCoverageIgnoreStart
 defined( 'ABSPATH' ) || exit;
+// @codeCoverageIgnoreEnd
 
 use DRPPSM\Logging\LogFile;
 use DRPPSM\Traits\SingletonTrait;
@@ -120,7 +122,9 @@ class Logger implements LoggerInt {
 			// phpcs:enable
 
 			if ( ! defined( 'WP_DEBUG' ) ) {
+				// @codeCoverageIgnoreStart
 				$result = true;
+				// @codeCoverageIgnoreEnd
 			} elseif ( isset( $this->writter ) ) {
 				$result = $this->writter->write( $record );
 			}

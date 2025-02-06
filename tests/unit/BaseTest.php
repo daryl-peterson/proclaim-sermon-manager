@@ -4,6 +4,7 @@ namespace DRPPSM\Tests;
 
 use DRPPSM\App;
 use PHPUnit\Framework\TestCase;
+use ReflectionClass;
 
 /**
  * Base test case.
@@ -25,6 +26,7 @@ class BaseTest extends TestCase {
 		if ( ! defined( 'PHPUNIT_TESTING' ) ) {
 			define( 'PHPUNIT_TESTING', true );
 		}
+
 		$this->app = App::init();
 	}
 
@@ -77,5 +79,12 @@ class BaseTest extends TestCase {
 		}
 
 		return $post;
+	}
+
+	public function get_method( mixed $obj, $name ) {
+		$class  = new ReflectionClass( $obj );
+		$method = $class->getMethod( $name );
+		$method->setAccessible( true );
+		return $method;
 	}
 }

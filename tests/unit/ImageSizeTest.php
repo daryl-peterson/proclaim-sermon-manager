@@ -81,4 +81,29 @@ class ImageSizeTest extends BaseTest {
 			$this->assertTrue( $result );
 		}
 	}
+
+	/**
+	 * Test get image size.
+	 *
+	 * @return void
+	 * @since 1.0.0
+	 */
+	public function test_get_image_size() {
+		$result = ImageSize::get_tax_image_size( 'full', 'sermon2' );
+		$this->assertIsString( $result );
+
+		$result = ImageSize::get_tax_image_size( 'full', 'sermon' );
+		$this->assertIsString( $result );
+	}
+
+	/**
+	 * Test get all image sizes.
+	 *
+	 * @return void
+	 * @since 1.0.0
+	 */
+	public function test_get_all_image_sizes() {
+		$result = ImageSize::get_all_image_sizes();
+		$this->assertIsArray( $result );
+	}
 }

@@ -1,1 +1,6 @@
-/usr/bin/phpunit --configuration phpunit.xml.dist
+#!/usr/bin/bash
+command="phpunit"
+unit=$(which "$command")
+
+parentdir="$(dirname "$PWD")"
+php -d pcov.directory="$parentdir" -d pcov.enabled=1 -d pcov.exclude="*/tests/*" -d pcov.check_for_updates=0 $unit --configuration phpunit.xml.dist

@@ -11,7 +11,9 @@
 
 namespace DRPPSM;
 
+// @codeCoverageIgnoreStart
 defined( 'ABSPATH' ) || exit;
+// @codeCoverageIgnoreEnd
 
 use DRPPSM\Interfaces\Executable;
 use DRPPSM\Interfaces\Runable;
@@ -69,8 +71,10 @@ class Loader implements Executable, Runable {
 			}
 			do_action( Action::AFTER_INIT );
 
+			// @codeCoverageIgnoreStart
 		} catch ( \Throwable $th ) {
 			FatalError::set( $th );
+			// @codeCoverageIgnoreEnd
 		}
 
 		return true;
