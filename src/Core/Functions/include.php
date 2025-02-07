@@ -56,3 +56,20 @@ function include_pluggable(): void {
 	}
 	// @codeCoverageIgnoreEnd
 }
+
+/**
+ * Include admin screen functions.
+ *
+ * @return void
+ * @since 1.0.0
+ */
+function include_screen() {
+	// @codeCoverageIgnoreStart
+	if ( ! function_exists( '\get_current_screen' ) ) {
+		require_once ABSPATH . 'wp-admin/includes/class-wp-screen.php';
+
+		$file = ABSPATH . 'wp-admin/includes/screen.php';
+		require_once $file;
+	}
+	// @codeCoverageIgnoreEnd
+}

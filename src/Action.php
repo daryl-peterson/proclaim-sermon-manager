@@ -11,7 +11,9 @@
 
 namespace DRPPSM;
 
+// @codeCoverageIgnoreStart
 defined( 'ABSPATH' ) || exit;
+// @codeCoverageIgnoreEnd
 
 /**
  * Action constants.
@@ -23,9 +25,19 @@ defined( 'ABSPATH' ) || exit;
  * @since       1.0.0
  */
 class Action {
+
+	/**
+	 * After post setup action.
+	 *
+	 * @since 1.0.0
+	 */
 	public const AFTER_POST_SETUP = 'drppsm_after_post_setup';
 
-
+	/**
+	 * Text domain loaded action.
+	 *
+	 * @since 1.0.0
+	 */
 	public const TEXT_DOMAIN_LOADED = 'drppsm_textdomain';
 
 	/**

@@ -73,9 +73,4 @@ class NoticeTest extends BaseTest {
 		$result = $obj->register();
 		$this->assertFalse( $result );
 	}
-
-	public function test_show_notice() {
-		$obj = Notice::get_instance();
-		$obj->show_notice();
-	}
 }

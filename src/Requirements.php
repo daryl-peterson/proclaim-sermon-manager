@@ -11,7 +11,9 @@
 
 namespace DRPPSM;
 
+// @codeCoverageIgnoreStart
 defined( 'ABSPATH' ) || exit;
+// @codeCoverageIgnoreEnd
 
 use DRPPSM\Exceptions\PluginException;
 use DRPPSM\Interfaces\Executable;
@@ -46,7 +48,7 @@ class Requirements implements Executable, Registrable {
 	 */
 	protected function __construct() {
 
-		$this->notice = notice();
+		$this->notice = Notice::exec();
 	}
 
 	/**
@@ -75,26 +77,30 @@ class Requirements implements Executable, Registrable {
 		try {
 			$this->check_php_ver();
 			$this->check_wp_ver();
+
+			// @codeCoverageIgnoreStart
 		} catch ( \Throwable $th ) {
 			FatalError::set( $th );
+			// @codeCoverageIgnoreEnd
 		}
 		return true;
 	}
 
 	/**
-	 * Check PHP version
+	 * Check PHP version.
 	 *
 	 * @param string $version Required PHP version.
-	 * @return void
+	 * @return ?bool True if requirements are met.
 	 * @throws PluginException Throws exception if requirements are not met.
+	 * @since 1.0.0
 	 */
-	public function check_php_ver( string $version = '' ): void {
+	public function check_php_ver( string $version = '' ): ?bool {
 		if ( empty( $version ) ) {
 			$version = DRPPSM_MIN_PHP;
 		}
 		$message = __( 'This Plugin requires PHP : ', 'drppsm' ) . $version;
 		if ( version_compare( PHP_VERSION, $version ) >= 0 ) {
-			return;
+			return true;
 		}
 		$this->notice->set_error( '- Requirement Not Met', esc_html( $message ) );
 		throw new PluginException( esc_html( $message ) );
@@ -104,21 +110,21 @@ class Requirements implements Executable, Registrable {
 	 * Check WordPress verson
 	 *
 	 * @param string $version Required WordPress version.
-	 * @return void
+	 * @return ?bool True if requirements are met.
 	 *
 	 * @throws PluginException Throws exception if requirements are not met.
 	 * @since 1.0.0
 	 */
-	public function check_wp_ver( string $version = '' ): void {
+	public function check_wp_ver( string $version = '' ): ?bool {
 		global $wp_version;
 
 		if ( empty( $version ) ) {
 			$version = DRPPSM_MIN_WP;
 		}
-		$title   = __( 'Requiment Not Met', 'drppsm' );
+
 		$message = __( 'This Plugin requires WP : ', 'drppsm' ) . $version;
 		if ( version_compare( $wp_version, $version ) >= 0 ) {
-			return;
+			return true;
 		}
 
 		throw new PluginException( esc_html( $message ) );

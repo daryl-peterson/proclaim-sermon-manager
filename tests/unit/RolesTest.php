@@ -45,7 +45,6 @@ class RolesTest extends BaseTest {
 	public function test_add() {
 		$result = $this->obj->add();
 		$this->assertIsArray( $result );
-		Logger::debug( $result );
 	}
 
 	/**
@@ -57,7 +56,6 @@ class RolesTest extends BaseTest {
 		$result = $this->obj->remove();
 		$this->assertIsArray( $result );
 		$this->obj->add();
-		Logger::debug( $result );
 	}
 
 	/**
@@ -72,12 +70,6 @@ class RolesTest extends BaseTest {
 		$list = Caps::LIST;
 		foreach ( $list as $cap ) {
 			$has = $role->has_cap( $cap );
-			Logger::debug(
-				array(
-					'CAP' => $cap,
-					'HAS' => $has,
-				)
-			);
 			$this->assertTrue( $has );
 		}
 	}
