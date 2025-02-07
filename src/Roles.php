@@ -11,10 +11,13 @@
 
 namespace DRPPSM;
 
+// @codeCoverageIgnoreStart
 defined( 'ABSPATH' ) || exit;
+// @codeCoverageIgnoreEnd
 
 use DRPPSM\Constants\Caps;
 use DRPPSM\Interfaces\RolesInt;
+use DRPPSM\Traits\ExecutableTrait;
 
 /**
  * Add custom capabilities to roles.
@@ -26,6 +29,7 @@ use DRPPSM\Interfaces\RolesInt;
  * @since       1.0.
  */
 class Roles implements RolesInt {
+	use ExecutableTrait;
 
 	/**
 	 * List of roles to update.
@@ -84,18 +88,6 @@ class Roles implements RolesInt {
 	}
 
 	/**
-	 * Initalize and register hooks.
-	 *
-	 * @return RolesInt
-	 * @since 1.0.0
-	 */
-	public static function exec(): RolesInt {
-		$obj = new self();
-		$obj->register();
-		return $obj;
-	}
-
-	/**
 	 * Add capablilities to roles.
 	 *
 	 * @return array Roles / caps.
@@ -129,10 +121,12 @@ class Roles implements RolesInt {
 					}
 				}
 			}
-			return $status;
+
+			// @codeCoverageIgnoreStart
 		} catch ( \Throwable $th ) {
 			FatalError::set( $th );
 			$status = array();
+			// @codeCoverageIgnoreEnd
 		}
 		return $status;
 	}
@@ -162,8 +156,11 @@ class Roles implements RolesInt {
 					$status[ $role_name ]['cap'][] = $capability;
 				}
 			}
+
+			// @codeCoverageIgnoreStart
 		} catch ( \Throwable $th ) {
 			FatalError::set( $th );
+			// @codeCoverageIgnoreEnd
 		}
 		return $status;
 	}

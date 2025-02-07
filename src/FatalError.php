@@ -11,7 +11,9 @@
 
 namespace DRPPSM;
 
+// @codeCoverageIgnoreStart
 defined( 'ABSPATH' ) || exit;
+// @codeCoverageIgnoreEnd
 
 /**
  * Fatal error handling.
@@ -47,9 +49,11 @@ class FatalError {
 	public static function exist(): bool {
 
 		$options = get_option( self::$option_key, array() );
-		Logger::debug( $options );
+
+			// @codeCoverageIgnoreStart
 		if ( ! is_array( $options ) || ! key_exists( self::$option_name, $options ) ) {
 			return false;
+			// @codeCoverageIgnoreEnd
 		}
 		return true;
 	}
@@ -68,11 +72,8 @@ class FatalError {
 		}
 
 		$error = $options[ self::$option_name ];
-		if ( ! $error ) {
-			return false;
-		}
+		$name  = DRPPSM_TITLE;
 
-		$name = DRPPSM_TITLE;
 		if ( is_admin() ) {
 			$link = get_admin_url( null, 'plugins.php' );
 			$text = "Back to the WordPress <a href=\"$link\">Plugins page</a>.";

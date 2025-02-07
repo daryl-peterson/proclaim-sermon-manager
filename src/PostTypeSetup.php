@@ -4,7 +4,7 @@
  * - Stub - calls other object methods.
  * - Used so other object don't have to register hooks.
  *
- * @package     Proclaim Sermon Manager
+ * @package     DRPPSM\PostTypeSetup
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
@@ -13,26 +13,31 @@
 
 namespace DRPPSM;
 
+// @codeCoverageIgnoreStart
 defined( 'ABSPATH' ) || exit;
+// @codeCoverageIgnoreEnd
 
 use DRPPSM\PostTypeReg;
 use DRPPSM\Exceptions\PluginException;
 use DRPPSM\Interfaces\Executable;
 use DRPPSM\Interfaces\Registrable;
 use DRPPSM\TaxReg;
+use DRPPSM\Traits\ExecutableTrait;
 
 /**
  * Register post types and taxonomies.
  * - Stub - calls other object methods.
  * - Used so other object don't have to register hooks.
  *
- * @package     Proclaim Sermon Manager
+ * @package     DRPPSM\PostTypeSetup
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
  * @since       1.0.0
  */
 class PostTypeSetup implements Executable, Registrable {
+
+	use ExecutableTrait;
 
 	/**
 	 * Taxonomies indexed on post type.
@@ -61,18 +66,6 @@ class PostTypeSetup implements Executable, Registrable {
 		$this->taxonomies[ $pt ][] = new TaxReg( DRPPSM_TAX_SERIES, DRPPSM_PT_SERMON, 'taxonomy-series.php' );
 		$this->taxonomies[ $pt ][] = new TaxReg( DRPPSM_TAX_SERVICE_TYPE, DRPPSM_PT_SERMON, 'taxonomy-service-type.php' );
 		$this->taxonomies[ $pt ][] = new TaxReg( DRPPSM_TAX_TOPIC, DRPPSM_PT_SERMON, 'taxonomy-topics.php' );
-	}
-
-	/**
-	 * Initialize and register.
-	 *
-	 * @return self
-	 * @since 1.0.0
-	 */
-	public static function exec(): self {
-		$obj = new self();
-		$obj->register();
-		return $obj;
 	}
 
 	/**
@@ -128,8 +121,12 @@ class PostTypeSetup implements Executable, Registrable {
 			// @codeCoverageIgnoreStart
 		} catch ( \Throwable $th ) {
 			FatalError::set( $th );
+			// @codeCoverageIgnoreEnd
 		}
+
+		// @codeCoverageIgnoreStart
 		return null;
+		// @codeCoverageIgnoreEnd
 	}
 
 	/**

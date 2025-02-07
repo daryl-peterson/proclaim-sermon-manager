@@ -78,8 +78,9 @@ class RolesTest extends BaseTest {
 	 * Test get role caps.
 	 *
 	 * @return void
+	 * @since 1.0.0
 	 */
-	public function test_get_role_caps() {
+	public function test_get_role_caps(): void {
 
 		$result = $this->obj->get_role_caps();
 		$this->assertIsArray( $result );
@@ -101,19 +102,18 @@ class RolesTest extends BaseTest {
 		}
 		$result = $this->obj->add();
 		$this->assertIsArray( $result );
-		Logger::debug( $result );
 
 		$result = $this->obj->get_role_caps();
 		$this->assertIsArray( $result );
-		Logger::debug( $result );
 	}
 
 	/**
 	 * Test is valid role.
 	 *
 	 * @return void
+	 * @since 1.0.0
 	 */
-	public function test_is_valid_role() {
+	public function test_is_valid_role(): void {
 		$result = $this->obj->is_valid_role( 'blah' );
 		$this->assertFalse( $result );
 	}

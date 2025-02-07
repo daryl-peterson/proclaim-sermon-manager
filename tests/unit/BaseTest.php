@@ -12,6 +12,7 @@
 namespace DRPPSM\Tests;
 
 use DRPPSM\App;
+use DRPPSM\Logger;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use ReflectionMethod;
@@ -43,22 +44,22 @@ class BaseTest extends TestCase {
 
 	/**
 	 * Set up the test.
+	 *
+	 * @since 1.0.0
 	 */
 	protected function setUp(): void {
 		parent::setUp();
-
-		$user = $this->get_admin_user();
-		wp_set_current_user( $user->ID );
-
-		include_screen();
-		set_current_screen( 'edit-post' );
 	}
 
 	/**
 	 * Tear down the test.
+	 *
+	 * @since 1.0.0
 	 */
 	protected function tearDown(): void {
 		parent::tearDown();
+
+		// unset( $GLOBALS['current_screen'] );
 	}
 
 	/**
@@ -164,5 +165,28 @@ class BaseTest extends TestCase {
 		$method = $class->getProperty( $name );
 		$method->setAccessible( true );
 		return $method->getValue( $obj );
+	}
+
+	/**
+	 * Set the current user to an admin.
+	 *
+	 * @return void
+	 * @since 1.0.0
+	 */
+	public function set_admin() {
+		include_screen();
+
+		$user = $this->get_admin_user();
+		wp_set_current_user( $user->ID );
+		set_current_screen( 'edit-post' );
+
+		if ( ! defined( 'WP_ADMIN' ) ) {
+			Logger::debug( 'Defining WP_ADMIN' );
+			define( 'WP_ADMIN', true );
+		}
+
+		if ( ! is_admin() ) {
+			Logger::debug( 'NOT ADMIN' );
+		}
 	}
 }

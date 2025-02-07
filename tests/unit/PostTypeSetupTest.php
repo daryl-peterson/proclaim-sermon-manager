@@ -2,7 +2,7 @@
 /**
  * Post type setup test.
  *
- * @package     Proclaim Sermon Manager
+ * @package     DRPPSM\Tests\PostTypeSetupTest
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
@@ -18,7 +18,7 @@ use DRPPSM\PostTypeSetup;
 /**
  * Post type setup test.
  *
- * @package     Proclaim Sermon Manager
+ * @package     DRPPSM\Tests\PostTypeSetupTest
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
@@ -38,21 +38,37 @@ class PostTypeSetupTest extends BaseTest {
 	 * This method is called before each test.
 	 *
 	 * @return void
+	 * @since 1.0.0
 	 */
 	public function setup(): void {
 		$this->obj = PostTypeSetup::exec();
+	}
+
+	public function test_register() {
+		$bool = $this->obj->register();
+		$this->assertIsBool( $bool );
+
+		$bool = $this->obj->register();
+		$this->assertFalse( $bool );
 	}
 
 	/**
 	 * Test get post type list.
 	 *
 	 * @return void
+	 * @since 1.0.0
 	 */
 	public function test_get_post_type_list() {
 		$types = $this->obj->get_post_type_list();
 		$this->assertIsArray( $types );
 	}
 
+	/**
+	 * Test get post type.
+	 *
+	 * @return void
+	 * @since 1.0.0
+	 */
 	public function test_get_post_type() {
 		$this->expectException( PluginException::class );
 		$this->obj->get_post_type( 'BlahBlah' );

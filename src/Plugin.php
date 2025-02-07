@@ -2,7 +2,7 @@
 /**
  * Plugin main class.
  *
- * @package     Proclaim Sermon Manager
+ * @package     DRPPSM\Plugin
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
@@ -11,13 +11,14 @@
 
 namespace DRPPSM;
 
+// @codeCoverageIgnoreStart
 defined( 'ABSPATH' ) || exit;
-
+// @codeCoverageIgnoreEnd
 
 /**
  * Plugin main class.
  *
- * @package     Proclaim Sermon Manager
+ * @package     DRPPSM\Plugin
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
@@ -85,8 +86,8 @@ class Plugin {
 			// @codeCoverageIgnoreStart
 		} catch ( \Throwable $th ) {
 			FatalError::set( $th );
-			// @codeCoverageIgnoreEnd
 			return false;
+			// @codeCoverageIgnoreEnd
 		}
 		return true;
 	}
@@ -107,9 +108,11 @@ class Plugin {
 			update_option( $this->option_key, $options );
 			flush_rewrite_rules();
 
+			// @codeCoverageIgnoreStart
 		} catch ( \Throwable $th ) {
 			FatalError::set( $th );
 			return false;
+			// @codeCoverageIgnoreEnd
 		}
 
 		return true;
@@ -118,15 +121,19 @@ class Plugin {
 	/**
 	 * Deactivation.
 	 *
-	 * @return bool Return true if no errors. If errors false.
+	 * @return bool Always return true.
 	 * @since 1.0.0
 	 */
 	public function deactivate(): bool {
 
 		$options = get_option( $this->option_key, array() );
+
+		// @codeCoverageIgnoreStart
 		if ( ! is_array( $options ) ) {
 			$options = array();
 		}
+		// @codeCoverageIgnoreEnd
+
 		if ( key_exists( $this->act_key, $options ) ) {
 			unset( $options[ $this->act_key ] );
 		}

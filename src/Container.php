@@ -2,7 +2,7 @@
 /**
  * Service container.
  *
- * @package     Proclaim Sermon Manager
+ * @package     DRPPSM\Container
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
@@ -11,7 +11,9 @@
 
 namespace DRPPSM;
 
+// @codeCoverageIgnoreStart
 defined( 'ABSPATH' ) || exit;
+// @codeCoverageIgnoreEnd
 
 use DRPPSM\Exceptions\NotfoundException;
 use DRPPSM\Interfaces\ContainerInt;
@@ -20,7 +22,7 @@ use ReflectionClass;
 /**
  * Service container.
  *
- * @package     Proclaim Sermon Manager
+ * @package     DRPPSM\Container
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
@@ -46,9 +48,7 @@ class Container implements ContainerInt {
 	 */
 	public function get( $id ) {
 		$item = $this->resolve( $id );
-		if ( ! ( $item instanceof ReflectionClass ) ) {
-			return $item;
-		}
+
 		return $this->get_instance( $item );
 	}
 
@@ -61,7 +61,7 @@ class Container implements ContainerInt {
 	 * @since 1.0.0
 	 */
 	private function resolve( string $id ): mixed {
-		$error = false;
+
 		try {
 			$name = $id;
 
@@ -72,7 +72,12 @@ class Container implements ContainerInt {
 			$result = new ReflectionClass( $name );
 			return $result;
 		} catch ( \Throwable | \ReflectionException $th ) {
-			$error = true;
+			Logger::error(
+				array(
+					'MESSAGE' => $th->getMessage(),
+					'TRACE'   => $th->getTrace(),
+				)
+			);
 		}
 
 		throw new NotFoundException(
@@ -90,6 +95,7 @@ class Container implements ContainerInt {
 	 */
 	private function get_instance( ReflectionClass $item ): mixed {
 
+		// @codeCoverageIgnoreStart
 		if ( $item->hasMethod( 'exec' ) ) {
 			return call_user_func( $item->name . '::exec' );
 		}
@@ -98,11 +104,9 @@ class Container implements ContainerInt {
 			return call_user_func( $item->name . '::init' );
 		}
 
-		// @codeCoverageIgnoreStart
 		if ( $item->hasMethod( 'get_instance' ) ) {
 			return call_user_func( $item->name . '::get_instance' );
 		}
-		// @codeCoverageIgnoreEnd
 
 		$constructor = $item->getConstructor();
 		if ( is_null( $constructor ) || $constructor->getNumberOfRequiredParameters() === 0 ) {
@@ -118,6 +122,7 @@ class Container implements ContainerInt {
 			}
 		}
 		return $item->newInstanceArgs( $params );
+		// @codeCoverageIgnoreEnd
 	}
 
 	/**

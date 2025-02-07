@@ -106,6 +106,7 @@ class Notice implements NoticeInt {
 			echo wp_kses( $html, allowed_html() );
 
 		}
+		$this->delete();
 		return $html;
 	}
 

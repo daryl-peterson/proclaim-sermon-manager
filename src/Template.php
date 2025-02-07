@@ -11,7 +11,9 @@
 
 namespace DRPPSM;
 
+// @codeCoverageIgnoreStart
 defined( 'ABSPATH' ) || exit;
+// @codeCoverageIgnoreEnd
 
 use DRPPSM\Interfaces\Executable;
 use DRPPSM\Interfaces\Registrable;
@@ -112,10 +114,11 @@ class Template implements Executable, Registrable {
 	/**
 	 * Register hooks.
 	 *
-	 * @return bool Returns true if hooks were registered, otherwise false.
+	 * @return bool Always return true.
 	 * @since 1.0.0
 	 */
 	public function register(): ?bool {
+
 		TemplateFiles::exec();
 		TemplateBlocks::exec();
 

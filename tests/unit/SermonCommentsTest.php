@@ -12,6 +12,7 @@
 namespace DRPPSM\Tests;
 
 use DRPPSM\SermonComments;
+use DRPPSM\Settings;
 
 /**
  * Sermon comments test.
@@ -45,11 +46,24 @@ class SermonCommentsTest extends BaseTest {
 		$this->assertIsBool( $result );
 	}
 
+	/**
+	 * Test default comments off.
+	 *
+	 * @return void
+	 * @since 1.0.0
+	 */
 	public function test_default_comments_off() {
+		$setting = Settings::get( Settings::COMMENTS );
+
 		$comments = array(
 			'post_type' => DRPPSM_PT_SERMON,
 		);
 		$result   = $this->obj->default_comments_off( $comments );
 		$this->assertIsArray( $result );
+
+		Settings::set( Settings::COMMENTS, true );
+		$result = $this->obj->default_comments_off( $comments );
+		$this->assertIsArray( $result );
+		Settings::set( Settings::COMMENTS, $setting );
 	}
 }

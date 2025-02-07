@@ -11,12 +11,9 @@
 
 namespace DRPPSM\Tests;
 
-use CPM\Notice;
 use DRPPSM\Exceptions\PluginException;
-use DRPPSM\Logger;
-use DRPPSM\Notice as DRPPSMNotice;
+use DRPPSM\Notice;
 use DRPPSM\Requirements;
-use WP_Screen;
 
 /**
  * Test requirements.
@@ -29,10 +26,16 @@ use WP_Screen;
  */
 class RequirementsTest extends BaseTest {
 
-	public Requirements $obj;
+	public ?Requirements $obj;
 
 	public function setup(): void {
 		$this->obj = Requirements::exec();
+	}
+
+	public function teardown(): void {
+		$notice = Notice::get_instance();
+		$notice->delete();
+		$this->obj = null;
 	}
 
 	/**
@@ -69,9 +72,6 @@ class RequirementsTest extends BaseTest {
 
 		$this->expectException( PluginException::class );
 		$this->obj->check_php_ver( '99.9' );
-
-		$notice = DRPPSMNotice::get_instance();
-		$notice->delete();
 	}
 
 	/**
@@ -86,8 +86,5 @@ class RequirementsTest extends BaseTest {
 
 		$this->expectException( PluginException::class );
 		$this->obj->check_wp_ver( '99.9' );
-
-		$notice = DRPPSMNotice::get_instance();
-		$notice->delete();
 	}
 }
