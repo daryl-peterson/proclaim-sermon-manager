@@ -16,7 +16,6 @@ namespace DRPPSM;
 use DRPPSM\Interfaces\Executable;
 use DRPPSM\Interfaces\Registrable;
 use DRPPSM\Traits\ExecutableTrait;
-use WPForms\Logger\Log;
 
 // @codeCoverageIgnoreStart
 defined( 'ABSPATH' ) || exit;
@@ -263,14 +262,6 @@ class TemplateBlocks implements Executable, Registrable {
 	 * @since 1.0.0
 	 */
 	private function add_custom_template( $templates, $type, $post_type, $template_name ): array {
-		Logger::info(
-			array(
-				'TEMPLATES'     => $templates,
-				'TYPE'          => $type,
-				'POST TYPE'     => $post_type,
-				'TEMPLATE NAME' => $template_name,
-			)
-		);
 
 		if ( in_array( $template_name, $templates, true ) ) {
 			return $templates;

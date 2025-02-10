@@ -11,12 +11,7 @@
 
 namespace DRPPSM\Tests;
 
-use DRPPSM\Logger;
 use DRPPSM\TemplateBlocks;
-use DRPPSM\TemplateFiles;
-use WP_Exception;
-use PHPUnit\Framework\Exception;
-use PHPUnit\Framework\ExpectationFailedException;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -110,40 +105,6 @@ class TemplateBlocksTest extends BaseTest {
 		$this->get_sermon_single();
 		$result = apply_filters( 'archive_template_hierachy', array() );
 		$this->assertIsArray( $result );
-		Logger::info( array( 'RESULT' => $result ) );
-		/*
-		$result = $this->obj->add_custom_archive_template( array() );
-		Logger::info( array( 'RESULT' => $result ) );
-		$this->assertIsArray( $result );
-
-
-		$result = apply_filters( 'index_template_hierarchy', array() );
-		Logger::info( array( 'RESULT' => $result ) );
-		$this->assertIsArray( $result );
-		$result = $this->obj->add_custom_archive_template( array() );
-		Logger::info( array( 'RESULT' => $result ) );
-
-
-		$this->get_sermon_archive();
-		$result = apply_filters( 'archive_template_hierarchy', array() );
-		Logger::info( array( 'RESULT' => $result ) );
-		$this->assertIsArray( $result );
-
-		$this->get_sermon_single();
-		$result = apply_filters( 'get_block_templates', array() );
-		Logger::info( array( 'RESULT' => $result ) );
-		$this->assertIsArray( $result );
-
-		$this->get_series();
-		$result = apply_filters( 'drppsm_series_template_hierarchy', array() );
-		Logger::info( array( 'RESULT' => $result ) );
-		$this->assertIsArray( $result );
-
-		$args['slug__in'] = array( 'taxonomy-drppsm_series' );
-		Logger::info( $args );
-
-		$result = \apply_filters( 'get_block_templates', $result, $args, 'wp_template' );
-		*/
 	}
 
 	/**

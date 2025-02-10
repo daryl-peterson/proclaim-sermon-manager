@@ -94,7 +94,7 @@ class QueryVars implements Executable, Registrable {
 
 		$qt = $query->query['query_type'];
 		if ( in_array( $qt, array( 'drppsm_term', 'drppsm_tax', 'drppsm_post' ) ) ) {
-			return 'LIMIT 1';
+			$limit = 'LIMIT 1';
 		}
 
 		return $limit;
@@ -115,40 +115,29 @@ class QueryVars implements Executable, Registrable {
 
 			$result = $this->set_post_query( $request );
 			if ( $result ) {
-				Logger::debug(
-					array(
-						'FINAL REQUEST' => $result,
-						'ORG REQUEST'   => $request_org,
-					)
-				);
+				Logger::debug( 'Post query set.' );
 				return $result;
 			}
 
 			// It's not for anything we are concerned with.
 			if ( ! $this->is_concerned( $request ) ) {
-				Logger::debug(
-					array(
-						'FINAL REQUEST' => $result,
-						'ORG REQUEST'   => $request_org,
-					)
-				);
+				Logger::debug( 'Not concerned.' );
 				return $request;
 			}
 
 			$changed = $this->set_tax_query( $request );
 			if ( ! $changed ) {
+				Logger::debug( 'Tax query not changed.' );
 				$this->set_term_query( $request );
 			}
+
+			// @codeCoverageIgnoreStart
 		} catch ( \Throwable $th ) {
 			FatalError::set( $th );
+			// @codeCoverageIgnoreEnd
 
 		}
-		Logger::debug(
-			array(
-				'FINAL REQUEST' => $request,
-				'ORG REQUEST'   => $request_org,
-			)
-		);
+
 		return $request;
 	}
 
@@ -315,7 +304,7 @@ class QueryVars implements Executable, Registrable {
 	 * @return array|false
 	 * @since 1.0.0
 	 */
-	private function set_post_query( array $request ) {
+	private function set_post_query( array $request ): array|false {
 
 		$compare = array(
 			'post_type' => DRPPSM_PT_SERMON,

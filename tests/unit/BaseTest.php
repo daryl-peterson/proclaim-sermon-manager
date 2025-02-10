@@ -12,13 +12,10 @@
 namespace DRPPSM\Tests;
 
 use DRPPSM\App;
-use DRPPSM\Logger;
-use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use ReflectionMethod;
-use WP;
-use WP_Exception;
+use WP_Query;
 use WP_Term;
 use WP_User;
 
@@ -281,21 +278,34 @@ class BaseTest extends TestCase {
 	 * @return void
 	 * @since 1.0.0
 	 */
-	public function set_admin() {
+	public function set_admin( bool $state = true ) {
 		include_screen();
 
 		$user = $this->get_admin_user();
 		wp_set_current_user( $user->ID );
-		set_current_screen( 'edit-post' );
+
+		if ( $state ) {
+			set_current_screen( 'edit-post' );
+		} else {
+			set_current_screen( 'front' );
+		}
 
 		if ( ! defined( 'WP_ADMIN' ) ) {
-			Logger::debug( 'Defining WP_ADMIN' );
-			define( 'WP_ADMIN', true );
+			define( 'WP_ADMIN', $state );
 		}
+	}
 
-		if ( ! is_admin() ) {
-			Logger::debug( 'NOT ADMIN' );
-		}
+	/**
+	 * Set the main query.
+	 *
+	 * @param WP_Query $query
+	 *
+	 * @return void
+	 * @since 1.0.0
+	 */
+	public function set_main_query( WP_Query $query ) {
+		global $wp_the_query;
+		$wp_the_query = $query;
 	}
 
 	/**

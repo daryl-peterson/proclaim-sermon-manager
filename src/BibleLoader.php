@@ -11,7 +11,9 @@
 
 namespace DRPPSM;
 
+// @codeCoverageIgnoreStart
 defined( 'ABSPATH' ) || exit;
+// @codeCoverageIgnoreEnd
 
 use DRPPSM\Constants\Bible;
 use DRPPSM\Interfaces\Executable;
@@ -84,6 +86,7 @@ class BibleLoader implements Executable, Registrable {
 				$result = $this->load();
 				Settings::set( Settings::BIBLE_BOOK_LOAD, false );
 			}
+			// @codeCoverageIgnoreStart
 		} catch ( \Throwable $th ) {
 			Logger::error(
 				array(
@@ -92,6 +95,7 @@ class BibleLoader implements Executable, Registrable {
 				)
 			);
 			$result = false;
+			// @codeCoverageIgnoreEnd
 		}
 
 		return $result;
@@ -113,9 +117,9 @@ class BibleLoader implements Executable, Registrable {
 				$slug = sanitize_title( $book );
 				$term = term_exists( $slug, $this->tax_bible );
 
-				if ( isset( $term ) ) {
-					$result = true;
+				if ( ! is_null( $term ) ) {
 					// @codeCoverageIgnoreStart
+					$result = true;
 					continue;
 					// @codeCoverageIgnoreEnd
 				}

@@ -11,7 +11,9 @@
 
 namespace DRPPSM;
 
+// @codeCoverageIgnoreStart
 defined( 'ABSPATH' ) || exit;
+// @codeCoverageIgnoreEnd
 
 /**
  * Transients.
@@ -80,13 +82,13 @@ class Transient {
 	 * Delete all transients with a wildcard.
 	 *
 	 * @param string $wildcard Wildcard to match.
-	 * @return void
+	 * @return int|bool
 	 * @since 1.0.0
 	 */
-	public static function delete( string $wildcard ): void {
+	public static function delete( string $wildcard ): int|bool {
 		global $wpdb;
 
-		$wpdb->query(
+		return $wpdb->query(
 			$wpdb->prepare(
 				"DELETE FROM $wpdb->options WHERE option_name LIKE %s",
 				$wildcard
@@ -97,17 +99,23 @@ class Transient {
 	/**
 	 * Delete all transients.
 	 *
-	 * @return void
+	 * @return bool
 	 * @since 1.0.0
 	 */
-	public static function delete_all(): void {
+	public static function delete_all(): bool {
+		$result = false;
+
 		foreach ( DRPPSM_TAX_MAP as  $tax_name ) {
 			$key = '%transient%' . $tax_name . '_%';
-			self::delete( '%transient%' . $tax_name . '_%' );
+			$tmp = self::delete( '%transient%' . $tax_name . '_%' );
+			if ( false !== $tmp ) {
+				$result = true;
+			}
 		}
 
 		$pt = DRPPSM_PT_SERMON . '_imagelist';
 		self::delete( '%transient%' . $pt . '_%' );
 		wp_cache_flush();
+		return $result;
 	}
 }

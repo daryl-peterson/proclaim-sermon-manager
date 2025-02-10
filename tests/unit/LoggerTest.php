@@ -25,6 +25,12 @@ use DRPPSM\Logging\LogFile;
  */
 class LoggerTest extends BaseTest {
 
+	/**
+	 * Test the logger.
+	 *
+	 * @return void
+	 * @since 1.0.0
+	 */
 	public function test_logger() {
 		$result = Logger::Info( array( 'TEST' => 'INFO' ) );
 		$this->assertIsBool( $result );
@@ -36,6 +42,17 @@ class LoggerTest extends BaseTest {
 
 		$result = Logger::debug( 'DEBUG TEST' );
 		$this->assertTrue( $result );
+	}
+
+	/**
+	 * Test the get_writter method.
+	 *
+	 * @return void
+	 * @since 1.0.0
+	 */
+	public function test_get_writter() {
+		$result = Logger::get_writter();
+		$this->assertNotNull( $result );
 	}
 
 	/**
