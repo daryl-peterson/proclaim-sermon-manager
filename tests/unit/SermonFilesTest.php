@@ -24,6 +24,12 @@ use DRPPSM\SermonFiles;
  */
 class SermonFilesTest extends BaseTest {
 
+	/**
+	 * Sermon files object.
+	 *
+	 * @var SermonFiles
+	 * @since 1.0.0
+	 */
 	private SermonFiles $obj;
 
 	/**

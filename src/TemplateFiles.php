@@ -15,7 +15,9 @@ use DRPPSM\Interfaces\Executable;
 use DRPPSM\Interfaces\Registrable;
 use DRPPSM\Traits\ExecutableTrait;
 
+// @codeCoverageIgnoreStart
 defined( 'ABSPATH' ) || exit;
+// @codeCoverageIgnoreEnd
 
 /**
  * Template files.
@@ -45,7 +47,6 @@ class TemplateFiles implements Executable, Registrable {
 	 */
 	private array $path_plugin;
 
-
 	/**
 	 * Initialize object properties.
 	 *
@@ -60,12 +61,18 @@ class TemplateFiles implements Executable, Registrable {
 		);
 	}
 
+	/**
+	 * Register hooks.
+	 *
+	 * @return bool
+	 * @since 1.0.0
+	 */
 	public function register(): ?bool {
-		if ( has_filter( 'template_include', array( $this, 'template_include' ) ) ) {
+		if ( wp_is_block_theme() ) {
 			return false;
 		}
 
-		if ( wp_is_block_theme() ) {
+		if ( has_filter( 'template_include', array( $this, 'template_include' ) ) ) {
 			return false;
 		}
 
@@ -101,18 +108,21 @@ class TemplateFiles implements Executable, Registrable {
 
 		if ( $default_file ) {
 
-			// Search theme templat directory.
+			// Search theme template directory.
+
+			// @codeCoverageIgnoreStart
 			if ( file_exists( get_stylesheet_directory() . '/' . $default_file ) ) {
 				return get_stylesheet_directory() . '/' . $default_file;
 			}
+			// @codeCoverageIgnoreEnd
 
 			return DRPPSM_PATH . 'views/' . $default_file;
 		}
 
+		// @codeCoverageIgnoreStart
 		return $template;
+		// @codeCoverageIgnoreEnd
 	}
-
-
 
 	/**
 	 * Get partial template.
@@ -142,38 +152,25 @@ class TemplateFiles implements Executable, Registrable {
 	 */
 	public function locate_partial( string $name, array $args = array() ): ?string {
 
-		// Save orginal name.
-		$name_org = $name;
-		$eol1     = PHP_EOL;
-		$eol2     = str_repeat( PHP_EOL, 2 );
-
-		/**
-		 * Allows for changing the name.
-		 *
-		 * @param string $name File name.
-		 * @param array  $args Array of variables to pass to template.
-		 * @return string $name File name.
-		 *
-		 * @category filter
-		 * @since 1.0.0
-		 */
-		$name = apply_filters( 'drppsmf_tpl_partial', $name, $args );
-		$name = $this->fix_template_name( $name );
-
+		$name    = $this->fix_template_name( $name );
 		$partial = $this->get_parial_filter( $name, $args );
+
+		// @codeCoverageIgnoreStart
 		if ( $partial ) {
 			return $partial;
 		}
+		// @codeCoverageIgnoreEnd
 
 		$partial = $this->get_partial_theme( $name );
+
+		// @codeCoverageIgnoreStart
 		if ( $partial ) {
 			return $partial;
 		}
+		// @codeCoverageIgnoreEnd
 
 		$partial = $this->get_partial_plugin( $name );
-		if ( is_null( $partial ) ) {
-			Logger::debug( $eol2 . "NAME    : $name{$eol1}PARTIAL : $partial" );
-		}
+
 		return $partial;
 	}
 
@@ -252,9 +249,11 @@ class TemplateFiles implements Executable, Registrable {
 			$search  = $path . $name;
 			$partial = locate_template( $search );
 
+			// @codeCoverageIgnoreStart
 			if ( $partial ) {
 				break;
 			}
+			// @codeCoverageIgnoreEnd
 		}
 
 		return $partial;
@@ -271,6 +270,7 @@ class TemplateFiles implements Executable, Registrable {
 		$partial = null;
 
 		foreach ( $this->path_plugin as $path ) {
+
 			if ( file_exists( $path . $name ) ) {
 				$partial = $path . $name;
 				break;
@@ -302,12 +302,14 @@ class TemplateFiles implements Executable, Registrable {
 		 * @category filter
 		 * @since 1.0.0
 		 */
-		$name = apply_filters( 'drppsmf_tpl_partial', $name, $args );
+		$name = apply_filters( 'drppsm_tpl_partial', $name, $args );
 
 		if ( $name !== $name_org ) {
+			// @codeCoverageIgnoreStart
 			if ( ! file_exists( $name ) ) {
 				return $name;
 			}
+			// @codeCoverageIgnoreEnd
 		}
 		return null;
 	}

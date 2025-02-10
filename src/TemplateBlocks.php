@@ -16,8 +16,11 @@ namespace DRPPSM;
 use DRPPSM\Interfaces\Executable;
 use DRPPSM\Interfaces\Registrable;
 use DRPPSM\Traits\ExecutableTrait;
+use WPForms\Logger\Log;
 
+// @codeCoverageIgnoreStart
 defined( 'ABSPATH' ) || exit;
+// @codeCoverageIgnoreEnd
 
 /**
  * Template blocks class.
@@ -56,7 +59,7 @@ class TemplateBlocks implements Executable, Registrable {
 	 * @since 1.0.0
 	 */
 	protected function __construct() {
-		$this->pt          = 'drppsm_sermon';
+		$this->pt          = DRPPSM_PT_SERMON;
 		$this->path_plugin = array(
 			DRPPSM_PATH . 'views/partials/',
 			DRPPSM_PATH . 'views/template-parts/',
@@ -112,8 +115,10 @@ class TemplateBlocks implements Executable, Registrable {
 
 		Logger::debug(
 			array(
+				'QUERY RESULT'   => $query_result,
 				'TEMPLATE QUERY' => $query,
 				'TEMPLATE TYPE'  => $template_type,
+				'POST'           => $post,
 			)
 		);
 
@@ -138,7 +143,9 @@ class TemplateBlocks implements Executable, Registrable {
 		}
 
 		foreach ( get_object_taxonomies( $this->pt ) as $taxonomy ) {
+
 			if ( is_tax( $taxonomy ) ) {
+				Logger::debug( "FOUND TAXONOMY {$taxonomy}" );
 				$template_name = "taxonomy-$taxonomy";
 				break;
 			}
@@ -149,6 +156,7 @@ class TemplateBlocks implements Executable, Registrable {
 		}
 
 		$template_file_path = $theme->get_template_directory() . '/templates/' . $template_name . '.html';
+		Logger::debug( array( 'TEMPLATE FILE PATH' => $template_file_path ) );
 		if ( file_exists( $template_file_path ) ) {
 			$block_source = 'theme';
 		} else {
@@ -193,19 +201,17 @@ class TemplateBlocks implements Executable, Registrable {
 
 		$tax = get_object_taxonomies( $this->pt );
 
-		if ( is_tax( get_object_taxonomies( $this->pt ) ) ) {
+		if ( is_tax( $tax ) ) {
 			foreach ( $tax as $taxonomy ) {
-				$templates = $this->add_custom_template( $templates, 'archive', $taxonomy, "taxonomy-$taxonomy" );
+				$templates = $this->add_custom_template( $templates, 'taxonomy', $taxonomy, "taxonomy-$taxonomy" );
 			}
-			Logger::debug( 'TAXONOMY TEMPLATE' );
 			return $templates;
 		}
 
 		if ( is_singular( $this->pt ) ) {
-			Logger::debug( 'SINGLE TEMPLATE' );
 			return $this->add_custom_template( $templates, 'single', $this->pt, "single-{$this->pt}" );
 		}
-		Logger::debug( 'ARCHIVE TEMPLATE' );
+
 		return $this->add_custom_template( $templates, 'archive', $this->pt, "archive-{$this->pt}" );
 	}
 
@@ -225,6 +231,7 @@ class TemplateBlocks implements Executable, Registrable {
 	 *
 	 * @param array $templates Array of found templates.
 	 * @return array Updated array of found templates.
+	 * @since 1.0.0
 	 */
 	public function add_custom_single_template( $templates ) {
 		return $this->add_custom_template( $templates, 'single', $this->pt, "single-{$this->pt}" );
@@ -238,13 +245,10 @@ class TemplateBlocks implements Executable, Registrable {
 	 * @since 1.0.0
 	 */
 	public function add_custom_taxonomy_template( $templates ) {
-
 		$tax = get_object_taxonomies( $this->pt );
 		foreach ( $tax as $taxonomy ) {
 			$templates = $this->add_custom_template( $templates, 'archive', $taxonomy, "taxonomy-$taxonomy" );
 		}
-		Logger::debug( array( 'TEMPLATES' => $templates ) );
-
 		return $templates;
 	}
 
@@ -259,12 +263,20 @@ class TemplateBlocks implements Executable, Registrable {
 	 * @since 1.0.0
 	 */
 	private function add_custom_template( $templates, $type, $post_type, $template_name ): array {
+		Logger::info(
+			array(
+				'TEMPLATES'     => $templates,
+				'TYPE'          => $type,
+				'POST TYPE'     => $post_type,
+				'TEMPLATE NAME' => $template_name,
+			)
+		);
 
 		if ( in_array( $template_name, $templates, true ) ) {
 			return $templates;
 		}
 
-		if ( in_array( $type, array( 'archive', 'index', 'search' ), true ) ) {
+		if ( in_array( $type, array( 'archive', 'index', 'taxonomy' ), true ) ) {
 			array_unshift( $templates, $template_name );
 			return $templates;
 		}
@@ -284,6 +296,7 @@ class TemplateBlocks implements Executable, Registrable {
 	 * @since 1.0.0
 	 */
 	public static function get_template_content( $template ): string {
+
 		ob_start();
 		include $template;
 		return ob_get_clean();

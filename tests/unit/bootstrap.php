@@ -9,6 +9,8 @@
  * @since       1.0.0
  */
 
+use DRPPSM\Tests\Cleanup;
+
 use function DRPPSM\include_admin_plugin;
 
 // Get path and file names.
@@ -77,3 +79,9 @@ if ( ! is_plugin_active( $plugin ) ) {
 
 require_once $cmb_inc1;
 require_once $cmb_inc2;
+
+register_shutdown_function(
+	function () {
+		Cleanup::run();
+	}
+);

@@ -103,7 +103,6 @@ class Transient {
 	public static function delete_all(): void {
 		foreach ( DRPPSM_TAX_MAP as  $tax_name ) {
 			$key = '%transient%' . $tax_name . '_%';
-			Logger::debug( 'Deleting: ' . $key );
 			self::delete( '%transient%' . $tax_name . '_%' );
 		}
 

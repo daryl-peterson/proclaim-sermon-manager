@@ -112,6 +112,32 @@ class Template implements Executable, Registrable {
 	const string SERMON_LAYOUT_CLASIC = 'psm-sermon-clasic';
 
 	/**
+	 * Sermon archive template.
+	 *
+	 * @var string
+	 * @since 1.0.0
+	 */
+	const string SERMON_ARCHIVE = 'archive-' . DRPPSM_PT_SERMON;
+
+
+	/**
+	 * Sermon single template.
+	 *
+	 * @var string
+	 * @since 1.0.
+	 */
+	const string SERMON_SINGLE = 'single-' . DRPPSM_PT_SERMON;
+
+	/**
+	 * Taxonomy series template.
+	 *
+	 * @var string
+	 * @since 1.0.0
+	 */
+	const string TAX_SERIES = 'taxonomy-' . DRPPSM_TAX_SERIES;
+
+
+	/**
 	 * Register hooks.
 	 *
 	 * @return bool Always return true.

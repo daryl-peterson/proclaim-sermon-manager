@@ -210,7 +210,6 @@ class SermonImageList {
 	 * @since 1.0.0
 	 */
 	private function set_pagination() {
-		global $post;
 
 		$this->paginate = null;
 
@@ -234,7 +233,7 @@ class SermonImageList {
 
 			'current' => $paged,
 			'total'   => $max_num_pages,
-			'post_id' => $post->ID,
+
 		);
 	}
 }

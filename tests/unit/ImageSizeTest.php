@@ -40,6 +40,7 @@ class ImageSizeTest extends BaseTest {
 	 * @since 1.0.0
 	 */
 	public function setup(): void {
+
 		$this->obj = ImageSize::exec();
 	}
 

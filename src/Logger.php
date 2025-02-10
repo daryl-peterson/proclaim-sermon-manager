@@ -159,4 +159,15 @@ class Logger implements LoggerInt {
 		}
 		return $result;
 	}
+
+	/**
+	 * Get log writter interface.
+	 *
+	 * @return LogWritterInt
+	 * @since 1.0.0
+	 */
+	public static function get_writter(): LogWritterInt {
+		$obj = self::get_instance();
+		return $obj->writter;
+	}
 }

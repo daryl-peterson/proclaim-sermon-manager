@@ -13,9 +13,13 @@ namespace DRPPSM\Tests;
 
 use DRPPSM\App;
 use DRPPSM\Logger;
+use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use ReflectionMethod;
+use WP;
+use WP_Exception;
+use WP_Term;
 use WP_User;
 
 use function DRPPSM\include_screen;
@@ -32,6 +36,8 @@ use function DRPPSM\include_screen;
 class BaseTest extends TestCase {
 
 	protected App $app;
+
+
 
 	public function __construct( string $name ) {
 		parent::__construct( $name );
@@ -78,7 +84,13 @@ class BaseTest extends TestCase {
 		return $users[0];
 	}
 
-	public function getTestSermon(): ?\WP_Post {
+	/**
+	 * Get a sermon post.
+	 *
+	 * @return \WP_Post
+	 * @since 1.0.0
+	 */
+	public function get_test_sermon(): ?\WP_Post {
 		$args  = array(
 			'numberposts' => 5,
 			'post_type'   => DRPPSM_PT_SERMON,
@@ -96,6 +108,102 @@ class BaseTest extends TestCase {
 		}
 
 		return $post;
+	}
+
+	/**
+	 * Get sermon archive.
+	 *
+	 * - Uses WP_Query to get the sermon post.
+	 *
+	 * @return array
+	 * @since 1.0.0
+	 */
+	public function get_sermon_archive(): array {
+		/**
+		 * @var \WP_Query $wp_query
+		 */
+		global $wp_query;
+
+		$args = $this->get_sermon_query_args();
+
+		// Try and test for is_post_type_archive.
+		$posts = $wp_query->query( $args );
+		return $posts;
+	}
+
+	/**
+	 * Get sermon single.
+	 *
+	 * - Uses WP_Query to get the sermon post.
+	 *
+	 * @return array
+	 * @since 1.0.0
+	 */
+	public function get_sermon_single(): array {
+		/**
+		 * @var \WP_Query $wp_query
+		 */
+		global $wp_query;
+
+		$args  = $this->get_sermon_query_args();
+		$posts = $this->get_sermon_archive();
+
+		// Try and test for is_singular.
+		if ( is_array( $posts ) ) {
+			$post                   = array_shift( $posts );
+			$args['p']              = $post->ID;
+			$args['posts_per_page'] = 1;
+		}
+
+		$posts = $wp_query->query( $args );
+		return $posts;
+	}
+
+	/**
+	 * Get sermon series.
+	 *
+	 * @return array
+	 * @since 1.0.0
+	 */
+	public function get_series(): ?WP_Term {
+
+		$tax  = DRPPSM_TAX_SERIES;
+		$args = array(
+			'taxonomy'   => $tax,
+			'hide_empty' => true,
+			'number'     => 1,
+		);
+
+		$terms = get_terms( $args );
+		if ( is_array( $terms ) ) {
+			$term = array_shift( $terms );
+			return $term;
+		}
+
+		return null;
+	}
+
+	/**
+	 * Get a term for a taxonomy.
+	 *
+	 * @param string $taxonomy Taxonomy name.
+	 *
+	 * @return WP_Term
+	 * @since 1.0.0
+	 */
+	public function get_term( string $taxonomy ) {
+		$args = array(
+			'taxonomy'   => $taxonomy,
+			'hide_empty' => true,
+			'number'     => 1,
+		);
+
+		$terms = get_terms( $args );
+		if ( is_array( $terms ) ) {
+			$term = array_shift( $terms );
+			return $term;
+		}
+		return null;
 	}
 
 	public function getTestPost(): \WP_Post {
@@ -188,5 +296,114 @@ class BaseTest extends TestCase {
 		if ( ! is_admin() ) {
 			Logger::debug( 'NOT ADMIN' );
 		}
+	}
+
+	/**
+	 * Get a page.
+	 *
+	 * @return \WP_Post
+	 * @since 1.0.0
+	 */
+	public function get_page(): ?\WP_Post {
+
+		/**
+		 * @var \WP_Query $wp_query
+		 */
+		global $wp_query;
+
+		$args = array(
+			'post_type'   => 'page',
+			'post_status' => 'publish',
+			'numberposts' => 1,
+		);
+
+		$post = $wp_query->query( $args );
+		if ( ! $post ) {
+			return null;
+		}
+
+		if ( is_array( $post ) ) {
+			return $post[0];
+		}
+		return $post;
+	}
+
+	/**
+	 * Switch to a block theme.
+	 *
+	 * @return void
+	 * @since 1.0.0
+	 */
+	public function switch_to_block_theme() {
+		/**
+		 * @var \WP_Theme $theme_org
+		 */
+		$theme_org = wp_get_theme();
+
+		if ( $theme_org->is_block_theme() ) {
+			return;
+		}
+
+		$themes = array_keys( wp_get_themes() );
+
+		foreach ( $themes as $theme_name ) {
+			$theme    = wp_get_theme( $theme_name );
+			$is_block = $theme->is_block_theme();
+			if ( $is_block ) {
+				break;
+			}
+		}
+
+		if ( $is_block ) {
+			update_option( 'drppsm_phpunit_theme', $theme_org->get_stylesheet() );
+			switch_theme( $theme->get_stylesheet() );
+		}
+	}
+
+	/**
+	 * Swith to file theme.
+	 *
+	 * @return void
+	 * @since 1.0.0
+	 */
+	public function switch_to_file_theme() {
+		/**
+		 * @var \WP_Theme $theme_org
+		 */
+		$theme_org = wp_get_theme();
+
+		if ( ! $theme_org->is_block_theme() ) {
+			return;
+		}
+
+		$themes = array_keys( wp_get_themes() );
+
+		foreach ( $themes as $theme_name ) {
+			$theme    = wp_get_theme( $theme_name );
+			$is_block = $theme->is_block_theme();
+			if ( ! $is_block ) {
+				break;
+			}
+		}
+
+		if ( ! $is_block && ! $theme->is_block_theme() ) {
+			update_option( 'drppsm_phpunit_theme', $theme_org->get_stylesheet() );
+			switch_theme( $theme->get_stylesheet() );
+		}
+	}
+
+	/**
+	 * Get sermon query args.
+	 *
+	 * @return array
+	 * @since 1.0.0
+	 */
+	public function get_sermon_query_args() {
+		$args = array(
+			'post_type'      => DRPPSM_PT_SERMON,
+			'post_status'    => 'publish',
+			'posts_per_page' => 5,
+		);
+		return $args;
 	}
 }

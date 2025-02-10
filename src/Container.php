@@ -141,12 +141,6 @@ class Container implements ContainerInt {
 			$item = $this->resolve( $id );
 
 		} catch ( \Throwable | NotfoundException $th ) {
-			Logger::error(
-				array(
-					'MESSAGE' => $th->getMessage(),
-					'TRACE'   => $th->getTrace(),
-				)
-			);
 			return false;
 		}
 		if ( $item instanceof ReflectionClass ) {

@@ -53,7 +53,6 @@ class TaxShortcode implements Registrable {
 	 */
 	public function register(): ?bool {
 		if ( shortcode_exists( $this->sc ) ) {
-			Logger::debug( 'Shortcode already exists: ' . $this->sc );
 			return false;
 		}
 		add_shortcode( $this->sc, array( $this, 'show' ) );

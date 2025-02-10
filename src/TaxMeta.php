@@ -13,13 +13,16 @@
 
 namespace DRPPSM;
 
+// @codeCoverageIgnoreStart
+defined( 'ABSPATH' ) || exit;
+// @codeCoverageIgnoreEnd
+
 use DRPPSM\Interfaces\Executable;
 use DRPPSM\Interfaces\Registrable;
+use DRPPSM\Traits\ExecutableTrait;
 use stdClass;
 use WP_Post;
 use WP_Term;
-
-defined( 'ABSPATH' ) || exit;
 
 /**
  * Get extended taxonomy meta. If not found, add to job queue.
@@ -33,6 +36,7 @@ defined( 'ABSPATH' ) || exit;
  * - Adds Job to queue if meta not found.
  */
 class TaxMeta implements Executable, Registrable {
+	use ExecutableTrait;
 
 	/**
 	 * Series attachment post id.
@@ -80,18 +84,6 @@ class TaxMeta implements Executable, Registrable {
 	}
 
 	/**
-	 * Execute the hooks.
-	 *
-	 * @return self
-	 * @since 1.0.0
-	 */
-	public static function exec(): self {
-		$obj = new self();
-		$obj->register();
-		return $obj;
-	}
-
-	/**
 	 * Register the hooks.
 	 *
 	 * @return bool|null
@@ -100,7 +92,7 @@ class TaxMeta implements Executable, Registrable {
 	public function register(): ?bool {
 
 		if ( has_action( 'get_drppsm_series_meta_extd', array( $this, 'get_taxonomy_meta' ) ) ) {
-			return null;
+			return false;
 		}
 
 		$taxonomies = array_values( DRPPSM_TAX_MAP );
@@ -145,10 +137,14 @@ class TaxMeta implements Executable, Registrable {
 
 		$obj = new stdClass();
 		foreach ( $meta as $key => $value ) {
+
+			// @codeCoverageIgnoreStart
 			if ( ! in_array( $key, $suffix ) ) {
 				unset( $meta[ $key ] );
 				continue;
 			}
+			// @codeCoverageIgnoreEnd
+
 			$obj->{$suffix_map[ $key ]} = maybe_unserialize( $value[0] );
 
 		}
@@ -173,13 +169,6 @@ class TaxMeta implements Executable, Registrable {
 		int $tt_id,
 		array $args
 	) {
-		Logger::debug(
-			array(
-				'TERM_ID' => $term_id,
-				'TT_ID'   => $tt_id,
-				'ARGS'    => $args,
-			)
-		);
 		$this->set_term_meta( $term_id, $args );
 	}
 
@@ -196,13 +185,6 @@ class TaxMeta implements Executable, Registrable {
 		int $tt_id,
 		array $args
 	) {
-		Logger::debug(
-			array(
-				'TERM_ID' => $term_id,
-				'TT_ID'   => $tt_id,
-				'ARGS'    => $args,
-			)
-		);
 		$this->set_term_meta( $term_id, $args );
 		Transient::delete_all();
 	}
@@ -215,6 +197,7 @@ class TaxMeta implements Executable, Registrable {
 	 * @param WP_Term $deleted_term Term object.
 	 * @param array   $bject_ids
 	 * @return void
+	 * @since 1.0.0
 	 */
 	public function delete_taxonomy(
 		int $term_id,
@@ -231,34 +214,30 @@ class TaxMeta implements Executable, Registrable {
 	 *
 	 * @param int   $term_id Term ID.
 	 * @param array $args Arguments.
+	 * @return bool
 	 * @since 1.0.0
 	 *
 	 * @todo Verify this is correct.
 	 */
-	private function set_term_meta( int $term_id, array $args ): void {
+	private function set_term_meta( int $term_id, array $args ): bool {
 		if ( ! isset( $args['taxonomy'] ) ) {
-			return;
+			return false;
 		}
 		$tax = $args['taxonomy'];
 
 		if ( ! isset( $args[ $tax . '_image_id' ] ) ) {
-			return;
+			return false;
 		}
 
 		$image_id = get_term_meta( $term_id, $tax . '_image_id', true );
-		Logger::debug(
-			array(
-				'TERM ID'  => $term_id,
-				'IMAGE ID' => $image_id,
-			)
-		);
+
 		if ( ! $image_id && empty( $image_id ) ) {
 			Logger::debug( 'DONT SET DATE META' );
 			delete_term_meta( $term_id, $tax . '_date' );
-			return;
+			return false;
 		}
 
-		$this->set_date_meta( $tax, $term_id, $tax . '_date' );
+		return $this->set_date_meta( $tax, $term_id, $tax . '_date' );
 	}
 
 	/**
@@ -268,9 +247,10 @@ class TaxMeta implements Executable, Registrable {
 	 * @param int    $term_id Term ID.
 	 * @param string $key_name Meta key name.
 	 * @param bool   $recent Flag to get oldest or newest.
+	 * @return bool
 	 * @since 1.0.0
 	 */
-	private function set_date_meta( string $tax_name, int $term_id, string $key_name, bool $recent = true ): void {
+	private function set_date_meta( string $tax_name, int $term_id, string $key_name, bool $recent = true ): bool {
 
 		$order = $recent ? 'ASC' : 'DESC';
 		$args  = array(
@@ -296,37 +276,35 @@ class TaxMeta implements Executable, Registrable {
 
 		);
 		$post_list = get_posts( $args );
-		Logger::debug(
-			array(
-				'TERM ID'  => $term_id,
-				'KEY NAME' => $key_name,
-				'POSTS'    => $post_list,
-			)
-		);
 
 		if ( is_wp_error( $post_list ) || ! is_array( $post_list ) || ! count( $post_list ) > 0 ) {
-			return;
+			return false;
 		}
 
 		$post_item = array_shift( $post_list );
+		// @codeCoverageIgnoreStart
 		if ( ! $post_item ) {
-			return;
+			return false;
 		}
+		// @codeCoverageIgnoreEnd
 
 		$meta = get_post_meta( $post_item->ID, SermonMeta::DATE, true );
 
+		// @codeCoverageIgnoreStart
 		if ( ! isset( $meta ) || empty( $meta ) ) {
-			return;
+			return false;
 		}
-		Logger::debug(
-			array(
-				'TERM ID'  => $term_id,
-				'KEY NAME' => $key_name,
-				'META'     => $meta,
-			)
-		);
+		// @codeCoverageIgnoreEnd
 
-		update_term_meta( $term_id, $key_name, $meta );
+		$result = update_term_meta( $term_id, $key_name, $meta );
+
+		// @codeCoverageIgnoreStart
+		if ( is_wp_error( $result ) ) {
+			return false;
+		}
+		// @codeCoverageIgnoreEnd
+
+		return true;
 	}
 
 	/**
@@ -334,9 +312,11 @@ class TaxMeta implements Executable, Registrable {
 	 *
 	 * @param string $tax_name Taxonomy name.
 	 * @param int    $term_id Term ID.
+	 * @return bool True if successful.
 	 * @since 1.0.0
 	 */
-	public function post_edit( int $post_id, WP_Post $post_item ) {
+	public function post_edit( int $post_id, WP_Post $post_item ): bool {
+		$success    = false;
 		$taxonomies = array_values( DRPPSM_TAX_MAP );
 		$data       = array();
 		foreach ( $taxonomies as $tax_name ) {
@@ -347,7 +327,9 @@ class TaxMeta implements Executable, Registrable {
 			$term_item = array_shift( $term_item );
 
 			$this->set_date_meta( $tax_name, $term_item->term_id, $tax_name . '_date' );
+			$success = true;
 		}
 		Transient::delete_all();
+		return $success;
 	}
 }

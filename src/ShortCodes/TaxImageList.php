@@ -14,6 +14,7 @@ namespace DRPPSM\ShortCodes;
 use DRPPSM\ImageSize;
 use DRPPSM\Logger;
 use DRPPSM\Settings;
+use DRPPSM\TaxMeta;
 use DRPPSM\TaxUtils;
 use DRPPSM\Template;
 use DRPPSM\Transient;
@@ -94,6 +95,8 @@ class TaxImageList {
 	 */
 	private array $args;
 
+	private ?TaxMeta $tax_meta;
+
 
 	/**
 	 * TaxImageList constructor.
@@ -111,6 +114,7 @@ class TaxImageList {
 		if ( ! $this->taxonomy ) {
 			return;
 		}
+		$this->tax_meta = TaxMeta::exec();
 
 		$defaults = $this->get_default_args();
 		$args     = array_merge( $defaults, $args );
@@ -124,6 +128,13 @@ class TaxImageList {
 		$this->show_template( $args );
 	}
 
+	/**
+	 * Show template.
+	 *
+	 * @param array $args
+	 * @return void
+	 * @since 1.0.0
+	 */
 	private function show_template( array $args ) {
 		$output = '';
 
@@ -238,8 +249,12 @@ class TaxImageList {
 	 * @since 1.0.0
 	 */
 	private function get_meta( WP_Term $item ): ?stdClass {
+		if ( ! isset( $item->taxonomy ) ) {
+			return null;
+		}
+		$meta = $this->tax_meta->get_taxonomy_meta( $item->taxonomy, $item->term_id );
 
-		$meta = apply_filters( "get_{$item->taxonomy}_meta_extd", $item->taxonomy, $item->term_id );
+		// $meta = apply_filters( "get_{$item->taxonomy}_meta_extd", $item->taxonomy, $item->term_id );
 		if ( $meta ) {
 			return $meta;
 		}
@@ -253,7 +268,6 @@ class TaxImageList {
 	 * @since 1.0.0
 	 */
 	private function set_pagination(): void {
-		global $post;
 
 		$this->paginate = null;
 
@@ -278,10 +292,8 @@ class TaxImageList {
 		$this->offset = $offset;
 
 		$this->paginate = array(
-
 			'current' => $paged,
 			'total'   => $max_num_pages,
-			'post_id' => $post->ID,
 		);
 	}
 
