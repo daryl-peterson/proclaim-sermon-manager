@@ -190,16 +190,6 @@ class BibleLoader implements Executable, Registrable {
 			$delete = wp_delete_term( $term_id, $tax );
 		}
 
-		Logger::debug(
-			array(
-				'BOOK'          => $book,
-				'TAX'           => $tax,
-				'TERM_ID'       => $term_id,
-				'INSERT RESULT' => $result_org,
-				'DELETE RESULT' => $delete,
-			)
-		);
-
 		return $result;
 	}
 }

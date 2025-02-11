@@ -12,9 +12,12 @@
 
 namespace DRPPSM;
 
+// @codeCoverageIgnoreStart
 defined( 'ABSPATH' ) || exit;
+// @codeCoverageIgnoreEnd
 
 use DRPPSM\Interfaces\TextDomainInt;
+use DRPPSM\Traits\ExecutableTrait;
 
 /**
  * Language locales.
@@ -27,18 +30,7 @@ use DRPPSM\Interfaces\TextDomainInt;
  */
 class TextDomain implements TextDomainInt {
 
-	/**
-	 * Initialize and register hooks.
-	 *
-	 * @return TextDomainInt
-	 * @since 1.0.0
-	 */
-	public static function exec(): TextDomainInt {
-
-		$obj = new self();
-		$obj->register();
-		return $obj;
-	}
+	use ExecutableTrait;
 
 	/**
 	 * Register hooks
@@ -62,9 +54,10 @@ class TextDomain implements TextDomainInt {
 	 */
 	public function load_domain(): bool {
 
-		if ( did_action( Action::TEXT_DOMAIN_LOADED ) ) {
+		if ( ! has_action( 'plugins_loaded', array( $this, 'load_domain' ) ) ) {
 			return false;
 		}
+
 		$locale = apply_filters( 'plugin_locale', determine_locale(), 'drppsm' );
 		$path   = dirname( plugin_basename( FILE ) ) . '/languages/';
 
@@ -73,6 +66,7 @@ class TextDomain implements TextDomainInt {
 		// phpcs:enable
 
 		$result = load_plugin_textdomain( DRPSM_DOMAIN, false, $path );
+		remove_action( 'plugins_loaded', array( $this, 'load_domain' ) );
 		return $result;
 	}
 
@@ -151,9 +145,7 @@ class TextDomain implements TextDomainInt {
 			$result = false;
 			// @codeCoverageIgnoreEnd
 		}
-		if ( ! $result ) {
-			return false;
-		}
-		return true;
+
+		return $result;
 	}
 }

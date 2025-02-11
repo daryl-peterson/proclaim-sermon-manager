@@ -11,11 +11,14 @@
 
 namespace DRPPSM;
 
+// @codeCoverageIgnoreStart
 defined( 'ABSPATH' ) || exit;
+// @codeCoverageIgnoreEnd
 
 use DRPPSM\Constants\Caps;
 use DRPPSM\Interfaces\Executable;
 use DRPPSM\Interfaces\Registrable;
+use DRPPSM\Traits\ExecutableTrait;
 use WP_Exception;
 
 /**
@@ -28,18 +31,7 @@ use WP_Exception;
  * @since       1.0.0
  */
 class AdminMenu implements Executable, Registrable {
-
-	/**
-	 * Initialize and register.
-	 *
-	 * @return AdminMenu
-	 * @since 1.0.0
-	 */
-	public static function exec(): AdminMenu {
-		$obj = new self();
-		$obj->register();
-		return $obj;
-	}
+	use ExecutableTrait;
 
 	/**
 	 * Register hooks.
@@ -69,6 +61,8 @@ class AdminMenu implements Executable, Registrable {
 	 */
 	public function fix_title(): void {
 		global $submenu;
+
+		Logger::debug( array( 'submenu' => $submenu ) );
 
 		if ( ! isset( $submenu[ 'edit.php?post_type=' . DRPPSM_PT_SERMON ] ) ) {
 			return;

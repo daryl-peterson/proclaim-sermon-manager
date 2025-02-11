@@ -11,7 +11,9 @@
 
 namespace DRPPSM;
 
+// @codeCoverageIgnoreStart
 defined( 'ABSPATH' ) || exit;
+// @codeCoverageIgnoreEnd
 
 use CMB2;
 use DRPPSM\Interfaces\Executable;

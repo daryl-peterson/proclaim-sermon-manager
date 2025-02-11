@@ -13,7 +13,9 @@ namespace DRPPSM;
 
 use WP_Post;
 
+// @codeCoverageIgnoreStart
 defined( 'ABSPATH' ) || exit;
+// @codeCoverageIgnoreEnd
 
 /**
  * Series Taxonomy Class

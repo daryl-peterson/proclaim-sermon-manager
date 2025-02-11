@@ -11,9 +11,7 @@
 
 namespace DRPPSM\Tests;
 
-use DRPPSM\App;
-use DRPPSM\Helper;
-use DRPPSM\Interfaces\TextDomainInt;
+use DRPPSM\Action;
 use DRPPSM\TextDomain;
 
 /**
@@ -27,7 +25,12 @@ use DRPPSM\TextDomain;
  */
 class TextDomainTest extends BaseTest {
 
-	public TextDomainInt $obj;
+	/**
+	 * TextDomain object.
+	 *
+	 * @var ?TextDomain
+	 */
+	public ?TextDomain $obj;
 
 	/**
 	 * This method is called before each test.
@@ -35,8 +38,48 @@ class TextDomainTest extends BaseTest {
 	 * @return void
 	 * @since 1.0.0
 	 */
-	public function setup(): void {
-		$this->obj = App::init()->get( TextDomainInt::class );
+	public function setUp(): void {
+		parent::setUp();
+		$this->obj = TextDomain::exec();
+	}
+
+	/**
+	 * This method is called after each test.
+	 *
+	 * @return void
+	 * @since 1.0.0
+	 */
+	public function tearDown(): void {
+		parent::tearDown();
+		$this->obj = null;
+	}
+
+	/**
+	 * Test register.
+	 *
+	 * @return void
+	 * @since 1.0.0
+	 */
+	public function test_register() {
+		$result = $this->obj->register();
+		$this->assertIsBool( $result );
+
+		$result = $this->obj->register();
+		$this->assertFalse( $result );
+	}
+
+	/**
+	 * Test load domain.
+	 *
+	 * @return void
+	 * @since 1.0.0
+	 */
+	public function test_load_domain_() {
+		$result = $this->obj->load_domain();
+		$this->assertTrue( $result );
+
+		$result = $this->obj->load_domain();
+		$this->assertFalse( $result );
 	}
 
 	/**

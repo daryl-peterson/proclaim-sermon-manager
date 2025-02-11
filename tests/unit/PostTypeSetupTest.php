@@ -44,6 +44,12 @@ class PostTypeSetupTest extends BaseTest {
 		$this->obj = PostTypeSetup::exec();
 	}
 
+	/**
+	 * Test register method.
+	 *
+	 * @return void
+	 * @since 1.0.0
+	 */
 	public function test_register() {
 		$bool = $this->obj->register();
 		$this->assertIsBool( $bool );

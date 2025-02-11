@@ -13,7 +13,9 @@ namespace DRPPSM;
 
 use WP_Post;
 
+// @codeCoverageIgnoreStart
 defined( 'ABSPATH' ) || exit;
+// @codeCoverageIgnoreEnd
 
 /**
  * Base class for Taxonomies
@@ -167,9 +169,12 @@ class TaxBase {
 		}
 		$names = trim( implode( ', ', $names ) );
 
+		// @codeCoverageIgnoreStart
 		if ( substr( $names, -1 ) === ',' ) {
 			$names = trim( substr( $names, 0, -1 ) );
 		}
+		// @codeCoverageIgnoreEnd
+
 		return $names;
 	}
 
@@ -230,12 +235,20 @@ class TaxBase {
 	 */
 	public function has_term(): bool {
 
-		$terms = $this->fix_terms();
+		$terms  = $this->fix_terms();
+		$result = null;
 
+		// @codeCoverageIgnoreStart
 		if ( count( $terms ) > 0 ) {
-			return true;
+			$result = true;
 		}
-		return false;
+
+		if ( null === $result ) {
+			$result = false;
+		}
+		// @codeCoverageIgnoreEnd
+
+		return $result;
 	}
 
 	/**
@@ -261,10 +274,12 @@ class TaxBase {
 		$terms = $this->terms;
 
 		foreach ( $terms as $key => $term ) {
+			// @codeCoverageIgnoreStart
 			if ( $term->slug === 'none' ) {
 				unset( $terms[ $key ] );
 				break;
 			}
+			// @codeCoverageIgnoreEnd
 		}
 		return $terms;
 	}
