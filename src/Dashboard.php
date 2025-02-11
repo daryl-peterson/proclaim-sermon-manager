@@ -15,6 +15,7 @@ use DRPPSM\Interfaces\Executable;
 use DRPPSM\Interfaces\Registrable;
 use DRPPSM\Traits\ExecutableTrait;
 
+// @
 defined( 'ABSPATH' ) || exit;
 
 /**
@@ -40,17 +41,74 @@ class Dashboard implements Executable, Registrable {
 			return false;
 		}
 		add_action( 'dashboard_glance_items', array( $this, 'glance' ) );
-		add_action( 'wp_dashboard_setup', array( $this, 'widget' ) );
+		add_action( 'wp_dashboard_setup', array( $this, 'add_dashboard_widget' ) );
 		return true;
 	}
 
-	public function widget() {
+	/**
+	 * Add dashboard widget.
+	 *
+	 * @return void
+	 * @since 1.0.0
+	 */
+	public function add_dashboard_widget() {
 		wp_add_dashboard_widget(
 			'wporg_dashboard_widget',                          // Widget slug.
 			esc_html__( 'Proclaim Sermon Manger', 'drppsm' ), // Title.
 			function () {
-				get_partial( 'psm-dashboard' );
-			}           // Display function.
+				$this->show_dashboard_widget();
+			}
+		);
+	}
+
+	/**
+	 * Show dashboard widget.
+	 *
+	 * @return void
+	 * @since 1.0.0
+	 */
+	private function show_dashboard_widget() {
+
+		$info    = array();
+		$sermons = wp_count_posts( DRPPSM_PT_SERMON )->publish;
+
+		$key                   = get_post_field( DRPPSM_PT_SERMON, 'label' );
+		$info[ $key ]['count'] = number_format_i18n( $sermons );
+		$info[ $key ]['link']  = admin_url( 'edit.php?post_type=drppsm_sermon' );
+
+		foreach ( DRPPSM_TAX_MAP as $key => $value ) {
+			$result = wp_count_terms(
+				array(
+					'taxonomy'   => $value,
+					'hide_empty' => true,
+				)
+			);
+
+			if ( is_wp_error( $result ) ) {
+				$num = 0;
+			} else {
+				$num = number_format_i18n( $result );
+			}
+
+			$label = get_taxonomy_field( $value, 'label' );
+
+			$info[ $label ]['count'] = $num;
+			$info[ $label ]['link']  = admin_url( 'edit-tags.php?taxonomy=' . $value . '&post_type=drppsm_sermon' );
+		}
+
+		$sermon = SermonUtils::get_latest();
+		if ( is_array( $sermon ) ) {
+			$sermon = array_shift( $sermon );
+		}
+
+		Logger::debug( $sermon );
+
+		get_partial(
+			'psm-dashboard',
+			array(
+				'info'   => $info,
+				'sermon' => $sermon,
+			)
 		);
 	}
 

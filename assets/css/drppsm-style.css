@@ -351,6 +351,12 @@
     margin-top: 1em;
   }
 }
+@media screen and (min-width: 355px) {
+  .dashicons .dashicons-info,
+  .dashicons .dashicons-info[aria-hidden=true] {
+    display: table-cell;
+  }
+}
 .drppsm-single-header {
   text-align: center;
 }

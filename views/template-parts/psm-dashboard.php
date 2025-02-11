@@ -8,27 +8,55 @@
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
  * @since       1.0.0
  */
+namespace DRPPSM;
 
-// Get current sermon count.
-$num_posts = wp_count_posts( DRPPSM_PT_SERMON )->publish;
+use WP_Post;
 
-// Format the number to current locale.
-$num = number_format_i18n( $num_posts );
+// These must be defined before including psm-check-args.
+$template = str_replace( '.php', '', basename( __FILE__ ) );
+$required = array( 'info', 'sermon' );
 
-// Put correct singular or plural text
-// translators: %s integer count of sermons.
-$text = wp_sprintf( esc_html( _n( '%s Sermon', '%s Sermons', intval( $num_posts ), 'drppsm' ) ), $num );
+$result = require_once 'psm-check-args.php';
+if ( ! $result ) {
+	return;
+}
 
+$info   = $args['info'];
+$sermon = $args['sermon'];
+$src    = null;
+
+if ( $sermon instanceof WP_Post ) {
+	$src = get_sermon_image_url( ImageSize::SERMON_SMALL, true, true, $sermon );
+}
+
+
+Logger::debug( $info );
 
 ?>
 <div id="drppsm-dashboard">
+	<h3>Posts & Taxonomies</h3>
 	<ul class="plugin-info">
-		<li class="info wp-clearfix">
-			<div class="detail">
+		<li class="info ">
 
-
-			</div>
+			<?php foreach ( $info as $key => $value ) : ?>
+				<div class="detail">
+				<a href="<?php echo esc_url( $value['link'] ); ?>">
+					<span class="cnt"><?php echo esc_html( $value['count'] ); ?></span>
+					<span class="name"><?php echo esc_html( $key ); ?></span>
+				</a>
+				</div>
+			<?php endforeach; ?>
 
 		</li>
 	</ul>
+	<?php
+	if ( $src ) :
+		?>
+		<h3>Recent Sermon</h3>
+		<div class="recent-sermon">
+			<img src="<?php echo esc_url( $src ); ?>" alt="" />
+		</div>
+
+	<?php endif; ?>
+
 </div>

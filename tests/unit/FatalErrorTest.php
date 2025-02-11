@@ -35,8 +35,9 @@ class FatalErrorTest extends BaseTest {
 	 * @return void
 	 * @since 1.0.0
 	 */
-	public function setup(): void {
-		$this->notice = Notice::get_instance();
+	public function setUp(): void {
+		parent::setUp();
+		$this->notice = Notice::exec();
 	}
 
 	/**
@@ -45,7 +46,8 @@ class FatalErrorTest extends BaseTest {
 	 * @return void
 	 * @since 1.0.0
 	 */
-	public function teardown(): void {
+	public function tearDown(): void {
+		parent::tearDown();
 		$this->notice->delete();
 		$this->notice = null;
 	}
@@ -53,20 +55,32 @@ class FatalErrorTest extends BaseTest {
 	/**
 	 * Test check method.
 	 *
+	 * - Test when user is not admin.
+	 *
 	 * @since 1.0.0
 	 */
-	public function test_check() {
-
+	public function test_check_user() {
+		$this->set_admin( false );
 		$pe     = new PluginException( 'Test Fatal Error' );
 		$result = FatalError::set( $pe );
 		$this->assertTrue( $result );
 
 		$result = FatalError::check();
 		$this->assertTrue( $result );
+	}
 
+	/**
+	 * Test check method.
+	 *
+	 * - Test when user is admin.
+	 *
+	 * @since 1.0.0
+	 */
+	public function test_check_admin() {
 		$this->set_admin();
 		$pe     = new PluginException( 'Test Fatal Error' );
 		$result = FatalError::set( $pe );
+		$this->assertTrue( $result );
 
 		$result = FatalError::check();
 		$this->assertTrue( $result );

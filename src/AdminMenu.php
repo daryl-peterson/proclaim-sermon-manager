@@ -62,8 +62,6 @@ class AdminMenu implements Executable, Registrable {
 	public function fix_title(): void {
 		global $submenu;
 
-		Logger::debug( array( 'submenu' => $submenu ) );
-
 		if ( ! isset( $submenu[ 'edit.php?post_type=' . DRPPSM_PT_SERMON ] ) ) {
 			return;
 		}

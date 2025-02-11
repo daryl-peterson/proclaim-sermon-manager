@@ -12,9 +12,11 @@
 namespace DRPPSM\Tests;
 
 use DRPPSM\App;
+use PhpParser\Node\Expr\Instanceof_;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use ReflectionMethod;
+use WP_Post;
 use WP_Query;
 use WP_Term;
 use WP_User;
@@ -207,10 +209,10 @@ class BaseTest extends TestCase {
 	/**
 	 * Get a post.
 	 *
-	 * @return \WP_Post
+	 * @return WP_Post
 	 * @since 1.0.0
 	 */
-	public function get_post( string $type = DRPPSM_PT_SERMON ): \WP_Post {
+	public function get_post( string $type = DRPPSM_PT_SERMON ): ?WP_Post {
 		$args  = array(
 			'numberposts' => 5,
 			'post_type'   => 'post',
@@ -225,6 +227,9 @@ class BaseTest extends TestCase {
 			}
 
 			break;
+		}
+		if ( ! $post instanceof WP_Post ) {
+			return null;
 		}
 
 		return $post;

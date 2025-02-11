@@ -28,9 +28,23 @@ class SermonDetailTest extends BaseTest {
 
 	private SermonDetail $obj;
 
-	public function setup(): void {
+	/**
+	 * This method is called before each test.
+	 *
+	 * @return void
+	 * @since 1.0.0
+	 */
+	public function setUp(): void {
+		parent::setUp();
 		$this->obj = SermonDetail::exec();
 	}
+
+	/**
+	 * Test register method.
+	 *
+	 * @return void
+	 * @since 1.0.0
+	 */
 	public function test_register() {
 		$result = $this->obj->register();
 		$this->assertIsBool( $result );
@@ -39,17 +53,35 @@ class SermonDetailTest extends BaseTest {
 		$this->assertFalse( $result );
 	}
 
+	/**
+	 * Test get method.
+	 *
+	 * @return void
+	 * @since 1.0.0
+	 */
 	public function test_get() {
 		$this->assertNotNull( $this->obj );
 		$this->assertInstanceOf( SermonDetail::class, $this->obj );
 	}
 
+	/**
+	 * Test show method.
+	 *
+	 * @return void
+	 * @since 1.0.0
+	 */
 	public function test_show() {
 		$result = $this->obj->show();
 		$this->assertIsBool( $result );
 		$this->assertTrue( $result );
 	}
 
+	/**
+	 * Test save method.
+	 *
+	 * @return void
+	 * @since 1.0.0
+	 */
 	public function test_save() {
 		$this->obj->show();
 
