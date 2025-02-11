@@ -48,6 +48,13 @@ class SermonDetail implements Executable, Registrable {
 	private string $cmb_id;
 
 	/**
+	 * CMB2 object.
+	 *
+	 * @var CMB2
+	 */
+	private ?CMB2 $cmb;
+
+	/**
 	 * Service type taxonomy.
 	 *
 	 * @var string
@@ -112,6 +119,7 @@ class SermonDetail implements Executable, Registrable {
 		$this->add_service_type( $cmb );
 		$this->add_bible_passage( $cmb );
 		$this->add_description( $cmb );
+		$this->cmb = $cmb;
 		return true;
 	}
 
@@ -122,18 +130,19 @@ class SermonDetail implements Executable, Registrable {
 	 * @param int   $post_ID Post ID.
 	 * @param array $updated List of fields that were updated.
 	 * @param CMB2  $cmb CMB2 Object.
-	 * @return void
+	 * @return bool
 	 * @since 1.0.0
 	 */
-	public function save( int $post_ID, array $updated, CMB2 $cmb ): void {
+	public function save( int $post_ID, array $updated, CMB2 $cmb ): bool {
 		if ( get_post_type() !== $this->pt_sermon ) {
-			return;
+			return false;
 		}
 		$this->save_service_type( $post_ID, $cmb->data_to_save );
 		$this->save_date( $post_ID, $cmb->data_to_save );
 		$this->save_books( $post_ID, $cmb->data_to_save );
 		$this->save_series( $post_ID, $cmb->data_to_save );
 		Logger::debug( $cmb->data_to_save );
+		return true;
 	}
 
 	/**
@@ -266,6 +275,9 @@ class SermonDetail implements Executable, Registrable {
 	 * @since 1.0.0
 	 */
 	private function save_service_type( int $post_ID, array $data ): bool {
+		if ( ! isset( $data[ $this->tax_service_type ] ) ) {
+			return false;
+		}
 
 		$term = get_term_by(
 			'id',

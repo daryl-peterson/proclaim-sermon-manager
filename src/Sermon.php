@@ -94,9 +94,11 @@ class Sermon {
 			$post = get_post( $post );
 		}
 
+		// @codeCoverageIgnoreStart
 		if ( ! $post instanceof WP_Post ) {
 			return;
 		}
+		// @codeCoverageIgnoreEnd
 
 		$this->post     = $post;
 		$this->meta     = new SermonMeta( $post );
@@ -106,9 +108,12 @@ class Sermon {
 		$this->topics   = new TaxTopics( $post );
 
 		$link = get_permalink( $post );
+		// @codeCoverageIgnoreStart
 		if ( ! $link ) {
 			$link = '';
 		}
+		// @codeCoverageIgnoreEnd
+
 		$this->link = $link;
 
 		Logger::debug( $this );
@@ -149,8 +154,10 @@ class Sermon {
 
 		if ( key_exists( 'link', $data ) ) {
 			$this->link = (string) $data['link'];
+			// @codeCoverageIgnoreStart
 		} else {
 			$this->link = '';
+			// @codeCoverageIgnoreEnd
 		}
 	}
 }

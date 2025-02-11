@@ -19,6 +19,7 @@ use WP_Query;
 use WP_Term;
 use WP_User;
 
+use function DRPPSM\include_admin_plugin;
 use function DRPPSM\include_screen;
 
 /**
@@ -157,7 +158,7 @@ class BaseTest extends TestCase {
 	}
 
 	/**
-	 * Get sermon series.
+	 * Get series term.
 	 *
 	 * @return array
 	 * @since 1.0.0
@@ -203,7 +204,13 @@ class BaseTest extends TestCase {
 		return null;
 	}
 
-	public function getTestPost(): \WP_Post {
+	/**
+	 * Get a post.
+	 *
+	 * @return \WP_Post
+	 * @since 1.0.0
+	 */
+	public function get_post( string $type = DRPPSM_PT_SERMON ): \WP_Post {
 		$args  = array(
 			'numberposts' => 5,
 			'post_type'   => 'post',
@@ -221,6 +228,47 @@ class BaseTest extends TestCase {
 		}
 
 		return $post;
+	}
+
+	/**
+	 * Plugin deactivate.
+	 *
+	 * @return void
+	 * @since 1.0.0
+	 */
+	public function plugin_deactivate() {
+
+		include_admin_plugin();
+
+		$plugin = DRPPSM_BASENAME;
+
+		$ms = is_multisite();
+		if ( $ms ) {
+			deactivate_plugins( $plugin, true, true );
+			return;
+		} else {
+			deactivate_plugins( $plugin, true );
+		}
+	}
+
+	/**
+	 * Plugin activate.
+	 *
+	 * @return void
+	 * @since 1.0.0
+	 */
+	public function plugin_activate() {
+		include_admin_plugin();
+
+		$plugin = DRPPSM_BASENAME;
+
+		$ms = is_multisite();
+		if ( $ms ) {
+			activate_plugin( $plugin, '', true, true );
+			return;
+		} else {
+			activate_plugin( $plugin, '', false, true );
+		}
 	}
 
 	/**

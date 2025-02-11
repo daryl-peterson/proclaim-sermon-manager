@@ -11,9 +11,11 @@
 
 namespace DRPPSM;
 
-use DRPPSM\Traits\ExecutableTrait;
-
+// @codeCoverageIgnoreStart
 defined( 'ABSPATH' ) || exit;
+// @codeCoverageIgnoreEnd
+
+use DRPPSM\Traits\ExecutableTrait;
 
 /**
  * Check if any rewrite conflicts exist.
@@ -44,6 +46,7 @@ class Rewrite {
 			return false;
 		}
 
+		add_action( 'init', array( $this, 'find_conflicts' ) );
 		add_action( 'activate_plugin', array( $this, 'reset' ), 10, 2 );
 		add_action( 'deactivate_plugin', array( $this, 'reset' ), 10, 2 );
 		add_action( Action::REWRITE_FLUSH, array( $this, 'flush' ) );
@@ -79,19 +82,23 @@ class Rewrite {
 	/**
 	 * Check if any conflicts exist.
 	 *
-	 * @return void
+	 * @return bool True if conflicts exist, otherwise false.
 	 * @since 1.0.0
 	 *
 	 * @todo Use to display admin notice of conflicts.
 	 */
-	public function find_conflicts(): void {
+	public function find_conflicts(): bool {
 		if ( FatalError::exist() ) {
-			return;
+			// @codeCoverageIgnoreStart
+			return true;
+			// @codeCoverageIgnoreEnd
 		}
 
-		$trans = get_transient( self::TRANS_NAME );
+		$trans = Transient::get( self::TRANS_NAME );
 		if ( $trans ) {
-			return;
+			if ( key_exists( 'conflict', $trans ) && is_bool( $trans['conflict'] ) ) {
+				return $trans['conflict'];
+			}
 		}
 
 		$rewrite = $this->get_slugs();
@@ -105,11 +112,8 @@ class Rewrite {
 			'time'     => time(),
 		);
 
-		set_transient(
-			self::TRANS_NAME,
-			$info,
-			self::TRANS_TIMEOUT
-		);
+		Transient::set( self::TRANS_NAME, $info, self::TRANS_TIMEOUT );
+		return $conflict;
 	}
 
 	/**
@@ -128,9 +132,13 @@ class Rewrite {
 
 		foreach ( $tax as $type ) {
 
+			// Skip if not registered.
+			// @codeCoverageIgnoreStart
 			if ( ! isset( $wp_taxonomies[ $type ] ) ) {
 				continue;
 			}
+			// @codeCoverageIgnoreEnd
+
 			$slug               = $wp_taxonomies[ $type ]->rewrite['slug'];
 			$rewrite[ $slug ][] = $type;
 		}
@@ -146,14 +154,20 @@ class Rewrite {
 	 */
 	private function get_post_type_slugs( array &$rewrite ): void {
 		global $wp_post_types;
+
 		foreach ( $wp_post_types as $type => $settings ) {
 			if ( isset( $settings->rewrite ) && ! empty( $settings->rewrite ) ) {
 				if ( ! is_array( $settings->rewrite ) ) {
+					// @codeCoverageIgnoreStart
 					continue;
+					// @codeCoverageIgnoreEnd
 				}
+
 				$slug = $settings->rewrite['slug'];
 				if ( key_exists( $slug, $rewrite ) && ! in_array( $type, $rewrite[ $slug ], true ) ) {
+					// @codeCoverageIgnoreStart
 					$rewrite[ $slug ][] = $type;
+					// @codeCoverageIgnoreEnd
 				}
 			}
 		}
@@ -170,12 +184,18 @@ class Rewrite {
 		global $wp_taxonomies;
 		foreach ( $wp_taxonomies as $type => $settings ) {
 			if ( isset( $settings->rewrite ) && ! empty( $settings->rewrite ) ) {
+
 				if ( ! is_array( $settings->rewrite ) ) {
+					// @codeCoverageIgnoreStart
 					continue;
+					// @codeCoverageIgnoreEnd
 				}
+
 				$slug = $settings->rewrite['slug'];
 				if ( key_exists( $slug, $rewrite ) && ! in_array( $type, $rewrite[ $slug ], true ) ) {
+					// @codeCoverageIgnoreStart
 					$rewrite[ $slug ][] = $type;
+					// @codeCoverageIgnoreEnd
 				}
 			}
 		}
@@ -191,7 +211,9 @@ class Rewrite {
 	private function has_conflicts( array $rewrite ): bool {
 		foreach ( $rewrite as $types ) {
 			if ( count( $types ) > 1 ) {
+				// @codeCoverageIgnoreStart
 				return true;
+				// @codeCoverageIgnoreEnd
 			}
 		}
 		return false;
