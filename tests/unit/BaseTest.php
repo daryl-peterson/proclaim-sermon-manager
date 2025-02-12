@@ -22,7 +22,7 @@ use WP_Term;
 use WP_User;
 
 use function DRPPSM\include_admin_plugin;
-use function DRPPSM\include_screen;
+
 
 /**
  * Base test case.
@@ -243,7 +243,7 @@ class BaseTest extends TestCase {
 	 */
 	public function plugin_deactivate() {
 
-		include_admin_plugin();
+		$this->inc();
 
 		$plugin = DRPPSM_BASENAME;
 
@@ -263,7 +263,7 @@ class BaseTest extends TestCase {
 	 * @since 1.0.0
 	 */
 	public function plugin_activate() {
-		include_admin_plugin();
+		$this->inc();
 
 		$plugin = DRPPSM_BASENAME;
 
@@ -333,7 +333,6 @@ class BaseTest extends TestCase {
 	 */
 	public function set_admin( bool $state = true ) {
 		$this->inc();
-		include_screen();
 
 		$user = $this->get_admin_user();
 		wp_set_current_user( $user->ID );
@@ -482,6 +481,7 @@ class BaseTest extends TestCase {
 		$this->inc_admin_template();
 		$this->inc_pluggable();
 		$this->inc_dashboard();
+		$this->inc_screen();
 	}
 
 	/**
@@ -541,6 +541,23 @@ class BaseTest extends TestCase {
 		// @codeCoverageIgnoreStart
 		if ( ! function_exists( '\wp_dashboard' ) ) {
 			require_once ABSPATH . 'wp-admin/includes/dashboard.php';
+		}
+		// @codeCoverageIgnoreEnd
+	}
+
+	/**
+	 * Include admin screen functions.
+	 *
+	 * @return void
+	 * @since 1.0.0
+	 */
+	public function inc_screen() {
+		// @codeCoverageIgnoreStart
+		if ( ! function_exists( '\get_current_screen' ) ) {
+			require_once ABSPATH . 'wp-admin/includes/class-wp-screen.php';
+
+			$file = ABSPATH . 'wp-admin/includes/screen.php';
+			require_once $file;
 		}
 		// @codeCoverageIgnoreEnd
 	}

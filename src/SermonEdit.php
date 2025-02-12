@@ -11,12 +11,12 @@
 
 namespace DRPPSM;
 
+// @codeCoverageIgnoreStart
 defined( 'ABSPATH' ) || exit;
+// @codeCoverageIgnoreEnd
 
 use DRPPSM\Interfaces\Executable;
 use DRPPSM\Interfaces\Registrable;
-use DRPPSM\SermonDetail;
-use DRPPSM\SermonFiles;
 use DRPPSM\TaxUtils;
 use DRPPSM\Traits\ExecutableTrait;
 

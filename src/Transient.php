@@ -88,12 +88,14 @@ class Transient {
 	public static function delete( string $wildcard ): int|bool {
 		global $wpdb;
 
+		// @codingStandardsIgnoreStart
 		return $wpdb->query(
 			$wpdb->prepare(
 				"DELETE FROM $wpdb->options WHERE option_name LIKE %s",
 				$wildcard
 			)
 		);
+		// @codingStandardsIgnoreEnd
 	}
 
 	/**
