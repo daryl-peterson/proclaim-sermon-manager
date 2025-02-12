@@ -1,10 +1,10 @@
 <?php
 /**
- * Taxonomy archive class.
+ * Display taxonomy archive.
  *
  * - Used for viewing sermons by taxonomy.
  *
- * @package     DRPPSM\ShortCodes\TaxArchive
+ * @package     DRPPSM\TaxDisplayArchive
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
@@ -21,65 +21,17 @@ use WP_Post;
 use WP_Term;
 
 /**
- * Taxonomy archive class.
+ * Display taxonomy archive.
  *
  * - Used for viewing sermons by taxonomy.
  *
- * @package     DRPPSM\ShortCodes\TaxArchive
+ * @package     DRPPSM\TaxDisplayArchive
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
  * @since       1.0.0
  */
-class TaxArchive {
-
-	/**
-	 * Taxonomy name.
-	 *
-	 * @var string
-	 * @since 1.0.0
-	 */
-	private string $tax_name;
-
-	/**
-	 * Used in paginated queries, per_page
-	 *
-	 * @var int
-	 * @since 1.0.0
-	 */
-	private int $per_page;
-
-	/**
-	 * Order.
-	 *
-	 * @var string
-	 * @since 1.0.0
-	 */
-	private string $order;
-
-	/**
-	 * Order by.
-	 *
-	 * @var string
-	 * @since 1.0.0
-	 */
-	private string $orderby;
-
-	/**
-	 * Query offset.
-	 *
-	 * @var int
-	 * @since 1.0.0
-	 */
-	private int $offset;
-
-	/**
-	 * Pagination arguments.
-	 *
-	 * @var array
-	 * @since 1.0.0
-	 */
-	private null|array $paginate;
+class TaxDisplayArchive extends TaxDisplay {
 
 	/**
 	 * Term slug.
@@ -98,37 +50,19 @@ class TaxArchive {
 	private ?WP_Term $term;
 
 	/**
-	 * Template data.
-	 *
-	 * @var array
-	 * @since 1.0.0
-	 */
-	private null|array $data;
-
-	/**
-	 * Query arguments.
-	 *
-	 * @var array
-	 * @since 1.0.0
-	 */
-	private array $args;
-
-
-	/**
 	 * Initialize object.
 	 *
-	 * @param string $tax_name Taxonomy name.
-	 * @param string $term_name Term name.
+	 * @param array $args Shortcode arguments.
 	 * @return void
 	 * @since 1.0.0
 	 */
-	public function __construct( string $tax_name, string $slug ) {
-		$this->tax_name = $tax_name;
-		$this->slug     = $slug;
-		$this->term     = null;
-		$this->data     = null;
+	public function __construct( array $args = array() ) {
 
-		$term = get_term_by( 'slug', $this->slug, $this->tax_name );
+		if ( ! $this->is_args_valid( $args ) ) {
+			return;
+		}
+
+		$term = get_term_by( 'slug', $this->slug, $this->taxonomy );
 		if ( is_wp_error( $term ) || ! $term ) {
 			return;
 		}
@@ -140,43 +74,53 @@ class TaxArchive {
 		}
 		$this->set_params();
 		$this->set_pagination();
-		$this->data = $this->get_post_data();
-		$this->render();
+		$this->set_data();
+
+		$params = array(
+			'list' => $this->data,
+			'term' => $this->term,
+
+		);
+		$this->show_template( Template::TAX_ARCHIVE, $params );
 	}
 
 	/**
-	 * Render template.
+	 * Get record count
 	 *
-	 * @return void
+	 * @return int
 	 * @since 1.0.0
 	 */
-	private function render() {
-		$output  = '';
-		$output .= TemplateFiles::start();
-
-		if ( isset( $this->data ) && is_array( $this->data ) && count( $this->data ) > 0 ) {
-
-			ob_start();
-			echo sermon_sorting();
-			get_partial(
-				Template::TAX_ARCHIVE,
-				array(
-					'list' => $this->data,
-					'term' => $this->term,
-
-				)
-			);
-			get_partial( Template::Pagination, $this->paginate );
-
-			$output .= ob_get_clean();
-		} else {
-			ob_start();
-			get_partial( 'no-posts' );
-			$output .= ob_get_clean();
+	public function get_count(): int {
+		if ( ! $this->term ) {
+			return 0;
 		}
-		$output .= TemplateFiles::end();
 
-		echo $output;
+		return $this->term->count;
+	}
+
+	/**
+	 * Validate arguments.
+	 *
+	 * @param array $args Shortcode arguments.
+	 * @return bool
+	 * @since 1.0.0
+	 */
+	protected function is_args_valid( array $args ): bool {
+		$this->taxonomy = null;
+		$this->term     = null;
+		$this->data     = null;
+
+		if ( ! isset( $args['display'] ) || ! isset( $args['term'] ) ) {
+			return false;
+		}
+
+		$this->taxonomy = TaxUtils::get_taxonomy_name( $args['display'] );
+		if ( ! $this->taxonomy ) {
+			return false;
+		}
+
+		$this->slug = $args['term'];
+		return true;
 	}
 
 	/**
@@ -185,7 +129,7 @@ class TaxArchive {
 	 * @return mixed
 	 * @since 1.0.0
 	 */
-	private function get_post_data(): mixed {
+	protected function set_data(): void {
 
 		$args = $this->args;
 		if ( isset( $args['meta_query'] ) ) {
@@ -193,12 +137,13 @@ class TaxArchive {
 		}
 
 		$page      = get_page_number();
-		$trans_key = "{$this->tax_name}_{$this->term->term_id }_{$page}";
+		$trans_key = "{$this->taxonomy}_{$this->term->term_id }_{$page}";
 		$trans     = Transient::get( $trans_key );
 
 		if ( $trans ) {
 			Logger::debug( "Using transient : $trans_key" );
-			return $trans;
+			$this->data = $trans;
+			return;
 		}
 
 		// Set arguments from pagination.
@@ -217,8 +162,7 @@ class TaxArchive {
 			$data[ $post_item->ID ] = new Sermon( $post_item );
 		}
 		Transient::set( $trans_key, $data, Transient::TTL_12_HOURS );
-
-		return $data;
+		$this->data = $data;
 	}
 
 	/**
@@ -239,7 +183,7 @@ class TaxArchive {
 			'posts_per_page' => $this->per_page,
 			'tax_query'      => array(
 				array(
-					'taxonomy' => $this->tax_name,
+					'taxonomy' => $this->taxonomy,
 					'field'    => 'term_id',
 					'terms'    => $this->term->term_id,
 				),
@@ -258,43 +202,5 @@ class TaxArchive {
 			$args['meta_key']   = SermonMeta::DATE;
 		}
 		$this->args = $args;
-	}
-
-	/**
-	 * Set pagination data.
-	 *
-	 * @return void
-	 * @since 1.0.0
-	 */
-	private function set_pagination() {
-		global $post;
-
-		$this->paginate = null;
-
-		if ( ! $this->term ) {
-			return;
-		}
-
-		$term_count = $this->term->count;
-		if ( ! $term_count ) {
-			return;
-		}
-
-		// Calculate max number of pages
-		$max_num_pages = ceil( $term_count / $this->per_page );
-		$paged         = get_page_number();
-
-		// Calculate term offset
-		$offset = ( ( $paged - 1 ) * $this->per_page );
-
-		// We can now get our terms and paginate it
-		$this->offset = $offset;
-
-		$this->paginate = array(
-
-			'current' => $paged,
-			'total'   => $max_num_pages,
-			'post_id' => $post->ID,
-		);
 	}
 }

@@ -16,8 +16,8 @@ defined( 'ABSPATH' ) || exit;
 // @codeCoverageIgnoreEnd
 
 use DRPPSM\Interfaces\Registrable;
-use DRPPSM\TaxArchive;
-use DRPPSM\TaxImageList;
+use DRPPSM\TaxDisplayArchive;
+use DRPPSM\TaxDisplayList;
 
 use function DRPPSM\get_partial;
 
@@ -48,6 +48,7 @@ abstract class TaxShortcode extends ShortCode implements Registrable {
 		$defaults = array(
 			'display' => $this->sc,
 			'size'    => $this->size,
+			'term'    => $qv_term,
 		);
 
 		$args = shortcode_atts(
@@ -58,9 +59,9 @@ abstract class TaxShortcode extends ShortCode implements Registrable {
 
 		ob_start();
 		if ( empty( $qv_term ) ) {
-			new TaxImageList( $args );
+			new TaxDisplayList( $args );
 		} elseif ( have_posts() ) {
-			new TaxArchive( $qv_tax, $qv_term );
+			new TaxDisplayArchive( $args );
 			wp_reset_postdata();
 		} else {
 			get_partial( 'no-posts' );

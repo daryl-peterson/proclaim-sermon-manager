@@ -1,14 +1,12 @@
 <?php
 /**
- * Get extended taxonomy meta. If not found, add to job queue.
+ * Get / Set taxonomy meta.
  *
  * @package     DRPPSM\TaxMeta
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
  * @since       1.0.0
- *
- * - Adds Job to queue if meta not found.
  */
 
 namespace DRPPSM;
@@ -25,15 +23,15 @@ use WP_Post;
 use WP_Term;
 
 /**
- * Get extended taxonomy meta. If not found, add to job queue.
+ * Get / Set taxonomy meta.
+ *
+ * - Deletes transients when a taxonomy is created, edited, or deleted.
  *
  * @package     DRPPSM\TaxMeta
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
  * @since       1.0.0
- *
- * - Adds Job to queue if meta not found.
  */
 class TaxMeta implements Executable, Registrable {
 	use ExecutableTrait;

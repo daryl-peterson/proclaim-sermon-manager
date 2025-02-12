@@ -26,7 +26,11 @@ defined( 'ABSPATH' ) || exit;
  */
 class TaxPreacher extends TaxData {
 
-
+	/**
+	 * Constructor
+	 *
+	 * @param WP_Post $post
+	 */
 	public function __construct( WP_Post $post ) {
 		parent::__construct( $post, DRPPSM_TAX_PREACHER );
 	}

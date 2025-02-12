@@ -15,7 +15,6 @@ use CMB2;
 use DRPPSM\Interfaces\Executable;
 use DRPPSM\Interfaces\Registrable;
 use DRPPSM\Traits\ExecutableTrait;
-use WPForms\Vendor\Stripe\Util\Set;
 
 defined( 'ABSPATH' ) || exit;
 

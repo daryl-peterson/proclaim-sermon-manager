@@ -1,8 +1,8 @@
 <?php
 /**
- * Taxonomy image list.
+ * Display taxonomy list.
  *
- * @package     DRPPSM\TaxImageList
+ * @package     DRPPSM\TaxDisplayList
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
@@ -19,64 +19,23 @@ use stdClass;
 use WP_Term;
 
 /**
- * Taxonomy image list.
+ * Display taxonomy list.
  *
- * @package     DRPPSM\TaxImageList
+ * @package     DRPPSM\TaxDisplayList
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
  * @since       1.0.0
  */
-class TaxImageList {
+class TaxDisplayList extends TaxDisplay {
+
 
 	/**
-	 * Taxonomy name.
+	 * Taxonomy meta.
 	 *
-	 * @var string
+	 * @var null|TaxMeta
 	 * @since 1.0.0
 	 */
-	private string $taxonomy;
-
-	/**
-	 * Pagination arguments.
-	 *
-	 * @var array
-	 * @since 1.0.0
-	 */
-	private null|array $paginate;
-
-	/**
-	 * Used in paginated queries, per_page
-	 *
-	 * @var int
-	 * @since 1.0.0
-	 */
-	private int $per_page;
-
-	/**
-	 * Template data.
-	 *
-	 * @var array
-	 * @since 1.0.0
-	 */
-	private null|array $data;
-
-	/**
-	 * Query offset.
-	 *
-	 * @var int
-	 * @since 1.0.0
-	 */
-	private int $offset;
-
-	/**
-	 * Query arguments.
-	 *
-	 * @var array
-	 * @since 1.0.0
-	 */
-	private array $args;
-
 	private ?TaxMeta $tax_meta;
 
 
@@ -88,66 +47,94 @@ class TaxImageList {
 	 */
 	public function __construct( array $args = array() ) {
 
-		if ( ! isset( $args['display'] ) ) {
+		if ( ! $this->is_args_valid( $args ) ) {
 			return;
 		}
 
-		$this->taxonomy = TaxUtils::get_taxonomy_name( $args['display'] );
-		if ( ! $this->taxonomy ) {
-			return;
-		}
 		$this->tax_meta = TaxMeta::exec();
 
 		$defaults = $this->get_default_args();
 		$args     = array_merge( $defaults, $args );
-		Logger::debug( $args );
 
 		$args['display'] = $this->taxonomy;
 		$args['post_id'] = get_the_ID();
 		$this->set_params( $args );
 		$this->set_pagination();
-		$this->set_term_data();
-		$this->show_template( $args );
+		$this->set_data();
+
+		$params = array(
+			'list'    => $this->data,
+			'columns' => $args['columns'],
+			'size'    => $args['size'],
+		);
+
+		$this->show_template( Template::TAX_IMAGE_LIST, $params );
 	}
 
 	/**
-	 * Show template.
+	 * Get record count
+	 *
+	 * @return int
+	 * @since 1.0.0
+	 */
+	public function get_count(): int {
+		$term_count = wp_count_terms(
+			array(
+				'taxonomy'   => $this->taxonomy,
+				'hide_empty' => true,
+			)
+		);
+		if ( is_wp_error( $term_count ) ) {
+			return 0;
+		}
+		return absint( $term_count );
+	}
+
+	/**
+	 * Validate arguments.
+	 *
+	 * @param array $args
+	 * @return bool
+	 * @since 1.0.0
+	 */
+	protected function is_args_valid( array $args ): bool {
+		if ( ! isset( $args['display'] ) ) {
+			return false;
+		}
+
+		$this->taxonomy = TaxUtils::get_taxonomy_name( $args['display'] );
+		if ( ! $this->taxonomy ) {
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * Get default arguments.
+	 *
+	 * @return array
+	 * @since 1.0.0
+	 */
+	private function get_default_args(): array {
+		return array(
+			'orderby'    => 'name',
+			'order'      => 'ASC',
+			'size'       => ImageSize::SERMON_MEDIUM,
+			'hide_title' => false,
+			'image_size' => ImageSize::SERMON_MEDIUM,
+			'columns'    => Settings::get( Settings::IMAGES_PER_ROW ),
+			'per_page'   => Settings::get( Settings::SERMON_COUNT ),
+		);
+	}
+
+	/**
+	 * Set query parameters.
 	 *
 	 * @param array $args
 	 * @return void
 	 * @since 1.0.0
 	 */
-	private function show_template( array $args ) {
-		$output = '';
-
-		$output .= TemplateFiles::start();
-
-		if ( isset( $this->data ) && is_array( $this->data ) && count( $this->data ) > 0 ) {
-
-			ob_start();
-			echo sermon_sorting();
-			get_partial(
-				Template::TAX_IMAGE_LIST,
-				array(
-					'list'    => $this->data,
-					'columns' => $args['columns'],
-					'size'    => $args['size'],
-				)
-			);
-			get_partial( Template::Pagination, $this->paginate );
-
-			$output .= ob_get_clean();
-		} else {
-			ob_start();
-			get_partial( 'no-posts' );
-			$output .= ob_get_clean();
-		}
-
-		$output .= TemplateFiles::end();
-
-		echo $output;
-	}
-
 	private function set_params( array $args ): void {
 		$this->per_page = $args['per_page'];
 		$this->args     = array(
@@ -165,7 +152,7 @@ class TaxImageList {
 	 * @return void
 	 * @since 1.0.0
 	 */
-	private function set_term_data(): void {
+	protected function set_data(): void {
 
 		$this->data = null;
 
@@ -241,59 +228,5 @@ class TaxImageList {
 			return $meta;
 		}
 		return null;
-	}
-
-	/**
-	 * Set pagination data.
-	 *
-	 * @return void
-	 * @since 1.0.0
-	 */
-	private function set_pagination(): void {
-
-		$this->paginate = null;
-
-		$term_count = wp_count_terms(
-			array(
-				'taxonomy'   => $this->taxonomy,
-				'hide_empty' => true,
-			)
-		);
-		if ( 0 === $term_count ) {
-			return;
-		}
-
-		// Calculate pagination
-		$max_num_pages = ceil( $term_count / $this->per_page );
-		$paged         = get_page_number();
-
-		// Calculate term offset
-		$offset = ( ( $paged - 1 ) * $this->per_page );
-
-		// We can now get our terms and paginate it
-		$this->offset = $offset;
-
-		$this->paginate = array(
-			'current' => $paged,
-			'total'   => $max_num_pages,
-		);
-	}
-
-	/**
-	 * Get default arguments.
-	 *
-	 * @return array
-	 * @since 1.0.0
-	 */
-	private function get_default_args(): array {
-		return array(
-			'orderby'    => 'name',
-			'order'      => 'ASC',
-			'size'       => ImageSize::SERMON_MEDIUM,
-			'hide_title' => false,
-			'image_size' => ImageSize::SERMON_MEDIUM,
-			'columns'    => Settings::get( Settings::IMAGES_PER_ROW ),
-			'per_page'   => Settings::get( Settings::SERMON_COUNT ),
-		);
 	}
 }
