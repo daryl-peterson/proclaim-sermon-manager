@@ -16,7 +16,9 @@ defined( 'ABSPATH' ) || exit;
 // @codeCoverageIgnoreEnd
 
 use DRPPSM\Interfaces\Registrable;
-use DRPPSM\Logger;
+use DRPPSM\TaxArchive;
+use DRPPSM\TaxImageList;
+
 use function DRPPSM\get_partial;
 
 /**
@@ -31,7 +33,7 @@ use function DRPPSM\get_partial;
 abstract class TaxShortcode extends ShortCode implements Registrable {
 
 	/**
-	 * Display the series.
+	 * Display the tax listing or term archive.
 	 *
 	 * @param array $atts Shortcode attributes.
 	 * @return string
@@ -39,22 +41,19 @@ abstract class TaxShortcode extends ShortCode implements Registrable {
 	 */
 	public function show( array $atts ): string {
 
+		$atts    = $this->fix_atts( $atts );
 		$qv_tax  = get_query_var( 'taxonomy' );
 		$qv_term = get_query_var( $this->sc );
-		$qv_play = get_query_var( 'play' );
 
-		$args = array(
+		$defaults = array(
 			'display' => $this->sc,
 			'size'    => $this->size,
 		);
-		Logger::debug(
-			array(
-				'tax'  => $qv_tax,
-				'term' => $qv_term,
-				'play' => $qv_play,
-				'args' => $args,
-				'atts' => $atts,
-			)
+
+		$args = shortcode_atts(
+			$defaults,
+			$atts,
+			$this->sc
 		);
 
 		ob_start();

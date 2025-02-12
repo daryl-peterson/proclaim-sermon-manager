@@ -2,37 +2,26 @@
 /**
  * Taxonomy image list.
  *
- * @package     DRPPSM\ShortCodes\TaxList
+ * @package     DRPPSM\TaxImageList
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
  * @since       1.0.0
  */
 
-namespace DRPPSM\ShortCodes;
+namespace DRPPSM;
 
 // @codeCoverageIgnoreStart
 defined( 'ABSPATH' ) || exit;
 // @codeCoverageIgnoreEnd
 
-use DRPPSM\ImageSize;
-use DRPPSM\Logger;
-use DRPPSM\Settings;
-use DRPPSM\TaxMeta;
-use DRPPSM\TaxUtils;
-use DRPPSM\Template;
-use DRPPSM\Transient;
 use stdClass;
 use WP_Term;
-
-use function DRPPSM\get_page_number;
-use function DRPPSM\get_partial;
-use function DRPPSM\sermon_sorting;
 
 /**
  * Taxonomy image list.
  *
- * @package     DRPPSM\ShortCodes\TaxList
+ * @package     DRPPSM\TaxImageList
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
@@ -71,14 +60,6 @@ class TaxImageList {
 	 * @since 1.0.0
 	 */
 	private null|array $data;
-
-	/**
-	 * Used in paginated queries, per_page
-	 *
-	 * @var int
-	 * @since 1.0.0
-	 */
-	private int $number;
 
 	/**
 	 * Query offset.
@@ -139,7 +120,7 @@ class TaxImageList {
 	private function show_template( array $args ) {
 		$output = '';
 
-		$output .= FileTemplate::start();
+		$output .= TemplateFiles::start();
 
 		if ( isset( $this->data ) && is_array( $this->data ) && count( $this->data ) > 0 ) {
 
@@ -162,7 +143,7 @@ class TaxImageList {
 			$output .= ob_get_clean();
 		}
 
-		$output .= FileTemplate::end();
+		$output .= TemplateFiles::end();
 
 		echo $output;
 	}
@@ -206,7 +187,7 @@ class TaxImageList {
 
 		$args               = $this->args;
 		$args['hide_empty'] = true;
-		$args['number']     = $this->number;
+		$args['number']     = $this->per_page;
 		$args['offset']     = $this->offset;
 		Logger::debug( $args );
 
@@ -282,6 +263,7 @@ class TaxImageList {
 			return;
 		}
 
+		// Calculate pagination
 		$max_num_pages = ceil( $term_count / $this->per_page );
 		$paged         = get_page_number();
 
@@ -289,7 +271,6 @@ class TaxImageList {
 		$offset = ( ( $paged - 1 ) * $this->per_page );
 
 		// We can now get our terms and paginate it
-		$this->number = $this->per_page;
 		$this->offset = $offset;
 
 		$this->paginate = array(

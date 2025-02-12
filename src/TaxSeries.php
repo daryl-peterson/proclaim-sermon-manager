@@ -26,7 +26,7 @@ defined( 'ABSPATH' ) || exit;
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
  * @since       1.0.0
  */
-class TaxSeries extends TaxBase {
+class TaxSeries extends TaxData {
 
 	/**
 	 * Constructor

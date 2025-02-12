@@ -1,6 +1,6 @@
 <?php
 /**
- * Base class for Taxonomies
+ * Taxonomy data class.
  *
  * @package     DRPPSM\TaxBase
  * @author      Daryl Peterson <@gmail.com>
@@ -18,7 +18,7 @@ defined( 'ABSPATH' ) || exit;
 // @codeCoverageIgnoreEnd
 
 /**
- * Base class for Taxonomies
+ * Taxonomy data class.
  *
  * @package     DRPPSM\TaxBase
  * @author      Daryl Peterson <@gmail.com>
@@ -26,7 +26,7 @@ defined( 'ABSPATH' ) || exit;
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
  * @since       1.0.0
  */
-class TaxBase {
+class TaxData {
 
 	/**
 	 * Post ID

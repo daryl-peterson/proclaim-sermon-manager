@@ -175,6 +175,48 @@ class TemplateFiles implements Executable, Registrable {
 	}
 
 	/**
+	 * Get header and start wrapper for file template.
+	 *
+	 * @return string
+	 * @since 1.0.0
+	 */
+	public static function start(): string {
+		$block  = wp_is_block_theme();
+		$output = '';
+
+		if ( ! $block ) {
+			ob_start();
+			if ( ! did_action( 'get_header' ) ) {
+				get_header();
+			}
+			get_partial( Template::WRAPPER_START );
+			$output .= ob_get_clean();
+		}
+		return $output;
+	}
+
+	/**
+	 * Get footer and end wrapper for file template.
+	 *
+	 * @return string
+	 * @since 1.0.0
+	 */
+	public static function end(): string {
+		$block  = wp_is_block_theme();
+		$output = '';
+
+		if ( ! $block ) {
+			ob_start();
+			get_partial( Template::WRAPPER_END );
+			if ( ! did_action( 'get_footer' ) ) {
+				get_footer();
+			}
+			$output .= ob_get_clean();
+		}
+		return $output;
+	}
+
+	/**
 	 * Make sure template name ends with .php .
 	 *
 	 * @param string $name Template name.

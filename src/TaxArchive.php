@@ -11,24 +11,14 @@
  * @since       1.0.0
  */
 
-namespace DRPPSM\ShortCodes;
+namespace DRPPSM;
 
 // @codeCoverageIgnoreStart
 defined( 'ABSPATH' ) || exit;
 // @codeCoverageIgnoreEnd
 
-use DRPPSM\Logger;
-use DRPPSM\Sermon;
-use DRPPSM\SermonMeta;
-use DRPPSM\Settings;
-use DRPPSM\Template;
-use DRPPSM\Transient;
 use WP_Post;
 use WP_Term;
-
-use function DRPPSM\get_page_number;
-use function DRPPSM\get_partial;
-use function DRPPSM\sermon_sorting;
 
 /**
  * Taxonomy archive class.
@@ -74,14 +64,6 @@ class TaxArchive {
 	 * @since 1.0.0
 	 */
 	private string $orderby;
-
-	/**
-	 * Used in paginated queries, per_page
-	 *
-	 * @var int
-	 * @since 1.0.0
-	 */
-	private int $number;
 
 	/**
 	 * Query offset.
@@ -170,7 +152,7 @@ class TaxArchive {
 	 */
 	private function render() {
 		$output  = '';
-		$output .= FileTemplate::start();
+		$output .= TemplateFiles::start();
 
 		if ( isset( $this->data ) && is_array( $this->data ) && count( $this->data ) > 0 ) {
 
@@ -192,7 +174,7 @@ class TaxArchive {
 			get_partial( 'no-posts' );
 			$output .= ob_get_clean();
 		}
-		$output .= FileTemplate::end();
+		$output .= TemplateFiles::end();
 
 		echo $output;
 	}
@@ -220,7 +202,7 @@ class TaxArchive {
 		}
 
 		// Set arguments from pagination.
-		$this->args['number'] = $this->number;
+		$this->args['number'] = $this->per_page;
 		$this->args['offset'] = $this->offset;
 
 		$post_data = get_posts( $this->args );
@@ -298,15 +280,14 @@ class TaxArchive {
 			return;
 		}
 
-		$tpp           = $this->per_page;
-		$max_num_pages = ceil( $term_count / $tpp );
+		// Calculate max number of pages
+		$max_num_pages = ceil( $term_count / $this->per_page );
 		$paged         = get_page_number();
 
 		// Calculate term offset
-		$offset = ( ( $paged - 1 ) * $tpp );
+		$offset = ( ( $paged - 1 ) * $this->per_page );
 
 		// We can now get our terms and paginate it
-		$this->number = $tpp;
 		$this->offset = $offset;
 
 		$this->paginate = array(
