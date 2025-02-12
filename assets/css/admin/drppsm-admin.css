@@ -150,4 +150,24 @@
        column-gap: 10px;
   color: #646970;
   padding: 4px 12px;
+}
+#drppsm-dashboard img.sermon {
+  -o-object-fit: cover;
+  object-fit: cover;
+  width: 100%;
+  aspect-ratio: 1.9;
+}
+#drppsm-dashboard .sermon-info {
+  text-align: center;
+  font-size: 14px;
+  font-weight: 500;
+}
+#drppsm-dashboard .sermon-info .title {
+  display: block;
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 0;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }/*# sourceMappingURL=drppsm-admin.css.map */

@@ -182,6 +182,7 @@ class ComposerStaticInit672fe16c65cc53aa8b66e730cdfce0de
         'DRPPSM\\Tests\\BaseTest' => __DIR__ . '/../..' . '/tests/unit/BaseTest.php',
         'DRPPSM\\Tests\\BibleLoaderTest' => __DIR__ . '/../..' . '/tests/unit/BibleLoaderTest.php',
         'DRPPSM\\Tests\\Cleanup' => __DIR__ . '/../..' . '/tests/unit/Cleanup.php',
+        'DRPPSM\\Tests\\DashboardTest' => __DIR__ . '/../..' . '/tests/unit/DashboardTest.php',
         'DRPPSM\\Tests\\FatalErrorTest' => __DIR__ . '/../..' . '/tests/unit/FatalErrorTest.php',
         'DRPPSM\\Tests\\HelperTest' => __DIR__ . '/../..' . '/tests/unit/HelperTest.php',
         'DRPPSM\\Tests\\HooksUtilsTest' => __DIR__ . '/../..' . '/tests/unit/HooksUtilsTest.php',

@@ -332,6 +332,7 @@ class BaseTest extends TestCase {
 	 * @since 1.0.0
 	 */
 	public function set_admin( bool $state = true ) {
+		$this->inc();
 		include_screen();
 
 		$user = $this->get_admin_user();
@@ -468,5 +469,79 @@ class BaseTest extends TestCase {
 			'posts_per_page' => 5,
 		);
 		return $args;
+	}
+
+	/**
+	 * Include needed admin files.
+	 *
+	 * @return void
+	 * @since 1.0.0
+	 */
+	public function inc() {
+		$this->inc_admin_plugin();
+		$this->inc_admin_template();
+		$this->inc_pluggable();
+		$this->inc_dashboard();
+	}
+
+	/**
+	 * Include plugin actions functions from wp-admin/includes/plugin.php.
+	 *
+	 * @return void
+	 * @since 1.0.0
+	 */
+	public function inc_admin_plugin() {
+		// @codeCoverageIgnoreStart
+		if ( ! function_exists( '\is_plugin_active' ) ) {
+			$file = ABSPATH . 'wp-admin/includes/plugin.php';
+
+			require_once $file;
+		}
+		// @codeCoverageIgnoreEnd
+	}
+
+	/**
+	 * Include metabox / template functions from wp-admin/includes/template.php.
+	 *
+	 * @return void
+	 * @since 1.0.0
+	 */
+	public function inc_admin_template() {
+		// @codeCoverageIgnoreStart
+		if ( ! function_exists( '\remove_meta_box' ) ) {
+			$file = ABSPATH . 'wp-admin/includes/template.php';
+			require_once $file;
+		}
+		// @codeCoverageIgnoreEnd
+	}
+
+
+	/**
+	 * Include plugable file if wp_rand function not loaded.
+	 *
+	 * @return void
+	 * @since 1.0.0
+	 */
+	public function inc_pluggable(): void {
+		// @codeCoverageIgnoreStart
+		if ( ! function_exists( '\wp_rand' ) ) {
+			$file = ABSPATH . 'wp-includes/pluggable.php';
+			require_once $file;
+		}
+		// @codeCoverageIgnoreEnd
+	}
+
+	/**
+	 * Include dashboard functions.
+	 *
+	 * @return void
+	 * @since 1.0.0
+	 */
+	public function inc_dashboard() {
+		// @codeCoverageIgnoreStart
+		if ( ! function_exists( '\wp_dashboard' ) ) {
+			require_once ABSPATH . 'wp-admin/includes/dashboard.php';
+		}
+		// @codeCoverageIgnoreEnd
 	}
 }

@@ -1,0 +1,38 @@
+#drppsm-dashboard {
+
+	ul.plugin-info li.info div.detail a {
+		display: block;
+		margin-bottom: 10px;
+	}
+
+	li.info {
+		display: grid;
+		grid-template-columns: clamp(160px, calc(2vw + 140px), 200px) auto;
+		column-gap: 10px;
+		color: #646970;
+		padding: 4px 12px;
+	}
+
+	img.sermon {
+		-o-object-fit: cover;
+		object-fit: cover;
+		width: 100%;
+		aspect-ratio: 1.9;
+	}
+
+	.sermon-info {
+		text-align: center;
+		font-size: 14px;
+		font-weight: 500;
+	}
+
+	.sermon-info .title {
+		display: block;
+		font-size: 16px;
+		font-weight: 700;
+		margin-bottom: 0;
+		white-space: nowrap;
+		text-overflow: ellipsis;
+		overflow: hidden;
+	}
+}

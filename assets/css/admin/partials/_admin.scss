@@ -174,19 +174,3 @@
 
 	}
 }
-
-#drppsm-dashboard {
-
-	ul.plugin-info li.info div.detail a {
-		display: block;
-		margin-bottom: 10px;
-	}
-
-	li.info {
-		display: grid;
-		grid-template-columns: clamp(160px, calc(2vw + 140px), 200px) auto;
-		column-gap: 10px;
-		color: #646970;
-		padding: 4px 12px;
-	}
-}

@@ -121,6 +121,7 @@ return array(
     'DRPPSM\\Tests\\BaseTest' => $baseDir . '/tests/unit/BaseTest.php',
     'DRPPSM\\Tests\\BibleLoaderTest' => $baseDir . '/tests/unit/BibleLoaderTest.php',
     'DRPPSM\\Tests\\Cleanup' => $baseDir . '/tests/unit/Cleanup.php',
+    'DRPPSM\\Tests\\DashboardTest' => $baseDir . '/tests/unit/DashboardTest.php',
     'DRPPSM\\Tests\\FatalErrorTest' => $baseDir . '/tests/unit/FatalErrorTest.php',
     'DRPPSM\\Tests\\HelperTest' => $baseDir . '/tests/unit/HelperTest.php',
     'DRPPSM\\Tests\\HooksUtilsTest' => $baseDir . '/tests/unit/HooksUtilsTest.php',

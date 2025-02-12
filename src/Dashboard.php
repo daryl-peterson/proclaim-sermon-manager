@@ -11,12 +11,13 @@
 
 namespace DRPPSM;
 
+// @codeCoverageIgnoreStart
+defined( 'ABSPATH' ) || exit;
+// @codeCoverageIgnoreEnd
+
 use DRPPSM\Interfaces\Executable;
 use DRPPSM\Interfaces\Registrable;
 use DRPPSM\Traits\ExecutableTrait;
-
-// @
-defined( 'ABSPATH' ) || exit;
 
 /**
  * Dashboard class
@@ -37,10 +38,10 @@ class Dashboard implements Executable, Registrable {
 	 * @since 1.0.0
 	 */
 	public function register(): ?bool {
-		if ( has_action( 'dashboard_glance_items', array( $this, 'glance' ) ) ) {
+		if ( has_action( 'dashboard_glance_items', array( $this, 'show_glance' ) ) ) {
 			return false;
 		}
-		add_action( 'dashboard_glance_items', array( $this, 'glance' ) );
+		add_action( 'dashboard_glance_items', array( $this, 'show_glance' ) );
 		add_action( 'wp_dashboard_setup', array( $this, 'add_dashboard_widget' ) );
 		return true;
 	}
@@ -53,10 +54,12 @@ class Dashboard implements Executable, Registrable {
 	 */
 	public function add_dashboard_widget() {
 		wp_add_dashboard_widget(
-			'wporg_dashboard_widget',                          // Widget slug.
+			'drppsm_dashboard_widget',                        // Widget slug.
 			esc_html__( 'Proclaim Sermon Manger', 'drppsm' ), // Title.
 			function () {
+				// @codeCoverageIgnoreStart
 				$this->show_dashboard_widget();
+				// @codeCoverageIgnoreEnd
 			}
 		);
 	}
@@ -84,8 +87,10 @@ class Dashboard implements Executable, Registrable {
 				)
 			);
 
+				// @codeCoverageIgnoreStart
 			if ( is_wp_error( $result ) ) {
 				$num = 0;
+				// @codeCoverageIgnoreEnd
 			} else {
 				$num = number_format_i18n( $result );
 			}
@@ -96,12 +101,12 @@ class Dashboard implements Executable, Registrable {
 			$info[ $label ]['link']  = admin_url( 'edit-tags.php?taxonomy=' . $value . '&post_type=drppsm_sermon' );
 		}
 
-		$sermon = SermonUtils::get_latest();
-		if ( is_array( $sermon ) ) {
-			$sermon = array_shift( $sermon );
+		$post_item = SermonUtils::get_latest();
+		$sermon    = null;
+		if ( is_array( $post_item ) ) {
+			$sermon = array_shift( $post_item );
+			$sermon = new Sermon( $sermon );
 		}
-
-		Logger::debug( $sermon );
 
 		get_partial(
 			'psm-dashboard',
@@ -112,19 +117,13 @@ class Dashboard implements Executable, Registrable {
 		);
 	}
 
-	/*
-	public function widget_render() {
-		esc_html_e( "Howdy! I'm a great Dashboard Widget.", 'wporg' );
-		get_partial( 'psm-dashboard' );
-	}
-	*/
-
 	/**
 	 * Display sermon count in dashboard.
 	 *
+	 * @return bool Always true.
 	 * @since 1.0.0
 	 */
-	public function glance(): void {
+	public function show_glance(): bool {
 
 		$icon = Settings::get( Settings::MENU_ICON );
 		// Get current sermon count.
@@ -142,11 +141,15 @@ class Dashboard implements Executable, Registrable {
 
 		if ( current_user_can( 'edit_posts' ) ) {
 			$count .= "<a href=\"{$url}\" class=\"$icon\">" . $text . '</a>';
+
+			// @codeCoverageIgnoreStart
 		} else {
 			$count .= $text;
+			// @codeCoverageIgnoreEnd
 		}
 
 		$count .= '</li>';
 		echo $count;
+		return true;
 	}
 }

@@ -115,8 +115,6 @@ class Sermon {
 		// @codeCoverageIgnoreEnd
 
 		$this->link = $link;
-
-		Logger::debug( $this );
 	}
 
 	/**
