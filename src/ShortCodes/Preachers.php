@@ -11,12 +11,13 @@
 
 namespace DRPPSM\ShortCodes;
 
+// @codeCoverageIgnoreStart
+defined( 'ABSPATH' ) || exit;
+// @codeCoverageIgnoreEnd
+
 use DRPPSM\Interfaces\Executable;
 use DRPPSM\Traits\ExecutableTrait;
-
 use function DRPPSM\get_tax_image_size;
-
-defined( 'ABSPATH' ) || exit;
 
 /**
  * Preachers short code.

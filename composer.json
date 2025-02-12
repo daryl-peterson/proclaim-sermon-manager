@@ -29,7 +29,6 @@
 			"DRPPSM\\Tests\\": "tests/unit/"
 		},
 		"files": [
-			"src/Core/Functions/facades.php",
 			"src/Core/Functions/core.php",
 			"src/Core/Functions/defines.php",
 			"src/Core/Functions/misc.php",

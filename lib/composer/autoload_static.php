@@ -7,7 +7,6 @@ namespace Composer\Autoload;
 class ComposerStaticInit672fe16c65cc53aa8b66e730cdfce0de
 {
     public static $files = array (
-        '1df5f1ca3d8a01ce642e3b1a54844504' => __DIR__ . '/../..' . '/src/Core/Functions/facades.php',
         '2b1771712136d63f0ed4fa70e62557eb' => __DIR__ . '/../..' . '/src/Core/Functions/core.php',
         '0ecdf14f9753bb884fe2a3c55c79a401' => __DIR__ . '/../..' . '/src/Core/Functions/defines.php',
         'd75c4dd93ef9af06b15ee96390970d1c' => __DIR__ . '/../..' . '/src/Core/Functions/misc.php',
@@ -85,7 +84,6 @@ class ComposerStaticInit672fe16c65cc53aa8b66e730cdfce0de
         'DRPPSM\\Exceptions\\PluginException' => __DIR__ . '/../..' . '/src/Core/Exceptions/PluginException.php',
         'DRPPSM\\FatalError' => __DIR__ . '/../..' . '/src/FatalError.php',
         'DRPPSM\\Filter' => __DIR__ . '/../..' . '/src/Filter.php',
-        'DRPPSM\\FooWidget' => __DIR__ . '/../..' . '/src/FooWidget.php',
         'DRPPSM\\Helper' => __DIR__ . '/../..' . '/src/Helper.php',
         'DRPPSM\\HooksUtils' => __DIR__ . '/../..' . '/src/HooksUtils.php',
         'DRPPSM\\ImageSize' => __DIR__ . '/../..' . '/src/ImageSize.php',
@@ -124,11 +122,6 @@ class ComposerStaticInit672fe16c65cc53aa8b66e730cdfce0de
         'DRPPSM\\Requirements' => __DIR__ . '/../..' . '/src/Requirements.php',
         'DRPPSM\\Rewrite' => __DIR__ . '/../..' . '/src/Rewrite.php',
         'DRPPSM\\Roles' => __DIR__ . '/../..' . '/src/Roles.php',
-        'DRPPSM\\SCBase' => __DIR__ . '/../..' . '/src/SCBase.php',
-        'DRPPSM\\SCSermonImages' => __DIR__ . '/../..' . '/src/SCSermonImages.php',
-        'DRPPSM\\SCSermonLatest' => __DIR__ . '/../..' . '/src/SCSermonLatest.php',
-        'DRPPSM\\SCSermons' => __DIR__ . '/../..' . '/src/SCSermons.php',
-        'DRPPSM\\SCTerms' => __DIR__ . '/../..' . '/src/SCTerms.php',
         'DRPPSM\\SPAdvanced' => __DIR__ . '/../..' . '/src/SPAdvanced.php',
         'DRPPSM\\SPBase' => __DIR__ . '/../..' . '/src/SPBase.php',
         'DRPPSM\\SPDisplay' => __DIR__ . '/../..' . '/src/SPDisplay.php',
@@ -153,6 +146,7 @@ class ComposerStaticInit672fe16c65cc53aa8b66e730cdfce0de
         'DRPPSM\\ShortCodes\\Codes' => __DIR__ . '/../..' . '/src/ShortCodes/Codes.php',
         'DRPPSM\\ShortCodes\\FileTemplate' => __DIR__ . '/../..' . '/src/ShortCodes/FileTemplate.php',
         'DRPPSM\\ShortCodes\\Preachers' => __DIR__ . '/../..' . '/src/ShortCodes/Preachers.php',
+        'DRPPSM\\ShortCodes\\SCBase' => __DIR__ . '/../..' . '/src/ShortCodes/SCBase.php',
         'DRPPSM\\ShortCodes\\Series' => __DIR__ . '/../..' . '/src/ShortCodes/Series.php',
         'DRPPSM\\ShortCodes\\SeriesLatest' => __DIR__ . '/../..' . '/src/ShortCodes/SeriesLatest.php',
         'DRPPSM\\ShortCodes\\SermonArchive' => __DIR__ . '/../..' . '/src/ShortCodes/SermonArchive.php',
@@ -215,7 +209,6 @@ class ComposerStaticInit672fe16c65cc53aa8b66e730cdfce0de
         'DRPPSM\\TextDomain' => __DIR__ . '/../..' . '/src/TextDomain.php',
         'DRPPSM\\Timer' => __DIR__ . '/../..' . '/src/Timer.php',
         'DRPPSM\\Traits\\ExecutableTrait' => __DIR__ . '/../..' . '/src/Core/Traits/ExecutableTrait.php',
-        'DRPPSM\\Traits\\OverLoadTrait' => __DIR__ . '/../..' . '/src/Core/Traits/OverLoadTrait.php',
         'DRPPSM\\Traits\\SingletonTrait' => __DIR__ . '/../..' . '/src/Core/Traits/SingletonTrait.php',
         'DRPPSM\\Transient' => __DIR__ . '/../..' . '/src/Transient.php',
     );

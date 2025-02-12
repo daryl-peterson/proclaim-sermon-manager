@@ -11,12 +11,13 @@
 
 namespace DRPPSM\ShortCodes;
 
+// @codeCoverageIgnoreStart
+defined( 'ABSPATH' ) || exit;
+// @codeCoverageIgnoreEnd
+
 use DRPPSM\Interfaces\Registrable;
 use DRPPSM\Logger;
-
 use function DRPPSM\get_partial;
-
-defined( 'ABSPATH' ) || exit;
 
 /**
  * Tax base shortcode.

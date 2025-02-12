@@ -11,11 +11,13 @@
 
 namespace DRPPSM\ShortCodes;
 
+// @codeCoverageIgnoreStart
+defined( 'ABSPATH' ) || exit;
+// @codeCoverageIgnoreEnd
+
 use DRPPSM\Interfaces\Executable;
 use DRPPSM\Interfaces\Registrable;
 use DRPPSM\Traits\ExecutableTrait;
-
-defined( 'ABSPATH' ) || exit;
 
 /**
  * Short codes list

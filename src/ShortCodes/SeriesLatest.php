@@ -13,11 +13,12 @@
 
 namespace DRPPSM\ShortCodes;
 
+// @codeCoverageIgnoreStart
+defined( 'ABSPATH' ) || exit;
+// @codeCoverageIgnoreEnd
+
 use DRPPSM\Interfaces\Executable;
 use DRPPSM\Traits\ExecutableTrait;
-
-
-defined( 'ABSPATH' ) || exit;
 
 /**
  * Shortcodes for latest series.

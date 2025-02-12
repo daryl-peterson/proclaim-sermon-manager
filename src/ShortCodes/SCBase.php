@@ -9,9 +9,14 @@
  * @since       1.0.0
  */
 
-namespace DRPPSM;
+namespace DRPPSM\ShortCodes;
 
+use DRPPSM\Logger;
+use DRPPSM\SermonMeta;
+use DRPPSM\Settings;
 use WP_Exception;
+
+use function DRPPSM\unquote;
 
 defined( 'ABSPATH' ) || exit;
 

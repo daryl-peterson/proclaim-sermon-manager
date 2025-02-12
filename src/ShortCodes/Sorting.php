@@ -14,7 +14,6 @@ namespace DRPPSM\ShortCodes;
 use DRPPSM\Interfaces\Executable;
 use DRPPSM\Interfaces\Registrable;
 use DRPPSM\Logger;
-use DRPPSM\SCBase;
 use DRPPSM\Traits\ExecutableTrait;
 
 use function DRPPSM\get_visibility_settings;
