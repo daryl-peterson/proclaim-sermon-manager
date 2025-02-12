@@ -11,7 +11,9 @@
 
 namespace DRPPSM\Logging;
 
+// @codeCoverageIgnoreStart
 defined( 'ABSPATH' ) || exit;
+// @codeCoverageIgnoreEnd
 
 use const DRPPSM\LOG_FILE;
 

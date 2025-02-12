@@ -11,6 +11,10 @@
 
 namespace DRPPSM\ShortCodes;
 
+// @codeCoverageIgnoreStart
+defined( 'ABSPATH' ) || exit;
+// @codeCoverageIgnoreEnd
+
 use DRPPSM\ImageSize;
 use DRPPSM\Logger;
 use DRPPSM\Settings;
@@ -24,9 +28,6 @@ use WP_Term;
 use function DRPPSM\get_page_number;
 use function DRPPSM\get_partial;
 use function DRPPSM\sermon_sorting;
-
-defined( 'ABSPATH' ) || exit;
-
 
 /**
  * Taxonomy image list.

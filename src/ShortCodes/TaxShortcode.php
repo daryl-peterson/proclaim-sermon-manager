@@ -28,37 +28,7 @@ use function DRPPSM\get_partial;
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
  * @since       1.0.0
  */
-class TaxShortcode implements Registrable {
-
-	/**
-	 * Shortcode name.
-	 *
-	 * @var string
-	 * @since 1.0.0
-	 */
-	protected string $sc;
-
-	/**
-	 * Image size.
-	 *
-	 * @var string
-	 * @since 1.0.0
-	 */
-	protected string $size;
-
-	/**
-	 * Register the shortcode.
-	 *
-	 * @return bool|null
-	 * @since 1.0.0
-	 */
-	public function register(): ?bool {
-		if ( shortcode_exists( $this->sc ) ) {
-			return false;
-		}
-		add_shortcode( $this->sc, array( $this, 'show' ) );
-		return true;
-	}
+abstract class TaxShortcode extends ShortCode implements Registrable {
 
 	/**
 	 * Display the series.

@@ -11,11 +11,12 @@
 
 namespace DRPPSM\ShortCodes;
 
-use DRPPSM\Template;
-
-use function DRPPSM\get_partial;
-
+// @codeCoverageIgnoreStart
 defined( 'ABSPATH' ) || exit;
+// @codeCoverageIgnoreEnd
+
+use DRPPSM\Template;
+use function DRPPSM\get_partial;
 
 /**
  * Tax file utils.

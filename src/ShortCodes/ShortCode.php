@@ -11,12 +11,12 @@
 
 namespace DRPPSM\ShortCodes;
 
-use DRPPSM\Interfaces\Registrable;
-use DRPPSM\Logger;
-
-use function DRPPSM\unquote;
-
+// @codeCoverageIgnoreStart
 defined( 'ABSPATH' ) || exit;
+// @codeCoverageIgnoreEnd
+
+use DRPPSM\Interfaces\Registrable;
+use function DRPPSM\unquote;
 
 /**
  * Shortcode base class.
@@ -51,6 +51,14 @@ abstract class ShortCode implements Registrable {
 	 * @since 1.0.0
 	 */
 	protected string $size;
+
+	/**
+	 * Initailize and register hooks.
+	 *
+	 * @return self
+	 * @since 1.0.0
+	 */
+	abstract public static function exec(): self;
 
 	/**
 	 * Register the shortcode.

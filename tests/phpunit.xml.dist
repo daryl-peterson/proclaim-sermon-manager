@@ -18,6 +18,7 @@
 			<exclude>unit/BaseTest.php</exclude>
 			<exclude>unit/Cleanup.php</exclude>
 		</testsuite>
+
 	</testsuites>
 	<source restrictNotices="true"
 		restrictWarnings="true"
