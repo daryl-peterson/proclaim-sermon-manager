@@ -2,7 +2,8 @@
 /**
  * Sermon comments.
  *
- * @package     Proclaim Sermon Manager
+ * @package     Proclaim-Sermon-Manager
+ * @subpackage  DRPPSM\SermonComments
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
@@ -17,18 +18,21 @@ defined( 'ABSPATH' ) || exit;
 
 use DRPPSM\Interfaces\Executable;
 use DRPPSM\Interfaces\Registrable;
+use DRPPSM\Traits\ExecutableTrait;
 
 /**
  * Sermon comments.
  *
- * @package     Proclaim Sermon Manager
+ * @package     Proclaim-Sermon-Manager
+ * @subpackage  DRPPSM\SermonComments
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
  * @since       1.0.0
  */
 class SermonComments implements Registrable, Executable {
-	use Traits\ExecutableTrait;
+
+	use ExecutableTrait;
 
 	/**
 	 * Register hooks.
