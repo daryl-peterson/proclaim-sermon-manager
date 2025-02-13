@@ -93,14 +93,14 @@ class TaxMetaTest extends BaseTest {
 		}
 		Logger::debug( $term );
 
-		$result = $this->obj->get_taxonomy_meta( $term->taxonomy, $term->term_id );
+		$result = $this->obj->get_taxonomy_meta( $term );
 		if ( isset( $result ) ) {
 			$this->assertIsObject( $result );
 		} else {
 			$this->assertNull( $result );
 		}
 
-		$result = $this->obj->get_taxonomy_meta( $term->taxonomy, 0 );
+		$result = $this->obj->get_taxonomy_meta( 0 );
 		$this->assertNull( $result );
 	}
 

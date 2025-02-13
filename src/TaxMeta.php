@@ -89,13 +89,13 @@ class TaxMeta implements Executable, Registrable {
 	 */
 	public function register(): ?bool {
 
-		if ( has_action( 'get_drppsm_series_meta_extd', array( $this, 'get_taxonomy_meta' ) ) ) {
+		if ( has_action( 'get_drppsm_series_meta_extd', array( self::class, 'get_taxonomy_meta' ) ) ) {
 			return false;
 		}
 
 		$taxonomies = array_values( DRPPSM_TAX_MAP );
 		foreach ( $taxonomies as $taxonomy ) {
-			add_filter( "get_{$taxonomy}_meta_extd", array( $this, 'get_taxonomy_meta' ), 10, 2 );
+			add_filter( "get_{$taxonomy}_meta_extd", array( self::class, 'get_taxonomy_meta' ), 10, 2 );
 			add_action( "created_{$taxonomy}", array( $this, 'created_taxonomy' ), 10, 3 );
 			add_action( "edited_{$taxonomy}", array( $this, 'edited_taxonomy' ), 10, 3 );
 			add_action( "delete_{$taxonomy}", array( $this, 'delete_taxonomy' ), 10, 4 );
@@ -108,48 +108,24 @@ class TaxMeta implements Executable, Registrable {
 	/**
 	 * Get taxonomy extended meta. If not found, add to job queue.
 	 *
-	 * @param string $taxonomy Taxonomy name.
-	 * @param int    $term_id Term id.
-	 * @return null|stdClass
+	 * @param int|WP_Term $term_id Term id or Term.
+	 * @return null|TaxMetaData
 	 * @since 1.0.0
 	 */
-	public function get_taxonomy_meta( string $taxonomy, int $term_id ): ?stdClass {
-		$suffix = array(
-			"{$taxonomy}_date",
-			"{$taxonomy}_image_id",
-			"{$taxonomy}_image",
-		);
+	public static function get_taxonomy_meta( int|WP_Term $term_id ): ?TaxMetaData {
 
-		$suffix_map = array(
-			"{$taxonomy}_date"     => 'date',
-			"{$taxonomy}_image_id" => 'image_id',
-			"{$taxonomy}_image"    => 'image',
-		);
+		if ( is_int( $term_id ) ) {
+			$term = get_term_by( 'term_id', $term_id );
+		} else {
+			$term = $term_id;
+		}
 
-		$meta = get_term_meta( $term_id );
-
-		if ( ! isset( $meta ) || ! is_array( $meta ) || 0 === count( $meta ) ) {
-			self::$jobs->add( $taxonomy, $term_id );
+		// Can't find term.
+		if ( ! $term || ! $term instanceof WP_Term ) {
 			return null;
 		}
 
-		$obj = new stdClass();
-		foreach ( $meta as $key => $value ) {
-
-			// @codeCoverageIgnoreStart
-			if ( ! in_array( $key, $suffix ) ) {
-				unset( $meta[ $key ] );
-				continue;
-			}
-			// @codeCoverageIgnoreEnd
-
-			$obj->{$suffix_map[ $key ]} = maybe_unserialize( $value[0] );
-
-		}
-		$term_obj = get_term_by( 'term_id', $term_id, $taxonomy );
-		if ( $term_obj ) {
-			$obj->object = $term_obj;
-		}
+		$obj = new TaxMetaData( $term );
 
 		return $obj;
 	}

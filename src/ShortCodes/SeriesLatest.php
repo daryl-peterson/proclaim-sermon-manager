@@ -18,6 +18,7 @@ defined( 'ABSPATH' ) || exit;
 // @codeCoverageIgnoreEnd
 
 use DRPPSM\Interfaces\Executable;
+use DRPPSM\Logger;
 use DRPPSM\SermonUtils;
 use DRPPSM\Traits\ExecutableTrait;
 
@@ -53,8 +54,16 @@ class SeriesLatest extends ShortCode implements Executable {
 	 * @since 1.0.0
 	 */
 	public function show( array $atts ): string {
-		$atts = $this->fix_atts( $atts );
-		$data = SermonUtils::series_latest();
+		$atts   = $this->fix_atts( $atts );
+		$series = SermonUtils::series_latest();
+		if ( ! $series ) {
+			return '';
+		}
+
+		$taxonomy = $series->taxonomy;
+		$data     = apply_filters( "get_{$taxonomy}_meta_extd", $series );
+
+		Logger::debug( $data );
 
 		$output = '';
 		return $output;

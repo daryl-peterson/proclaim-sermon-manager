@@ -101,6 +101,7 @@ return array(
     'DRPPSM\\TaxImageAttach' => $baseDir . '/src/TaxImageAttach.php',
     'DRPPSM\\TaxListTable' => $baseDir . '/src/TaxListTable.php',
     'DRPPSM\\TaxMeta' => $baseDir . '/src/TaxMeta.php',
+    'DRPPSM\\TaxMetaData' => $baseDir . '/src/TaxMetaData.php',
     'DRPPSM\\TaxPreacher' => $baseDir . '/src/TaxPreacher.php',
     'DRPPSM\\TaxReg' => $baseDir . '/src/TaxReg.php',
     'DRPPSM\\TaxSeries' => $baseDir . '/src/TaxSeries.php',

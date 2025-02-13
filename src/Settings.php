@@ -481,7 +481,7 @@ class Settings {
 				/* translators: sermon plural */
 				self::SERMON_PLURAL         => __( 'Sermons', 'drppsm' ),
 
-				self::SERMON_LAYOUT         => 'row',
+				self::SERMON_LAYOUT         => 'col',
 			),
 
 		);

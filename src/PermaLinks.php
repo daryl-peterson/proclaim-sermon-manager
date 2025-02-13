@@ -137,8 +137,8 @@ class PermaLinks {
 	 * @since 1.0.0
 	 */
 	private static function init_common_slug(): void {
-		if ( ! isset( self::$common_slug ) || defined( DRPPSM_TESTING ) ) {
-			self::$common_slug = Settings::get( Settings::COMMON_BASE_SLUG );
+		if ( ! isset( self::$common_slug ) ) {
+			self::$common_slug = Settings::get( Settings::COMMON_BASE_SLUG, false );
 		}
 	}
 
@@ -149,7 +149,7 @@ class PermaLinks {
 	 * @since 1.0.0
 	 */
 	private static function init_permalinks(): void {
-		if ( ! isset( self::$permalinks ) || defined( DRPPSM_TESTING ) ) {
+		if ( ! isset( self::$permalinks ) ) {
 			self::$permalinks = array();
 		}
 	}

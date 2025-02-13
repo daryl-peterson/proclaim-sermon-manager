@@ -42,17 +42,17 @@ $fmt = get_option( 'date_format' );
 $cnt = 0;
 
 /**
- * @var stdClass $item Object.
+ * @var TaxMetaData $item Object.
  */
 foreach ( $list as $item ) :
 	Logger::debug( array( 'Item' => $item ) );
 
-	if ( isset( $item->object ) ) {
+	if ( isset( $item->term ) ) {
 
 		/**
 		* @var WP_Term $object Object.
 		*/
-		$object = $item->object;
+		$object = $item->term;
 	} else {
 		continue;
 	}

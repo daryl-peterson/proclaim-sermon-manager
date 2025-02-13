@@ -113,6 +113,7 @@ class SermonImageList {
 		$output = '';
 
 		$layout = Settings::get( Settings::SERMON_LAYOUT );
+		Logger::debug( array( 'DATA' => $this->data ) );
 
 		if ( isset( $this->data ) && is_array( $this->data ) && count( $this->data ) > 0 ) {
 

@@ -29,13 +29,6 @@ use WP_Term;
  */
 class TaxDisplayList extends TaxDisplay {
 
-	/**
-	 * Taxonomy meta.
-	 *
-	 * @var null|TaxMeta
-	 * @since 1.0.0
-	 */
-	private ?TaxMeta $tax_meta;
 
 	/**
 	 * TaxImageList constructor.
@@ -48,8 +41,6 @@ class TaxDisplayList extends TaxDisplay {
 		if ( ! $this->is_args_valid( $args ) ) {
 			return;
 		}
-
-		$this->tax_meta = TaxMeta::exec();
 
 		$defaults = $this->get_default_args();
 		$args     = array_merge( $defaults, $args );
@@ -212,14 +203,14 @@ class TaxDisplayList extends TaxDisplay {
 	 * Get meta data for term.
 	 *
 	 * @param WP_Term $item Term object.
-	 * @return null|stdClass
+	 * @return null|TaxMetaData
 	 * @since 1.0.0
 	 */
-	private function get_meta( WP_Term $item ): ?stdClass {
+	private function get_meta( WP_Term $item ): ?TaxMetaData {
 		if ( ! isset( $item->taxonomy ) ) {
 			return null;
 		}
-		$meta = $this->tax_meta->get_taxonomy_meta( $item->taxonomy, $item->term_id );
+		$meta = TaxMeta::get_taxonomy_meta( $item );
 
 		if ( $meta ) {
 			return $meta;

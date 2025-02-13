@@ -160,6 +160,7 @@ class ComposerStaticInit672fe16c65cc53aa8b66e730cdfce0de
         'DRPPSM\\TaxImageAttach' => __DIR__ . '/../..' . '/src/TaxImageAttach.php',
         'DRPPSM\\TaxListTable' => __DIR__ . '/../..' . '/src/TaxListTable.php',
         'DRPPSM\\TaxMeta' => __DIR__ . '/../..' . '/src/TaxMeta.php',
+        'DRPPSM\\TaxMetaData' => __DIR__ . '/../..' . '/src/TaxMetaData.php',
         'DRPPSM\\TaxPreacher' => __DIR__ . '/../..' . '/src/TaxPreacher.php',
         'DRPPSM\\TaxReg' => __DIR__ . '/../..' . '/src/TaxReg.php',
         'DRPPSM\\TaxSeries' => __DIR__ . '/../..' . '/src/TaxSeries.php',

@@ -78,7 +78,7 @@ class SermonUtils {
 	/**
 	 * Get latest series.
 	 *
-	 * @return array
+	 * @return ?WP_Term
 	 * @since 1.0.0
 	 */
 	public static function series_latest(): ?WP_Term {
