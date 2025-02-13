@@ -13,10 +13,7 @@
 
 namespace DRPPSM;
 
-// @codeCoverageIgnoreStart
-defined( 'ABSPATH' ) || exit;
-// @codeCoverageIgnoreEnd
-
+use DRPPSM\Data\Sermon;
 use WP_Post;
 use WP_Term;
 

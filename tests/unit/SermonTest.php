@@ -11,9 +11,7 @@
 
 namespace DRPPSM\Tests;
 
-use DRPPSM\Sermon;
-
-defined( 'ABSPATH' ) || exit;
+use DRPPSM\Data\Sermon;
 
 /**
  * Sermon test class.

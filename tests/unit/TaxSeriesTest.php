@@ -11,9 +11,7 @@
 
 namespace DRPPSM\Tests;
 
-use DRPPSM\TaxSeries;
-
-defined( 'ABSPATH' ) || exit;
+use DRPPSM\Data\TaxSeries;
 
 /**
  * Tax series tests.

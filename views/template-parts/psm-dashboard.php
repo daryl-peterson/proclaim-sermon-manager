@@ -10,6 +10,8 @@
  */
 namespace DRPPSM;
 
+use DRPPSM\Data\Sermon;
+
 // These must be defined before including psm-check-args.
 $template = str_replace( '.php', '', basename( __FILE__ ) );
 $required = array( 'info', 'sermon' );

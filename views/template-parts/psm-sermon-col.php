@@ -11,7 +11,8 @@
 
 namespace DRPPSM;
 
-defined( 'ABSPATH' ) || exit;
+use DRPPSM\Data\Sermon;
+
 
 Logger::debug( 'Template part: psm-sermon-col.php' );
 

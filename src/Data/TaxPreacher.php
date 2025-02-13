@@ -1,24 +1,22 @@
 <?php
 /**
- * Preacher term object
+ * Preacher taxonomy data structure for sermons.
  *
- * @package     DRPPSM\TaxPreacher
+ * @package     DRPPSM\Data\TaxPreacher
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
  * @since       1.0.0
  */
 
-namespace DRPPSM;
+namespace DRPPSM\Data;
 
 use WP_Post;
 
-defined( 'ABSPATH' ) || exit;
-
 /**
- * Preacher term object
+ * Preacher taxonomy data structure for sermons.
  *
- * @package     DRPPSM\TaxPreacher
+ * @package     DRPPSM\Data\TaxPreacher
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt

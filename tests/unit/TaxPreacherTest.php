@@ -11,7 +11,7 @@
 
 namespace DRPPSM\Tests;
 
-use DRPPSM\TaxPreacher;
+use DRPPSM\Data\TaxPreacher;
 
 defined( 'ABSPATH' ) || exit;
 

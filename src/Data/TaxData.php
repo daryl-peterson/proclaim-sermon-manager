@@ -9,13 +9,9 @@
  * @since       1.0.0
  */
 
-namespace DRPPSM;
+namespace DRPPSM\Data;
 
 use WP_Post;
-
-// @codeCoverageIgnoreStart
-defined( 'ABSPATH' ) || exit;
-// @codeCoverageIgnoreEnd
 
 /**
  * Taxonomy data class.

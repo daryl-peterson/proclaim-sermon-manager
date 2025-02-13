@@ -1,32 +1,28 @@
 <?php
 /**
- * Series Taxonomy Class
+ * Books taxonomy data structure for sermons.
  *
- * @package     DRPPSM\TaxSeries
+ * @package     DRPPSM\Data\TaxBooks
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
  * @since       1.0.0
  */
 
-namespace DRPPSM;
+namespace DRPPSM\Data;
 
 use WP_Post;
 
-// @codeCoverageIgnoreStart
-defined( 'ABSPATH' ) || exit;
-// @codeCoverageIgnoreEnd
-
 /**
- * Series Taxonomy Class
+ * Books taxonomy data structure for sermons.
  *
- * @package     DRPPSM\TaxSeries
+ * @package     DRPPSM\Data\TaxBooks
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
  * @since       1.0.0
  */
-class TaxSeries extends TaxData {
+class TaxBooks extends TaxData {
 
 	/**
 	 * Constructor
@@ -34,6 +30,6 @@ class TaxSeries extends TaxData {
 	 * @param WP_Post $post
 	 */
 	public function __construct( WP_Post $post ) {
-		parent::__construct( $post, DRPPSM_TAX_SERIES );
+		parent::__construct( $post, DRPPSM_TAX_BOOK );
 	}
 }

@@ -11,9 +11,8 @@
 
 namespace DRPPSM;
 
+use DRPPSM\Data\Sermon;
 use WP_Post;
-
-defined( 'ABSPATH' ) || exit;
 
 /**
  * Sermon Archive Class.

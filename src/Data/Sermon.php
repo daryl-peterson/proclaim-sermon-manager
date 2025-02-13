@@ -9,8 +9,9 @@
  * @since       1.0.0
  */
 
-namespace DRPPSM;
+namespace DRPPSM\Data;
 
+use DRPPSM\SermonMeta;
 use WP_Post;
 
 defined( 'ABSPATH' ) || exit;

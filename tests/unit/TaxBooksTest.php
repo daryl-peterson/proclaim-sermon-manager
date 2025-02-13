@@ -11,9 +11,7 @@
 
 namespace DRPPSM\Tests;
 
-use DRPPSM\TaxBooks;
-
-defined( 'ABSPATH' ) || exit;
+use DRPPSM\Data\TaxBooks;
 
 /**
  * Tax books tests.

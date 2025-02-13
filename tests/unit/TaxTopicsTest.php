@@ -11,7 +11,7 @@
 
 namespace DRPPSM\Tests;
 
-use DRPPSM\TaxTopics;
+use DRPPSM\Data\TaxTopics;
 
 defined( 'ABSPATH' ) || exit;
 

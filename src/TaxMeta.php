@@ -18,7 +18,6 @@ defined( 'ABSPATH' ) || exit;
 use DRPPSM\Interfaces\Executable;
 use DRPPSM\Interfaces\Registrable;
 use DRPPSM\Traits\ExecutableTrait;
-use stdClass;
 use WP_Post;
 use WP_Term;
 
