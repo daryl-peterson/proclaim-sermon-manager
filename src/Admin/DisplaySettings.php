@@ -9,12 +9,18 @@
  * @since       1.0.0
  */
 
-namespace DRPPSM;
+namespace DRPPSM\Admin;
 
 use CMB2;
+use DRPPSM\Action;
+use DRPPSM\Admin\AdminSettings;
+use DRPPSM\Filter;
 use DRPPSM\Interfaces\Executable;
 use DRPPSM\Interfaces\Registrable;
+use DRPPSM\Settings;
 use DRPPSM\Traits\ExecutableTrait;
+
+use function DRPPSM\get_taxonomy_field;
 
 /**
  * Display settings.
@@ -25,7 +31,7 @@ use DRPPSM\Traits\ExecutableTrait;
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
  * @since       1.0.0
  */
-class SPDisplay extends SPBase implements Executable, Registrable {
+class DisplaySettings extends BaseSettings implements Executable, Registrable {
 	use ExecutableTrait;
 
 	/**

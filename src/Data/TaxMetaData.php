@@ -9,13 +9,10 @@
  * @since       1.0.0
  */
 
-namespace DRPPSM;
+namespace DRPPSM\Data;
 
+use DRPPSM\SchedulerJobs;
 use WP_Term;
-
-// @codeCoverageIgnoreStart
-defined( 'ABSPATH' ) || exit;
-// @codeCoverageIgnoreEnd
 
 /**
  * Taxonomy meta data class.

@@ -11,7 +11,7 @@
 
 namespace DRPPSM\Tests;
 
-use DRPPSM\AdminMenu;
+use DRPPSM\Admin\AdminMenu;
 
 defined( 'ABSPATH' ) || exit;
 

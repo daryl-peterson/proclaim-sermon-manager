@@ -2,32 +2,36 @@
 /**
  * Sermon Settings.
  *
- * @package     DRPPSM\SPSermon
+ * @package     DRPPSM\Admin\SermonSettings
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
  * @since       1.0.0
  */
 
-namespace DRPPSM;
+namespace DRPPSM\Admin;
 
 use CMB2;
+use DRPPSM\Action;
 use DRPPSM\Interfaces\Executable;
 use DRPPSM\Interfaces\Registrable;
 use DRPPSM\Traits\ExecutableTrait;
-
-defined( 'ABSPATH' ) || exit;
+use DRPPSM\Admin\AdminSettings;
+use DRPPSM\Filter;
+use DRPPSM\Logger;
+use DRPPSM\Settings;
+use DRPPSM\Transient;
 
 /**
  * Sermon Settings.
  *
- * @package     DRPPSM\SPSermon
+ * @package     DRPPSM\Admin\SermonSettings
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
  * @since       1.0.0
  */
-class SPSermon extends SPBase implements Executable, Registrable {
+class SermonSettings extends BaseSettings implements Executable, Registrable {
 	use ExecutableTrait;
 
 	/**

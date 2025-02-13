@@ -9,12 +9,16 @@
  * @since       1.0.0
  */
 
-namespace DRPPSM;
+namespace DRPPSM\Admin;
 
 use CMB2;
+use DRPPSM\Action;
+use DRPPSM\Admin\AdminSettings;
 use DRPPSM\Interfaces\Executable;
 use DRPPSM\Interfaces\Registrable;
+use DRPPSM\Settings;
 use DRPPSM\Traits\ExecutableTrait;
+
 
 /**
  * General settings.
@@ -25,7 +29,7 @@ use DRPPSM\Traits\ExecutableTrait;
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
  * @since       1.0.0
  */
-class SPGeneral extends SPBase implements Executable, Registrable {
+class GeneralSettings extends BaseSettings implements Executable, Registrable {
 	use ExecutableTrait;
 
 	/**

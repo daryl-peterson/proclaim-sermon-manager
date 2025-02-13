@@ -9,13 +9,15 @@
  * @since       1.0.0
  */
 
-namespace DRPPSM;
+namespace DRPPSM\Admin;
 
+use DRPPSM\Action;
+use DRPPSM\Filter;
 use DRPPSM\Interfaces\Executable;
 use DRPPSM\Interfaces\Registrable;
+use DRPPSM\Settings;
 use DRPPSM\Traits\ExecutableTrait;
-
-defined( 'ABSPATH' ) || exit;
+use DRPPSM\SPBase;
 
 /**
  * Series Settings.

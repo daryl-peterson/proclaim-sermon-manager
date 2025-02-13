@@ -2,21 +2,23 @@
 /**
  * Admin settings.
  *
- * @package     DRPPSM\AdminSettings
+ * @package     DRPPSM\Admin\AdminSettings
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
  * @since       1.0.0
  */
 
-namespace DRPPSM;
-
-defined( 'ABSPATH' ) || exit;
+namespace DRPPSM\Admin;
 
 use CMB2_Boxes;
 use CMB2_Options_Hookup;
+use DRPPSM\Action;
+use DRPPSM\Filter;
 use DRPPSM\Interfaces\Executable;
 use DRPPSM\Interfaces\Registrable;
+use DRPPSM\Logger;
+use DRPPSM\Settings;
 use DRPPSM\Traits\ExecutableTrait;
 
 /**
@@ -60,10 +62,10 @@ class AdminSettings implements Executable, Registrable {
 		add_filter( 'submenu_file', array( $this, 'remove_submenus' ) );
 		// add_action( "cmb2_save_{$object_type}_fields", array( $this, 'after_save' ), 10, 4 );
 
-		SPGeneral::exec();
-		SPDisplay::exec();
-		SPSermon::exec();
-		SPAdvanced::exec();
+		GeneralSettings::exec();
+		DisplaySettings::exec();
+		SermonSettings::exec();
+		AdvancedSettings::exec();
 
 		return true;
 	}

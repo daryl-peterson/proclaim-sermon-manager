@@ -13,6 +13,8 @@ namespace DRPPSM;
 
 defined( 'ABSPATH' ) || exit;
 
+use DRPPSM\Admin\AdminMenu;
+use DRPPSM\Admin\AdminSettings;
 use DRPPSM\DB\DbUpdates;
 use DRPPSM\Interfaces\RolesInt;
 use DRPPSM\Interfaces\TextDomainInt;
@@ -21,6 +23,7 @@ use DRPPSM\Logging\LogFile;
 use DRPPSM\Logging\LoggerInt;
 use DRPPSM\Logging\LogWritterInt;
 use DRPPSM\ShortCodes\Codes;
+
 
 return array(
 	AdminMenu::class         => AdminMenu::class,

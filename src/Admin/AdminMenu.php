@@ -9,17 +9,12 @@
  * @since       1.0.0
  */
 
-namespace DRPPSM;
-
-// @codeCoverageIgnoreStart
-defined( 'ABSPATH' ) || exit;
-// @codeCoverageIgnoreEnd
+namespace DRPPSM\Admin;
 
 use DRPPSM\Constants\Caps;
 use DRPPSM\Interfaces\Executable;
 use DRPPSM\Interfaces\Registrable;
 use DRPPSM\Traits\ExecutableTrait;
-use WP_Exception;
 
 /**
  * Admin menu.

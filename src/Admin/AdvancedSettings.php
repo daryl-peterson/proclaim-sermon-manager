@@ -9,9 +9,13 @@
  * @since       1.0.0
  */
 
-namespace DRPPSM;
+namespace DRPPSM\Admin;
 
 use CMB2;
+use DRPPSM\Action;
+use DRPPSM\Admin\AdminSettings;
+use DRPPSM\Filter;
+use DRPPSM\Settings;
 
 /**
  * Advanced settings.
@@ -22,7 +26,7 @@ use CMB2;
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
  * @since       1.0.0
  */
-class SPAdvanced extends SPBase {
+class AdvancedSettings extends BaseSettings {
 
 	/**
 	 * Key used in storing options.

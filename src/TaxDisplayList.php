@@ -11,11 +11,7 @@
 
 namespace DRPPSM;
 
-// @codeCoverageIgnoreStart
-defined( 'ABSPATH' ) || exit;
-// @codeCoverageIgnoreEnd
-
-use stdClass;
+use DRPPSM\Data\TaxMetaData;
 use WP_Term;
 
 /**

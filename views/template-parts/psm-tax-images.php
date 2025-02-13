@@ -11,7 +11,7 @@
 
 namespace DRPPSM;
 
-defined( 'ABSPATH' ) || exit;
+use DRPPSM\Data\TaxMetaData;
 
 // These must be defined before including psm-check-args.
 $template = str_replace( '.php', '', basename( __FILE__ ) );
