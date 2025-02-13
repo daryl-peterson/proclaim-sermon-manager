@@ -162,7 +162,7 @@ class BaseTest extends TestCase {
 	/**
 	 * Get series term.
 	 *
-	 * @return array
+	 * @return ?WP_Term
 	 * @since 1.0.0
 	 */
 	public function get_series(): ?WP_Term {

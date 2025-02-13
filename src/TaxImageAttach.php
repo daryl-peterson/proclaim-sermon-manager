@@ -13,6 +13,7 @@ namespace DRPPSM;
 
 use DRPPSM\Interfaces\Executable;
 use DRPPSM\Interfaces\Registrable;
+use DRPPSM\Traits\ExecutableTrait;
 use WP_Error;
 use WP_Post;
 
@@ -26,6 +27,7 @@ use WP_Post;
  * @since       1.0.0
  */
 class TaxImageAttach implements Executable, Registrable {
+	use ExecutableTrait;
 
 	/**
 	 * Post type.
@@ -84,18 +86,6 @@ class TaxImageAttach implements Executable, Registrable {
 	}
 
 	/**
-	 * Initialize and register hooks.
-	 *
-	 * @return TaxImageAttach
-	 * @since 1.0.0
-	 */
-	public static function exec(): TaxImageAttach {
-		$obj = new self();
-		$obj->register();
-		return $obj;
-	}
-
-	/**
 	 * Register hooks.
 	 *
 	 * @return boolean|null True if hooks were registered, otherwise false.
@@ -128,7 +118,7 @@ class TaxImageAttach implements Executable, Registrable {
 	 */
 	public function get_metadata(
 		mixed $value,
-		int $object_id,
+		int $term_id,
 		string $meta_key,
 		bool $single,
 		string $meta_type
@@ -139,7 +129,7 @@ class TaxImageAttach implements Executable, Registrable {
 		}
 
 		if ( in_array( $meta_key, $this->image_ids, true ) ) {
-			return $this->get_image_meta( $object_id, $meta_key, $single, $meta_type );
+			return $this->get_image_meta( $term_id, $meta_key, $single, $meta_type );
 		}
 
 		return $value;

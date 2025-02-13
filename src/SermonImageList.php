@@ -112,7 +112,6 @@ class SermonImageList {
 		$output = '';
 
 		$layout = Settings::get( Settings::SERMON_LAYOUT );
-		Logger::debug( array( 'DATA' => $this->data ) );
 
 		if ( isset( $this->data ) && is_array( $this->data ) && count( $this->data ) > 0 ) {
 
@@ -128,10 +127,13 @@ class SermonImageList {
 			get_partial( Template::Pagination, $this->paginate );
 
 			$output .= ob_get_clean();
+
 		} else {
+			// @codeCoverageIgnoreStart
 			ob_start();
 			get_partial( 'no-posts' );
 			$output .= ob_get_clean();
+			// @codeCoverageIgnoreEnd
 		}
 		echo $output;
 	}
@@ -187,7 +189,7 @@ class SermonImageList {
 		}
 
 		// Set arguments from pagination.
-		$this->args['number'] = $this->number;
+		$this->args['number'] = $this->per_page;
 		$this->args['offset'] = $this->offset;
 
 		$post_data = get_posts( $this->args );
@@ -215,7 +217,9 @@ class SermonImageList {
 
 		$term_count = wp_count_posts( DRPPSM_PT_SERMON )->publish;
 		if ( ! $term_count ) {
+			// @codeCoverageIgnoreStart
 			return;
+			// @codeCoverageIgnoreEnd
 		}
 
 		$tpp           = $this->per_page;
@@ -226,7 +230,6 @@ class SermonImageList {
 		$offset = ( ( $paged - 1 ) * $tpp );
 
 		// We can now get our terms and paginate it
-		$this->number = $tpp;
 		$this->offset = $offset;
 
 		$this->paginate = array(

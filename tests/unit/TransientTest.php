@@ -13,8 +13,6 @@ namespace DRPPSM\Tests;
 
 use DRPPSM\Transient;
 
-defined( 'ABSPATH' ) || exit;
-
 /**
  * Transient test class.
  *
@@ -25,6 +23,36 @@ defined( 'ABSPATH' ) || exit;
  * @since       1.0.0
  */
 class TransientTest extends BaseTest {
+
+	/**
+	 * Transient key.
+	 *
+	 * @var string
+	 * @since 1.0.0
+	 */
+	private string $key;
+
+	/**
+	 * This method is called before each test.
+	 *
+	 * @return void
+	 * @since 1.0.0
+	 */
+	public function setUp(): void {
+		parent::setUp();
+		$this->key = 'drppsm_test';
+	}
+
+	/**
+	 * This method is called after each test.
+	 *
+	 * @return void
+	 * @since 1.0.0
+	 */
+	public function tearDown(): void {
+		parent::tearDown();
+		Transient::delete( $this->key );
+	}
 
 	/**
 	 * Test get method.
@@ -44,7 +72,8 @@ class TransientTest extends BaseTest {
 	 * @since 1.0.0
 	 */
 	public function test_set() {
-		$result = Transient::set( 'drppsm_test', 'test' );
+		Transient::delete( $this->key );
+		$result = Transient::set( $this->key, 'test', 300 );
 		$this->assertTrue( $result );
 	}
 
@@ -55,9 +84,10 @@ class TransientTest extends BaseTest {
 	 * @since 1.0.0
 	 */
 	public function test_delete() {
+		Transient::set( 'drppsm_test', 'test', 300 );
 		$result = Transient::delete( 'drppsm_test' );
 		$this->assertNotNull( $result );
-		$this->assertIsInt( $result );
+		$this->assertIsBool( $result );
 	}
 
 	/**

@@ -61,6 +61,7 @@ class TaxMetaTest extends BaseTest {
 	public function test_register() {
 		$this->assertInstanceOf( TaxMeta::class, $this->obj );
 
+		remove_action( 'get_drppsm_series_meta_extd', array( TaxMeta::class, 'get_taxonomy_meta' ) );
 		$result = $this->obj->register();
 		$this->assertIsBool( $result );
 
@@ -91,7 +92,6 @@ class TaxMetaTest extends BaseTest {
 			$this->assertIsArray( $terms );
 			$term = array_shift( $terms );
 		}
-		Logger::debug( $term );
 
 		$result = $this->obj->get_taxonomy_meta( $term );
 		if ( isset( $result ) ) {
@@ -115,8 +115,7 @@ class TaxMetaTest extends BaseTest {
 		$this->assertIsArray( $result );
 
 		$term_id = $result['term_id'];
-		Logger::debug( $result );
-		$result = wp_delete_term( $term_id, $this->tax );
+		$result  = wp_delete_term( $term_id, $this->tax );
 	}
 
 	/**

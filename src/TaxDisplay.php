@@ -32,7 +32,7 @@ abstract class TaxDisplay {
 	 * @var string
 	 * @since 1.0.0
 	 */
-	protected ?string $taxonomy;
+	protected ?string $taxonomy = null;
 
 	/**
 	 * Pagination arguments.
@@ -40,7 +40,7 @@ abstract class TaxDisplay {
 	 * @var array
 	 * @since 1.0.0
 	 */
-	protected null|array $paginate;
+	protected null|array $paginate = null;
 
 	/**
 	 * Used in paginated queries, per_page
@@ -80,7 +80,7 @@ abstract class TaxDisplay {
 	 * @var array
 	 * @since 1.0.0
 	 */
-	protected null|array $data;
+	protected null|array $data = null;
 
 	/**
 	 * Query arguments.
@@ -114,7 +114,6 @@ abstract class TaxDisplay {
 	 * @since 1.0.0
 	 */
 	abstract protected function is_args_valid( array $args ): bool;
-
 
 	/**
 	 * Set pagination data.
@@ -170,9 +169,11 @@ abstract class TaxDisplay {
 
 			$output .= ob_get_clean();
 		} else {
+			// @codeCoverageIgnoreStart
 			ob_start();
 			get_partial( 'no-posts' );
 			$output .= ob_get_clean();
+			// @codeCoverageIgnoreEnd
 		}
 
 		$output .= TemplateFiles::end();

@@ -74,28 +74,18 @@ class Transient {
 	public static function set( string $key, mixed $value, int $expiration = 0 ): bool {
 		$value  = maybe_serialize( $value );
 		$result = set_transient( $key, $value, $expiration );
-
 		return $result;
 	}
 
 	/**
 	 * Delete all transients with a wildcard.
 	 *
-	 * @param string $wildcard Wildcard to match.
-	 * @return int|bool
+	 * @param string $key
+	 * @return bool
 	 * @since 1.0.0
 	 */
-	public static function delete( string $wildcard ): int|bool {
-		global $wpdb;
-
-		// @codingStandardsIgnoreStart
-		return $wpdb->query(
-			$wpdb->prepare(
-				"DELETE FROM $wpdb->options WHERE option_name LIKE %s",
-				$wildcard
-			)
-		);
-		// @codingStandardsIgnoreEnd
+	public static function delete( string $key ): bool {
+		return delete_transient( $key );
 	}
 
 	/**
@@ -105,19 +95,27 @@ class Transient {
 	 * @since 1.0.0
 	 */
 	public static function delete_all(): bool {
-		$result = false;
+		global $wpdb;
 
-		foreach ( DRPPSM_TAX_MAP as  $tax_name ) {
-			$key = '%transient%' . $tax_name . '_%';
-			$tmp = self::delete( '%transient%' . $tax_name . '_%' );
-			if ( false !== $tmp ) {
-				$result = true;
+		$return = false;
+
+		$patterns = array(
+			'_transient_timeout_drppsm%',
+			'_transient_drppsm%',
+		);
+
+		foreach ( $patterns as $pattern ) {
+			$sql    = $wpdb->prepare(
+				"DELETE FROM $wpdb->options WHERE option_name LIKE %s",
+				$pattern
+			);
+			$result = $wpdb->query( $sql );
+			if ( false !== $result ) {
+				$return = true;
 			}
 		}
 
-		$pt = DRPPSM_PT_SERMON . '_imagelist';
-		self::delete( '%transient%' . $pt . '_%' );
 		wp_cache_flush();
-		return $result;
+		return $return;
 	}
 }

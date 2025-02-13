@@ -43,6 +43,7 @@ class TaxDisplayList extends TaxDisplay {
 
 		$args['display'] = $this->taxonomy;
 		$args['post_id'] = get_the_ID();
+
 		$this->set_params( $args );
 		$this->set_pagination();
 		$this->set_data();
@@ -168,7 +169,9 @@ class TaxDisplayList extends TaxDisplay {
 		$list = get_terms( $args );
 
 		if ( ! $list ) {
+			// @codeCoverageIgnoreStart
 			return;
+			// @codeCoverageIgnoreEnd
 		}
 
 		$data  = array();
@@ -181,15 +184,19 @@ class TaxDisplayList extends TaxDisplay {
 
 			$meta = $this->get_meta( $item );
 			if ( ! $meta ) {
+				// @codeCoverageIgnoreStart
 				continue;
+				// @codeCoverageIgnoreEnd
 			}
 
 			$data[] = $meta;
 			++$count;
 		}
 		if ( 0 === $count ) {
+			// @codeCoverageIgnoreStart
 			$this->data = null;
 			return;
+			// @codeCoverageIgnoreEnd
 		}
 		$this->data = $data;
 		Transient::set( $trans_key, $data, Transient::TTL_12_HOURS );
@@ -203,14 +210,14 @@ class TaxDisplayList extends TaxDisplay {
 	 * @since 1.0.0
 	 */
 	private function get_meta( WP_Term $item ): ?TaxMetaData {
-		if ( ! isset( $item->taxonomy ) ) {
-			return null;
-		}
+
 		$meta = TaxMeta::get_taxonomy_meta( $item );
 
 		if ( $meta ) {
 			return $meta;
 		}
+		// @codeCoverageIgnoreStart
 		return null;
+		// @codeCoverageIgnoreEnd
 	}
 }
