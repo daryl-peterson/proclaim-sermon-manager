@@ -29,7 +29,6 @@ use WP_Term;
  */
 class TaxDisplayList extends TaxDisplay {
 
-
 	/**
 	 * Taxonomy meta.
 	 *
@@ -37,7 +36,6 @@ class TaxDisplayList extends TaxDisplay {
 	 * @since 1.0.0
 	 */
 	private ?TaxMeta $tax_meta;
-
 
 	/**
 	 * TaxImageList constructor.
@@ -223,7 +221,6 @@ class TaxDisplayList extends TaxDisplay {
 		}
 		$meta = $this->tax_meta->get_taxonomy_meta( $item->taxonomy, $item->term_id );
 
-		// $meta = apply_filters( "get_{$item->taxonomy}_meta_extd", $item->taxonomy, $item->term_id );
 		if ( $meta ) {
 			return $meta;
 		}

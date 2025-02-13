@@ -32,7 +32,7 @@ abstract class TaxDisplay {
 	 * @var string
 	 * @since 1.0.0
 	 */
-	protected string $taxonomy;
+	protected ?string $taxonomy;
 
 	/**
 	 * Pagination arguments.

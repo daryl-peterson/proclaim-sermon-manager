@@ -11,9 +11,12 @@
 
 namespace DRPPSM;
 
-use WP_Query;
-
+// @codeCoverageIgnoreStart
 defined( 'ABSPATH' ) || exit;
+// @codeCoverageIgnoreEnd
+
+use WP_Post;
+use WP_Term;
 
 /**
  * Sermon utils.
@@ -26,15 +29,23 @@ defined( 'ABSPATH' ) || exit;
  */
 class SermonUtils {
 
-	public static function get_latest(
-		int $per_page = 1,
+	/**
+	 * Get latest sermons.
+	 *
+	 * @param int    $per_page Number of sermons to get.
+	 * @param string $status   Post status.
+	 * @param string $orderby  Order by.
+	 * @return array
+	 * @since 1.0.0
+	 */
+	public static function sermon_latest(
 		string $status = 'publish',
 		string $orderby = SermonMeta::DATE
-	): array {
+	): ?WP_Post {
 
 		$args = array(
 			'post_type'      => DRPPSM_PT_SERMON,
-			'posts_per_page' => $per_page,
+			'posts_per_page' => 1,
 			'post_status'    => $status,
 			'order'          => 'DESC',
 		);
@@ -52,9 +63,49 @@ class SermonUtils {
 				$args['orderby']  = 'meta_value_num';
 		}
 
-		$query  = new WP_Query( $args );
-		$result = $query->posts;
-		Logger::debug( array( 'RESULT' => $result ) );
+		$result = get_posts( $args );
+		if (
+			is_wp_error( $result ) ||
+			! is_array( $result ) ||
+			count( $result ) === 0
+		) {
+			return null;
+		}
+		$result = array_shift( $result );
+		return $result;
+	}
+
+	/**
+	 * Get latest series.
+	 *
+	 * @return array
+	 * @since 1.0.0
+	 */
+	public static function series_latest(): ?WP_Term {
+		$tax  = DRPPSM_TAX_SERIES;
+		$args = array(
+			'hide_empty' => true,
+			'meta_key'   => $tax . '_date',
+			'orderby'    => 'meta_value_num',
+			'order'      => 'DESC',
+			'number'     => 1,
+		);
+
+		$result = get_term_by( 'slug', 'none', $tax );
+		if ( $result instanceof \WP_Term ) {
+			$ids             = array( $result->term_id );
+			$args['exclude'] = $ids;
+		}
+
+		$result = get_terms( $args );
+		if (
+			is_wp_error( $result ) ||
+			! is_array( $result ) ||
+			count( $result ) === 0
+		) {
+			return null;
+		}
+		$result = array_shift( $result );
 		return $result;
 	}
 }

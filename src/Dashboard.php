@@ -18,6 +18,7 @@ defined( 'ABSPATH' ) || exit;
 use DRPPSM\Interfaces\Executable;
 use DRPPSM\Interfaces\Registrable;
 use DRPPSM\Traits\ExecutableTrait;
+use WP_Post;
 
 /**
  * Dashboard class
@@ -101,11 +102,10 @@ class Dashboard implements Executable, Registrable {
 			$info[ $label ]['link']  = admin_url( 'edit-tags.php?taxonomy=' . $value . '&post_type=drppsm_sermon' );
 		}
 
-		$post_item = SermonUtils::get_latest();
+		$post_item = SermonUtils::sermon_latest();
 		$sermon    = null;
-		if ( is_array( $post_item ) ) {
-			$sermon = array_shift( $post_item );
-			$sermon = new Sermon( $sermon );
+		if ( $post_item instanceof WP_Post ) {
+			$sermon = new Sermon( $post_item );
 		}
 
 		get_partial(

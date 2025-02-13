@@ -61,6 +61,14 @@ abstract class ShortCode implements Registrable {
 	abstract public static function exec(): self;
 
 	/**
+	 * Initialize object.
+	 *
+	 * @return void
+	 * @since 1.0.0
+	 */
+	abstract protected function __construct();
+
+	/**
 	 * Register the shortcode.
 	 *
 	 * @return bool|null

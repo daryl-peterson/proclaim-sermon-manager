@@ -18,6 +18,7 @@ defined( 'ABSPATH' ) || exit;
 // @codeCoverageIgnoreEnd
 
 use DRPPSM\Interfaces\Executable;
+use DRPPSM\SermonUtils;
 use DRPPSM\Traits\ExecutableTrait;
 
 /**
@@ -40,8 +41,8 @@ class SeriesLatest extends ShortCode implements Executable {
 	 */
 	protected function __construct() {
 
-		$this->sc  = 'drppsm_series_latest';
 		$this->tax = DRPPSM_TAX_SERIES;
+		$this->sc  = "{$this->tax}_latest";
 	}
 
 	/**
@@ -53,8 +54,16 @@ class SeriesLatest extends ShortCode implements Executable {
 	 */
 	public function show( array $atts ): string {
 		$atts = $this->fix_atts( $atts );
+		$data = SermonUtils::series_latest();
 
 		$output = '';
 		return $output;
+	}
+
+	protected function get_default_args(): array {
+		return array(
+			'layout' => 'list',
+			'size'   => 'psm-sermon-medium',
+		);
 	}
 }

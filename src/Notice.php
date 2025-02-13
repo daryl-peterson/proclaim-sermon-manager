@@ -82,9 +82,10 @@ class Notice implements NoticeInt {
 	public function show_notice(): ?string {
 		$options = get_option( $this->option_key, array() );
 
-		Logger::debug( array( 'OPTIONS' => $options ) );
-
-		if ( ! is_array( $options ) || ! isset( $options[ $this->option_name ] ) ) {
+		if (
+			! is_array( $options ) ||
+			! isset( $options[ $this->option_name ] )
+		) {
 			return null;
 		}
 
