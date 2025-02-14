@@ -2,7 +2,7 @@
 /**
  * Taxonomy image attaching.
  *
- * @package     DRPPSM\TaxonomyImageAttach
+ * @package     DRPPSM\TaxImageAttach
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
@@ -14,13 +14,12 @@ namespace DRPPSM;
 use DRPPSM\Interfaces\Executable;
 use DRPPSM\Interfaces\Registrable;
 use DRPPSM\Traits\ExecutableTrait;
-use WP_Error;
 use WP_Post;
 
 /**
  * Taxonomy image attaching.
  *
- * @package     DRPPSM\TaxonomyImageAttach
+ * @package     DRPPSM\TaxImageAttach
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
@@ -90,6 +89,11 @@ class TaxImageAttach implements Executable, Registrable {
 	 *
 	 * @return boolean|null True if hooks were registered, otherwise false.
 	 * @since 1.0.0
+	 *
+	 * @see https://developer.wordpress.org/reference/hooks/add_meta_type_meta/
+	 * @see https://developer.wordpress.org/reference/hooks/get_meta_type_metadata/
+	 * @see https://developer.wordpress.org/reference/hooks/update_meta_type_meta/
+	 * @see https://developer.wordpress.org/reference/hooks/delete_meta_type_meta/
 	 */
 	public function register(): ?bool {
 		$meta_type = 'term';
@@ -144,8 +148,11 @@ class TaxImageAttach implements Executable, Registrable {
 	 * @return bool
 	 * @since 1.0.0
 	 */
-	public function add_meta( int $term_id, string $meta_key, mixed $meta_value ): bool {
-
+	public function add_meta(
+		int $term_id,
+		string $meta_key,
+		mixed $meta_value
+	): bool {
 		return $this->attach( $term_id, $meta_key, $meta_value );
 	}
 
@@ -159,8 +166,12 @@ class TaxImageAttach implements Executable, Registrable {
 	 * @return bool
 	 * @since 1.0.0
 	 */
-	public function update_meta( int $meta_id, int $term_id, string $meta_key, mixed $meta_value ) {
-
+	public function update_meta(
+		int $meta_id,
+		int $term_id,
+		string $meta_key,
+		mixed $meta_value
+	): bool {
 		$this->detach( $term_id, $meta_key, $meta_value );
 		return $this->attach( $term_id, $meta_key, $meta_value );
 	}
@@ -175,8 +186,20 @@ class TaxImageAttach implements Executable, Registrable {
 	 * @return bool
 	 * @since 1.0.0
 	 */
-	public function delete_meta( mixed $meta_ids, int $term_id, string $meta_key, mixed $meta_value ) {
-
+	public function delete_meta(
+		mixed $meta_ids,
+		int $term_id,
+		string $meta_key,
+		mixed $meta_value
+	): bool {
+		Logger::debug(
+			array(
+				'META_IDS'   => $meta_ids,
+				'TERM_ID'    => $term_id,
+				'META_KEY'   => $meta_key,
+				'META_VALUE' => $meta_value,
+			)
+		);
 		return $this->detach( $term_id, $meta_key, $meta_value );
 	}
 
@@ -189,7 +212,11 @@ class TaxImageAttach implements Executable, Registrable {
 	 * @return bool
 	 * @since 1.0.0
 	 */
-	private function attach( int $term_id, string $meta_key, mixed $meta_value ): bool {
+	private function attach(
+		int $term_id,
+		string $meta_key,
+		mixed $meta_value
+	): bool {
 
 		$taxonomy = $this->get_taxonomy( $meta_key );
 		if ( ! isset( $taxonomy ) ) {
@@ -202,7 +229,6 @@ class TaxImageAttach implements Executable, Registrable {
 		}
 
 		$sermons = TaxUtils::get_sermons_by_term( $taxonomy, $term_id );
-		Logger::debug( array( 'SERMONS' => $sermons ) );
 		if ( ! isset( $sermons ) ) {
 			return false;
 		}
@@ -233,7 +259,11 @@ class TaxImageAttach implements Executable, Registrable {
 	 * @return bool
 	 * @since 1.0.0
 	 */
-	private function detach( int $term_id, string $meta_key, mixed $meta_value ): bool {
+	private function detach(
+		int $term_id,
+		string $meta_key,
+		mixed $meta_value
+	): bool {
 
 		$taxonomy = $this->get_taxonomy( $meta_key );
 		if ( ! isset( $taxonomy ) ) {
@@ -286,7 +316,11 @@ class TaxImageAttach implements Executable, Registrable {
 	 */
 	private function get_taxonomy( string $meta_key ): ?string {
 
-		if ( ! isset( $meta_key ) || empty( $meta_key ) || ! in_array( $meta_key, $this->image_ids, true ) ) {
+		if (
+			! isset( $meta_key ) ||
+			empty( $meta_key ) ||
+			! in_array( $meta_key, $this->image_ids, true )
+		) {
 			return null;
 		}
 
@@ -312,7 +346,10 @@ class TaxImageAttach implements Executable, Registrable {
 	private function get_sermon( int $sermon_id ): ?WP_Post {
 		$sermon = get_post( $sermon_id );
 
-		if ( $this->is_error( $sermon ) ) {
+		if (
+			is_wp_error( $sermon ) ||
+			is_null( $sermon )
+		) {
 			return null;
 		}
 
@@ -320,7 +357,10 @@ class TaxImageAttach implements Executable, Registrable {
 			$sermon = array_shift( $sermon );
 		}
 
-		if ( ( ! $sermon instanceof WP_Post ) || ( $this->pt !== $sermon->post_type ) ) {
+		if (
+			( ! $sermon instanceof WP_Post ) ||
+			( $this->pt !== $sermon->post_type )
+		) {
 			return null;
 		}
 		return $sermon;
@@ -335,10 +375,25 @@ class TaxImageAttach implements Executable, Registrable {
 	 */
 	private function get_attachment( int $image_id ): ?WP_Post {
 
-		$attachment = get_post( $image_id );
-		if ( $this->is_error( $attachment ) ) {
+		$args = array(
+			'post_type'      => 'attachment',
+			'post_status'    => 'inherit',
+			'post__in'       => array( $image_id ),
+			'posts_per_page' => 1,
+		);
+
+		$attachment = get_posts( $args );
+
+		if (
+			is_wp_error( $attachment ) ||
+			! is_array( $attachment ) ||
+			empty( $attachment )
+		) {
 			return null;
 		}
+
+		// $attachment = get_post( $image_id );
+		Logger::debug( array( 'ATTACHMENT' => $attachment ) );
 
 		if ( is_array( $attachment ) && isset( $attachment[0] ) ) {
 			$attachment = $attachment[0];
@@ -355,16 +410,15 @@ class TaxImageAttach implements Executable, Registrable {
 	}
 
 	/**
-	 * Check if value is WP_Error.
+	 * Get image meta.
 	 *
-	 * @param mixed $value Value to check.
-	 * @return bool
+	 * @param int    $object_id Object ID.
+	 * @param string $meta_key Meta key.
+	 * @param bool   $single Single.
+	 * @param string $meta_type Meta type.
+	 * @return mixed
 	 * @since 1.0.0
 	 */
-	private function is_error( mixed $value ): bool {
-		return $value instanceof WP_Error;
-	}
-
 	private function get_image_meta(
 		int $object_id,
 		string $meta_key,

@@ -2,7 +2,7 @@
 /**
  * Sermon Images.
  *
- * @package     Proclaim Sermon Manager
+ * @package     DRPPSM\SermonImageAttach
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
@@ -13,14 +13,13 @@ namespace DRPPSM;
 
 use DRPPSM\Interfaces\Executable;
 use DRPPSM\Interfaces\Registrable;
-use WP_Error;
 use WP_Post;
 use WP_Term;
 
 /**
  * Sermon Images.
  *
- * @package     Proclaim Sermon Manager
+ * @package     DRPPSM\SermonImageAttach
  * @author      Daryl Peterson <@gmail.com>
  * @copyright   Copyright (c) 2024, Daryl Peterson
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
@@ -57,11 +56,10 @@ class SermonImageAttach implements Executable, Registrable {
 	 * @since 1.0.0
 	 */
 	public function register(): ?bool {
-		if ( is_admin() && ! has_action( 'save_post', array( $this, 'save_post' ) ) ) {
-			add_action( 'save_post', array( $this, 'save_post' ), 50, 3 );
+		if ( ! is_admin() || has_action( 'save_post', array( $this, 'save_post' ) ) ) {
 			return false;
 		}
-
+		add_action( 'save_post', array( $this, 'save_post' ), 50, 3 );
 		return true;
 	}
 
@@ -74,7 +72,11 @@ class SermonImageAttach implements Executable, Registrable {
 	 * @return array
 	 * @since 1.0.0
 	 */
-	public function save_post( int $post_id, WP_Post $post, bool $update ): array {
+	public function save_post(
+		int $post_id,
+		WP_Post $post,
+		bool $update
+	): array {
 		try {
 
 			$status = array();
@@ -170,16 +172,18 @@ class SermonImageAttach implements Executable, Registrable {
 	 * @return bool If Post parent id equals $parent_id true, otherwise false.
 	 * @since 1.0.0
 	 */
-	public function attach_image( WP_Post $attachment, WP_Post $sermon ): bool {
+	public function attach_image(
+		WP_Post $attachment,
+		WP_Post $sermon
+	): bool {
 
-		if ( 'attachment' !== $attachment->post_type
-			|| $this->pt !== $sermon->post_type
-			|| defined(
-				'DRPSM_ATTACHING_IMAGE'
-			) ) {
+		if (
+			'attachment' !== $attachment->post_type ||
+			$this->pt !== $sermon->post_type ||
+			defined( 'DRPSM_ATTACHING_IMAGE' )
+		) {
 			return false;
 		}
-
 		define( 'DRPSM_ATTACHING_IMAGE', true );
 
 		if ( $attachment->post_parent === $sermon->ID ) {
@@ -191,7 +195,7 @@ class SermonImageAttach implements Executable, Registrable {
 
 			$result = wp_update_post( $attachment );
 
-			if ( $result instanceof WP_Error ) {
+			if ( is_wp_error( $result ) ) {
 				return false;
 			} else {
 				return true;
@@ -209,8 +213,15 @@ class SermonImageAttach implements Executable, Registrable {
 	 * @return boolean
 	 * @since 1.0.0
 	 */
-	public function detach_image( WP_Post $attachment, WP_Post $sermon ): bool {
-		if ( $this->pt !== $attachment->post_type || $this->pt !== $sermon->post_type || defined( 'DRPSM_ATTACHING_IMAGE' ) ) {
+	public function detach_image(
+		WP_Post $attachment,
+		WP_Post $sermon
+	): bool {
+		if (
+			'attachment' !== $attachment->post_type ||
+			$this->pt !== $sermon->post_type ||
+			defined( 'DRPSM_ATTACHING_IMAGE' )
+		) {
 			return false;
 		}
 
@@ -222,7 +233,7 @@ class SermonImageAttach implements Executable, Registrable {
 
 		$result = wp_update_post( $attachment );
 
-		if ( $result instanceof WP_Error ) {
+		if ( is_wp_error( $result ) ) {
 			return false;
 		} else {
 			return true;

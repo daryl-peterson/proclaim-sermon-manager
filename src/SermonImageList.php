@@ -50,14 +50,6 @@ class SermonImageList {
 	private string $orderby;
 
 	/**
-	 * Used in paginated queries, per_page
-	 *
-	 * @var int
-	 * @since 1.0.0
-	 */
-	private int $number;
-
-	/**
 	 * Query offset.
 	 *
 	 * @var int
