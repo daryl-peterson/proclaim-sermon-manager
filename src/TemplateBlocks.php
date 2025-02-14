@@ -127,8 +127,10 @@ class TemplateBlocks implements Executable, Registrable {
 			return $query_result;
 		}
 
-		if ( ( empty( $post ) && ! is_admin() ) || ( ! empty( $post ) && $this->pt !== $post->post_type ) ) {
-			Logger::debug( 'NOT OURS' );
+		if (
+			( empty( $post ) && ! is_admin() ) ||
+			( ! empty( $post ) && $this->pt !== $post->post_type )
+		) {
 			return $query_result;
 		}
 

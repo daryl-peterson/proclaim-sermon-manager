@@ -133,6 +133,7 @@ return array(
     'DRPPSM\\Tests\\SermonCommentsTest' => $baseDir . '/tests/unit/SermonCommentsTest.php',
     'DRPPSM\\Tests\\SermonDetailTest' => $baseDir . '/tests/unit/SermonDetailTest.php',
     'DRPPSM\\Tests\\SermonFilesTest' => $baseDir . '/tests/unit/SermonFilesTest.php',
+    'DRPPSM\\Tests\\SermonImageAttachTest' => $baseDir . '/tests/unit/SermonImageAttachTest.php',
     'DRPPSM\\Tests\\SermonMetaTest' => $baseDir . '/tests/unit/SermonMetaTest.php',
     'DRPPSM\\Tests\\SermonTest' => $baseDir . '/tests/unit/SermonTest.php',
     'DRPPSM\\Tests\\SettingsTest' => $baseDir . '/tests/unit/SettingsTest.php',

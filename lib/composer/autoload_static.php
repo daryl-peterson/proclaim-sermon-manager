@@ -192,6 +192,7 @@ class ComposerStaticInit672fe16c65cc53aa8b66e730cdfce0de
         'DRPPSM\\Tests\\SermonCommentsTest' => __DIR__ . '/../..' . '/tests/unit/SermonCommentsTest.php',
         'DRPPSM\\Tests\\SermonDetailTest' => __DIR__ . '/../..' . '/tests/unit/SermonDetailTest.php',
         'DRPPSM\\Tests\\SermonFilesTest' => __DIR__ . '/../..' . '/tests/unit/SermonFilesTest.php',
+        'DRPPSM\\Tests\\SermonImageAttachTest' => __DIR__ . '/../..' . '/tests/unit/SermonImageAttachTest.php',
         'DRPPSM\\Tests\\SermonMetaTest' => __DIR__ . '/../..' . '/tests/unit/SermonMetaTest.php',
         'DRPPSM\\Tests\\SermonTest' => __DIR__ . '/../..' . '/tests/unit/SermonTest.php',
         'DRPPSM\\Tests\\SettingsTest' => __DIR__ . '/../..' . '/tests/unit/SettingsTest.php',

@@ -218,6 +218,14 @@ class TaxImageAttach implements Executable, Registrable {
 		mixed $meta_value
 	): bool {
 
+		Logger::debug(
+			array(
+				'TERM_ID'    => $term_id,
+				'META_KEY'   => $meta_key,
+				'META_VALUE' => $meta_value,
+			)
+		);
+
 		$taxonomy = $this->get_taxonomy( $meta_key );
 		if ( ! isset( $taxonomy ) ) {
 			return false;
@@ -228,9 +236,11 @@ class TaxImageAttach implements Executable, Registrable {
 			return false;
 		}
 
-		$sermons = TaxUtils::get_sermons_by_term( $taxonomy, $term_id );
+		$sermons = TaxUtils::get_sermons_by_term( $taxonomy, $term_id, 10 );
 		if ( ! isset( $sermons ) ) {
+			// @codeCoverageIgnoreStart
 			return false;
+			// @codeCoverageIgnoreEnd
 		}
 
 		$result = false;
@@ -264,6 +274,13 @@ class TaxImageAttach implements Executable, Registrable {
 		string $meta_key,
 		mixed $meta_value
 	): bool {
+		Logger::debug(
+			array(
+				'TERM_ID'    => $term_id,
+				'META_KEY'   => $meta_key,
+				'META_VALUE' => $meta_value,
+			)
+		);
 
 		$taxonomy = $this->get_taxonomy( $meta_key );
 		if ( ! isset( $taxonomy ) ) {
@@ -273,7 +290,9 @@ class TaxImageAttach implements Executable, Registrable {
 		$option_key = $meta_key;
 		$options    = get_option( $option_key, null );
 		if ( ! is_array( $options ) ) {
+			// @codeCoverageIgnoreStart
 			$options = array();
+			// @codeCoverageIgnoreEnd
 		}
 
 		$image_id = null;
@@ -286,24 +305,29 @@ class TaxImageAttach implements Executable, Registrable {
 		}
 
 		$attachment = $this->get_attachment( $image_id );
-		if ( ! isset( $attachment ) ) {
-			return false;
-		}
 
-		if ( 0 === $attachment->post_parent ) {
-			return true;
+		// This should never happen.
+		if ( ! isset( $attachment ) ||
+			! $attachment instanceof WP_Post ||
+			0 === $attachment->post_parent
+		) {
+			// @codeCoverageIgnoreStart
+			return false;
+			// @codeCoverageIgnoreEnd
 		}
 
 		$sermon = $this->get_sermon( $attachment->post_parent );
+
 		if ( ! isset( $sermon ) ) {
+			// @codeCoverageIgnoreStart
 			return false;
+			// @codeCoverageIgnoreEnd
 		}
 
 		// delete_option( $option_key );
 		unset( $options[ $term_id ] );
 		update_option( $option_key, $options );
 		$result = $this->sermon_image->detach_image( $attachment, $sermon );
-
 		return $result;
 	}
 
@@ -324,13 +348,20 @@ class TaxImageAttach implements Executable, Registrable {
 			return null;
 		}
 
+		// This should never happen.
 		if ( false === strpos( $meta_key, $this->image_suffix ) ) {
+			// @codeCoverageIgnoreStart
 			return null;
+			// @codeCoverageIgnoreEnd
 		}
 
 		$taxonomy = trim( str_replace( $this->image_suffix, '', $meta_key ) );
+
+		// This should never happen. But if we add taxonomies in the future, we can catch it.
 		if ( ! in_array( $taxonomy, $this->tax, true ) ) {
+			// @codeCoverageIgnoreStart
 			return null;
+			// @codeCoverageIgnoreEnd
 		}
 
 		return $taxonomy;
@@ -344,24 +375,25 @@ class TaxImageAttach implements Executable, Registrable {
 	 * @since 1.0.0
 	 */
 	private function get_sermon( int $sermon_id ): ?WP_Post {
-		$sermon = get_post( $sermon_id );
+
+		$args = array(
+			'post_type'      => $this->pt,
+			'post__in'       => array( $sermon_id ),
+			'posts_per_page' => 1,
+		);
+
+		$sermon = get_posts( $args );
 
 		if (
 			is_wp_error( $sermon ) ||
-			is_null( $sermon )
+			! is_array( $sermon ) ||
+			0 === count( $sermon )
 		) {
 			return null;
 		}
 
 		if ( is_array( $sermon ) ) {
 			$sermon = array_shift( $sermon );
-		}
-
-		if (
-			( ! $sermon instanceof WP_Post ) ||
-			( $this->pt !== $sermon->post_type )
-		) {
-			return null;
 		}
 		return $sermon;
 	}
@@ -387,32 +419,22 @@ class TaxImageAttach implements Executable, Registrable {
 		if (
 			is_wp_error( $attachment ) ||
 			! is_array( $attachment ) ||
-			empty( $attachment )
+			0 === count( $attachment )
 		) {
 			return null;
 		}
 
-		// $attachment = get_post( $image_id );
-		Logger::debug( array( 'ATTACHMENT' => $attachment ) );
-
-		if ( is_array( $attachment ) && isset( $attachment[0] ) ) {
-			$attachment = $attachment[0];
+		if ( is_array( $attachment ) ) {
+			$attachment = array_shift( $attachment );
 		}
 
-		if ( ! $attachment instanceof WP_Post ) {
-			return null;
-		}
-
-		if ( 'attachment' !== $attachment->post_type ) {
-			return null;
-		}
 		return $attachment;
 	}
 
 	/**
 	 * Get image meta.
 	 *
-	 * @param int    $object_id Object ID.
+	 * @param int    $term_id Term object ID.
 	 * @param string $meta_key Meta key.
 	 * @param bool   $single Single.
 	 * @param string $meta_type Meta type.
@@ -420,19 +442,29 @@ class TaxImageAttach implements Executable, Registrable {
 	 * @since 1.0.0
 	 */
 	private function get_image_meta(
-		int $object_id,
+		int $term_id,
 		string $meta_key,
 		bool $single,
 		string $meta_type
 	) {
-		$meta_cache = wp_cache_get( $object_id, $meta_type . '_meta' );
+		Logger::debug(
+			array(
+				'TERM_ID'   => $term_id,
+				'META_KEY'  => $meta_key,
+				'SINGLE'    => $single,
+				'META_TYPE' => $meta_type,
+			)
+		);
+		$meta_cache = wp_cache_get( $term_id, $meta_type . '_meta' );
 
 		if ( ! $meta_cache ) {
-			$meta_cache = update_meta_cache( $meta_type, array( $object_id ) );
-			if ( isset( $meta_cache[ $object_id ] ) ) {
-				$meta_cache = $meta_cache[ $object_id ];
+			$meta_cache = update_meta_cache( $meta_type, array( $term_id ) );
+			if ( isset( $meta_cache[ $term_id ] ) ) {
+				$meta_cache = $meta_cache[ $term_id ];
 			} else {
+				// @codeCoverageIgnoreStart
 				$meta_cache = null;
+				// @codeCoverageIgnoreEnd
 			}
 		}
 
@@ -452,11 +484,13 @@ class TaxImageAttach implements Executable, Registrable {
 		$option_key = $meta_key;
 		$options    = get_option( $option_key, array() );
 		if ( ! is_array( $options ) ) {
+			// @codeCoverageIgnoreStart
 			$options = array();
+			// @codeCoverageIgnoreEnd
 		}
 
 		if ( isset( $result ) && ! empty( $result ) && $single ) {
-			$options[ $object_id ] = $result;
+			$options[ $term_id ] = $result;
 			update_option( $option_key, $options );
 		}
 

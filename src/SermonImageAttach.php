@@ -13,6 +13,7 @@ namespace DRPPSM;
 
 use DRPPSM\Interfaces\Executable;
 use DRPPSM\Interfaces\Registrable;
+use DRPPSM\Traits\ExecutableTrait;
 use WP_Post;
 use WP_Term;
 
@@ -26,6 +27,7 @@ use WP_Term;
  * @since       1.0.0
  */
 class SermonImageAttach implements Executable, Registrable {
+	use ExecutableTrait;
 
 	/**
 	 * Post type.
@@ -33,21 +35,6 @@ class SermonImageAttach implements Executable, Registrable {
 	 * @var string
 	 */
 	private string $pt = DRPPSM_PT_SERMON;
-
-	/**
-	 * Initialize and register hooks.
-	 *
-	 * @return SermonImageAttach
-	 *
-	 * @since 1.0.0
-	 */
-	public static function exec(): SermonImageAttach {
-
-		$obj = new self();
-		$obj->register();
-
-		return $obj;
-	}
 
 	/**
 	 * Register hooks.
@@ -79,18 +66,20 @@ class SermonImageAttach implements Executable, Registrable {
 	): array {
 		try {
 
+			// unhook this function so it doesn't loop infinitely
+			remove_action( 'save_post', array( $this, 'save_post' ) );
+
 			$status = array();
 			if ( $this->pt !== $post->post_type || defined( 'DRPSM_SAVING_IMAGES' ) ) {
 				return $status;
 			}
-
-			define( 'DRPSM_SAVING_IMAGES', true );
 
 			$status['thumb']  = $this->attach_thumb( $post );
 			$status['series'] = $this->attach_series( $post );
 
 			// @codeCoverageIgnoreStart
 		} catch ( \Throwable $th ) {
+
 			Logger::error(
 				array(
 					'MESSAGE' => $th->getMessage(),
@@ -99,8 +88,9 @@ class SermonImageAttach implements Executable, Registrable {
 			);
 			// @codeCoverageIgnoreEnd
 		}
-		Logger::debug( $status );
 
+		// re-hook this function.
+		add_action( 'save_post', array( $this, 'save_post' ), 50, 3 );
 		return $status;
 	}
 
@@ -123,7 +113,9 @@ class SermonImageAttach implements Executable, Registrable {
 
 		$attachment = get_post( $thumb );
 		if ( ! $attachment instanceof WP_Post ) {
+			// @codeCoverageIgnoreStart
 			return false;
+			// @codeCoverageIgnoreEnd
 		}
 
 		return $this->attach_image( $attachment, $sermon );
@@ -141,24 +133,23 @@ class SermonImageAttach implements Executable, Registrable {
 			return false;
 		}
 
-		$term = get_the_terms( $sermon, DRPPSM_TAX_SERIES );
-		if ( ! is_array( $term ) ) {
-			return false;
-		}
-
-		$term = array_shift( $term );
+		$term = $this->get_series_term( $sermon );
 		if ( ! $term instanceof WP_Term ) {
+			// @codeCoverageIgnoreStart
+			return false;
+			// @codeCoverageIgnoreEnd
+		}
+
+		$image_id = get_term_meta( $term->term_id, TaxMeta::SERIES_IMAGE_ID, true );
+		if ( ! isset( $image_id ) || empty( $image_id ) ) {
 			return false;
 		}
 
-		$series_id = get_term_meta( $term->term_id, TaxMeta::SERIES_IMAGE_ID, true );
-		if ( ! isset( $series_id ) || empty( $series_id ) ) {
-			return false;
-		}
-
-		$attachment = get_post( (int) $series_id );
+		$attachment = get_post( (int) $image_id );
 		if ( ! $attachment instanceof WP_Post ) {
+			// @codeCoverageIgnoreStart
 			return false;
+			// @codeCoverageIgnoreEnd
 		}
 
 		return $this->attach_image( $attachment, $sermon );
@@ -177,29 +168,32 @@ class SermonImageAttach implements Executable, Registrable {
 		WP_Post $sermon
 	): bool {
 
-		if (
-			'attachment' !== $attachment->post_type ||
-			$this->pt !== $sermon->post_type ||
-			defined( 'DRPSM_ATTACHING_IMAGE' )
-		) {
+		if ( ! $this->is_valid_params( $attachment, $sermon ) ) {
 			return false;
 		}
-		define( 'DRPSM_ATTACHING_IMAGE', true );
 
-		if ( $attachment->post_parent === $sermon->ID ) {
+		// Check if image is already attached.
+		if (
+			$attachment->post_parent === $sermon->ID ||
+			0 !== $attachment->post_parent
+		) {
 			return true;
 		}
 
-		if ( 0 === $attachment->post_parent ) {
-			$attachment->post_parent = $sermon->ID;
+		$attachment->post_parent = $sermon->ID;
+		$args                    = array(
+			'ID'          => $attachment->ID,
+			'post_parent' => $sermon->ID,
+		);
 
-			$result = wp_update_post( $attachment );
+		$result = wp_update_post( $args, true, false );
 
-			if ( is_wp_error( $result ) ) {
-				return false;
-			} else {
-				return true;
-			}
+		if ( is_wp_error( $result ) ) {
+			// @codeCoverageIgnoreStart
+			return false;
+			// @codeCoverageIgnoreEnd
+		} else {
+			return true;
 		}
 
 		return false;
@@ -217,26 +211,70 @@ class SermonImageAttach implements Executable, Registrable {
 		WP_Post $attachment,
 		WP_Post $sermon
 	): bool {
-		if (
-			'attachment' !== $attachment->post_type ||
-			$this->pt !== $sermon->post_type ||
-			defined( 'DRPSM_ATTACHING_IMAGE' )
-		) {
+
+		if ( ! $this->is_valid_params( $attachment, $sermon ) ) {
 			return false;
 		}
 
+		// Check if image is already detached.
 		if ( 0 === $attachment->post_parent ) {
 			return true;
 		}
 
-		$attachment->post_parent = 0;
+		$args = array(
+			'ID'          => $attachment->ID,
+			'post_parent' => 0,
+		);
 
-		$result = wp_update_post( $attachment );
+		$result = wp_update_post( $args, true, false );
 
 		if ( is_wp_error( $result ) ) {
+			// @codeCoverageIgnoreStart
 			return false;
+			// @codeCoverageIgnoreEnd
 		} else {
 			return true;
 		}
+	}
+
+	/**
+	 * Check if parameters are valid.
+	 *
+	 * @param WP_Post $attachment Attachment post object.
+	 * @param WP_Post $sermon Sermon post object.
+	 * @return boolean
+	 * @since 1.0.0
+	 */
+	private function is_valid_params( WP_Post $attachment, WP_Post $sermon ): bool {
+		if (
+			'attachment' !== $attachment->post_type ||
+			$this->pt !== $sermon->post_type
+		) {
+			return false;
+		}
+		return true;
+	}
+
+	/**
+	 * Get series term.
+	 *
+	 * @param WP_Post $sermon Sermon post object.
+	 * @return WP_Term|null
+	 * @since 1.0.0
+	 */
+	private function get_series_term( WP_Post $sermon ): ?WP_Term {
+		$term = get_the_terms( $sermon, DRPPSM_TAX_SERIES );
+		if (
+			is_wp_error( $term ) ||
+			! is_array( $term ) ||
+			0 === count( $term )
+		) {
+			// @codeCoverageIgnoreStart
+			return null;
+			// @codeCoverageIgnoreEnd
+		}
+
+		$term = array_shift( $term );
+		return $term;
 	}
 }

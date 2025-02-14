@@ -34,7 +34,7 @@ class PermaLinks {
 	 * @var array
 	 * @since 1.0.0
 	 */
-	private static array $permalinks;
+	private static ?array $permalinks;
 
 	/**
 	 * Common slug.
@@ -42,7 +42,7 @@ class PermaLinks {
 	 * @var bool
 	 * @since 1.0.0
 	 */
-	private static bool $common_slug;
+	private static ?bool $common_slug;
 
 	/**
 	 * Sermons slug.

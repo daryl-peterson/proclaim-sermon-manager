@@ -12,17 +12,14 @@
 namespace DRPPSM\Tests;
 
 use DRPPSM\App;
-use PhpParser\Node\Expr\Instanceof_;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use ReflectionMethod;
+use WP_Error;
 use WP_Post;
 use WP_Query;
 use WP_Term;
 use WP_User;
-
-use function DRPPSM\include_admin_plugin;
-
 
 /**
  * Base test case.
@@ -38,7 +35,11 @@ class BaseTest extends TestCase {
 	protected App $app;
 
 
-
+	/**
+	 * BaseTest constructor.
+	 *
+	 * @param string $name
+	 */
 	public function __construct( string $name ) {
 		parent::__construct( $name );
 		if ( ! defined( 'PHPUNIT_TESTING' ) ) {
@@ -64,8 +65,6 @@ class BaseTest extends TestCase {
 	 */
 	protected function tearDown(): void {
 		parent::tearDown();
-
-		// unset( $GLOBALS['current_screen'] );
 	}
 
 	/**
@@ -150,8 +149,9 @@ class BaseTest extends TestCase {
 
 		// Try and test for is_singular.
 		if ( is_array( $posts ) ) {
-			$post                   = array_shift( $posts );
-			$args['p']              = $post->ID;
+			$post      = array_shift( $posts );
+			$args['p'] = $post->ID;
+
 			$args['posts_per_page'] = 1;
 		}
 
@@ -184,6 +184,36 @@ class BaseTest extends TestCase {
 	}
 
 	/**
+	 * Get a series with images.
+	 *
+	 * @return ?WP_Term
+	 * @since 1.0.0
+	 */
+	public function get_series_with_images(): ?WP_Term {
+
+		$tax = DRPPSM_TAX_SERIES;
+
+		$args  = array(
+			'taxonomy'   => $tax,
+			'hide_empty' => false,
+			'number'     => 1,
+			'meta_query' => array(
+				array(
+					'key'     => "{$tax}_image_id",
+					'value'   => '',
+					'compare' => '!=',
+				),
+			),
+		);
+		$terms = get_terms( $args );
+		if ( is_array( $terms ) ) {
+			$term = array_shift( $terms );
+			return $term;
+		}
+		return null;
+	}
+
+	/**
 	 * Get a term for a taxonomy.
 	 *
 	 * @param string $taxonomy Taxonomy name.
@@ -191,7 +221,7 @@ class BaseTest extends TestCase {
 	 * @return WP_Term
 	 * @since 1.0.0
 	 */
-	public function get_term( string $taxonomy ) {
+	public function get_term( string $taxonomy ): ?WP_Term {
 		$args = array(
 			'taxonomy'   => $taxonomy,
 			'hide_empty' => true,

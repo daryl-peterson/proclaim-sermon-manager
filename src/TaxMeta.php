@@ -199,6 +199,7 @@ class TaxMeta implements Executable, Registrable {
 			return false;
 		}
 
+		/*
 		$image_id = get_term_meta( $term_id, $tax . '_image_id', true );
 
 		if ( ! $image_id && empty( $image_id ) ) {
@@ -206,6 +207,7 @@ class TaxMeta implements Executable, Registrable {
 			delete_term_meta( $term_id, $tax . '_date' );
 			return false;
 		}
+		*/
 
 		return $this->set_date_meta( $tax, $term_id, $tax . '_date' );
 	}
