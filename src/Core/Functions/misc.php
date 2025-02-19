@@ -11,8 +11,6 @@
 
 namespace DRPPSM;
 
-defined( 'ABSPATH' ) || exit;
-
 /**
  * Get app instance.
  *

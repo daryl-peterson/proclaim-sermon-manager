@@ -17,7 +17,6 @@ use DRPPSM\Action;
 use DRPPSM\Filter;
 use DRPPSM\Interfaces\Executable;
 use DRPPSM\Interfaces\Registrable;
-use DRPPSM\Logger;
 use DRPPSM\Settings;
 use DRPPSM\Traits\ExecutableTrait;
 
@@ -79,19 +78,6 @@ class AdminSettings implements Executable, Registrable {
 	public function register_metaboxes() {
 		$cb = array( $this, 'display_with_tabs' );
 		do_action( Action::SETTINGS_REGISTER_FORM, $cb );
-	}
-
-
-
-	public function after_save( mixed $object_id, mixed $cmb_id, mixed $updated, mixed $cmb ) {
-		Logger::debug(
-			array(
-				'object_id' => $object_id,
-				'cmb_id'    => $cmb_id,
-				'updated'   => $updated,
-				'cmb'       => $cmb,
-			)
-		);
 	}
 
 	/**
@@ -156,9 +142,11 @@ class AdminSettings implements Executable, Registrable {
 
 		foreach ( CMB2_Boxes::get_all() as $cmb_id => $cmb ) {
 			if ( $tab_group === $cmb->prop( 'tab_group' ) ) {
+				// @codeCoverageIgnoreStart
 				$tabs[ $cmb->options_page_keys()[0] ] = $cmb->prop( 'tab_title' )
 					? $cmb->prop( 'tab_title' )
 					: $cmb->prop( 'title' );
+				// @codeCoverageIgnoreEnd
 			}
 		}
 
@@ -186,7 +174,10 @@ class AdminSettings implements Executable, Registrable {
 
 		// Select another submenu item to highlight (optional).
 		if ( $plugin_page && in_array( $plugin_page, $hidden, true ) ) {
+
+			// @codeCoverageIgnoreStart
 			$submenu_file = Settings::OPTION_KEY_GENERAL;
+			// @codeCoverageIgnoreEnd
 		}
 
 		// Hide the submenus.

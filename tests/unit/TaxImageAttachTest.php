@@ -26,7 +26,26 @@ use DRPPSM\TaxMeta;
  */
 class TaxImageAttachTest extends BaseTest {
 
+	/**
+	 * TaxImageAttach object.
+	 *
+	 * @var ?TaxImageAttach
+	 */
 	private ?TaxImageAttach $obj;
+
+	/**
+	 * Taxonomy name.
+	 *
+	 * @var ?string
+	 */
+	private ?string $tax;
+
+	/**
+	 * Taxonomy meta key.
+	 *
+	 * @var ?string
+	 */
+	private ?string $key;
 
 	/**
 	 * This method is called before each test.
@@ -37,6 +56,8 @@ class TaxImageAttachTest extends BaseTest {
 	public function setUp(): void {
 		parent::setUp();
 		$this->obj = TaxImageAttach::exec();
+		$this->tax = DRPPSM_TAX_SERIES;
+		$this->key = "{$this->tax}_image_id";
 	}
 
 	/**
@@ -56,10 +77,16 @@ class TaxImageAttachTest extends BaseTest {
 	 * @return void
 	 * @since 1.0.0
 	 */
-	public function test_register() {
+	public function test_register(): void {
 		$this->set_admin( false );
 		$result = $this->obj->register();
 		$this->assertFalse( $result );
+
+		$this->set_admin( true );
+		$meta_type = 'term';
+		remove_action( "get_{$meta_type}_metadata", array( $this->obj, 'get_metadata' ) );
+		$result = $this->obj->register();
+		$this->assertTrue( $result );
 	}
 
 	/**
@@ -69,7 +96,6 @@ class TaxImageAttachTest extends BaseTest {
 	 * @since 1.0.0
 	 */
 	public function test_get_taxonomy() {
-		$tax = DRPPSM_TAX_SERIES;
 
 		// Test with empty meta_key.
 		$method = $this->get_method( $this->obj, 'get_taxonomy' );
@@ -81,7 +107,7 @@ class TaxImageAttachTest extends BaseTest {
 		$this->assertNull( $result );
 
 		// Test with valid meta_key.
-		$result = $method->invoke( $this->obj, "{$tax}_image_id" );
+		$result = $method->invoke( $this->obj, $this->key );
 		$this->assertIsString( $result );
 	}
 
@@ -104,11 +130,9 @@ class TaxImageAttachTest extends BaseTest {
 	 * @since 1.0.0
 	 */
 	public function test_get_image_meta() {
-		$tax = DRPPSM_TAX_SERIES;
-
 		$series = $this->get_series_with_images();
 		$method = $this->get_method( $this->obj, 'get_image_meta' );
-		$result = $method->invoke( $this->obj, $series->term_id, "{$tax}_image_id", false, 'term' );
+		$result = $method->invoke( $this->obj, $series->term_id, $this->key, false, 'term' );
 		$this->assertNotNull( $result );
 		$this->assertIsArray( $result );
 
@@ -117,19 +141,23 @@ class TaxImageAttachTest extends BaseTest {
 		$this->assertIsArray( $result );
 	}
 
+	/**
+	 * Test delete_meta method.
+	 *
+	 * @return void
+	 * @since 1.0.0
+	 */
 	public function test_delete_meta() {
-		$taxonomy = DRPPSM_TAX_SERIES;
-		$key      = "{$taxonomy}_image_id";
-		$term     = $this->get_series_with_images();
+		$term = $this->get_series_with_images();
 		if ( ! $term ) {
 			$this->markTestSkipped( 'No series found with images.' );
 			return;
 		}
-		$image_id = get_term_meta( $term->term_id, $key, true );
-		$result   = $this->obj->delete_meta( array(), $term->term_id, $key, $image_id );
+		$image_id = get_term_meta( $term->term_id, $this->key, true );
+		$result   = $this->obj->delete_meta( array(), $term->term_id, $this->key, $image_id );
 		$this->assertIsBool( $result );
 
-		$result = $this->obj->add_meta( $term->term_id, $key, $image_id );
+		$result = $this->obj->add_meta( $term->term_id, $this->key, $image_id );
 		$this->assertIsBool( $result );
 	}
 
@@ -150,8 +178,7 @@ class TaxImageAttachTest extends BaseTest {
 		$meta = TaxMeta::get_taxonomy_meta( $series );
 		$this->assertNotNull( array( 'TAXMETA' => $meta ) );
 
-		$key    = "{$series->taxonomy}_image_id";
-		$result = $this->obj->add_meta( $series->term_id, $key, $meta->image_id );
+		$result = $this->obj->add_meta( $series->term_id, $this->key, $meta->image_id );
 		$this->assertIsBool( $result );
 	}
 
@@ -162,10 +189,6 @@ class TaxImageAttachTest extends BaseTest {
 	 * @since 1.0.0
 	 */
 	public function test_attach() {
-		$taxonomy = DRPPSM_TAX_SERIES;
-
-		$key = "{$taxonomy}_image_id";
-
 		$method = $this->get_method( $this->obj, 'attach' );
 
 		// Test invalid taxonomy.
@@ -173,7 +196,7 @@ class TaxImageAttachTest extends BaseTest {
 		$this->assertFalse( $result );
 
 		// Test invalid image id.
-		$result = $method->invoke( $this->obj, 0, $key, 0 );
+		$result = $method->invoke( $this->obj, 0, $this->key, 0 );
 		$this->assertFalse( $result );
 
 		// Test with valid image id.
@@ -183,8 +206,8 @@ class TaxImageAttachTest extends BaseTest {
 			return;
 		}
 
-		$image_id = get_term_meta( $term->term_id, $key, true );
-		$result   = $method->invoke( $this->obj, $term->term_id, $key, $image_id );
+		$image_id = get_term_meta( $term->term_id, $this->key, true );
+		$result   = $method->invoke( $this->obj, $term->term_id, $this->key, $image_id );
 		$this->assertIsBool( $result );
 	}
 
@@ -195,10 +218,6 @@ class TaxImageAttachTest extends BaseTest {
 	 * @since 1.0.0
 	 */
 	public function test_detach() {
-		$taxonomy = DRPPSM_TAX_SERIES;
-
-		$key = "{$taxonomy}_image_id";
-
 		$method = $this->get_method( $this->obj, 'detach' );
 
 		// Test invalid taxonomy.
@@ -206,7 +225,7 @@ class TaxImageAttachTest extends BaseTest {
 		$this->assertFalse( $result );
 
 		// Test invalid image id.
-		$result = $method->invoke( $this->obj, 0, $key, 0 );
+		$result = $method->invoke( $this->obj, 0, $this->key, 0 );
 		$this->assertFalse( $result );
 
 		// Detach image.
@@ -215,13 +234,13 @@ class TaxImageAttachTest extends BaseTest {
 			$this->markTestSkipped( 'No series found with images.' );
 			return;
 		}
-		$image_id = get_term_meta( $term->term_id, $key, true );
-		$result   = $method->invoke( $this->obj, $term->term_id, $key, $image_id );
+		$image_id = get_term_meta( $term->term_id, $this->key, true );
+		$result   = $method->invoke( $this->obj, $term->term_id, $this->key, $image_id );
 		$this->assertIsBool( $result );
 
 		// Attach image.
 		$method = $this->get_method( $this->obj, 'attach' );
-		$result = $method->invoke( $this->obj, $term->term_id, $key, $image_id );
+		$result = $method->invoke( $this->obj, $term->term_id, $this->key, $image_id );
 		$this->assertIsBool( $result );
 	}
 
@@ -238,12 +257,11 @@ class TaxImageAttachTest extends BaseTest {
 			$this->markTestSkipped( 'No series found.' );
 		}
 
-		$key    = "{$series->taxonomy}_image_id";
-		$result = $this->obj->get_metadata( null, $series->term_id, $key, true, 'term' );
+		$result = $this->obj->get_metadata( null, $series->term_id, $this->key, true, 'term' );
 		$this->assertNotNull( $result );
 		Logger::debug( $result );
 
-		$result = $this->obj->update_meta( 0, $series->term_id, $key, $result );
+		$result = $this->obj->update_meta( 0, $series->term_id, $this->key, $result );
 		$this->assertIsBool( $result );
 	}
 }

@@ -15,7 +15,6 @@ defined( 'ABSPATH' ) || exit;
 
 use DRPPSM\Admin\AdminMenu;
 use DRPPSM\Admin\AdminSettings;
-use DRPPSM\DB\DbUpdates;
 use DRPPSM\Interfaces\RolesInt;
 use DRPPSM\Interfaces\TextDomainInt;
 use DRPPSM\Interfaces\NoticeInt;
@@ -30,7 +29,6 @@ return array(
 	AdminSettings::class     => AdminSettings::class,
 	BibleLoader::class       => BibleLoader::class,
 	Codes::class             => Codes::class,
-	DbUpdates::class         => DbUpdates::class,
 	ImageSize::class         => ImageSize::class,
 	LogWritterInt::class     => LogFile::class,
 	LoggerInt::class         => Logger::class,

@@ -34,6 +34,8 @@ use DRPPSM\Transient;
 class SermonSettings extends BaseSettings implements Executable, Registrable {
 	use ExecutableTrait;
 
+	public static CMB2 $cmb;
+
 	/**
 	 * Key used in storing options.
 	 *
@@ -107,6 +109,7 @@ class SermonSettings extends BaseSettings implements Executable, Registrable {
 		$this->common_base_slug( $cmb );
 		$this->sermon_single( $cmb );
 		$this->sermon_plural( $cmb );
+		self::$cmb = $cmb;
 	}
 
 	/**

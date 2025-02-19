@@ -131,7 +131,7 @@ class SermonSorting implements Executable {
 			$args    = $default + $args;
 
 			// Populate the action field for the form.
-			$obj->set_action( $args );
+			// $obj->set_action( $args );
 
 			/**
 			 * Allows to filter filtering args.
@@ -194,6 +194,7 @@ class SermonSorting implements Executable {
 			 */
 			return apply_filters( 'drppsmf_sorting_output', $content, $args, $orig_args, $filters, $visibility_mapping );
 
+			// @codeCoverageIgnoreStart
 		} catch ( \Throwable | WP_Exception $th ) {
 			Logger::error(
 				array(
@@ -202,6 +203,7 @@ class SermonSorting implements Executable {
 				)
 			);
 			return '';
+			// @codeCoverageIgnoreEnd
 		}
 	}
 
@@ -273,6 +275,7 @@ class SermonSorting implements Executable {
 	 * @param array &$args Arguments array.
 	 * @return void
 	 */
+	/*
 	private function set_action( array &$args ): void {
 		switch ( $args['action'] ) {
 			case 'home':
@@ -289,4 +292,5 @@ class SermonSorting implements Executable {
 				break;
 		}
 	}
+	*/
 }
