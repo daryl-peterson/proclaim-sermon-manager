@@ -49,7 +49,7 @@ return array(
 	TaxImageAttach::class    => TaxImageAttach::class,
 	TaxListTable::class      => TaxListTable::class,
 	TaxMeta::class           => TaxMeta::class,
-	TextDomainInt::class     => TextDomain::class,
+	// TextDomainInt::class     => TextDomain::class,
 	Template::class          => Template::class,
 	Dashboard::class         => Dashboard::class,
 );

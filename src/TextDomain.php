@@ -39,10 +39,14 @@ class TextDomain implements TextDomainInt {
 	 * @since 1.0.0
 	 */
 	public function register(): ?bool {
-		if ( has_action( 'plugins_loaded', array( $this, 'load_domain' ) ) ) {
+		if ( did_action( Action::AFTER_INIT, array( $this, 'load_domain' ) ) ) {
 			return false;
 		}
-		add_action( 'plugins_loaded', array( $this, 'load_domain' ) );
+
+		if ( has_action( Action::AFTER_INIT, array( $this, 'load_domain' ) ) ) {
+			return false;
+		}
+		// add_action( Action::AFTER_INIT, array( $this, 'load_domain' ) );
 		return true;
 	}
 
@@ -54,7 +58,13 @@ class TextDomain implements TextDomainInt {
 	 */
 	public function load_domain(): bool {
 
-		if ( ! has_action( 'plugins_loaded', array( $this, 'load_domain' ) ) ) {
+		$current_action = current_action();
+
+		if ( did_action( Action::AFTER_INIT, array( $this, 'load_domain' ) ) ) {
+			return false;
+		}
+
+		if ( ! has_action( Action::AFTER_INIT, array( $this, 'load_domain' ) ) ) {
 			return false;
 		}
 
@@ -65,8 +75,9 @@ class TextDomain implements TextDomainInt {
 		$mofile = 'drppsm' . '-' . $locale . '.mo';
 		// phpcs:enable
 
-		$result = load_plugin_textdomain( DRPSM_DOMAIN, false, $path );
-		remove_action( 'plugins_loaded', array( $this, 'load_domain' ) );
+		// $result = load_plugin_textdomain( DRPSM_DOMAIN, false, $path );
+		$result = true;
+		remove_action( 'init', array( $this, 'load_domain' ) );
 		return $result;
 	}
 
@@ -78,6 +89,7 @@ class TextDomain implements TextDomainInt {
 	 */
 	public function switch_to_site_locale(): bool {
 		$result = false;
+		return $result;
 
 		Logger::debug( 'SWITCHING LOCALE' );
 		try {
@@ -118,6 +130,8 @@ class TextDomain implements TextDomainInt {
 	 */
 	public function restore_locale(): bool {
 		$result = false;
+		return $result;
+
 		try {
 			if ( ! function_exists( 'restore_previous_locale' ) ) {
 				// @codeCoverageIgnoreStart

@@ -169,6 +169,7 @@ class PostTypeSetup implements Executable, Registrable {
 				)
 			);
 			// @codeCoverageIgnoreEnd
+			return $status;
 		}
 	}
 
