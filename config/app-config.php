@@ -25,7 +25,6 @@ use DRPPSM\ShortCodes\Codes;
 
 
 return array(
-	// TextDomainInt::class     => TextDomain::class,
 	AdminMenu::class         => AdminMenu::class,
 	AdminSettings::class     => AdminSettings::class,
 	BibleLoader::class       => BibleLoader::class,
@@ -50,7 +49,7 @@ return array(
 	TaxImageAttach::class    => TaxImageAttach::class,
 	TaxListTable::class      => TaxListTable::class,
 	TaxMeta::class           => TaxMeta::class,
-	// TextDomainInt::class     => TextDomain::class,
+	TextDomainInt::class     => TextDomain::class,
 	Template::class          => Template::class,
 	Dashboard::class         => Dashboard::class,
 );

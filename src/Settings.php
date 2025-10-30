@@ -418,32 +418,20 @@ class Settings {
 				// ------------------------------------------------------------
 				// PREACHER SETTINGS
 				// ------------------------------------------------------------
-
-				/* translators: preacher singular */
-				self::PREACHER_SINGULAR     => __( 'Preacher', 'drppsm' ),
-
-				/* translators: preacher plural */
-				self::PREACHER_PLURAL       => __( 'Preachers', 'drppsm' ),
+				self::PREACHER_SINGULAR     => 'Preacher',
+				self::PREACHER_PLURAL       => 'Preachers',
 
 				// ------------------------------------------------------------
 				// SERIES SETTINGS
 				// ------------------------------------------------------------
-
-				/* translators: series singular */
-				self::SERIES_SINGULAR       => __( 'Series', 'drppsm' ),
-
-				/* translators: series plural */
-				self::SERIES_PLURAL         => __( 'Series', 'drppsm' ),
+				self::SERIES_SINGULAR       => 'Series',
+				self::SERIES_PLURAL         => 'Series',
 
 				// --------------------------------------------------------------
 				// SERVICE TYPE SETTINGS
 				// --------------------------------------------------------------
-
-				/* translators: service type singular */
-				self::SERVICE_TYPE_SINGULAR => __( 'Service Type', 'drppsm' ),
-
-				/* translators: service type plural */
-				self::SERVICE_TYPE_PLURAL   => __( 'Service Types', 'drppsm' ),
+				self::SERVICE_TYPE_SINGULAR => 'Service Type',
+				self::SERVICE_TYPE_PLURAL   => 'Service Types',
 			),
 
 			self::OPTION_KEY_DISPLAY  => array(
@@ -474,13 +462,8 @@ class Settings {
 				self::COMMON_BASE_SLUG      => false,
 				self::DATE_FORMAT           => 'F j, Y',
 				self::SERMON_COUNT          => 10,
-
-				/* translators: sermon singular */
-				self::SERMON_SINGULAR       => __( 'Sermon', 'drppsm' ),
-
-				/* translators: sermon plural */
-				self::SERMON_PLURAL         => __( 'Sermons', 'drppsm' ),
-
+				self::SERMON_SINGULAR       => 'Sermon',
+				self::SERMON_PLURAL         => 'Sermons',
 				self::SERMON_LAYOUT         => 'col',
 			),
 

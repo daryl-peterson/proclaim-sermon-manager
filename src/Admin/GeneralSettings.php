@@ -98,8 +98,8 @@ class GeneralSettings extends BaseSettings implements Executable, Registrable {
 	 */
 	public function register_metaboxes( callable $display_cb ): void {
 
-		$menu_title = __( 'Settings', 'drppsm' );
-		$title      = 'Proclaim ' . __( 'Sermon Manager Settings', 'drppsm' );
+		$menu_title = 'Settings';
+		$title      = 'Proclaim Sermon Manager Settings';
 
 		/**
 		 * Registers main options page menu item and form.
@@ -118,6 +118,7 @@ class GeneralSettings extends BaseSettings implements Executable, Registrable {
 
 		$cmb = new_cmb2_box( $args );
 		$this->add_player( $cmb );
+
 		$this->add_menu_icon( $cmb );
 		$this->add_sermon_comments( $cmb );
 
@@ -142,11 +143,11 @@ class GeneralSettings extends BaseSettings implements Executable, Registrable {
 	 * @since 1.0.0
 	 */
 	private function add_player( CMB2 $cmb ): void {
-		$desc = __( 'Select which player to use for playing Sermons.', 'drppsm' );
+		$desc = 'Select which player to use for playing Sermons.';
 		$cmb->add_field(
 			array(
 				'id'               => Settings::PLAYER,
-				'name'             => AdminMsg::player_name(),
+				'name'             => 'Audio & Video Player',
 				'type'             => 'select',
 				'show_option_none' => true,
 				'options'          => array(
@@ -157,7 +158,8 @@ class GeneralSettings extends BaseSettings implements Executable, Registrable {
 				),
 				'after_row'        => $this->description( $desc ),
 				'before_row'       => function () {
-					$this->add_section( __( 'General Settings', 'drppsm' ) );
+					// $this->add_section( __( 'General Settings', 'drppsm' ) );
+					$this->add_section( 'General Settings' );
 				},
 			)
 		);
@@ -175,7 +177,7 @@ class GeneralSettings extends BaseSettings implements Executable, Registrable {
 		$cmb->add_field(
 			array(
 				'id'               => Settings::MENU_ICON,
-				'name'             => __( 'Audio & Video Player', 'drppsm' ),
+				'name'             => AdminMsg::player_name(),
 				'type'             => 'select',
 				'show_option_none' => true,
 				'options'          => array(

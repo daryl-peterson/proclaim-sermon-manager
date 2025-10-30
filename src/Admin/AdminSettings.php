@@ -53,6 +53,7 @@ class AdminSettings implements Executable, Registrable {
 		if ( ! is_admin() || has_action( 'cmb2_admin_init', array( $this, 'register_metaboxes' ) ) ) {
 			return false;
 		}
+
 		Settings::set_defaults();
 
 		$object_type = 'options-page';
