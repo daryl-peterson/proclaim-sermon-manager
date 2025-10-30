@@ -27,7 +27,6 @@
  * ----------------------------------------------------------------------------
  *
  * @todo Implement bible-api.com
- *
  */
 
 namespace DRPPSM;
@@ -52,10 +51,14 @@ define( 'DRPPSM_FILE', __FILE__ );
 define( 'DRPPSM_PATH', dirname( DRPPSM_FILE ) . $ds );
 define( 'DRPPSM_BASENAME', plugin_basename( __FILE__ ) );
 define( 'DRPPSM_URL', plugin_dir_url( __FILE__ ) );
+
+/*
 define(
 	'DRPPSM_TITLE',
 	__( 'Proclaim Sermon Manager', 'drppsm' )
 );
+*/
+define( 'DRPPSM_TITLE', 'Proclaim Sermon Manager' );
 
 define( 'DRPPSM_MIN_PHP', '8.1.0' );
 define( 'DRPPSM_MIN_WP', '6.4.0' );

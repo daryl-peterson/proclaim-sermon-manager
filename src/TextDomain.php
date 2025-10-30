@@ -39,14 +39,16 @@ class TextDomain implements TextDomainInt {
 	 * @since 1.0.0
 	 */
 	public function register(): ?bool {
-		if ( did_action( Action::AFTER_INIT, array( $this, 'load_domain' ) ) ) {
+		Logger::debug( 'REGISTERING' );
+
+		if ( did_action( 'init', array( $this, 'load_domain' ) ) ) {
 			return false;
 		}
 
-		if ( has_action( Action::AFTER_INIT, array( $this, 'load_domain' ) ) ) {
+		if ( has_action( 'init', array( $this, 'load_domain' ) ) ) {
 			return false;
 		}
-		// add_action( Action::AFTER_INIT, array( $this, 'load_domain' ) );
+		add_action( 'init', array( $this, 'load_domain' ) );
 		return true;
 	}
 
@@ -59,12 +61,9 @@ class TextDomain implements TextDomainInt {
 	public function load_domain(): bool {
 
 		$current_action = current_action();
+		Logger::debug( array( 'ACTION' => $current_action ) );
 
-		if ( did_action( Action::AFTER_INIT, array( $this, 'load_domain' ) ) ) {
-			return false;
-		}
-
-		if ( ! has_action( Action::AFTER_INIT, array( $this, 'load_domain' ) ) ) {
+		if ( ! has_action( 'init', array( $this, 'load_domain' ) ) ) {
 			return false;
 		}
 
@@ -75,8 +74,15 @@ class TextDomain implements TextDomainInt {
 		$mofile = 'drppsm' . '-' . $locale . '.mo';
 		// phpcs:enable
 
-		// $result = load_plugin_textdomain( DRPSM_DOMAIN, false, $path );
-		$result = true;
+		$result = load_plugin_textdomain( DRPSM_DOMAIN, false, $path );
+		Logger::debug(
+			array(
+				'PATH'   => $path,
+				'MOFILE' => $mofile,
+				'RESULT' => $result,
+			)
+		);
+
 		remove_action( 'init', array( $this, 'load_domain' ) );
 		return $result;
 	}
