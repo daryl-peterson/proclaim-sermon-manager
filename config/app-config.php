@@ -25,7 +25,7 @@ use DRPPSM\ShortCodes\Codes;
 
 
 return array(
-	TextDomainInt::class     => TextDomain::class,
+	// TextDomainInt::class     => TextDomain::class,
 	AdminMenu::class         => AdminMenu::class,
 	AdminSettings::class     => AdminSettings::class,
 	BibleLoader::class       => BibleLoader::class,

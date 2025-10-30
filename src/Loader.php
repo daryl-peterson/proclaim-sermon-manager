@@ -56,14 +56,14 @@ class Loader implements Executable, Runable {
 	 */
 	public function run(): bool {
 		try {
-			/*
+
 			if ( did_action( Action::AFTER_INIT ) && ! ( defined( DRPPSM_TESTING ) ) ) {
 				// @codeCoverageIgnoreStart
 				return false;
 				// @codeCoverageIgnoreEnd
 
 			}
-			*/
+
 			$this->classes = app()->container()->keys();
 			foreach ( $this->classes as $class ) {
 				if ( Plugin::class === $class ) {

@@ -32,9 +32,10 @@
 			"src/Core/Functions/core.php",
 			"src/Core/Functions/defines.php",
 			"src/Core/Functions/misc.php",
-			"src/Core/Functions/include.php",
 			"src/Core/Functions/database.php",
-			"src/Core/Functions/templates.php"
+			"src/Core/Functions/templates.php",
+			"src/Core/Functions/include.php",
+			"src/Core/Functions/misc.php"
 		]
 	},
 	"repositories": [

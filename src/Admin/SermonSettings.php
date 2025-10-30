@@ -11,6 +11,7 @@
 
 namespace DRPPSM\Admin;
 
+use Automattic\Jetpack\Forms\ContactForm\Admin;
 use CMB2;
 use DRPPSM\Action;
 use DRPPSM\Interfaces\Executable;
@@ -21,6 +22,8 @@ use DRPPSM\Filter;
 use DRPPSM\Logger;
 use DRPPSM\Settings;
 use DRPPSM\Transient;
+
+
 
 /**
  * Sermon Settings.
@@ -328,7 +331,8 @@ class SermonSettings extends BaseSettings implements Executable, Registrable {
 		$s1 = '<code>' . __( '/sermon/mark', 'drppsm' ) . '</code>';
 		$s2 = '<code>' . __( '/lecture/mark', 'drppsm' ) . '</code>';
 
-		$desc  = DRPPSM_MSG_LABEL_SINGLE . '<br>';
+		$desc = AdminMsg::label_single() . '<br>';
+
 		$desc .= wp_sprintf(
 			// translators: %1$s Default sermon slug/path. Effectively <code>/sermon/mark</code>.
 			// translators: %2$s Example lecture slug/path. Effectively <code>/lecture/mark</code>.
@@ -336,7 +340,7 @@ class SermonSettings extends BaseSettings implements Executable, Registrable {
 			$s1,
 			$s2
 		);
-		$desc .= '<br>' . DRPPSM_MSG_SLUG_NOTE;
+		$desc .= '<br>' . AdminMsg::slug_note();
 
 		$cmb->add_field(
 			array(
@@ -362,7 +366,7 @@ class SermonSettings extends BaseSettings implements Executable, Registrable {
 		$s1 = '<code>' . __( '/sermons/', 'drppsm' ) . '</code>';
 		$s2 = '<code>' . __( '/lectures/', 'drppsm' ) . '</code>';
 
-		$desc  = DRPPSM_MSG_LABEL_PLURAL . '<br>';
+		$desc  = AdminMsg::label_plural() . '<br>';
 		$desc .= wp_sprintf(
 			// translators: %1$s Default series slug/path. Effectively <code>/sermons/</code>.
 			// translators: %2$s Example listings slug/path. Effectively <code>/lectures/</code>.
@@ -370,7 +374,7 @@ class SermonSettings extends BaseSettings implements Executable, Registrable {
 			$s1,
 			$s2
 		);
-		$desc .= '<br>' . DRPPSM_MSG_SLUG_NOTE;
+		$desc .= '<br>' . AdminMsg::slug_note();
 
 		$cmb->add_field(
 			array(

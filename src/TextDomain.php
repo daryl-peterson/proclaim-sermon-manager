@@ -32,14 +32,18 @@ class TextDomain implements TextDomainInt {
 
 	use ExecutableTrait;
 
+
+	public function register(): ?bool {
+		return true;
+	}
 	/**
 	 * Register hooks
 	 *
 	 * @return null|bool Return true if hooks were initialized.
 	 * @since 1.0.0
 	 */
-	public function register(): ?bool {
-		Logger::debug( 'REGISTERING' );
+	public function register2(): ?bool {
+		// Logger::debug( 'REGISTERING' );
 
 		if ( did_action( 'init', array( $this, 'load_domain' ) ) ) {
 			return false;
@@ -60,9 +64,6 @@ class TextDomain implements TextDomainInt {
 	 */
 	public function load_domain(): bool {
 
-		$current_action = current_action();
-		Logger::debug( array( 'ACTION' => $current_action ) );
-
 		if ( ! has_action( 'init', array( $this, 'load_domain' ) ) ) {
 			return false;
 		}
@@ -73,6 +74,8 @@ class TextDomain implements TextDomainInt {
 		// phpcs:disable
 		$mofile = 'drppsm' . '-' . $locale . '.mo';
 		// phpcs:enable
+
+		return true;
 
 		$result = load_plugin_textdomain( DRPSM_DOMAIN, false, $path );
 		Logger::debug(

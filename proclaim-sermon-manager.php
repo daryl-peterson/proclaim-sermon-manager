@@ -37,6 +37,7 @@ if ( ! defined( 'WPINC' ) ) {
 	exit;
 }
 
+
 if ( file_exists( __DIR__ . '/lib/autoload.php' ) ) {
 	require_once __DIR__ . '/lib/autoload.php';
 }
@@ -59,7 +60,6 @@ define(
 );
 */
 define( 'DRPPSM_TITLE', 'Proclaim Sermon Manager' );
-
 define( 'DRPPSM_MIN_PHP', '8.1.0' );
 define( 'DRPPSM_MIN_WP', '6.4.0' );
 define( 'DRPPSM_VER', '1.0.0' );
@@ -67,11 +67,9 @@ define( 'DRPSM_KEY_PREFIX', 'drppsm' );
 define( 'DRPSM_DOMAIN', 'drppsm' );
 define( 'DRPPSM_PLUGIN', 'drppsm_plugin' );
 
-
 const FILE     = __FILE__;
 const NS       = __NAMESPACE__;
 const LOG_FILE = 'drppsm';
-
 
 try {
 	app()->plugin();

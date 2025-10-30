@@ -72,6 +72,7 @@ class Plugin {
 	 */
 	public function register(): bool {
 		try {
+
 			FatalError::check();
 
 			if ( has_action( 'shutdown', array( $this, 'shutdown' ) ) ) {

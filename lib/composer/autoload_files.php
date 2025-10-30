@@ -9,7 +9,7 @@ return array(
     '2b1771712136d63f0ed4fa70e62557eb' => $baseDir . '/src/Core/Functions/core.php',
     '0ecdf14f9753bb884fe2a3c55c79a401' => $baseDir . '/src/Core/Functions/defines.php',
     'd75c4dd93ef9af06b15ee96390970d1c' => $baseDir . '/src/Core/Functions/misc.php',
-    '508f928bcc69d4d7257b594ca5e3ed26' => $baseDir . '/src/Core/Functions/include.php',
     '1bf42cb946e1f36ab7e284ac9bd55dd2' => $baseDir . '/src/Core/Functions/database.php',
     '8e0760fd21128b00441ec5c4abbdfb75' => $baseDir . '/src/Core/Functions/templates.php',
+    '508f928bcc69d4d7257b594ca5e3ed26' => $baseDir . '/src/Core/Functions/include.php',
 );

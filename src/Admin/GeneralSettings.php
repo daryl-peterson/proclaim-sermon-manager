@@ -11,6 +11,7 @@
 
 namespace DRPPSM\Admin;
 
+use Automattic\Jetpack\Forms\ContactForm\Admin;
 use CMB2;
 use DRPPSM\Action;
 use DRPPSM\Admin\AdminSettings;
@@ -18,7 +19,6 @@ use DRPPSM\Interfaces\Executable;
 use DRPPSM\Interfaces\Registrable;
 use DRPPSM\Settings;
 use DRPPSM\Traits\ExecutableTrait;
-
 
 /**
  * General settings.
@@ -38,6 +38,8 @@ class GeneralSettings extends BaseSettings implements Executable, Registrable {
 	 * @var string
 	 */
 	public string $option_key = Settings::OPTION_KEY_GENERAL;
+
+
 
 	/**
 	 * Register hooks.
@@ -144,7 +146,7 @@ class GeneralSettings extends BaseSettings implements Executable, Registrable {
 		$cmb->add_field(
 			array(
 				'id'               => Settings::PLAYER,
-				'name'             => DRPPSM_SETTINGS_PLAYER_NAME,
+				'name'             => AdminMsg::player_name(),
 				'type'             => 'select',
 				'show_option_none' => true,
 				'options'          => array(
@@ -173,7 +175,7 @@ class GeneralSettings extends BaseSettings implements Executable, Registrable {
 		$cmb->add_field(
 			array(
 				'id'               => Settings::MENU_ICON,
-				'name'             => DRPPSM_SETTINGS_MENU_ICON_NAME,
+				'name'             => __( 'Audio & Video Player', 'drppsm' ),
 				'type'             => 'select',
 				'show_option_none' => true,
 				'options'          => array(
@@ -210,7 +212,7 @@ class GeneralSettings extends BaseSettings implements Executable, Registrable {
 		$cmb->add_field(
 			array(
 				'id'   => Settings::COMMENTS,
-				'name' => DRPPSM_SETTINGS_COMMENTS_NAME,
+				'name' => __( 'Allow Comments', 'drppsm' ),
 				'type' => 'checkbox',
 			)
 		);
@@ -229,7 +231,7 @@ class GeneralSettings extends BaseSettings implements Executable, Registrable {
 		$s1 = '<code>' . __( '/service-type/morning', 'drppsm' ) . '</code>';
 		$s2 = '<code>' . __( '/congregation/morning', 'drppsm' ) . '</code>';
 
-		$desc  = DRPPSM_MSG_LABEL_SINGLE . '<br>';
+		$desc  = AdminMsg::label_single() . '<br>';
 		$desc .= wp_sprintf(
 			// translators: %1$s Default service type slug/path. Effectively <code>/service-type/morning</code>.
 			// translators: %2$s Example congregation slug/path. Effectively <code>/congreation/morning</code>.
@@ -237,7 +239,7 @@ class GeneralSettings extends BaseSettings implements Executable, Registrable {
 			$s1,
 			$s2
 		);
-		$desc .= '<br>' . DRPPSM_MSG_SLUG_NOTE;
+		$desc .= '<br>' . AdminMsg::slug_note();
 
 		$cmb->add_field(
 			array(
@@ -263,7 +265,7 @@ class GeneralSettings extends BaseSettings implements Executable, Registrable {
 		$s1 = '<code>' . __( '/service-types/', 'drppsm' ) . '</code>';
 		$s2 = '<code>' . __( '/congregations/', 'drppsm' ) . '</code>';
 
-		$desc  = DRPPSM_MSG_LABEL_PLURAL . '<br>';
+		$desc  = AdminMsg::label_plural() . '<br>';
 		$desc .= wp_sprintf(
 			// translators: %1$s Default service types slug/path. Effectively <code>/service-types/</code>.
 			// translators: %2$s Example congregations slug/path. Effectively <code>/congreations/</code>.
@@ -271,7 +273,7 @@ class GeneralSettings extends BaseSettings implements Executable, Registrable {
 			$s1,
 			$s2
 		);
-		$desc .= '<br>' . DRPPSM_MSG_SLUG_NOTE;
+		$desc .= '<br>' . AdminMsg::slug_note();
 
 		$cmb->add_field(
 			array(
@@ -295,7 +297,7 @@ class GeneralSettings extends BaseSettings implements Executable, Registrable {
 		$s1 = '<code>' . __( '/series/mark', 'drppsm' ) . '</code>';
 		$s2 = '<code>' . __( '/listing/mark', 'drppsm' ) . '</code>';
 
-		$desc  = DRPPSM_MSG_LABEL_SINGLE . '<br>';
+		$desc  = AdminMsg::label_single() . '<br>';
 		$desc .= wp_sprintf(
 			// translators: %1$s Default preacher slug/path. Effectively <code>/preacher/mark</code>.
 			// translators: %2$s Example reverend slug/path. Effectively <code>/reverend/mark</code>.
@@ -303,7 +305,7 @@ class GeneralSettings extends BaseSettings implements Executable, Registrable {
 			$s1,
 			$s2
 		);
-		$desc .= '<br>' . DRPPSM_MSG_SLUG_NOTE;
+		$desc .= '<br>' . AdminMsg::slug_note();
 
 		$cmb->add_field(
 			array(
@@ -330,7 +332,7 @@ class GeneralSettings extends BaseSettings implements Executable, Registrable {
 		$s1 = '<code>' . __( '/series/', 'drppsm' ) . '</code>';
 		$s2 = '<code>' . __( '/listings/', 'drppsm' ) . '</code>';
 
-		$desc  = DRPPSM_MSG_LABEL_PLURAL . '<br>';
+		$desc  = AdminMsg::label_plural() . '<br>';
 		$desc .= wp_sprintf(
 			// translators: %1$s Default series slug/path. Effectively <code>/series/</code>.
 			// translators: %2$s Example listings slug/path. Effectively <code>/listings/</code>.
@@ -338,7 +340,7 @@ class GeneralSettings extends BaseSettings implements Executable, Registrable {
 			$s1,
 			$s2
 		);
-		$desc .= '<br>' . DRPPSM_MSG_SLUG_NOTE;
+		$desc .= '<br>' . AdminMsg::slug_note();
 
 		$cmb->add_field(
 			array(
@@ -362,7 +364,7 @@ class GeneralSettings extends BaseSettings implements Executable, Registrable {
 		$s1 = '<code>' . __( '/preacher/mark', 'drppsm' ) . '</code>';
 		$s2 = '<code>' . __( '/reverend/mark', 'drppsm' ) . '</code>';
 
-		$desc  = DRPPSM_MSG_LABEL_SINGLE . '<br>';
+		$desc  = AdminMsg::label_single() . '<br>';
 		$desc .= wp_sprintf(
 			// translators: %1$s Default preacher slug/path. Effectively <code>/preacher/mark</code>.
 			// translators: %2$s Example reverend slug/path. Effectively <code>/reverend/mark</code>.
@@ -370,7 +372,7 @@ class GeneralSettings extends BaseSettings implements Executable, Registrable {
 			$s1,
 			$s2
 		);
-		$desc .= '<br>' . DRPPSM_MSG_SLUG_NOTE;
+		$desc .= '<br>' . AdminMsg::slug_note();
 
 		$cmb->add_field(
 			array(
@@ -397,7 +399,7 @@ class GeneralSettings extends BaseSettings implements Executable, Registrable {
 		$s1 = '<code>' . __( '/preachers/', 'drppsm' ) . '</code>';
 		$s2 = '<code>' . __( '/reverends/', 'drppsm' ) . '</code>';
 
-		$desc  = DRPPSM_MSG_LABEL_PLURAL . '<br>';
+		$desc  = AdminMsg::label_plural() . '<br>';
 		$desc .= wp_sprintf(
 			// translators: %1$s Default preachers slug/path. Effectively <code>/preachers/</code>.
 			// translators: %2$s Example reverends slug/path. Effectively <code>/reverends/</code>.
@@ -405,7 +407,7 @@ class GeneralSettings extends BaseSettings implements Executable, Registrable {
 			$s1,
 			$s2
 		);
-		$desc .= '<br>' . DRPPSM_MSG_SLUG_NOTE;
+		$desc .= '<br>' . AdminMsg::slug_note();
 		$cmb->add_field(
 			array(
 				'id'        => Settings::PREACHER_PLURAL,
