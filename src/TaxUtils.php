@@ -75,7 +75,7 @@ class TaxUtils {
 	 * @return array Terms array.
 	 * @since 1.0.0
 	 */
-	public static function get_term_options( $taxonomy = 'category', bool $full = false ): array {
+	public static function get_term_options( string $taxonomy = 'category', bool $full = false ): array {
 
 		$args['taxonomy']   = $taxonomy;
 		$args['hide_empty'] = false;
