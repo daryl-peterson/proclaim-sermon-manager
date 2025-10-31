@@ -163,8 +163,10 @@ abstract class TaxDisplay {
 		if ( isset( $this->data ) && is_array( $this->data ) && count( $this->data ) > 0 ) {
 
 			ob_start();
-			$sorting = sermon_sorting();
-			echo esc_html( $sorting );
+
+			// phpcs:disable
+			echo sermon_sorting();
+			// phpcs:enable
 
 			get_partial( $template, $args );
 			get_partial( Template::Pagination, $this->paginate );
