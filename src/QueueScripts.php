@@ -54,7 +54,6 @@ class QueueScripts implements Registrable, Executable {
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 		add_action( 'wp_footer', array( $this, 'enqueue_scripts' ) );
 
-		// add_action( 'admin_init', array( $this, 'register_admin_scripts_styles' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
 		add_action( 'admin_footer', array( $this, 'admin_footer' ) );
 
@@ -101,33 +100,38 @@ class QueueScripts implements Registrable, Executable {
 	public function register_scripts_styles() {
 		$plyr_ver = '3.7.8';
 
-		// DRPPSM_URL
+		$in_footer = array( 'in_footer' => true );
+
 		wp_register_script(
 			'drppsm-plyr',
 			DRPPSM_URL . 'assets/lib/plyr/plyr.polyfilled.js',
 			array(),
-			$plyr_ver
+			$plyr_ver,
+			$in_footer
 		);
 
 		wp_register_script(
 			'drppsm-plyr-loader',
 			DRPPSM_URL . 'assets/js/plyr' . ( ( defined( 'WP_DEBUG' ) && WP_DEBUG === true ) ? '' : '.min' ) . '.js',
 			array( 'drppsm-plyr' ),
-			DRPPSM_VER
+			DRPPSM_VER,
+			$in_footer
 		);
 
 		wp_register_script(
 			'drppsm-fb-video',
 			DRPPSM_URL . 'assets/lib/facebook/fb-video.js',
 			array(),
-			DRPPSM_VER
+			DRPPSM_VER,
+			$in_footer
 		);
 
 		wp_register_script(
 			'drppsm-frontend',
 			DRPPSM_URL . 'assets/js/frontend.js',
 			array(),
-			DRPPSM_VER
+			DRPPSM_VER,
+			$in_footer
 		);
 
 		wp_register_script(
@@ -135,6 +139,7 @@ class QueueScripts implements Registrable, Executable {
 			DRPPSM_URL . 'assets/js/admin' . ( ( defined( 'WP_DEBUG' ) && WP_DEBUG === true ) ? '' : '.min' ) . '.js',
 			array(),
 			DRPPSM_VER,
+			$in_footer
 		);
 
 		wp_register_style(

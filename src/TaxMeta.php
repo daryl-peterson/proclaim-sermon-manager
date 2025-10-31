@@ -129,9 +129,9 @@ class TaxMeta implements Executable, Registrable {
 	/**
 	 * Add taxonomy to job queue.
 	 *
-	 * @param int   $term_id
-	 * @param int   $tt_id
-	 * @param array $args
+	 * @param int   $term_id Term ID.
+	 * @param int   $tt_id Term taxonomy ID.
+	 * @param array $args Arguments.
 	 * @since 1.0.0
 	 */
 	public function created_taxonomy(
@@ -145,9 +145,9 @@ class TaxMeta implements Executable, Registrable {
 	/**
 	 * Add taxonomy to job queue.
 	 *
-	 * @param int   $term_id
-	 * @param int   $tt_id
-	 * @param array $args
+	 * @param int   $term_id Term ID.
+	 * @param int   $tt_id Term taxonomy ID.
+	 * @param array $args Arguments.
 	 * @since 1.0.0
 	 */
 	public function edited_taxonomy(
@@ -165,7 +165,7 @@ class TaxMeta implements Executable, Registrable {
 	 * @param int     $term_id Term ID.
 	 * @param int     $tax_id Taxonomy ID.
 	 * @param WP_Term $deleted_term Term object.
-	 * @param array   $bject_ids
+	 * @param array   $object_ids Object IDs.
 	 * @return void
 	 * @since 1.0.0
 	 */
@@ -173,7 +173,7 @@ class TaxMeta implements Executable, Registrable {
 		int $term_id,
 		int $tax_id,
 		WP_Term $deleted_term,
-		array $bject_ids
+		array $object_ids
 	) {
 
 		Transient::delete_all();
@@ -199,16 +199,17 @@ class TaxMeta implements Executable, Registrable {
 			return false;
 		}
 
-		/*
-		$image_id = get_term_meta( $term_id, $tax . '_image_id', true );
-
-		if ( ! $image_id && empty( $image_id ) ) {
-			Logger::debug( 'DONT SET DATE META' );
-			delete_term_meta( $term_id, $tax . '_date' );
-			return false;
-		}
-		*/
-
+		/**
+		 * Remove in the future?
+		 * $image_id = get_term_meta( $term_id, $tax . '_image_id', true );
+		 * if ( ! $image_id && empty( $image_id ) ) {
+		 *      Logger::debug( 'DONT SET DATE META' );
+		 *      delete_term_meta( $term_id, $tax . '_date' );
+		 *      return false;
+		 * }
+		 *
+		 * @todo Remove in future.
+		 */
 		return $this->set_date_meta( $tax, $term_id, $tax . '_date' );
 	}
 
@@ -225,6 +226,7 @@ class TaxMeta implements Executable, Registrable {
 	private function set_date_meta( string $tax_name, int $term_id, string $key_name, bool $recent = true ): bool {
 
 		$order = $recent ? 'ASC' : 'DESC';
+		// phpcs:disable
 		$args  = array(
 			'post_type'   => DRPPSM_PT_SERMON,
 			'numberposts' => 1,
@@ -247,6 +249,7 @@ class TaxMeta implements Executable, Registrable {
 			),
 
 		);
+		// phpcs:enable
 		$post_list = get_posts( $args );
 
 		if ( is_wp_error( $post_list ) || ! is_array( $post_list ) || ! count( $post_list ) > 0 ) {
@@ -282,9 +285,9 @@ class TaxMeta implements Executable, Registrable {
 	/**
 	 * After post edit update term meta.
 	 *
-	 * @param string $tax_name Taxonomy name.
-	 * @param int    $term_id Term ID.
-	 * @return bool True if successful.
+	 * @param int     $post_id Post ID.
+	 * @param WP_Post $post_item Post object.
+	 * @return bool
 	 * @since 1.0.0
 	 */
 	public function post_edit( int $post_id, WP_Post $post_item ): bool {
