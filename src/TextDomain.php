@@ -63,18 +63,11 @@ class TextDomain implements TextDomainInt {
 	/**
 	 * Deregister hooks
 	 *
-	 * @return null|bool Return true if hooks were removed.
+	 * @return void
 	 * @since 1.0.0
 	 */
-	public function deregister(): ?bool {
-		if ( ! $this->testing ) {
-			if ( ! has_action( 'init', array( $this, 'load_domain' ) ) ) {
-				return false;
-			}
-		}
-
+	public function deregister(): void {
 		remove_action( 'init', array( $this, 'load_domain' ) );
-		return true;
 	}
 
 	/**

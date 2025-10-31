@@ -82,18 +82,8 @@ class TextDomainTest extends BaseTest {
 	 * @since 1.0.0
 	 */
 	public function test_deregister() {
-
 		$result = $this->obj->deregister();
-		$this->assertIsBool( $result );
-
-		$result = $this->obj->deregister();
-		$this->assertFalse( $result );
-
-		$this->obj->testing = true;
-		$result             = $this->obj->deregister();
-
-		$this->assertTrue( $result );
-		$this->obj->testing = false;
+		$this->assertNull( $result );
 	}
 
 	/**
