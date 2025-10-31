@@ -82,6 +82,8 @@ class TaxUtils {
 		$terms              = get_terms( $args );
 
 		/**
+		 * Check for errors.
+		 *
 		 * @var WP_Error $terms
 		 */
 		if ( $terms instanceof WP_Error ) {
@@ -183,11 +185,13 @@ class TaxUtils {
 		);
 
 		if ( $images ) {
+			// phpcs:disable
 			$query_args = array(
 				'hide_empty' => true,
 				'meta_key'   => $taxonomy . '_date',
 				'fields'     => 'count',
 			);
+			// phpcs:enable
 		}
 
 		$term_count = get_terms( $query_args );
@@ -220,6 +224,8 @@ class TaxUtils {
 	 *
 	 * #### args[ meta_query ]
 	 * - optional - Meta query.
+	 *
+	 * @todo Fix slow query when large number of posts.
 	 */
 	public static function get_term_posts( array $args ): ?array {
 		$query_args['post_type'] = DRPPSM_PT_SERMON;
@@ -236,6 +242,7 @@ class TaxUtils {
 		}
 
 		if ( isset( $args['taxonomy'] ) && isset( $args['terms'] ) ) {
+			// phpcs:disable
 			$query_args['tax_query'] = array(
 				array(
 					'taxonomy' => $args['taxonomy'],
@@ -243,10 +250,13 @@ class TaxUtils {
 					'terms'    => $args['terms'],
 				),
 			);
+			// phpcs:enable
 		}
 
 		if ( isset( $args['meta_query'] ) ) {
+			// phpcs:disable
 			$query_args['meta_query'] = $args['meta_query'];
+			// phpcs:enable
 		}
 
 		$posts = get_posts( $query_args );
@@ -261,9 +271,11 @@ class TaxUtils {
 	 *
 	 * @param string  $taxonomy Taxonomy.
 	 * @param integer $term_id Term id.
-	 * @param int     $per_page
+	 * @param int     $per_page Number of sermons to return.
 	 * @return array|null Sermons array or null.
 	 * @since 1.0.0
+	 *
+	 * @todo Fix usage of tax_query.
 	 */
 	public static function get_sermons_by_term( string $taxonomy, int $term_id, int $per_page = 50 ): ?array {
 
@@ -274,6 +286,7 @@ class TaxUtils {
 			/**
 			 * 'fields' => 'ids' Returns array of ids.
 			 */
+			// phpcs:disable
 			'tax_query'      => array(
 				array(
 					'taxonomy' => $taxonomy,
@@ -283,6 +296,7 @@ class TaxUtils {
 					'order'    => 'asc',
 				),
 			),
+			// phpcs:enable
 		);
 
 		// phpcs:disable
@@ -405,7 +419,7 @@ class TaxUtils {
 	/**
 	 * Get the actual name of the taxonomy.
 	 *
-	 * @param string $tax Taxonomy name.
+	 * @param string $taxonomy Taxonomy name.
 	 * @return null|string
 	 * @since 1.0.0
 	 *

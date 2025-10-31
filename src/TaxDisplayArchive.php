@@ -151,11 +151,19 @@ class TaxDisplayArchive extends TaxDisplay {
 		$data      = array();
 
 		/**
+		 * Post item loop.
+		 *
 		 * @var WP_Post $post_item
 		 */
 		foreach ( $post_data as $post_item ) {
-			// $post_item              = $this->get_sermon_meta( $post_item );
-			// $post_item              = $this->get_sermon_terms( $post_item );
+			/**
+			 * Remove this if not needed.
+			 * $post_item              = $this->get_sermon_meta( $post_item );
+			 * $post_item              = $this->get_sermon_terms( $post_item );
+			 *
+			 * @todo Check usages.
+			 */
+
 			$data[ $post_item->ID ] = new Sermon( $post_item );
 		}
 		Transient::set( $trans_key, $data, Transient::TTL_12_HOURS );
@@ -167,6 +175,8 @@ class TaxDisplayArchive extends TaxDisplay {
 	 *
 	 * @return void
 	 * @since 1.0.0
+	 *
+	 * @todo Fix usage of tax_query.
 	 */
 	private function set_params() {
 		$this->per_page = Settings::get( Settings::SERMON_COUNT );
@@ -178,6 +188,7 @@ class TaxDisplayArchive extends TaxDisplay {
 			'orderby'        => 'meta_value_num',
 			'order'          => $this->order,
 			'posts_per_page' => $this->per_page,
+			// phpcs:disable
 			'tax_query'      => array(
 				array(
 					'taxonomy' => $this->taxonomy,
@@ -185,18 +196,22 @@ class TaxDisplayArchive extends TaxDisplay {
 					'terms'    => $this->term->term_id,
 				),
 			),
+			// phpcs:enable
 		);
 
-		if ( $this->orderby === 'date_preached' ) {
+		if ( 'date_preached' === $this->orderby ) {
+			// phpcs:disable
 			$args['meta_query'] = array(
 				'orderby'      => 'meta_value_num',
 				'meta_key'     => SermonMeta::DATE,
 				'meta_value'   => time(),
 				'meta_compare' => '<=',
 			);
-			$args['orderby']    = 'meta_value_num';
-			$args['order']      = $this->order;
-			$args['meta_key']   = SermonMeta::DATE;
+
+			$args['orderby']  = 'meta_value_num';
+			$args['order']    = $this->order;
+			$args['meta_key'] = SermonMeta::DATE;
+			// phpcs:enable
 		}
 		$this->args = $args;
 	}

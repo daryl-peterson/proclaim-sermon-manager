@@ -112,17 +112,6 @@ class TemplateBlocks implements Executable, Registrable {
 	public function manage_block_templates( $query_result, $query, $template_type ) {
 		global $post;
 
-		/*
-		Logger::debug(
-			array(
-				'QUERY RESULT'   => $query_result,
-				'TEMPLATE QUERY' => $query,
-				'TEMPLATE TYPE'  => $template_type,
-				'POST'           => $post,
-			)
-		);
-		*/
-
 		if ( 'wp_template' !== $template_type ) {
 			return $query_result;
 		}

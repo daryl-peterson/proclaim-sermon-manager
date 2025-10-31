@@ -119,6 +119,8 @@ class Dashboard implements Executable, Registrable {
 	 *
 	 * @return bool Always true.
 	 * @since 1.0.0
+	 *
+	 * @todo Fix phpcs disable/enable.
 	 */
 	public function show_glance(): bool {
 
@@ -146,7 +148,11 @@ class Dashboard implements Executable, Registrable {
 		}
 
 		$count .= '</li>';
+
+		// phpcs:disable
 		echo $count;
+		// phpcs:enable
+
 		return true;
 	}
 }

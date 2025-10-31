@@ -158,6 +158,8 @@ class TaxData {
 		$names = array();
 
 		/**
+		 * Term loop.
+		 *
 		 * @var WP_Term $term
 		 */
 		foreach ( $this->terms as $term ) {
@@ -184,6 +186,8 @@ class TaxData {
 		$links = array();
 
 		/**
+		 * Term loop.
+		 *
 		 * @var WP_Term $term
 		 */
 		foreach ( $this->terms as $term ) {
@@ -205,6 +209,8 @@ class TaxData {
 		$ids = array();
 
 		/**
+		 * Term loop.
+		 *
 		 * @var WP_Term $term
 		 */
 		foreach ( $this->terms as $term ) {
@@ -271,7 +277,7 @@ class TaxData {
 
 		foreach ( $terms as $key => $term ) {
 			// @codeCoverageIgnoreStart
-			if ( $term->slug === 'none' ) {
+			if ( 'none' === $term->slug ) {
 				unset( $terms[ $key ] );
 				break;
 			}

@@ -79,7 +79,7 @@ class TaxDisplayList extends TaxDisplay {
 	/**
 	 * Validate arguments.
 	 *
-	 * @param array $args
+	 * @param array $args Arguments.
 	 * @return bool
 	 * @since 1.0.0
 	 */
@@ -117,18 +117,23 @@ class TaxDisplayList extends TaxDisplay {
 	/**
 	 * Set query parameters.
 	 *
-	 * @param array $args
+	 * @param array $args Arguments.
 	 * @return void
 	 * @since 1.0.0
+	 *
+	 * @todo Fix usage of meta_key.
 	 */
 	private function set_params( array $args ): void {
 		$this->per_page = $args['per_page'];
+
+		// phpcs:disable
 		$this->args     = array(
 			'hide_empty' => true,
 			'meta_key'   => $this->taxonomy . '_date',
 			'orderby'    => 'meta_value_num',
 			'order'      => 'DESC',
 		);
+		// phpcs:enable
 	}
 
 
@@ -178,6 +183,8 @@ class TaxDisplayList extends TaxDisplay {
 		$count = 0;
 
 		/**
+		 * Loop through terms.
+		 *
 		 * @var WP_Term $item
 		 */
 		foreach ( $list as $item ) {

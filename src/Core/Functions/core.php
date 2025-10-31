@@ -97,6 +97,8 @@ function get_post_field( $post_type, $field_name ): ?string {
  * @param string $item_name Name of the post type, taxonomy.
  * @return mixed Definition array on success.
  * @since 1.0.0
+ *
+ * @todo Fix.
  */
 function get_type_def( string $item_name ): mixed {
 	return null;
@@ -117,14 +119,14 @@ function set_type_def( string $item_name, mixed $item_value ): void {
 /**
  * Check if an array has all the keys.
  *
- * @param array $keys
- * @param array $array
+ * @param array $keys Keys to check.
+ * @param array $array_object Array to check against.
  * @return bool
  * @since 1.0.0
  */
-function has_keys( array $keys, array $array ): bool {
+function has_keys( array $keys, array $array_object ): bool {
 	foreach ( $keys as $key ) {
-		if ( ! key_exists( $key, $array ) ) {
+		if ( ! key_exists( $key, $array_object ) ) {
 			return false;
 		}
 	}
@@ -145,7 +147,7 @@ function get_sermon_meta( $meta_key = '', $post = null ): mixed {
 		global $post;
 	}
 
-	if ( $post === null ) {
+	if ( null === $post ) {
 		return null;
 	}
 
@@ -163,16 +165,16 @@ function get_sermon_meta( $meta_key = '', $post = null ): mixed {
  *
  * @param string $date_str Date string.
  * @param string $format Date format.
- * @param int    $minuteInterval Minute interval.
+ * @param int    $minute_interval Minute interval.
  * @return mixed
  * @since 1.0.0
  */
-function date_round( string $date_str, string $format = 'U', $minuteInterval = 10 ): string {
+function date_round( string $date_str, string $format = 'U', $minute_interval = 10 ): string {
 	$date_time = new DateTime( $date_str );
 
 	$date_time->setTime(
 		$date_time->format( 'H' ),
-		round( $date_time->format( 'i' ) / $minuteInterval ) * $minuteInterval,
+		round( $date_time->format( 'i' ) / $minute_interval ) * $minute_interval,
 		0
 	);
 	return $date_time->format( $format );
@@ -296,9 +298,9 @@ function cast_stdclass( $source_obj ): mixed {
 			$name  = $source_prop->getName();
 			$value = $source_prop->getValue( $source_obj );
 			if ( $destination_reflection->hasProperty( $name ) ) {
-				$propDest = $destination_reflection->getProperty( $name );
-				$propDest->setAccessible( true );
-				$propDest->setValue( $destination, $value );
+				$destination_prop = $destination_reflection->getProperty( $name );
+				$destination_prop->setAccessible( true );
+				$destination_prop->setValue( $destination, $value );
 			} else {
 				$destination->$name = $value;
 			}
