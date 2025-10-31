@@ -53,7 +53,8 @@ if ( ! isset( $paginate_links ) ) {
 	}
 
 	if ( 1 === $paged_var && $args['total'] !== $paged_var ) {
-		// render_html( ' <a class="next page-numbers" href="' . esc_html( get_permalink( $args['post_id'] ) ) . 'page/' . esc_html( $paged_var + 1 ) . '">Next &raquo;</a>' );
+		// render_html( ' <a class="next page-numbers" href="' . esc_html( get_permalink( $args['post_id'] ) ) . 'page/' . esc_html( $paged_var + 1 ) . '">Next &raquo;</a>' ); .
+		$blah = '';
 	}
 
 	?>
