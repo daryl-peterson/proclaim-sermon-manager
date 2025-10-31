@@ -8,6 +8,7 @@
  * @license     https://www.gnu.org/licenses/gpl-3.0.txt
  * @since       1.0.0
  */
+
 namespace DRPPSM;
 
 use DRPPSM\Data\Sermon;
@@ -27,6 +28,8 @@ $src       = null;
 $link_text = __( 'View ', 'drppsm' );
 
 /**
+ * Sermon Object
+ *
  * @var ?Sermon $sermon Sermon object.
  */
 if ( $sermon ) {
