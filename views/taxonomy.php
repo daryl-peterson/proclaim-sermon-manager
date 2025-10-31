@@ -12,25 +12,7 @@
 
 namespace DRPPSM;
 
-/*
-$qv_tax = get_query_var( 'taxonomy' );
+defined( 'ABSPATH' ) || exit;
 
-if ( ! did_action( 'get_header' ) ) {
-	get_header();
-}
-
-$theme = wp_get_theme();
-Logger::debug( array( 'THEME' => $theme ) );
-
-get_partial( Template::WRAPPER_START );
-*/
 $qv_tax = get_query_var( 'taxonomy' );
 echo do_shortcode( '[' . $qv_tax . ']' );
-
-/*
-get_partial( Template::WRAPPER_END );
-
-if ( ! did_action( 'get_footer' ) ) {
-	get_footer();
-}
-*/
