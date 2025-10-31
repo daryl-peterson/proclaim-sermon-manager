@@ -11,7 +11,9 @@
 
 namespace DRPPSM;
 
+// @codeCoverageIgnoreStart
 defined( 'ABSPATH' ) || exit;
+// @codeCoverageIgnoreEnd
 
 use DRPPSM\Interfaces\Executable;
 use DRPPSM\Interfaces\Registrable;
@@ -28,6 +30,14 @@ use DRPPSM\Traits\ExecutableTrait;
  */
 class QueueScripts implements Registrable, Executable {
 	use ExecutableTrait;
+
+	/**
+	 * Testing flag
+	 *
+	 * @var bool
+	 * @since 1.0.0
+	 */
+	public bool $testing = false;
 
 
 	/**
@@ -97,7 +107,7 @@ class QueueScripts implements Registrable, Executable {
 	 * @return void
 	 * @since 1.0.0
 	 */
-	public function register_scripts_styles() {
+	public function register_scripts_styles(): void {
 		$plyr_ver = '3.7.8';
 
 		$in_footer = array( 'in_footer' => true );
@@ -176,6 +186,8 @@ class QueueScripts implements Registrable, Executable {
 			array(),
 			DRPPSM_VER
 		);
+
+		return;
 	}
 
 
@@ -186,16 +198,16 @@ class QueueScripts implements Registrable, Executable {
 	 * @since 1.0.0
 	 */
 	public function admin_enqueue_scripts(): void {
-		if ( ! is_admin() ) {
-			return;
+		if ( ! $this->testing ) {
+			if ( ! is_admin() ) {
+				return;
+			}
 		}
 
-		// @codeCoverageIgnoreStart
 		wp_enqueue_style( 'drppsm-admin-style' );
 		wp_enqueue_style( 'drppsm-admin-icons' );
 
 		wp_enqueue_media();
-		// @codeCoverageIgnoreEnd
 	}
 
 	/**
@@ -205,9 +217,12 @@ class QueueScripts implements Registrable, Executable {
 	 * @since 1.0.0
 	 */
 	public function admin_footer() {
-		if ( ! is_admin() ) {
-			return;
+		if ( ! $this->testing ) {
+			if ( ! is_admin() ) {
+				return;
+			}
 		}
+
 		wp_enqueue_script( 'drppsm-admin-script' );
 	}
 }
