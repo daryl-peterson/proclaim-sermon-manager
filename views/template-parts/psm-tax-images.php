@@ -42,6 +42,8 @@ $fmt = get_option( 'date_format' );
 $cnt = 0;
 
 /**
+ * Taxonomy Image grid loop.
+ *
  * @var TaxMetaData $item Object.
  */
 foreach ( $list as $item ) :
@@ -50,8 +52,10 @@ foreach ( $list as $item ) :
 	if ( isset( $item->term ) ) {
 
 		/**
-		* @var WP_Term $object Object.
-		*/
+		 * The taxonomy term.
+		 *
+		 * @var WP_Term $object Object.
+		 */
 		$object = $item->term;
 	} else {
 		continue;
@@ -61,7 +65,7 @@ foreach ( $list as $item ) :
 	$test       = implode( '/', array( get_site_url(), $permalinks['drppsm_sermon'] ) ) . '/?drppsm_series=' . $object->slug;
 
 	$no_image  = false;
-	$link      = get_term_link( $object->term_id );
+	$tax_link  = get_term_link( $object->term_id );
 	$img_class = $object->taxonomy;
 
 	$src = null;
@@ -83,7 +87,7 @@ foreach ( $list as $item ) :
 					<div class="list-image">
 
 					<?php if ( $src ) : ?>
-					<a href="<?php echo esc_attr( $link ); ?>" title="<?php echo esc_attr( $object->name ); ?>">
+					<a href="<?php echo esc_attr( $tax_link ); ?>" title="<?php echo esc_attr( $object->name ); ?>">
 						<img src="<?php echo esc_attr( $src ); ?>" class="<?php echo esc_attr( $img_class ); ?>">
 					</a>
 					<?php endif; ?>
@@ -93,7 +97,7 @@ foreach ( $list as $item ) :
 						<div class="date"><?php echo esc_html( format_date( absint( $item->date ) ) ); ?>&nbsp;</div>
 						<div class="text-italic"><?php echo esc_html( "$object->count Messages" ); ?>&nbsp;</div>
 						<div class="archive-link">
-							<a href="<?php echo esc_attr( $link ); ?>" title="<?php echo esc_attr( $object->name ); ?>">
+							<a href="<?php echo esc_attr( $tax_link ); ?>" title="<?php echo esc_attr( $object->name ); ?>">
 								<?php echo esc_html( 'View Archive' ); ?>
 							</a>
 						</div>
