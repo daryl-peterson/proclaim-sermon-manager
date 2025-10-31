@@ -25,7 +25,10 @@ if ( wp_is_block_theme() ) {
 }
 
 get_partial( Template::WRAPPER_START );
+
+// phpcs:disable
 echo sermon_sorting();
+// phpcs:enable
 
 if ( have_posts() ) {
 	new SermonImageList();

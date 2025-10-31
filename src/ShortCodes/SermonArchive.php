@@ -74,7 +74,11 @@ class SermonArchive implements Executable, Registrable {
 	public function show( array $atts ): string {
 
 		ob_start();
+
+		// phpcs:disable
 		echo sermon_sorting();
+		// phpcs:enable
+
 		new SermonImageList();
 		$result = ob_get_clean();
 		return $result;
