@@ -33,6 +33,15 @@ class TextDomain implements TextDomainInt {
 	use ExecutableTrait;
 
 	/**
+	 * Testing flag
+	 *
+	 * @var bool
+	 * @since 1.0.0
+	 */
+	public bool $testing = false;
+
+
+	/**
 	 * Register hooks
 	 *
 	 * @return null|bool Return true if hooks were initialized.
@@ -40,14 +49,31 @@ class TextDomain implements TextDomainInt {
 	 */
 	public function register(): ?bool {
 
-		if ( did_action( 'init', array( $this, 'load_domain' ) ) ) {
-			return false;
+		if ( ! $this->testing ) {
+			if ( has_action( 'init', array( $this, 'load_domain' ) ) ) {
+				return false;
+			}
 		}
 
-		if ( has_action( 'init', array( $this, 'load_domain' ) ) ) {
-			return false;
-		}
 		add_action( 'init', array( $this, 'load_domain' ) );
+		return true;
+	}
+
+
+	/**
+	 * Deregister hooks
+	 *
+	 * @return null|bool Return true if hooks were removed.
+	 * @since 1.0.0
+	 */
+	public function deregister(): ?bool {
+		if ( ! $this->testing ) {
+			if ( ! has_action( 'init', array( $this, 'load_domain' ) ) ) {
+				return false;
+			}
+		}
+
+		remove_action( 'init', array( $this, 'load_domain' ) );
 		return true;
 	}
 
@@ -59,8 +85,10 @@ class TextDomain implements TextDomainInt {
 	 */
 	public function load_domain(): bool {
 
-		if ( ! has_action( 'init', array( $this, 'load_domain' ) ) && ! PHPUNIT_TESTING ) {
-			return false;
+		if ( ! $this->testing ) {
+			if ( ! has_action( 'init', array( $this, 'load_domain' ) ) ) {
+				return false;
+			}
 		}
 
 		$locale = apply_filters( 'plugin_locale', determine_locale(), 'drppsm' );
@@ -79,7 +107,7 @@ class TextDomain implements TextDomainInt {
 			)
 		);
 
-		remove_action( 'init', array( $this, 'load_domain' ) );
+		$this->deregister();
 		return $result;
 	}
 
