@@ -39,6 +39,8 @@ $fmt = get_option( 'date_format' );
 $cnt = 0;
 
 /**
+ * Sermon Object.
+ *
  * @var Sermon $item Post object.
  */
 foreach ( $list as $item ) :
@@ -58,18 +60,18 @@ foreach ( $list as $item ) :
 		continue;
 	}
 
-	$date      = $meta->date();
-	$passage   = $meta->get_bible_passage();
-	$link_text = __( 'View ', 'drppsm' );
-	$link      = $item->link;
+	$date         = $meta->date();
+	$passage      = $meta->get_bible_passage();
+	$link_text    = __( 'View ', 'drppsm' );
+	$archive_link = $item->link;
 
 	if ( $series->has_term() ) {
-		$terms = $series->terms();
-		$term  = $terms[0];
+		$terms       = $series->terms();
+		$series_term = $terms[0];
 
-		$link_tmp = get_term_link( $term );
+		$link_tmp = get_term_link( $series_term );
 		if ( ! is_wp_error( $link_tmp ) ) {
-			$link = $link_tmp . '?play=' . $post_item->ID;
+			$archive_link = $link_tmp . '?play=' . $post_item->ID;
 		}
 	}
 
@@ -78,7 +80,7 @@ foreach ( $list as $item ) :
 			<li class="row">
 				<div class="sermon-image">
 					<?php if ( $src ) : ?>
-					<a href="<?php echo esc_attr( $link ); ?>" title="<?php echo esc_attr( $post_item->post_title ); ?>">
+					<a href="<?php echo esc_attr( $archive_link ); ?>" title="<?php echo esc_attr( $post_item->post_title ); ?>">
 						<img src="<?php echo esc_attr( $src ); ?>" class="drppsm_series">
 					</a>
 					<?php endif; ?>
@@ -89,7 +91,7 @@ foreach ( $list as $item ) :
 					<div class="preacher"><?php echo esc_html( $preacher->name() ); ?>&nbsp;</div>
 					<div class="passage"><?php echo esc_html( $passage ); ?>&nbsp;</div>
 					<div class="archive-link">
-						<a href="<?php echo esc_attr( $link ); ?>" title="<?php echo esc_attr( $post_item->post_title ); ?>">
+						<a href="<?php echo esc_attr( $archive_link ); ?>" title="<?php echo esc_attr( $post_item->post_title ); ?>">
 							<?php echo esc_html( $link_text ); ?>
 							&nbsp;
 						</a>

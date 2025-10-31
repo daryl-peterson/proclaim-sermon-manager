@@ -42,6 +42,8 @@ if ( $play && ! empty( $play ) ) {
 
 
 /**
+ * Sermon Object.
+ *
  * @var Sermon $item_first Post object.
  */
 
@@ -69,13 +71,19 @@ $cnt    = 0;
 	<div class="media">
 		<?php
 
-		if ( ( ! $meta->has_video() && $meta->has_audio() ) || ( $meta->has_video() && $player === 'audio' ) ) {
+		if ( ( ! $meta->has_video() && $meta->has_audio() ) || ( $meta->has_video() && 'audio' === $player ) ) {
 			if ( $poster ) {
+
 				echo '<img src="' . esc_url( $poster ) . '" class="poster" alt="' . esc_attr( $post_first->post_title ) . '" />';
+
 			}
+			// phpcs:disable
 			echo MediaPlayer::render_audio( $meta->audio );
+			// phpcs:enable
 		} elseif ( $item_first->meta->has_video() ) {
+			// phpcs:disable
 			echo MediaPlayer::render_video( $meta->video_link, true, $poster );
+			// phpcs:enable
 		} else {
 			echo '<img src="' . esc_url( $poster ) . '" class="poster" alt="' . esc_attr( $post_first->post_title ) . '" />';
 		}
@@ -102,7 +110,7 @@ $cnt    = 0;
 foreach ( $list as $item ) :
 	++$cnt;
 	$tr_class = 'odd';
-	if ( $cnt % 2 === 0 ) :
+	if ( 0 === $cnt % 2 ) :
 		$tr_class = 'even';
 	endif;
 

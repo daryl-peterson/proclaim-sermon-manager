@@ -27,23 +27,23 @@ if ( ! has_keys( array( 'term' ), $args ) ) {
 	return;
 }
 
-$term = $args['term'];
-if ( ! $term instanceof WP_Term ) {
+$term_item = $args['term'];
+if ( ! $$term_item instanceof WP_Term ) {
 	return;
 }
 
-$label = get_taxonomy_field( $term->taxonomy, 'singular_name' );
-$value = $term->name;
-$link  = get_term_link( $term, $term->taxonomy );
-if ( is_wp_error( $link ) ) {
-	$link = '';
+$label     = get_taxonomy_field( $$term_item->taxonomy, 'singular_name' );
+$value     = $$term_item->name;
+$term_link = get_term_link( $term_item, $term_item->taxonomy );
+if ( is_wp_error( $term_link ) ) {
+	$term_link = '';
 }
 
 ?>
 <div class="meta-item">
 	<div class="label"><?php echo esc_html( $label ); ?> : </div>
 	<div class="value">
-		<a href="<?php echo esc_attr( $link ); ?>">
+		<a href="<?php echo esc_attr( $term_link ); ?>">
 			<?php echo esc_html( $value ); ?>
 		</a>
 	</div>
