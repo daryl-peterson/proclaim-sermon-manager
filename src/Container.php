@@ -130,8 +130,6 @@ class Container implements ContainerInt {
 	 * - The has($id) returning true does not mean that get($id) will not throw an exception.
 	 * - It does however mean that get($id) will not throw a NotFoundExceptionInterface.
 	 *
-	 * @todo Refactor.
-	 *
 	 * @param string $id Identifier of the entry to look for.
 	 * @return bool
 	 * @since 1.0.0

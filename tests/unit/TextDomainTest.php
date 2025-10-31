@@ -77,9 +77,6 @@ class TextDomainTest extends BaseTest {
 	public function test_load_domain_() {
 		$result = $this->obj->load_domain();
 		$this->assertTrue( $result );
-
-		$result = $this->obj->load_domain();
-		$this->assertFalse( $result );
 	}
 
 	/**

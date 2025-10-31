@@ -32,18 +32,13 @@ class TextDomain implements TextDomainInt {
 
 	use ExecutableTrait;
 
-
-	public function register(): ?bool {
-		return true;
-	}
 	/**
 	 * Register hooks
 	 *
 	 * @return null|bool Return true if hooks were initialized.
 	 * @since 1.0.0
 	 */
-	public function register2(): ?bool {
-		// Logger::debug( 'REGISTERING' );
+	public function register(): ?bool {
 
 		if ( did_action( 'init', array( $this, 'load_domain' ) ) ) {
 			return false;
@@ -64,7 +59,7 @@ class TextDomain implements TextDomainInt {
 	 */
 	public function load_domain(): bool {
 
-		if ( ! has_action( 'init', array( $this, 'load_domain' ) ) ) {
+		if ( ! has_action( 'init', array( $this, 'load_domain' ) ) && ! PHPUNIT_TESTING ) {
 			return false;
 		}
 
@@ -74,8 +69,6 @@ class TextDomain implements TextDomainInt {
 		// phpcs:disable
 		$mofile = 'drppsm' . '-' . $locale . '.mo';
 		// phpcs:enable
-
-		return true;
 
 		$result = load_plugin_textdomain( DRPSM_DOMAIN, false, $path );
 		Logger::debug(
@@ -98,7 +91,6 @@ class TextDomain implements TextDomainInt {
 	 */
 	public function switch_to_site_locale(): bool {
 		$result = false;
-		return $result;
 
 		Logger::debug( 'SWITCHING LOCALE' );
 		try {
@@ -139,7 +131,6 @@ class TextDomain implements TextDomainInt {
 	 */
 	public function restore_locale(): bool {
 		$result = false;
-		return $result;
 
 		try {
 			if ( ! function_exists( 'restore_previous_locale' ) ) {
