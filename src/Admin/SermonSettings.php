@@ -11,7 +11,6 @@
 
 namespace DRPPSM\Admin;
 
-use Automattic\Jetpack\Forms\ContactForm\Admin;
 use CMB2;
 use DRPPSM\Action;
 use DRPPSM\Interfaces\Executable;
@@ -22,8 +21,6 @@ use DRPPSM\Filter;
 use DRPPSM\Logger;
 use DRPPSM\Settings;
 use DRPPSM\Transient;
-
-
 
 /**
  * Sermon Settings.
@@ -37,12 +34,19 @@ use DRPPSM\Transient;
 class SermonSettings extends BaseSettings implements Executable, Registrable {
 	use ExecutableTrait;
 
+	/**
+	 * CMB2 Object.
+	 *
+	 * @var CMB2
+	 * @since 1.0.0
+	 */
 	public static CMB2 $cmb;
 
 	/**
 	 * Key used in storing options.
 	 *
 	 * @var string
+	 * @since 1.0.0
 	 */
 	public string $option_key;
 
@@ -58,10 +62,9 @@ class SermonSettings extends BaseSettings implements Executable, Registrable {
 	}
 
 	/**
-	 * Register metaboxes.
+	 * Register hooks.
 	 *
-	 * @param callable $display_cb Callback to display on form.
-	 * @return void
+	 * @return bool|null
 	 * @since 1.0.0
 	 */
 	public function register(): ?bool {
@@ -81,6 +84,7 @@ class SermonSettings extends BaseSettings implements Executable, Registrable {
 	/**
 	 * Register metaboxes.
 	 *
+	 * @param callable $display_cb Display callback.
 	 * @return void
 	 * @since 1.0.0
 	 */
@@ -323,7 +327,7 @@ class SermonSettings extends BaseSettings implements Executable, Registrable {
 	/**
 	 * Add sermon single label.
 	 *
-	 * @param CMB2 $cmb
+	 * @param CMB2 $cmb CMB2 Object.
 	 * @return void
 	 * @since 1.0.0
 	 */
@@ -358,7 +362,7 @@ class SermonSettings extends BaseSettings implements Executable, Registrable {
 	/**
 	 * Add sermon plural label.
 	 *
-	 * @param CMB2 $cmb
+	 * @param CMB2 $cmb CMB2 Object.
 	 * @return void
 	 * @since 1.0.0
 	 */

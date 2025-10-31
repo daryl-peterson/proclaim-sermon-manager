@@ -69,6 +69,12 @@ class AdminMenu implements Executable, Registrable {
 		}
 	}
 
+	/**
+	 * Add about submenu.
+	 *
+	 * @return void
+	 * @since 1.0.0
+	 */
 	public function about(): void {
 		add_submenu_page(
 			'edit.php?post_type=' . DRPPSM_PT_SERMON,
@@ -102,10 +108,20 @@ class AdminMenu implements Executable, Registrable {
 	 *
 	 * @return void
 	 * @since 1.0.0
+	 *
+	 * @todo Finish implementing.
 	 */
 	public function load_import_export() {
 	}
 
+	/**
+	 * Load about page.
+	 *
+	 * @return void
+	 * @since 1.0.0
+	 *
+	 * @todo Finish implementing.
+	 */
 	public function load_about() {
 	}
 }

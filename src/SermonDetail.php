@@ -313,7 +313,7 @@ class SermonDetail implements Executable, Registrable {
 			array(
 				'name'         => esc_html__( 'Date Preached', 'drppsm' ),
 				// translators: %1 Date preached.
-				// 'desc'         => '<br>' . wp_sprintf( esc_html__( 'format: %s', 'drppsm' ), $format ),
+				// 'desc'         => '<br>' . wp_sprintf( esc_html__( 'format: %s', 'drppsm' ), $format ), .
 				'id'           => SermonMeta::DATE,
 				'type'         => 'text_datetime_timestamp',
 				'autocomplete' => 'off',

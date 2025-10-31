@@ -161,6 +161,13 @@ class AdvancedSettings extends BaseSettings {
 		);
 	}
 
+	/**
+	 * Cron interval selection.
+	 *
+	 * @param CMB2 $cmb CMB2 object.
+	 * @return void
+	 * @since 1.0.0
+	 */
 	private function cron_interval( CMB2 $cmb ) {
 		$desc = __(
 			'Interval in hours for cron jobs.',

@@ -109,7 +109,7 @@ abstract class TaxDisplay {
 	/**
 	 * Validate arguments.
 	 *
-	 * @param array $args
+	 * @param array $args Arguments.
 	 * @return bool
 	 * @since 1.0.0
 	 */
@@ -128,14 +128,14 @@ abstract class TaxDisplay {
 
 		$term_count = $this->get_count();
 
-		// Calculate pagination
+		// Calculate pagination.
 		$max_num_pages = ceil( $term_count / $this->per_page );
 		$paged         = get_page_number();
 
-		// Calculate term offset
+		// Calculate term offset.
 		$offset = ( ( $paged - 1 ) * $this->per_page );
 
-		// We can now get our terms and paginate it
+		// We can now get our terms and paginate it.
 		$this->offset = $offset;
 
 		$this->paginate = array(
@@ -151,7 +151,8 @@ abstract class TaxDisplay {
 	/**
 	 * Show template.
 	 *
-	 * @param array $args
+	 * @param string $template Template name.
+	 * @param array  $args Arguments.
 	 * @return void
 	 * @since 1.0.0
 	 */

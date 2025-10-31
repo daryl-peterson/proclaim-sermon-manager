@@ -42,7 +42,12 @@ foreach ( $requirements as $req ) {
 if ( 'none' === $args['visibility'] || is_tax_filtering_disabled( $args ) ) {
 	return;
 }
-// onchange="if(this.options[this.selectedIndex].value !== ''){return this.form.submit()}else{window.location = window.location.href.split('?')[0];}"
+
+/**
+ * Not sure about this part below.
+ *
+ * Onchange="if(this.options[this.selectedIndex].value !== ''){return this.form.submit()}else{window.location = window.location.href.split('?')[0];}" ?
+ */
 
 $browse = __( 'Browse', 'drppsm' );
 

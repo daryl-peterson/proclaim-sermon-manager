@@ -82,7 +82,7 @@ class DisplaySettings extends BaseSettings implements Executable, Registrable {
 		$this->default_image( $cmb );
 		$this->disable_css( $cmb );
 
-		// Filtering
+		// Filtering.
 		$this->hide_filtering( $cmb );
 		$this->hide_bible( $cmb );
 		$this->hide_preachers( $cmb );

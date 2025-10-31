@@ -31,10 +31,23 @@ class About implements Executable, Registrable {
 
 	use ExecutableTrait;
 
+	/**
+	 * Set object properties.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @todo Finish implementing.
+	 */
 	public function __construct() {
-		// Code Here
+		// Code Here.
 	}
 
+	/**
+	 * Register hooks.
+	 *
+	 * @return null|bool
+	 * @since 1.0.0
+	 */
 	public function register(): ?bool {
 		if ( ! has_action( 'show_about', array( $this, 'register_about' ) ) ) {
 			add_action( 'cmb2_admin_init', array( $this, 'register_about' ) );
@@ -43,21 +56,27 @@ class About implements Executable, Registrable {
 		return true;
 	}
 
+	/**
+	 * Register about page metabox.
+	 *
+	 * @return void
+	 * @since 1.0.0
+	 */
 	public function register_about() {
 		/**
-	 * Metabox to be displayed on a single page ID
-	 */
+		* Metabox to be displayed on a single page ID.
+		*/
 		$cmb_about_page = new_cmb2_box(
 			array(
 				'id'           => 'about',
 				'title'        => esc_html__( 'About Page Metabox', 'cmb2' ),
-				'object_types' => array( 'page' ), // Post type
+				'object_types' => array( 'page' ), // Post type.
 				'context'      => 'normal',
 				'priority'     => 'high',
-				'show_names'   => true, // Show field names on the left
+				'show_names'   => true, // Show field names on the left.
 				'show_on'      => array(
 					'id' => array( 6 ),
-				), // Specific post IDs to display this metabox
+				), // Specific post IDs to display this metabox.
 			)
 		);
 

@@ -23,10 +23,23 @@ defined( 'ABSPATH' ) || exit;
  * @since       1.0.0
  */
 class MediaPlayer {
+
+	/**
+	 * Set object properties.
+	 *
+	 * @since 1.0.0
+	 */
 	public function __construct() {
 	}
 
 
+	/**
+	 * Renders the media player.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @todo Finish implementing.
+	 */
 	public static function render() {
 	}
 

@@ -133,6 +133,7 @@ class Rewrite {
 		foreach ( $tax as $type ) {
 
 			// Skip if not registered.
+
 			// @codeCoverageIgnoreStart
 			if ( ! isset( $wp_taxonomies[ $type ] ) ) {
 				continue;

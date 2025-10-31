@@ -60,7 +60,14 @@ class AdminSettings implements Executable, Registrable {
 
 		add_action( 'cmb2_admin_init', array( $this, 'register_metaboxes' ) );
 		add_filter( 'submenu_file', array( $this, 'remove_submenus' ) );
-		// add_action( "cmb2_save_{$object_type}_fields", array( $this, 'after_save' ), 10, 4 );
+
+		/**
+		 * Will remove soon.
+		 *
+		 * Add_action( "cmb2_save_{$object_type}_fields", array( $this, 'after_save' ), 10, 4 ); ?
+		 *
+		 * @todo Remove soon.
+		 */
 
 		GeneralSettings::exec();
 		DisplaySettings::exec();

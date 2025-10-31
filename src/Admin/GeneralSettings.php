@@ -158,7 +158,6 @@ class GeneralSettings extends BaseSettings implements Executable, Registrable {
 				),
 				'after_row'        => $this->description( $desc ),
 				'before_row'       => function () {
-					// $this->add_section( __( 'General Settings', 'drppsm' ) );
 					$this->add_section( 'General Settings' );
 				},
 			)
@@ -220,12 +219,10 @@ class GeneralSettings extends BaseSettings implements Executable, Registrable {
 		);
 	}
 
-
-
 	/**
 	 * Service type singular label.
 	 *
-	 * @param CMB2 $cmb
+	 * @param CMB2 $cmb CMB2 object.
 	 * @return void
 	 * @since 1.0.0
 	 */
@@ -259,7 +256,7 @@ class GeneralSettings extends BaseSettings implements Executable, Registrable {
 	/**
 	 * Service type plural label.
 	 *
-	 * @param CMB2 $cmb
+	 * @param CMB2 $cmb CMB2 object.
 	 * @return void
 	 * @since 1.0.0
 	 */
@@ -291,7 +288,7 @@ class GeneralSettings extends BaseSettings implements Executable, Registrable {
 	 * Series singular field.
 	 * - Allows to give alias to the series taxonomy.
 	 *
-	 * @param CMB2 $cmb
+	 * @param CMB2 $cmb CMB2 object.
 	 * @return void
 	 * @since 1.0.0
 	 */
@@ -326,7 +323,7 @@ class GeneralSettings extends BaseSettings implements Executable, Registrable {
 	 * Series plural field.
 	 * - Allows to give alias to the series taxonomy.
 	 *
-	 * @param CMB2 $cmb
+	 * @param CMB2 $cmb CMB2 object.
 	 * @return void
 	 * @since 1.0.0
 	 */
@@ -358,7 +355,7 @@ class GeneralSettings extends BaseSettings implements Executable, Registrable {
 	 * Preacher singular field.
 	 * - Allows to give alias to the preacher taxonomy.
 	 *
-	 * @param CMB2 $cmb
+	 * @param CMB2 $cmb CMB2 object.
 	 * @return void
 	 * @since 1.0.0
 	 */
@@ -393,7 +390,7 @@ class GeneralSettings extends BaseSettings implements Executable, Registrable {
 	 * Preacher plural field.
 	 * - Allows to give alias to the preachers taxonomy.
 	 *
-	 * @param CMB2 $cmb
+	 * @param CMB2 $cmb CMB2 object.
 	 * @return void
 	 * @since 1.0.0
 	 */
