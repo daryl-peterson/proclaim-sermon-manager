@@ -12,9 +12,6 @@
 namespace DRPPSM\Tests;
 
 use DRPPSM\TaxDisplayList;
-use PHPUnit\Framework\Exception;
-use PHPUnit\Framework\ExpectationFailedException;
-use PHPUnit\Framework\UnknownClassOrInterfaceException;
 
 /**
  * Tax display list test class.

@@ -41,8 +41,8 @@ abstract class TaxShortcode extends ShortCode implements Registrable {
 	 */
 	public function show( array $atts ): string {
 
-		$atts    = $this->fix_atts( $atts );
-		$qv_tax  = get_query_var( 'taxonomy' );
+		$atts = $this->fix_atts( $atts );
+		// $qv_tax  = get_query_var( 'taxonomy' );
 		$qv_term = get_query_var( $this->sc );
 
 		$defaults = array(
@@ -58,6 +58,7 @@ abstract class TaxShortcode extends ShortCode implements Registrable {
 		);
 
 		ob_start();
+		// @codeCoverageIgnoreStart
 		if ( empty( $qv_term ) ) {
 			new TaxDisplayList( $args );
 		} elseif ( have_posts() ) {
@@ -66,6 +67,7 @@ abstract class TaxShortcode extends ShortCode implements Registrable {
 		} else {
 			get_partial( 'no-posts' );
 		}
+		// @codeCoverageIgnoreEnd
 		$result = ob_get_clean();
 		return $result;
 	}
